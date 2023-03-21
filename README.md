@@ -8,7 +8,7 @@ The goal of Oracles, project by the French National Research Agency is to addres
     
 ## Description 
 
-    ...
+...
 
 ## Installation
 
