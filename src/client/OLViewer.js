@@ -15,28 +15,33 @@ export const muetStyle = "Muet";
 let ignStyleMap = new Map();
 ignStyleMap.set(
   planStyle,
-  "https://vectortiles.ign.fr/demonstrateur/styles/planign.json"
+  "https://wxs.ign.fr/static/vectorTiles/styles/PLAN.IGN/essentiels/standard.json"
 );
 ignStyleMap.set(
   grisStyle,
-  "https://vectortiles.ign.fr/demonstrateur/styles/gris.json"
+  "https://wxs.ign.fr/static/vectorTiles/styles/PLAN.IGN/essentiels/gris.json"
 );
 ignStyleMap.set(
   muetStyle,
-  "https://vectortiles.ign.fr/demonstrateur/styles/muet.json"
+  "https://wxs.ign.fr/static/vectorTiles/styles/PLAN.IGN/essentiels/sans_toponymes.json"
 );
 
 export class OLViewer {
+
   constructor(width, height, center, zoom, style) {
     this.initOL(width, height, center, zoom, style);
   }
 
+
   async initOL(width, height, center, zoom, styleName) {
+
+    //Init map element Index.html
     this.domElement = document.getElementById("map");
     document.getElementById("map").style.visibility = "hidden";
     document.getElementById("map").style.width = width * 2 + "px";
     document.getElementById("map").style.height = height * 2 + "px";
 
+    //Init Map with camera positioning
     this.map = new Map({
       layers: [],
       //target: "map",
@@ -47,6 +52,7 @@ export class OLViewer {
       })
     });
 
+    //Create Vector Tile Layer using IGN flux WMTS
     this.layer = new VectorTileLayer({
       title: "Plan IGN vecteur",
       source: new VectorTileSource({
@@ -55,7 +61,7 @@ export class OLViewer {
         format: new MVT({ featureClass: Feature }),
         //projection: new Projection({ code: "EPSG:3857" }),
         url:
-          "https://vectortiles.ign.fr/rok4server/1.0.0/PLAN.IGN/{z}/{x}/{y}.pbf"
+          "https://wxs.ign.fr/essentiels/geoportail/tms/1.0.0/PLAN.IGN/{z}/{x}/{y}.pbf"
       }),
       minResolution: 0,
       maxResolution: 200000,
