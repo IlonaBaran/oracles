@@ -3,6 +3,7 @@
 import string
 import csv
 import json
+import os
 
 def datToCsv(nameFileDat, nameFileCsv):
     
@@ -63,6 +64,16 @@ def csvToJson(csvFilePath, jsonFilePath):
     with open(jsonFilePath, 'w', encoding='utf-8') as jsonf:
         jsonf.write(json.dumps(data, indent=4))
  
+def datToJson(datFilePath, jsonFilePath):
+    
+    datToCsv(datFilePath ,  "temp.csv" )
+    csvToJson("temp.csv",jsonFilePath)
+    os.remove("temp.csv")
+    
+    
+#### Main
+  
+# datToCsv("data.dat","test.csv")
+# csvToJson("test.csv","test.json" )
 
-datToCsv("data.dat","test.csv" )
-csvToJson("test.csv","test.json" )
+datToJson("data.dat", "testBis.json")
