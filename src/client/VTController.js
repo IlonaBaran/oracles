@@ -3,7 +3,9 @@ import * as THREE from "three";
 import { OLViewer, IGN_STYLES } from "./OLViewer";
 import Feature from "ol/Feature";
 import { ZOOM_RES_L93 } from "./Utils";
+
 export class VTController {
+
   constructor(
     width,
     height,
@@ -44,14 +46,14 @@ export class VTController {
       style
     );
     let self = this;
-    this.olViewer.map.on("rendercomplete", function() {
+    this.olViewer.map.on("rendercomplete", function () {
       console.log("map render complete!");
       var mapContainer = document.getElementById("map");
       var mapCanvas = mapContainer.getElementsByTagName("canvas")[0];
       self.threeViewer.setPlaneTexture(mapCanvas);
     });
 
-    this.olViewer.layer.getSource().on("tileloadstart", function(evt) {
+    this.olViewer.layer.getSource().on("tileloadstart", function (evt) {
       self.state.loading++;
     });
 
@@ -80,7 +82,7 @@ export class VTController {
   }
 
   loadVTile() {
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
       this.olViewer.layer.getSource().on("tileloadend", resolve);
     });
   }

@@ -44,7 +44,6 @@ export class OLViewer {
     //Init Map with camera positioning
     this.map = new Map({
       layers: [],
-      //target: "map",
       target: "map",
       view: new View({
         center: center,
@@ -68,6 +67,7 @@ export class OLViewer {
       declutter: true
     });
 
+    //get by style
     var defaultUrl = ignStyleMap.get(styleName);
     let response = await fetch(defaultUrl);
     let style = await response.json();
@@ -78,7 +78,11 @@ export class OLViewer {
         console.log("BACKGROUND");
       }
     }
+
+    //Awaiting style
     await olms.applyStyle(this.layer, style, "plan_ign");
+
+    //adding layer to map
     this.map.addLayer(this.layer);
   }
 }

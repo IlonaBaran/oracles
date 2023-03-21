@@ -7,6 +7,7 @@ export const mergedRender = "Merged";
 export const singleRender = "Single";
 
 export class VTThreeViewer {
+
   constructor(
     width,
     height,
@@ -30,18 +31,25 @@ export class VTThreeViewer {
   }
 
   initThree(backgroundColor) {
+
+    //create a renderer
     this.renderer = new THREE.WebGLRenderer();
     this.renderer.setSize(this.width, this.height);
     this.renderer.setPixelRatio(window.devicePixelRatio);
     document.body.appendChild(this.renderer.domElement);
     this.renderer.domElement.style.position = "absolute";
     this.renderer.domElement.style.top = "0px";
+
+    //create a scene
     this.scene = new THREE.Scene();
     this.scene.background = new THREE.Color(backgroundColor);
 
     var depht_s = Math.tan(((45 / 2.0) * Math.PI) / 180.0) * 2.0;
     let z = this.height / depht_s;
 
+
+    //create camera : 
+    // orthographic camera <=> object's size is constsregardless of its distance from the camera
     this.orthoCamera = new THREE.OrthographicCamera(
       this.width / -2,
       this.width / 2,
@@ -52,6 +60,8 @@ export class VTThreeViewer {
     );
     this.orthoCamera.position.set(0, 0, z);
 
+
+    //create camera : perspective camera <=> human eyes
     this.perspectiveCamera = new THREE.PerspectiveCamera(
       45,
       this.width / this.height,
@@ -61,6 +71,7 @@ export class VTThreeViewer {
     this.perspectiveCamera.up.set(0, 0, 1);
     this.perspectiveCamera.position.set(0, 0, z);
 
+    //create controls 
     this.controls = new OrbitControls(
       this.perspectiveCamera,
       this.renderer.domElement
@@ -76,10 +87,12 @@ export class VTThreeViewer {
       this.height * 2,
       100
     );
+
     var testmaterial = new THREE.MeshBasicMaterial({
       color: 0xffff00,
       side: THREE.DoubleSide
     });
+
     var material = new THREE.MeshBasicMaterial({
       transparent: true
       //color: 0xffff00
@@ -92,12 +105,13 @@ export class VTThreeViewer {
 
     this.currentCamera = this.perspectiveCamera;
 
+
     this.renderer.domElement.addEventListener(
       "dblclick",
       this.doubleClick,
       false
     );
-    //this.animate();
+    this.animate();
   }
 
   animate() {
