@@ -2,7 +2,7 @@
 
 ## Context
 
-This project is based on previous works realized by LASTIG research lab. ( https://github.com/umrlastig/vtthree ). VTThree was developped for Oracle's project by ANR.
+This project is based on previous works realized by LASTIG research lab: https://github.com/umrlastig/vtthree 
 
 The goal of Oracles, project by the French National Research Agency is to address the challenges related to probabilistic forecasting of coastal flooding and their consequences on the territory, by focusing on data visualization. 
     
