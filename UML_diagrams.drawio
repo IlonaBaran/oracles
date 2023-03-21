@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-03-21T11:19:39.335Z" agent="5.0 (X11)" etag="1ttJeUUDL0vGiur0cjA0" version="21.0.8" type="github" pages="3">
+<mxfile host="app.diagrams.net" modified="2023-03-21T11:21:44.490Z" agent="5.0 (X11)" etag="J2hp_pEuzO6FHMqpHksD" version="21.0.8" type="github" pages="3">
   <diagram id="yPDn8Lph00N95JW0atBV" name="user">
     <mxGraphModel dx="1575" dy="710" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -73,7 +73,7 @@
           <mxGeometry y="242" width="160" height="26" as="geometry" />
         </mxCell>
         <mxCell id="DztwkjnsRrXzU0sbATDb-22" value="VTThreeViewer" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
-          <mxGeometry x="-430" y="40" width="200" height="372" as="geometry" />
+          <mxGeometry x="-430" y="40" width="200" height="450" as="geometry" />
         </mxCell>
         <mxCell id="DztwkjnsRrXzU0sbATDb-23" value="&lt;div&gt;+ width&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="DztwkjnsRrXzU0sbATDb-22">
           <mxGeometry y="26" width="200" height="26" as="geometry" />
@@ -116,6 +116,15 @@
         </mxCell>
         <mxCell id="DztwkjnsRrXzU0sbATDb-40" value="&lt;div&gt;- createGeometryForMergedMesh&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="DztwkjnsRrXzU0sbATDb-22">
           <mxGeometry y="346" width="200" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="DztwkjnsRrXzU0sbATDb-43" value="- addFeature" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="DztwkjnsRrXzU0sbATDb-22">
+          <mxGeometry y="372" width="200" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="DztwkjnsRrXzU0sbATDb-44" value="- addHemisphereLights2" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="DztwkjnsRrXzU0sbATDb-22">
+          <mxGeometry y="398" width="200" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="DztwkjnsRrXzU0sbATDb-45" value="- doubleClick(event)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="DztwkjnsRrXzU0sbATDb-22">
+          <mxGeometry y="424" width="200" height="26" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
