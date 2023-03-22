@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-03-22T13:23:59.277Z" agent="5.0 (Windows)" etag="c7Ag4ZXz437l9Zh4Z5Mo" version="21.0.10" type="github" pages="6">
+<mxfile host="app.diagrams.net" modified="2023-03-22T13:28:35.908Z" agent="5.0 (Windows)" etag="AiM-2kYQUqy3jr-d6-s8" version="21.0.10" type="github" pages="6">
   <diagram id="yPDn8Lph00N95JW0atBV" name="user">
     <mxGraphModel dx="2309" dy="643" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -388,12 +388,6 @@
         </mxCell>
         <mxCell id="nsNcWMzBUlMJ7KdBMZta-2" value="Application " style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E6FFCC;" parent="1" vertex="1">
           <mxGeometry x="280" y="290" width="100" height="40" as="geometry" />
-        </mxCell>
-        <mxCell id="nsNcWMzBUlMJ7KdBMZta-3" value="DB SERVER" style="verticalAlign=top;align=left;spacingTop=8;spacingLeft=2;spacingRight=12;shape=cube;size=10;direction=south;fontStyle=4;html=1;whiteSpace=wrap;" parent="1" vertex="1">
-          <mxGeometry x="510" y="50" width="180" height="120" as="geometry" />
-        </mxCell>
-        <mxCell id="nsNcWMzBUlMJ7KdBMZta-5" value="Database" style="shape=module;align=left;spacingLeft=20;align=center;verticalAlign=top;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="550" y="100" width="100" height="50" as="geometry" />
         </mxCell>
         <mxCell id="nsNcWMzBUlMJ7KdBMZta-7" value="" style="endArrow=none;html=1;rounded=0;entryX=0;entryY=0;entryDx=35;entryDy=0;entryPerimeter=0;exitX=0;exitY=0;exitDx=125;exitDy=230;exitPerimeter=0;" parent="1" source="pmZofTedvfde7MxJ5BN8-3" target="pmZofTedvfde7MxJ5BN8-1" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
