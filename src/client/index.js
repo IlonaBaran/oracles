@@ -15,28 +15,19 @@ import * as geotiff from "geotiff";
 const width = window.innerWidth; // this makes the 3D canvas full screen
 const height = window.innerHeight; // this makes the 3D canvas full screen
 
-let parisLatLon = [48.8534, 2.3488];
-let parisCenter = proj4(proj4326, proj3857, [parisLatLon[1], parisLatLon[0]]);
+let gavreLatLon = [47.6942671, -3.35];
+let gavreCenter = proj4(proj4326, proj3857, [gavreLatLon[1], gavreLatLon[0]]);
 
-let vavinLatLon = [48.8425824, 2.3275981];
-let vavinCenter = proj4(proj4326, proj3857, [vavinLatLon[1], vavinLatLon[0]]);
-
-const paramsCovid = {
-  center: parisCenter,
-  zoom: 12,
-  layers: [],
+const paramsGavre = {
+  center: gavreCenter,
+  zoom: 16,
+  layers: ["bati_surf", "bati_zai"],
   style: planStyle
 };
 
-const paramsWind = {
-  center: vavinCenter,
-  zoom: 18,
-  layers: ["bati_surf", "bati_zai"],
-  style: muetStyle
-};
-
-let params = paramsWind;
+let params = paramsGavre;
 let controller = null;
+
 async function init() {
   // to read tiff file: https://geotiffjs.github.io/geotiff.js/. other files to be read should be added to the data folder
   // let tiffData = await geotiff.fromUrl("Hauteurs.tif");
@@ -51,12 +42,13 @@ async function init() {
     params.style, //style for the tiles
     false
   );
-  addObjects();
+
+  //addObjects();
 }
 
 function addObjects() {
   //example to add an object to the scene
-  let worldCoords = controller.threeViewer.getWorldCoords(vavinCenter); // the getWorldCoords function transform webmercator coordinates into three js world coordinates
+  let worldCoords = controller.threeViewer.getWorldCoords(gavreCenter); // the getWorldCoords function transform webmercator coordinates into three js world coordinates
   var geometry = new THREE.BoxBufferGeometry(100, 100, 100);
   var material = new THREE.MeshStandardMaterial({ color: 0xff4500 });
   var cube = new THREE.Mesh(geometry, material); //a three js mesh needs a geometry and a material
