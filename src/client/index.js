@@ -8,7 +8,6 @@ import proj4 from "proj4";
 import { proj4326, proj3857 } from "./Utils";
 
 //data can be imported like this or read from the data folder
-import windData from "../../data/wind.json";
 import covidData from "../../data/covid_data.json";
 import * as geotiff from "geotiff";
 
