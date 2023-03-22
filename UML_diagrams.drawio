@@ -1,31 +1,31 @@
-<mxfile host="app.diagrams.net" modified="2023-03-21T13:55:39.210Z" agent="5.0 (X11)" etag="gWCqTZ3fAqlU0LNftTTE" version="21.0.8" type="github" pages="3">
+<mxfile host="app.diagrams.net" modified="2023-03-22T08:10:23.907Z" agent="5.0 (Windows)" etag="kZ8rNFFBkGAeaFQe9Sow" version="21.0.8" type="github" pages="5">
   <diagram id="yPDn8Lph00N95JW0atBV" name="user">
-    <mxGraphModel dx="1815" dy="710" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1733" dy="391" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
         <mxCell id="eLYtYys3gFhz9bifagLl-1" value="Actor" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" parent="1" vertex="1">
           <mxGeometry x="-780" y="210" width="30" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="Nc5_KZlm4uyUPGM0GwBJ-1" value="&lt;b&gt;Visualiser les sites de Gavre et Arcachon&lt;/b&gt;" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="Nc5_KZlm4uyUPGM0GwBJ-1" value="&lt;b&gt;Visualiser les sites de Gavre et Arcachon&lt;/b&gt;" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="-625" y="30" width="280" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="z-hk673n-tnqEPXCckuk-1" value="&lt;b&gt;Selectionner un scénario parmis ceux disponible&lt;/b&gt;" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="z-hk673n-tnqEPXCckuk-1" value="&lt;b&gt;Selectionner un scénario parmis ceux disponible&lt;/b&gt;" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="-642.5" y="80" width="315" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="z-hk673n-tnqEPXCckuk-2" value="&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;Visualiser les attributs Inputs sous forme de graphique &lt;/b&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Temps, Maree (m), NMR (m), Surcote (m), Hs(vagues) (m), Tp(vagues), Dp(vagues),U(vent) (m/s)&lt;br&gt;Dir(vent)&lt;br&gt;&lt;/div&gt;" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="z-hk673n-tnqEPXCckuk-2" value="&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;Visualiser les attributs Inputs sous forme de graphique &lt;/b&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Temps, Maree (m), NMR (m), Surcote (m), Hs(vagues) (m), Tp(vagues), Dp(vagues),U(vent) (m/s)&lt;br&gt;Dir(vent)&lt;br&gt;&lt;/div&gt;" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="-667.5" y="190" width="365" height="150" as="geometry" />
         </mxCell>
-        <mxCell id="z-hk673n-tnqEPXCckuk-3" value="&lt;div&gt;&lt;b&gt;Visualiser sur carte la hauteur final de l&#39;eau &lt;/b&gt;&lt;/div&gt;" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="z-hk673n-tnqEPXCckuk-3" value="&lt;div&gt;&lt;b&gt;Visualiser sur carte la hauteur final de l&#39;eau &lt;/b&gt;&lt;/div&gt;" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="-642.5" y="350" width="315" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="z-hk673n-tnqEPXCckuk-4" value="&lt;div&gt;&lt;b&gt;Visualiser sur carte la hauteur maximal de l&#39;eau &lt;/b&gt;&lt;/div&gt;" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="z-hk673n-tnqEPXCckuk-4" value="&lt;div&gt;&lt;b&gt;Visualiser sur carte la hauteur maximal de l&#39;eau &lt;/b&gt;&lt;/div&gt;" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="-642.5" y="420" width="315" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="z-hk673n-tnqEPXCckuk-5" value="&lt;div&gt;&lt;b&gt;Pour un Scénario&lt;/b&gt;&lt;/div&gt;" style="text;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="z-hk673n-tnqEPXCckuk-5" value="&lt;div&gt;&lt;b&gt;Pour un Scénario&lt;/b&gt;&lt;/div&gt;" style="text;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="-550" y="160" width="130" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="z-hk673n-tnqEPXCckuk-6" value="&lt;div&gt;&lt;b&gt;Comparer a minima deux scénarios,&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;graphiques + visu cartes&lt;br&gt;&lt;/b&gt;&lt;/div&gt;" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="z-hk673n-tnqEPXCckuk-6" value="&lt;div&gt;&lt;b&gt;Comparer a minima deux scénarios,&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;graphiques + visu cartes&lt;br&gt;&lt;/b&gt;&lt;/div&gt;" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="-642.5" y="490" width="315" height="60" as="geometry" />
         </mxCell>
       </root>
@@ -191,6 +191,100 @@
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="umU2Fgj9eNU6dFIHu-K8" name="etat_actuel_code">
+    <mxGraphModel dx="906" dy="391" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="QvaDT9171JFbQYCve6HF-1" value="carte index.html" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F19C99;" vertex="1" parent="1">
+          <mxGeometry x="120" y="20" width="580" height="350" as="geometry" />
+        </mxCell>
+        <mxCell id="L2Wl9pORd9BPAuzbPW3P-1" value="1 option carte" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="707" y="180" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="L2Wl9pORd9BPAuzbPW3P-2" value="0 composants" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="707" y="110" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="L2Wl9pORd9BPAuzbPW3P-3" value="0 route" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="707" y="250" width="120" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="V0l2gZ4VkTd2G1OGc20p" name="Model site_SPA">
+    <mxGraphModel dx="906" dy="391" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="Szc1SLZackzF_OkUPsEf-1" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F19C99;" vertex="1" parent="1">
+          <mxGeometry x="120" y="20" width="580" height="350" as="geometry" />
+        </mxCell>
+        <mxCell id="Szc1SLZackzF_OkUPsEf-2" value="Echelle, coordonnees, orientation ..." style="rounded=0;whiteSpace=wrap;html=1;fillColor=#B9E0A5;" vertex="1" parent="1">
+          <mxGeometry x="120" y="350" width="580" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="Szc1SLZackzF_OkUPsEf-3" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#B9E0A5;" vertex="1" parent="1">
+          <mxGeometry x="120" y="20" width="580" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Szc1SLZackzF_OkUPsEf-4" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#B9E0A5;" vertex="1" parent="1">
+          <mxGeometry x="120" y="60" width="150" height="290" as="geometry" />
+        </mxCell>
+        <mxCell id="Szc1SLZackzF_OkUPsEf-5" value="&lt;b&gt;carte&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="440" y="180" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="Szc1SLZackzF_OkUPsEf-6" value="&lt;b&gt;header&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="430" y="25" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="Szc1SLZackzF_OkUPsEf-7" value="select scenario" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F19C99;" vertex="1" parent="1">
+          <mxGeometry x="135" y="100" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="Szc1SLZackzF_OkUPsEf-8" value="G" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FF9696;arcSize=50;" vertex="1" parent="1">
+          <mxGeometry x="610" y="25" width="30" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="Szc1SLZackzF_OkUPsEf-9" value="A" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FF9696;arcSize=50;" vertex="1" parent="1">
+          <mxGeometry x="650" y="25" width="30" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="Szc1SLZackzF_OkUPsEf-14" value="graphique" style="whiteSpace=wrap;html=1;aspect=fixed;fillColor=#B9E0A5;" vertex="1" parent="1">
+          <mxGeometry x="130" y="170" width="130" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="Szc1SLZackzF_OkUPsEf-15" value="params : a ,b,c,d,e,f,g" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#B9E0A5;" vertex="1" parent="1">
+          <mxGeometry x="135" y="140" width="120" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="Szc1SLZackzF_OkUPsEf-16" value="stat scenario" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#B9E0A5;" vertex="1" parent="1">
+          <mxGeometry x="135" y="310" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="Szc1SLZackzF_OkUPsEf-17" value="final" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#B9E0A5;" vertex="1" parent="1">
+          <mxGeometry x="590" y="320" width="40" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="Szc1SLZackzF_OkUPsEf-18" value="max" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#B9E0A5;" vertex="1" parent="1">
+          <mxGeometry x="645" y="320" width="40" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="ZW9609_EANCzJaFYF3xX-3" value="about project" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#B9E0A5;" vertex="1" parent="1">
+          <mxGeometry x="240" y="25" width="90" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="ZW9609_EANCzJaFYF3xX-4" value="NAME" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="165" y="25" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="F8SbknrKbCtltTds2mek-1" value="&lt;b&gt;fenetre stat&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="115" y="60" width="160" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="F8SbknrKbCtltTds2mek-2" value="&lt;b&gt;footer&lt;/b&gt;" style="text;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="130" y="350" width="100" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="F8SbknrKbCtltTds2mek-3" value="4 Composants " style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="707" y="80" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="F8SbknrKbCtltTds2mek-4" value="2 Options carte" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="707" y="150" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Jhm4gs0Y57nihUD1dpX8-1" value="1 route" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="707" y="220" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="OgpraGWu1N_vSk7aB9OG-2" value="VERT = reutilisable, ROUGE = code dur" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="150" y="380" width="255" height="30" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
