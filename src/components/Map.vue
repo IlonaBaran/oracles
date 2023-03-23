@@ -21,6 +21,7 @@ export default {
 canvas {
   display: flex;
   background-color: blue;
-  margin-top: 50px;
+  margin-top: 40px;
+  height: 95%;
 }
 </style>

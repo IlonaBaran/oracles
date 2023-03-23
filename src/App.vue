@@ -1,17 +1,21 @@
 <template>
 <Header ></Header>
 <Map></Map>
+<Footer ></Footer>
+
 </template>
 
 <script>
 import Header from './components/Header.vue'
+import Footer from './components/Footer.vue'
 import Map from './components/Map.vue'
 
 export default {
   name: 'App',
   components: {
     Header,
-    Map
+    Map,
+    Footer
   }
 }
 </script>
@@ -24,7 +28,8 @@ html, body{
   background-color: blue;
 }
 #app {margin: 0px;
- display: block;
+ display: flex;
+ flex-direction: column;
  height: 100vh;
 }
 </style>

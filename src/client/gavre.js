@@ -14,7 +14,7 @@ import { proj4326, proj3857 } from "./Utils";
 import * as geotiff from "geotiff";
 
 const width =window.innerWidth; // this makes the 3D canvas full screen
-const height = window.innerHeight; // this makes the 3D canvas full screen
+const height = window.innerHeight-60; // this makes the 3D canvas full screen
 
 console.log(height)
 
