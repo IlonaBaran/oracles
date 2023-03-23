@@ -1,11 +1,11 @@
 <template>
 <Header ></Header>
-<Map msg="yooo"/>
+<Map></Map>
 </template>
 
 <script>
-import Map from './components/Map.vue'
 import Header from './components/Header.vue'
+import Map from './components/Map.vue'
 
 export default {
   name: 'App',
@@ -17,7 +17,14 @@ export default {
 </script>
 
 <style>
-#app {
-  margin: 0px;
+html, body{
+  margin:0px;
+  overflow: hidden;
+  overflow: hidden;
+  background-color: blue;
+}
+#app {margin: 0px;
+ display: block;
+ height: 100vh;
 }
 </style>

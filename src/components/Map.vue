@@ -17,12 +17,10 @@ export default {
 
 
 <style>
-body {
-  margin: 0;
-}
+
 canvas {
-  margin-top:50px;
-  margin-bottom:25px;
   display: flex;
+  background-color: blue;
+  margin-top: 50px;
 }
 </style>

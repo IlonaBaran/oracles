@@ -15,7 +15,7 @@
    .header {
     width: 100%;
     height: 50px;
-    background-color:rgb(224, 209, 217);
+    background-color:rgb(116, 126, 235);
     display: flex;
     align-items: center;
     justify-content: space-around;

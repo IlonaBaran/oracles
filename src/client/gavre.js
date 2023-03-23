@@ -16,6 +16,8 @@ import * as geotiff from "geotiff";
 const width =window.innerWidth; // this makes the 3D canvas full screen
 const height = window.innerHeight; // this makes the 3D canvas full screen
 
+console.log(height)
+
 let gavreLatLon = [47.6942671, -3.35];
 let gavreCenter = proj4(proj4326, proj3857, [gavreLatLon[1], gavreLatLon[0]]);
 
