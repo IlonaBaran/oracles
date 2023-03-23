@@ -1,3 +1,4 @@
+/* eslint-disable */
 import "regenerator-runtime/runtime";
 import * as THREE from "three";
 import Feature from "ol/Feature";
@@ -6,6 +7,8 @@ import { mergedRender, singleRender } from "./VTThreeViewer";
 import { planStyle, grisStyle, muetStyle } from "./OLViewer";
 import proj4 from "proj4";
 import { proj4326, proj3857 } from "./Utils";
+
+
 
 //data can be imported like this or read from the data folder
 import covidData from "../../data/covid_data.json";
@@ -27,7 +30,7 @@ const paramsGavre = {
 let params = paramsGavre;
 let controller = null;
 
-async function init() {
+export async function init() {
   // to read tiff file: https://geotiffjs.github.io/geotiff.js/. other files to be read should be added to the data folder
   // let tiffData = await geotiff.fromUrl("Hauteurs.tif");
 
@@ -57,4 +60,3 @@ function addObjects() {
   controller.threeViewer.scene.add(cube); //all objects have to be added to the threejs scene
 }
 
-init();

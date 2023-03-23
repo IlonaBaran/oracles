@@ -37,6 +37,7 @@ export class OLViewer {
 
     //Init map element Index.html
     this.domElement = document.getElementById("map");
+    console.log(this.domElement)
     document.getElementById("map").style.visibility = "hidden";
     document.getElementById("map").style.width = width * 2 + "px";
     document.getElementById("map").style.height = height * 2 + "px";
