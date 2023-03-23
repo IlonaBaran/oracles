@@ -73,13 +73,13 @@ def datToJson(datFilePath, jsonFilePath):
 
 def datToJsonFolder(folderName):
     for filename in os.listdir(folderName):
-        with open(os.path.join(folderName, filename), 'w') as f: 
+        with open(os.path.join(folderName, filename), 'r') as f: # open in readonly mode
             new = filename.split('.')
             new[-1] = 'json'
-  
+            
             os.chdir(folderName)
 
-            datToJson(filename,'.'.join(new))
+            datToJson(filename,'.'.join(new) )
     
 #### Main
   
