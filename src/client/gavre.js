@@ -30,7 +30,7 @@ const paramsGavre = {
 let params = paramsGavre;
 let controller = null;
 
-export async function init() {
+export async function gavre() {
   // to read tiff file: https://geotiffjs.github.io/geotiff.js/. other files to be read should be added to the data folder
   // let tiffData = await geotiff.fromUrl("Hauteurs.tif");
 

@@ -4,7 +4,7 @@
 </template>
 
 <script>
-import { init } from "../client/index.js";
+import { gavre } from "../client/gavre.js";
 
 
 export default {
@@ -12,7 +12,7 @@ export default {
   props: {
     msg: String
   },mounted() {
-    init()
+    gavre()
 },
 }
 </script>
