@@ -69,7 +69,16 @@ def datToJson(datFilePath, jsonFilePath):
     datToCsv(datFilePath ,  "temp.csv" )
     csvToJson("temp.csv",jsonFilePath)
     os.remove("temp.csv")
-    
+
+#Besoin de faire en sorte que les nouveaux fichiers soient enregistrés dans le dossier correspondant
+def datToJsonFolder(folderName):
+    for filename in os.listdir(folderName):
+        with open(os.path.join(folderName, filename), 'w') as f: 
+            new = filename.split('.')
+            new[-1] = 'json'
+            print(filename)
+            print('.'.join(new))
+            datToJson(filename,'.'.join(new) )    
     
 #### Main
   
