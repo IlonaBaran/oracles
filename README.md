@@ -20,17 +20,17 @@ The goal of Oracles, project by the French National Research Agency is to addres
 
 ```git clone https://github.com/IlonaBaran/oracles.git```
 
-* install node package
+* Set up project
 
 ``` npm install ```
 
-* install node package
-
-``` npm install ```
-
-* run the build **To be changed**
+* launch src/client/index.html
 
 ``` npx parcel src/client/index.html ```
+
+* launch Vue project
+
+``` npm run serve ```
 
 
 ## Software Analysis Report
