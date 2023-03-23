@@ -11,7 +11,6 @@ import { proj4326, proj3857 } from "./Utils";
 
 
 //data can be imported like this or read from the data folder
-import covidData from "../../data/covid_data.json";
 import * as geotiff from "geotiff";
 
 const width = window.innerWidth; // this makes the 3D canvas full screen
