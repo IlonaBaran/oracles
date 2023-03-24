@@ -23,5 +23,7 @@ canvas {
   background-color: blue;
   margin-top: 40px;
   height: 95%;
+  z-index: 0;
+
 }
 </style>
