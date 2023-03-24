@@ -9,9 +9,7 @@ import { gavre } from "../client/gavre.js";
 
 export default {
   name: 'mapComponent',
-  props: {
-    msg: String
-  },mounted() {
+  mounted() {
     gavre()
 },
 }
@@ -19,10 +17,11 @@ export default {
 
 
 <style>
-body {
-  margin: 0;
-}
+
 canvas {
-  display: block;
+  display: flex;
+  background-color: blue;
+  margin-top: 40px;
+  height: 95%;
 }
 </style>
