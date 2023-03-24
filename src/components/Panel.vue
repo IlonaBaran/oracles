@@ -16,19 +16,17 @@
 
 <script>
 
-// Import des librairies css pour primevue
-import "primevue/resources/themes/lara-light-indigo/theme.css";  //theme   
-import "primevue/resources/primevue.min.css";  //core
-import "primeicons/primeicons.css"; //icons
+
 
 // Import de la bibliothèque primevue
 import { createApp } from 'vue';
 import PrimeVue from 'primevue/config';
+const app = createApp(createApp);
+app.use(PrimeVue);
 import Fieldset from 'primevue/fieldset';
 import Checkbox from 'primevue/checkbox';
 
-const app = createApp(createApp);
-app.use(PrimeVue);
+
 import { ref } from "vue";
 
 
