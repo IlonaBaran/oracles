@@ -4,8 +4,6 @@ on:
   - pull_request
 
 jobs:
-
-jobs:
   build:
     runs-on: ubuntu-latest
 
