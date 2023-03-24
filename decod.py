@@ -92,6 +92,11 @@ def datToJsonFolder(folderName, outputFolder):
             #Suppresion du fichier .json présent dans le dossier des fichiers .dat
             os.remove(folderName+'\\'+'.'.join(new))
 
+def extractDataFolder(folderName,outputFolder):
+    for filename in os.listdir(folderName):
+        new = [filename+".dat"]
+        shutil.copyfile(folderName+'\\' +filename +"\IN_OUT\INPUT\Xt.dat", outputFolder +'\\' +''.join(new))
+
 #### Main
   
 # datToCsv("data.dat","test.csv")
@@ -100,4 +105,6 @@ def datToJsonFolder(folderName, outputFolder):
 # datToJson("data.dat", "testBis.json")
 
 #Convertit tout les fichiers présent dans le dossier datData en .json
-datToJsonFolder('datData', 'jsonData')
+#datToJsonFolder('datData','jsonData')
+
+extractDataFolder("Data","XtData")
