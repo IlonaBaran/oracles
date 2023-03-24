@@ -22,6 +22,9 @@
 import { ref } from "vue";
 
 import Toolbar from 'primevue/toolbar';
+import Button from 'primevue/button';
+import SplitButton from 'primevue/splitbutton';
+
 // Import des librairies css pour primevue
 import "primevue/resources/themes/lara-light-indigo/theme.css";  //theme   
 import "primevue/resources/primevue.min.css";  //core
@@ -32,6 +35,8 @@ export default {
 
     components: {
         Toolbar,
+        SplitButton,
+        Button
     },
 
     data() {
@@ -72,8 +77,17 @@ export default {
 .toolBar{
     z-index: 2;
     position: absolute;
-    width:25%;
+    width:100%;
+    height:5px;
     top:0%;
+}
+
+.p-toolbar {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    padding: 0.5rem;
+    border-radius: 6px;
+    gap: 0.5rem;
 }
 
 </style>
