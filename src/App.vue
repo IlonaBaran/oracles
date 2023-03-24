@@ -1,21 +1,26 @@
 <template>
-<Header ></Header>
-<Map></Map>
-<Footer ></Footer>
+    <Header ></Header>
+    <Panel></Panel>
 
+    <Map></Map>
+    <Footer></Footer>
 </template>
 
 <script>
 import Header from './components/Header.vue'
 import Footer from './components/Footer.vue'
 import Map from './components/Map.vue'
+import Panel from './components/Panel.vue'
+
+
 
 export default {
   name: 'App',
   components: {
     Header,
     Map,
-    Footer
+    Footer,
+    Panel
   }
 }
 </script>
@@ -32,4 +37,5 @@ html, body{
  flex-direction: column;
  height: 100vh;
 }
+
 </style>
