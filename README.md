@@ -11,26 +11,17 @@ The goal of Oracles, project by the French National Research Agency is to addres
 ...
 
 ## Installation
-
-1. Install node: https://nodejs.org/en/
-2. Install git: https://git-scm.com/downloads
-3. Install Visual Studio Code (optional, but recommended): https://code.visualstudio.com
-
 * clone repo
 
 ```git clone https://github.com/IlonaBaran/oracles.git```
 
-* install node package
+* Set up project
 
 ``` npm install ```
 
-* install node package
+* launch Vue project
 
-``` npm install ```
-
-* run the build **To be changed**
-
-``` npx parcel src/client/index.html ```
+``` npm run serve ```
 
 
 ## Software Analysis Report

@@ -1,8 +1,12 @@
+/* eslint-disable */
+
 import { VTThreeViewer, RENDER_MODE } from "./VTThreeViewer";
 import * as THREE from "three";
 import { OLViewer, IGN_STYLES } from "./OLViewer";
 import Feature from "ol/Feature";
 import { ZOOM_RES_L93 } from "./Utils";
+
+
 
 export class VTController {
 
@@ -47,7 +51,7 @@ export class VTController {
     );
     let self = this;
     this.olViewer.map.on("rendercomplete", function () {
-      console.log("map render complete!");
+      //console.log("map render complete!");
       var mapContainer = document.getElementById("map");
       var mapCanvas = mapContainer.getElementsByTagName("canvas")[0];
       self.threeViewer.setPlaneTexture(mapCanvas);
@@ -61,7 +65,7 @@ export class VTController {
 
     if (this.tileZoom) {
       this.threeViewer.renderer.domElement.addEventListener("wheel", event => {
-        console.log("wheeeel ");
+       //console.log("wheeeel ");
         self.zoomOlViewer(event);
       });
     }
@@ -71,7 +75,7 @@ export class VTController {
 
   render() {
     if (this.tileZoom && this.state.loading != 0) {
-      console.log("render ol!");
+      //console.log("render ol!");
       var mapContainer = document.getElementById("map");
       var mapCanvas = mapContainer.getElementsByTagName("canvas")[0];
       this.threeViewer.setPlaneTexture(mapCanvas);
@@ -88,7 +92,7 @@ export class VTController {
   }
 
   zoomOlViewer(event) {
-    console.log("zoooooom!");
+    //console.log("zoooooom!");
     //this.olViewer.domElement.dispatchEvent(
     this.olViewer.map.getViewport().dispatchEvent(
       new WheelEvent("wheel", {
@@ -106,7 +110,7 @@ export class VTController {
   }
 
   loadTileFeatures(evt) {
-    console.log("tile load end!");
+    //console.log("tile load end!");
     var z = evt.tile.getTileCoord()[0];
     var features = evt.tile.getFeatures();
     let layer = "";
