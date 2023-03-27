@@ -2,18 +2,11 @@
 <template>
      <div class="toolBar">
         <Toolbar>
-            <template #start>
-                <Button label="New" icon="pi pi-plus" class="mr-2" />
-                <Button label="Upload" icon="pi pi-upload" severity="success" />
-                <i class="pi pi-bars p-toolbar-separator mr-2" />
-                <SplitButton label="Save" icon="pi pi-check" :model="items" severity="warning"></SplitButton>
-            </template>
+      
+          <template #center>
+              <SelectButton v-model="value" :options="options" aria-labelledby="basic" />
+          </template>
 
-            <template #end>
-                <Button icon="pi pi-search" class="mr-2" />
-                <Button icon="pi pi-calendar" severity="success" class="mr-2" />
-                <Button icon="pi pi-times" severity="danger" />
-            </template>
         </Toolbar>
     </div>
 </template>
@@ -22,8 +15,7 @@
 import { ref } from "vue";
 
 import Toolbar from 'primevue/toolbar';
-import Button from 'primevue/button';
-import SplitButton from 'primevue/splitbutton';
+import SelectButton from 'primevue/selectbutton';
 
 // Import des librairies css pour primevue
 import "primevue/resources/themes/lara-light-indigo/theme.css";  //theme   
@@ -35,36 +27,15 @@ export default {
 
     components: {
         Toolbar,
-        SplitButton,
-        Button
+        SelectButton
     },
 
     data() {
         return {
-          items : ref([
-    {
-        label: 'Update',
-        icon: 'pi pi-refresh'
-    },
-    {
-        label: 'Delete',
-        icon: 'pi pi-times'
-    },
-    {
-        label: 'Vue Website',
-        icon: 'pi pi-external-link',
-        command: () => {
-            window.location.href = 'https://vuejs.org/';
-        }
-    },
-    {
-        label: 'Upload',
-        icon: 'pi pi-upload',
-        command: () => {
-            this.$router.push('fileupload');
-        }
-    }
-])
+                    
+          value : ref('Gâvres'),
+          options : ref(['Gâvres', 'Arcachon'])
+  
         }
     }
 }
@@ -83,7 +54,7 @@ export default {
 }
 
 .p-toolbar {
-    background: #f8f9fa;
+    background: white;
     border: 1px solid #dee2e6;
     padding: 0.5rem;
     border-radius: 6px;

@@ -42,7 +42,7 @@ html, body{
   margin:0px;
   overflow: hidden;
   overflow: hidden;
-  background-color: blue;
+  background-color: white;
 }
 #app {margin: 0px;
  display: flex;
