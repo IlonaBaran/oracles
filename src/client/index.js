@@ -63,8 +63,10 @@ export async function scene() {
 
     //creating the elevation layer
     const layerDEM = new itowns.ElevationLayer('DEM', { source: sourceDEM });
-    //adding it to the view
     view.addLayer(layerDEM);
+
+
+
 
     const batsource = new itowns.FileSource({
         url: 'gavres_bati.geojson',
@@ -99,7 +101,6 @@ function setAltitude(properties) {
     } else {
         //What to do when there is not floor value?
         return 15;
-
     }
 }
 
