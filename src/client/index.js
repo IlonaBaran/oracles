@@ -97,7 +97,8 @@ function setAltitude(properties) {
     if (properties.altitude_sol != null) {
         return properties.altitude_sol + properties.hauteur;
     } else {
-        return 30;
+        //What to do when there is not floor value?
+        return 15;
 
     }
 }
