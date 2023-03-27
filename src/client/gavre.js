@@ -49,6 +49,7 @@ export async function gavre() {
   //addObjects();
 }
 
+/*
 function addObjects() {
   //example to add an object to the scene
   let worldCoords = controller.threeViewer.getWorldCoords(gavreCenter); // the getWorldCoords function transform webmercator coordinates into three js world coordinates
@@ -60,4 +61,4 @@ function addObjects() {
   cube.position.z = 0;
   controller.threeViewer.scene.add(cube); //all objects have to be added to the threejs scene
 }
-
+*/
