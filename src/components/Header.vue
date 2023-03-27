@@ -2,7 +2,9 @@
 <template>
      <div class="toolBar">
         <Toolbar>
-      
+           <template #start>
+                <Button  icon="pi pi-bars" class="mr-2" />
+                 </template>
           <template #center>
               <SelectButton v-model="value" :options="options" aria-labelledby="basic" />
           </template>
@@ -16,6 +18,7 @@ import { ref } from "vue";
 
 import Toolbar from 'primevue/toolbar';
 import SelectButton from 'primevue/selectbutton';
+import Button from 'primevue/button';
 
 // Import des librairies css pour primevue
 import "primevue/resources/themes/lara-light-indigo/theme.css";  //theme   
@@ -27,7 +30,8 @@ export default {
 
     components: {
         Toolbar,
-        SelectButton
+        SelectButton,
+        Button
     },
 
     data() {
