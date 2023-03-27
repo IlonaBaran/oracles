@@ -1,8 +1,6 @@
 <template>
 
     <Header ></Header>
-    <Menu></Menu>
-
     <Panel></Panel>
     <Map></Map>
     <Footer></Footer>
@@ -21,7 +19,6 @@ import Header from './components/Header.vue'
 import Footer from './components/Footer.vue'
 import Map from './components/Map.vue'
 import Panel from './components/Panel.vue'
-import Menu from './components/Menu.vue'
 
 
 // Import des librairies css pour primevue
@@ -36,7 +33,6 @@ export default {
     Map,
     Footer,
     Panel,
-    Menu
   }
 }
 </script>
