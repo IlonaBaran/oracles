@@ -4,6 +4,8 @@ import proj4 from 'proj4';
 import * as THREE from 'three';
 
 
+
+
 export async function scene() {
 
     //retrieve view html container element
@@ -70,8 +72,6 @@ export async function scene() {
         format: 'application/json',
     });
 
-    console.log(batsource)
-
 
     let basic = new itowns.FeatureGeometryLayer('basic', {
         // Use a FileSource to load a single file once
@@ -81,14 +81,16 @@ export async function scene() {
         //zoom: { min: 10 },
         style: new itowns.Style({
             fill: {
-                color: new THREE.Color(0xaaaaaa),
-                base_altitude: 0,
-                extrusion_height: 30,
+                color: setColor,
+                base_altitude: setExtrusion,
+                extrusion_height: setExtrusion,
             }
         })
     });
 
     view.addLayer(basic);
+
+
 }
 
 function setAltitude(properties) {
@@ -106,5 +108,5 @@ function setExtrusion(properties) {
 
 function setColor(properties) {
 
-    return new THREE.Color(0xaaaaaa);
+    return new THREE.Color(0xffaaaa);
 }
