@@ -1,13 +1,13 @@
 
 <template>
   <div class="toolBar">
-  <Toolbar style="padding:5px0px;
-">
+  <Toolbar >
 
     <template #center>
-     <SelectButton v-model="value" :options="options" aria-labelledby="basic" />
+      <SelectButton v-model="value" :options="options" aria-labelledby="basic" />
     </template>
   </Toolbar>
+
   </div>
 </template>
 
@@ -16,7 +16,6 @@ import { ref } from "vue";
 
 import Toolbar from 'primevue/toolbar';
 import SelectButton from 'primevue/selectbutton';
-// import ToggleButton from 'primevue/togglebutton';
 
 
 
@@ -25,8 +24,7 @@ export default {
 
     components: {
         Toolbar,
-        SelectButton,
-        // ToggleButton,
+        SelectButton
     },
 
     data() {
@@ -35,7 +33,7 @@ export default {
           value : ref('Gâvres'),
           options : ref(['Gâvres', 'Arcachon']),
           checked : ref(false),
-
+       
         }
     }
 }
@@ -49,24 +47,25 @@ export default {
     z-index: 2;
     position: absolute;
     width:100%;
-    height:5px;
+    height:5%;
     top:0%;
 }
 
-.p-toolbar {
-    background: white;
+#app .p-toolbar {
+    background: #f8f9fa;
     border: 1px solid #dee2e6;
-    padding: 0px;
+    padding: 0.5rem;
     border-radius: 6px;
     gap: 0.5rem;
 }
-.p-toolbar .p-component{
-      margin: 0px;
 
+.p-toolbar-group-center	{
+  padding: 0px;
 }
+
 .p-component{
-
-      padding: 0px;
-
+  padding: 0px;
 }
+
+
 </style>

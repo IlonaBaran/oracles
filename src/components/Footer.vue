@@ -1,5 +1,6 @@
 <template>
     <div id="footer" class="footer">
+
         <Button label="Plan du site" icon="pi pi-external-link" @click="plan = true" />
         <Dialog v-model:visible="plan" modal header="Plan du site" :style="{ width: '50vw' }">
               <section>
