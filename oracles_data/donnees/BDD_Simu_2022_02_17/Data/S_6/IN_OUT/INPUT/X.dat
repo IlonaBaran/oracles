@@ -1,0 +1,2 @@
+nsc X.txt res ale nseed
+6 dataset_X_extract_2008_3_10.txt 1 1 12345678 1
