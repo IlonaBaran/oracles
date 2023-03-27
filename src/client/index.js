@@ -1,6 +1,8 @@
 /* eslint-disable */
-import proj4 from "proj4";
 import * as itowns from 'itowns';
+import proj4 from 'proj4';
+import * as THREE from 'three';
+
 
 export async function scene() {
 
@@ -61,4 +63,48 @@ export async function scene() {
     const layerDEM = new itowns.ElevationLayer('DEM', { source: sourceDEM });
     //adding it to the view
     view.addLayer(layerDEM);
+
+    const batsource = new itowns.FileSource({
+        url: 'gavres_bati.geojson',
+        crs: 'EPSG:2154',
+        format: 'application/json',
+    });
+
+    console.log(batsource)
+
+
+    let basic = new itowns.FeatureGeometryLayer('basic', {
+        // Use a FileSource to load a single file once
+        source: batsource,
+        transparent: true,
+        opacity: 0.7,
+        //zoom: { min: 10 },
+        style: new itowns.Style({
+            fill: {
+                color: new THREE.Color(0xaaaaaa),
+                base_altitude: 0,
+                extrusion_height: 30,
+            }
+        })
+    });
+
+    view.addLayer(basic);
+}
+
+function setAltitude(properties) {
+    if (properties.altitude_sol != null) {
+        return properties.altitude_sol + properties.hauteur;
+    } else {
+        return 30;
+
+    }
+}
+
+function setExtrusion(properties) {
+    return properties.hauteur;
+}
+
+function setColor(properties) {
+
+    return new THREE.Color(0xaaaaaa);
 }
