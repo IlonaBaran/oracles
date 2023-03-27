@@ -1,16 +1,14 @@
 
 <template>
-     <div class="toolBar">
-        <Toolbar>
-           <template #start>
-                <Button  icon="pi pi-bars" class="mr-2" />
-                 </template>
-          <template #center>
-              <SelectButton v-model="value" :options="options" aria-labelledby="basic" />
-          </template>
+  <div class="toolBar">
+  <Toolbar style="padding:5px0px;
+">
 
-        </Toolbar>
-    </div>
+    <template #center>
+     <SelectButton v-model="value" :options="options" aria-labelledby="basic" />
+    </template>
+  </Toolbar>
+  </div>
 </template>
 
 <script>
@@ -18,12 +16,9 @@ import { ref } from "vue";
 
 import Toolbar from 'primevue/toolbar';
 import SelectButton from 'primevue/selectbutton';
-import Button from 'primevue/button';
+// import ToggleButton from 'primevue/togglebutton';
 
-// Import des librairies css pour primevue
-import "primevue/resources/themes/lara-light-indigo/theme.css";  //theme   
-import "primevue/resources/primevue.min.css";  //core
-import "primeicons/primeicons.css"; //icons
+
 
 export default {
     name: 'menuComponent',
@@ -31,15 +26,16 @@ export default {
     components: {
         Toolbar,
         SelectButton,
-        Button
+        // ToggleButton,
     },
 
     data() {
         return {
                     
           value : ref('Gâvres'),
-          options : ref(['Gâvres', 'Arcachon'])
-  
+          options : ref(['Gâvres', 'Arcachon']),
+          checked : ref(false),
+
         }
     }
 }
@@ -60,9 +56,17 @@ export default {
 .p-toolbar {
     background: white;
     border: 1px solid #dee2e6;
-    padding: 0.5rem;
+    padding: 0px;
     border-radius: 6px;
     gap: 0.5rem;
 }
+.p-toolbar .p-component{
+      margin: 0px;
 
+}
+.p-component{
+
+      padding: 0px;
+
+}
 </style>
