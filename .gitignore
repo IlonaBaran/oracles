@@ -27,4 +27,5 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
-src/assets/oracles_data/donnees
+src/assets/
+package-lock.json

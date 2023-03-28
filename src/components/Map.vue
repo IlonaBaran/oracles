@@ -1,24 +1,23 @@
 <template>
- <div id="map" class="map">
- </div>
+  <div id="viewerDiv" class="viewer">
+  </div>
 </template>
 
 <script>
-import { gavre } from "../client/gavre.js";
+import { scene } from "../client/index.js";
 
 
 export default {
   name: 'mapComponent',
   mounted() {
-    gavre()
-},
+    scene()
+  },
 }
 </script>
 
 
 <style>
-
-canvas {
+.viewer {
   display: flex;
   background-color: blue;
   margin-top: 40px;
