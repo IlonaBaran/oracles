@@ -16,6 +16,7 @@
         <!-- Texte présent dedans -->
         <Card>
 
+
                 <template #title>
                     Options 
                 </template>
@@ -26,28 +27,23 @@
                 <template #content>
                     <ScrollPanel style="width: 100%; height: 550px">
 
-                     <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </p>
-            <p>
-                Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam
-                voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Consectetur, adipisci velit, sed quia non numquam eius modi.
-            </p>
-            <p class="m-0">
-                At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui
-                officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
-            </p>
+                 <p>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam deserunt quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque
+                    quas!
+                    <JSCharting :options="chartOptions" ></JSCharting>
+                    <JSCharting :options="chartOptions2" ></JSCharting>
+                    <JSCharting :options="chartOptions3" ></JSCharting>
+                </p>
                     <!-- Ajout d'une checkbox pour voir si l'ajout d'élément fonctionne -->
                     <Checkbox v-model="checked" :binary="true" />
                                 </ScrollPanel>
 
                 </template>
+
         </Card>
     </div>
 
 </template>
-
 <script>
 
 
@@ -61,6 +57,9 @@ import MultiSelect from 'primevue/multiselect';
 import CascadeSelect from 'primevue/cascadeselect';
 import ScrollPanel from 'primevue/scrollpanel';
 
+import { reactive } from 'vue';
+import JSCharting from 'jscharting-vue';
+
 import { ref } from "vue";
 
 export default {
@@ -72,12 +71,14 @@ export default {
         Card,
         MultiSelect,
         CascadeSelect,
-        ScrollPanel
+        ScrollPanel,
+        JSCharting
     },
-
+    
     data() {
         return {
             checked : ref(false),
+            checkedPanel : ref(false),
             checkedPanel : ref(false),
             selectedCities: null,
             cities: [
@@ -163,7 +164,7 @@ export default {
                 }
             ]
 }
-        
+       
     },
 
   methods: {
@@ -174,10 +175,172 @@ export default {
         print(){
             return this.selectedCities;
         }
+    },
+    
+    setup() {        
+        
+        const chartOptions = reactive({
+         type: 'simpleLine',
+         series: [
+            {
+               points: [
+                  { x: 'A', y: 50 },
+                  { x: 'B', y: 30 },
+                  { x: 'C', y: 50 }
+                  ]
+              }
+          ]
+        });
+
+      const chartOptions2 = reactive({
+        //  type: 'horizontal column',
+        //type: 'simpleLine',
+        legend: { 
+            visible: true,
+            position: 'bottom right',
+            // legendEntry_visible: false
+        },
+		title: { label: { text: 'Cost over time' } },
+		yAxis: [
+            /* Main axis is defined first. */
+            { formatString: 'c' },
+            /* Secondary axis will sync with main axis by default. */
+            // {
+            // 	id: 'secondY',
+            // 	orientation: 'opposite',
+            // 	line: { color: '#e2e2e2' },
+            // 	defaultTick: {
+            // 		enabled: false,
+            // 		gridLine: { visible: false }
+            // 	}
+            // }
+        ],
+		xAxis: {
+            crosshair: { enabled: true },
+            scale: { type: 'time' }
+        },
+		defaultSeries: {
+            type: 'line',
+            defaultPoint: { 
+                marker: { visible: false } 
+            },
+            // lastPoint: {
+            // 	label: { text: '<b>%seriesName</b>' },
+            // 	yAxisTick: {
+            // 		axisId: 'secondY',
+            // 		label: { text: '%yValue' }
+            // 	}
+            // }
+        },
+
+         series: [
+				{
+					name: 'Purchases',
+					points: [
+						['1/1/2020', 29.9],
+						['2/1/2020', 97.5],
+						['3/1/2020', 110.4],
+						['4/1/2020', 129.2],
+						['5/1/2020', 144.0],
+						['6/1/2020', 176.0],
+						['7/1/2020', 182.0],
+						['8/1/2020', 186.0],
+						['9/1/2020', 181.0],
+						['10/1/2020', 178.0],
+						['11/1/2020', 184.0],
+						['12/1/2020', 176.0]
+					]
+				},
+				{
+					name: 'Taxes',
+					points: [
+						['1/1/2020', 86.9],
+						['2/1/2020', 79.5],
+						['3/1/2020', 95.4],
+						['4/1/2020', 97.2],
+						['5/1/2020', 123.0],
+						['6/1/2020', 111.0],
+						['7/1/2020', 122.0],
+						['8/1/2020', 135.0],
+						['9/1/2020', 140.0],
+						['10/1/2020', 139.0],
+						['11/1/2020', 135.0],
+						['12/1/2020', 132.0]
+					]
+				},
+				{
+					name: 'Supplies',
+					points: [
+						['1/1/2020', 129.9],
+						['2/1/2020', 111.5],
+						['3/1/2020', 66.4],
+						['4/1/2020', 29.2],
+						['5/1/2020', 88.0],
+						['6/1/2020', 102.0],
+						['7/1/2020', 82.0],
+						['8/1/2020', 75.0],
+						['9/1/2020', 162.0],
+						['10/1/2020', 110.0],
+						['11/1/2020', 90.0],
+						['12/1/2020', 85.0]
+					]
+				},
+				{
+					name: 'Rent',
+					points: [
+						['1/1/2020', 56.9],
+						['2/1/2020', 56.5],
+						['3/1/2020', 56.4],
+						['4/1/2020', 56.2],
+						['5/1/2020', 75.0],
+						['6/1/2020', 56.0],
+						['7/1/2020', 56.0],
+						['8/1/2020', 56.0],
+						['9/1/2020', 56.0],
+						['10/1/2020', 67.0],
+						['11/1/2020', 67.0],
+						['12/1/2020', 67.0]
+					]
+				}
+         ]
+        });
+
+        const chartOptions3 = reactive({
+        debug: true, 
+        type: 'column', 
+        yAxis: { 
+            scale_type: 'stacked', 
+            label_text: 'Units Sold'
+        }, 
+        title_label_text: 'Acme Tool Sales', 
+        xAxis: { 
+            label_text: 'Quarter', 
+            categories: ['Q1', 'Q2', 'Q3', 'Q4'] 
+        },          
+        series: [ 
+            { 
+            name: 'Saw', 
+            id: 's1', 
+            points: [230, 240, 267, 238] 
+            }, 
+            { 
+            name: 'Hammer', 
+            points: [325, 367, 382, 371] 
+            }, 
+            { 
+            name: 'Grinder', 
+            points: [285, 292, 267, 218] 
+            }, 
+            { 
+            name: 'Drill', 
+            points: [185, 192, 198, 248] 
+            } 
+        ] 
+        });
+
+      return { chartOptions, chartOptions2, chartOptions3 }; 
     }
-
 }
-
 </script>
 
 
