@@ -1,7 +1,7 @@
 <template>
     <div id="footer" class="footer">
 
-        <Button label="Plan du site" icon="pi pi-external-link" @click="plan = true" />
+        <Button label="Plan du site"  @click="plan = true" style="color: white" link/>
         <Dialog v-model:visible="plan" modal header="Plan du site" :style="{ width: '50vw' }">
               <section>
                   <h4>Nom du site -TO DO</h4>
@@ -15,7 +15,7 @@
         </Dialog>
 
 
-        <Button label="Mentions légales" icon="pi pi-external-link" @click="mentions = true" />
+        <Button label="Mentions légales"  @click="mentions = true"  style="color: white" link/>
         <Dialog v-model:visible="mentions" modal header="Mentions légales" :style="{ width: '50vw' }">
             <h4>AUTEUR:</h4>
                 Ce site a été réalisé par 		Ilona BARAN, Léa FREDOC, Fernando RICO-QUINTERO et Jacqueline WILLIAMS, étudiants en cycle ingénieur ou Master 
@@ -29,7 +29,7 @@
         </Dialog>
 
 
-        <Button label="Crédits" icon="pi pi-external-link" @click="credits = true" />
+        <Button label="Crédits"  @click="credits = true"  style="color: white" link />
         <Dialog v-model:visible="credits" modal header="Crédits" :style="{ width: '50vw'}">
           <h4>CREDITS DEVELOPPEMENT:</h4>
               Le développement de <a href="TO DO" target="_blank"> ce site </a> a été réalisé par Ilona BARAN, Léa FREDOC, Fernando RICO-QUINTERO et Jacqueline WILLIAMS, étudiants en cycle ingénieur ou Master 'Technologies des Systèmes d'Information' à l'Ecole Nationale des Sciences Géographiques - Géomatique à Marne-la-Vallée.                <h4>CREDITS CARTE:</h4>
@@ -66,10 +66,10 @@
    .footer {
     width: 100%;
     height: 20px;
-    background-color:rgb(116, 126, 235);
+    background-color:#6366F1;
     display: flex;
     align-items: center;
     justify-content: space-around;
-    color: rgb(55, 53, 53);
+    color: #6366F1;
     }
    </style>
