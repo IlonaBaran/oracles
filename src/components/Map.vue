@@ -4,13 +4,16 @@
 </template>
 
 <script>
-import { scene } from "../client/index.js";
+/* eslint-disable */
+import MapViewer from "../services/MapViewer.js"
 
 
 export default {
   name: 'mapComponent',
   mounted() {
-    scene()
+    const viewerDiv = document.getElementById('viewerDiv');
+    const coord = [-3.35291, 47.69651];
+    let mapView = new MapViewer(viewerDiv, coord)
   },
 }
 </script>
