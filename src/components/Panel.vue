@@ -49,7 +49,7 @@ export default {
 .card{
     z-index: 2;
     position: absolute;
-    width:25%;
+    width:50%;
     top:10%;
 }
 
