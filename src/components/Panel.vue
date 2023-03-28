@@ -79,7 +79,6 @@ export default {
         return {
             checked : ref(false),
             checkedPanel : ref(false),
-            checkedPanel : ref(false),
             selectedCities: null,
             cities: [
                 { name: 'New York', code: 'NY' },
