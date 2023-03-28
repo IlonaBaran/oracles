@@ -1,11 +1,10 @@
 <template>
 
     <Header ></Header>
-    <Menu></Menu>
-
     <Panel></Panel>
     <Map></Map>
     <Footer></Footer>
+    <Toolbar></Toolbar>
 
 </template>
 
@@ -21,8 +20,7 @@ import Header from './components/Header.vue'
 import Footer from './components/Footer.vue'
 import Map from './components/Map.vue'
 import Panel from './components/Panel.vue'
-import Menu from './components/Menu.vue'
-
+import Toolbar from './components/Toolbar.vue'
 
 // Import des librairies css pour primevue
 import "primevue/resources/themes/lara-light-indigo/theme.css";  //theme   
@@ -36,7 +34,7 @@ export default {
     Map,
     Footer,
     Panel,
-    Menu
+    Toolbar,
   }
 }
 </script>
@@ -46,7 +44,7 @@ html, body{
   margin:0px;
   overflow: hidden;
   overflow: hidden;
-  background-color: blue;
+  background-color: white;
 }
 #app {margin: 0px;
  display: flex;

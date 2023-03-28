@@ -1,0 +1,2 @@
+nsc X.txt res ale nseed
+5 dataset_X_extract_2004_10_27.txt 1 1 12345678 1

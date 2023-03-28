@@ -1,0 +1,2 @@
+nsc X.txt res ale nseed
+15 dataset_X_extract_1900_2_15.txt 1 1 12345678 1
