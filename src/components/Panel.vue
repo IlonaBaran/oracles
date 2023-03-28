@@ -1,13 +1,10 @@
 <template>
-
-    
     <div class="buttonPanel">
         <Button  v-styleclass="{ selector: '.card', toggleClass: 'p-hidden' }" type="button" icon="pi pi-bars" label="" />
-    <MultiSelect v-model="selectedCities" :options="cities" filter optionLabel="name" placeholder="Sélection Scénarios"  
-                    :maxSelectedLabels="3" class="w-full md:w-20rem selectScenario" />
-                    <CascadeSelect v-model="selectedCity" :options="countries" optionLabel="cname" optionGroupLabel="name"
-                :optionGroupChildren="['states', 'cities']" style="min-width: 14rem" placeholder="Sélection Graphique" class="selectGraph" />
-               
+        <MultiSelect v-model="selectedScenario" :options="cities" filter optionLabel="name" placeholder="Sélection Scénarios"  
+                    :maxSelectedLabels="3" class="w-full md:w-20rem selectScenario margin-right:15px" />
+        <CascadeSelect v-model="selectedGraph" :options="countries" optionLabel="name" optionGroupLabel="name"
+                :optionGroupChildren="['states']" style="min-width: 14rem " placeholder="Sélection Graphique" class="selectGraph" />
     </div>
 
     <!-- Panel de gauche -->
@@ -15,31 +12,22 @@
 
         <!-- Texte présent dedans -->
         <Card>
+            <template #title>
+                Options                
+            </template>
 
+            <template #content>
+                <ScrollPanel style="width: 100%; height: 550px">
+                    <p>Scénarios: {{print()}}</p>
+                    <p>Graphiques: {{printGraph()}}</p>
+                    <p>
+                        <JSCharting :options="chartOptions" ></JSCharting>
+                        <JSCharting :options="chartOptions2" ></JSCharting>
+                        <JSCharting :options="chartOptions3" ></JSCharting>
+                    </p>
+                </ScrollPanel>
 
-                <template #title>
-                    Options 
-                </template>
-
-                <template #subtitle>
-                     </template>
-
-                <template #content>
-                    <ScrollPanel style="width: 100%; height: 550px">
-
-                 <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam deserunt quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque
-                    quas!
-                    <JSCharting :options="chartOptions" ></JSCharting>
-                    <JSCharting :options="chartOptions2" ></JSCharting>
-                    <JSCharting :options="chartOptions3" ></JSCharting>
-                </p>
-                    <!-- Ajout d'une checkbox pour voir si l'ajout d'élément fonctionne -->
-                    <Checkbox v-model="checked" :binary="true" />
-                                </ScrollPanel>
-
-                </template>
-
+            </template>
         </Card>
     </div>
 
@@ -50,7 +38,6 @@
 
 
 // import Fieldset from 'primevue/fieldset';
-import Checkbox from 'primevue/checkbox';
 import Button from 'primevue/button';
 import Card from 'primevue/card';
 import MultiSelect from 'primevue/multiselect';
@@ -60,13 +47,11 @@ import ScrollPanel from 'primevue/scrollpanel';
 import { reactive } from 'vue';
 import JSCharting from 'jscharting-vue';
 
-import { ref } from "vue";
 
 export default {
     name: 'panelComponent',
 
     components: {
-        Checkbox,
         Button,
         Card,
         MultiSelect,
@@ -77,93 +62,33 @@ export default {
     
     data() {
         return {
-            checked : ref(false),
-            checkedPanel : ref(false),
-            selectedCities: null,
+            selectedScenario: null,
             cities: [
-                { name: 'New York', code: 'NY' },
-                { name: 'Rome', code: 'RM' },
-                { name: 'London', code: 'LDN' },
-                { name: 'Istanbul', code: 'IST' },
-                { name: 'Paris', code: 'PRS' }
+                { name: 'Scénario 1', code: 1 },
+                { name: 'Scénario 2', code: 2 },
+                { name: 'Scénario 3', code: 3 },
+                { name: 'Scénario 4', code: 4 },
+                { name: 'Scénario 5', code: 5 }
             ],
-            selectedCity: null,
+            selectedGraph: null,
             countries: [
                 {
-                    name: 'Australia',
-                    code: 'AU',
+                    name: '2D',
+                    code: '2D',
                     states: [
-                        {
-                            name: 'New South Wales',
-                            cities: [
-                                { cname: 'Sydney', code: 'A-SY' },
-                                { cname: 'Newcastle', code: 'A-NE' },
-                                { cname: 'Wollongong', code: 'A-WO' }
-                            ]
-                        },
-                        {
-                            name: 'Queensland',
-                            cities: [
-                                { cname: 'Brisbane', code: 'A-BR' },
-                                { cname: 'Townsville', code: 'A-TO' }
-                            ]
-                        }
-                    ]
+                        { name: 'Graph2D 1'},
+                        { name: 'Graph2D 2'},
+                        { name: 'Graph2D 3'}]
                 },
                 {
-                    name: 'Canada',
-                    code: 'CA',
+                    name: '3D',
+                    code: '3D',
                     states: [
-                        {
-                            name: 'Quebec',
-                            cities: [
-                                { cname: 'Montreal', code: 'C-MO' },
-                                { cname: 'Quebec City', code: 'C-QU' }
-                            ]
-                        },
-                        {
-                            name: 'Ontario',
-                            cities: [
-                                { cname: 'Ottawa', code: 'C-OT' },
-                                { cname: 'Toronto', code: 'C-TO' }
-                            ]
-                        }
-                    ]
+                        {name: 'Graph3D 1'},
+                        {name: 'Graph3D 2'}]
                 },
-                {
-                    name: 'United States',
-                    code: 'US',
-                    states: [
-                        {
-                            name: 'California',
-                            cities: [
-                                { cname: 'Los Angeles', code: 'US-LA' },
-                                { cname: 'San Diego', code: 'US-SD' },
-                                { cname: 'San Francisco', code: 'US-SF' }
-                            ]
-                        },
-                        {
-                            name: 'Florida',
-                            cities: [
-                                { cname: 'Jacksonville', code: 'US-JA' },
-                                { cname: 'Miami', code: 'US-MI' },
-                                { cname: 'Tampa', code: 'US-TA' },
-                                { cname: 'Orlando', code: 'US-OR' }
-                            ]
-                        },
-                        {
-                            name: 'Texas',
-                            cities: [
-                                { cname: 'Austin', code: 'US-AU' },
-                                { cname: 'Dallas', code: 'US-DA' },
-                                { cname: 'Houston', code: 'US-HO' }
-                            ]
-                        }
-                    ]
-                }
             ]
-}
-       
+        }
     },
 
   methods: {
@@ -172,7 +97,10 @@ export default {
 
         },
         print(){
-            return this.selectedCities;
+            return this.selectedScenario;
+        },
+        printGraph(){
+            return this.selectedGraph;
         }
     },
     
@@ -355,7 +283,7 @@ export default {
 .card{
     z-index: 3;
     position: absolute;
-    width:25%;
+    width:50%;
     height:70%;
     top:10%;
 }
@@ -373,6 +301,12 @@ export default {
 }
 p{
     margin: 0px;
+
+}
+
+.p-multiselect {
+    margin-right: 10px;
+    margin-left: 10px;
 
 }
 
