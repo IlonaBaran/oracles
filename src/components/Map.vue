@@ -4,13 +4,13 @@
 </template>
 
 <script>
-//import { gavre } from "../client/gavre.js";
+import { gavre } from "../client/gavre.js";
 
 
 export default {
   name: 'mapComponent',
   mounted() {
-    //gavre()
+    gavre()
 },
 }
 </script>
