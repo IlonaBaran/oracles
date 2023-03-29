@@ -2,7 +2,6 @@
 import * as itowns from 'itowns';
 import proj4 from 'proj4';
 
-
 class MapViewer {
 
     constructor(viewerDivId, coords) {

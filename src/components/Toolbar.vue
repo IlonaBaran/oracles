@@ -1,6 +1,6 @@
 <template>
     <div class="toolbar">
-      <button @click="toggleLegend" class="button">{{ legend }}</button>
+      <!-- <button @click="toggleLegend" class="button">{{ legend }}</button> -->
     </div>
   </template>
   

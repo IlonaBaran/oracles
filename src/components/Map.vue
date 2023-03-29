@@ -8,7 +8,11 @@
 /* eslint-disable */
 import MapViewer from "../services/MapViewer.js"
 import Toolbar from "./Toolbar.vue";
+//import * as itowns from 'itowns';
+import '../../node_modules/itowns/examples/css/widgets.css'
+import { FileSource, THREE, Style, proj4, FeatureGeometryLayer, Coordinates, GlobeView, WMTSSource, ColorLayer, ElevationLayer, } from "../../node_modules/itowns/dist/itowns";
 
+import { Navigation } from '../../node_modules/itowns/dist/itowns_widgets.js';
 
 export default {
   name: 'mapComponent',
@@ -23,15 +27,38 @@ export default {
   mounted() {
     const viewerDiv = document.getElementById('viewerDiv');
     const coord = [-3.35291, 47.69651];
-    let mapView = new MapViewer(viewerDiv, coord);
-    mapView.view.controls.setTilt(10)
+
+    var placement = {
+      coord: new Coordinates('EPSG:4326', coord[0], coord[1]),
+      range: 2500
+    };
+
+    let view = new GlobeView(viewerDiv, placement);
+
+    // ADD NAVIGATION TOOLS :
+    new Navigation(view, {
+                position: 'bottom-right',
+                translate: { y: -40 },
+            });
+    
+            var orthoSource = new WMTSSource({
+            url: 'https://wxs.ign.fr/essentiels/geoportail/wmts/',
+            crs: "EPSG:3857",
+            name: 'ORTHOIMAGERY.ORTHOPHOTOS',
+            tileMatrixSet: 'PM',
+            format: 'image/jpeg',
+            style: 'normal'
+        })
+
+        var orthoLayer = new ColorLayer('Ortho', {
+            source: orthoSource,
+        });
+
+        view.addLayer(orthoLayer);
 
 
   },
   methods: {
-    updateTilt(tilt) {
-      mapView.view.controls.setTilt(10);
-    }
   }
 }
 </script>
