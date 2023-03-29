@@ -9,7 +9,7 @@
 import MapViewer from "../services/MapViewer.js"
 import Toolbar from "./Toolbar.vue";
 import '../../node_modules/itowns/examples/css/widgets.css'
-import { FileSource, THREE, Style, proj4, FeatureGeometryLayer, Coordinates, GlobeView, WMTSSource, ColorLayer, ElevationLayer, } from "../../node_modules/itowns/dist/itowns";
+import { FileSource, THREE, Style, proj4, Extent, FeatureGeometryLayer, Coordinates, GlobeView, WMTSSource, WMSSource, ColorLayer, ElevationLayer, } from "../../node_modules/itowns/dist/itowns";
 import { Navigation } from '../../node_modules/itowns/dist/itowns_widgets.js';
 
 export default {
@@ -33,6 +33,12 @@ export default {
     proj4.defs(
       'EPSG:2154',
       '+proj=lcc +lat_1=49 +lat_2=44 +lat_0=46.5 +lon_0=3 +x_0=700000 +y_0=6600000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs'
+    );
+
+    //defining the views geographic extent, how far does it go
+    const viewExtent = new Extent(
+      'EPSG:2154',
+      222955.5000, 224545.5000, 6750269.5000, 6752639.5000
     );
 
     var placement = {
@@ -78,14 +84,33 @@ export default {
       //zoom: { min: 10 },
       style: new Style({
         fill: {
-          color: new THREE.Color(0xffaaaa),
-          base_altitude: 0,
-          extrusion_height: 40,
+          color: setColor,
+          base_altitude: setAltitude,
+          extrusion_height: setExtrusion,
         }
       })
     });
 
     view.addLayer(basic);
+
+    function setAltitude(properties) {
+      if (properties.altitude_sol != null) {
+        return properties.altitude_sol + properties.hauteur;
+      } else {
+        //What to do when there is not floor value?
+        return 5;
+      }
+    }
+
+    function setExtrusion(properties) {
+      return properties.hauteur;
+    }
+
+    function setColor(properties) {
+
+      return new THREE.Color(0xffaaaa);
+    }
+
 
   },
   methods: {
