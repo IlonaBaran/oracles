@@ -48,6 +48,7 @@ import { reactive } from 'vue';
 import JSCharting from 'jscharting-vue';
 
 
+
 export default {
     name: 'panelComponent',
 
@@ -306,7 +307,7 @@ p{
 
 .p-multiselect {
     margin-right: 10px;
-    margin-left: 10px;
+        margin-left: 10px;
 
 }
 
