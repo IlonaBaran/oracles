@@ -10,11 +10,11 @@
       <div class="typeCartes">
         
         <Button  id="boutonCarte" class="bg-bluegray-600 hover:bg-bluegray-400 border-bluegray-700 ">
-          <img alt="logo" src="../../dist/img/ortho.png" class="h-2rem" />
+          <img alt="logo" src="../../public/img/ortho.png" class="h-2rem" />
         </Button>
 
         <Button  id="boutonCarte" class="bg-bluegray-600 hover:bg-bluegray-400 border-bluegray-700">
-          <img  alt="logo" src="../../dist/img/plan.png" class="h-2rem" />
+          <img  alt="logo" src="../../public/img/plan.png" class="h-2rem" />
         </Button>
 
       </div>
