@@ -8,10 +8,8 @@
 /* eslint-disable */
 import MapViewer from "../services/MapViewer.js"
 import Toolbar from "./Toolbar.vue";
-//import * as itowns from 'itowns';
 import '../../node_modules/itowns/examples/css/widgets.css'
 import { FileSource, THREE, Style, proj4, FeatureGeometryLayer, Coordinates, GlobeView, WMTSSource, ColorLayer, ElevationLayer, } from "../../node_modules/itowns/dist/itowns";
-
 import { Navigation } from '../../node_modules/itowns/dist/itowns_widgets.js';
 
 export default {
@@ -24,8 +22,10 @@ export default {
       view: null
     };
   },
-  mounted() {
+  created() {
     const viewerDiv = document.getElementById('viewerDiv');
+  },
+  mounted() {
     const coord = [-3.35291, 47.69651];
 
     var placement = {
@@ -56,6 +56,11 @@ export default {
 
         view.addLayer(orthoLayer);
 
+    //Adding navigation controls
+    new Navigation(view, {
+      position: 'bottom-right',
+      translate: { y: -40 },
+    });
 
   },
   methods: {
