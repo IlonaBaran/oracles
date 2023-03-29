@@ -55,13 +55,6 @@ export default {
         });
 
         view.addLayer(orthoLayer);
-
-    //Adding navigation controls
-    new Navigation(view, {
-      position: 'bottom-right',
-      translate: { y: -40 },
-    });
-
   },
   methods: {
   }
