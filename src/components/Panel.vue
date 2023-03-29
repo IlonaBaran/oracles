@@ -2,7 +2,7 @@
     <div class="buttonPanel">
         <Button  v-styleclass="{ selector: '.card', toggleClass: 'p-hidden' }" type="button" icon="pi pi-bars" label="" />
         <MultiSelect v-model="selectedScenario" :options="cities" filter optionLabel="name" placeholder="Sélection Scénarios"  
-                    :maxSelectedLabels="3" class="w-full md:w-20rem selectScenario margin-right:15px" />
+                    :maxSelectedLabels="2" class="w-full md:w-20rem selectScenario margin-right:15px" />
         <CascadeSelect v-model="selectedGraph" :options="countries" optionLabel="name" optionGroupLabel="name"
                 :optionGroupChildren="['states']" style="min-width: 14rem " placeholder="Sélection Graphique" class="selectGraph" />
     </div>

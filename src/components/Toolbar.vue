@@ -6,9 +6,19 @@
       <SpeedDial  :model="items" direction="up" class="right-0 bottom-0"  :tooltipOptions="{ position: 'right' }" />
     </div>
     <Sidebar class='sidebar' v-model:visible="visibleRight" position="right">
-            <h2>Right Sidebar</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-        </Sidebar>
+      <h2>Fonds de carte</h2>
+      <div class="typeCartes">
+        
+        <Button  id="boutonCarte" class="bg-bluegray-600 hover:bg-bluegray-400 border-bluegray-700 ">
+          <img alt="logo" src="../../dist/img/ortho.png" class="h-2rem" />
+        </Button>
+
+        <Button  id="boutonCarte" class="bg-bluegray-600 hover:bg-bluegray-400 border-bluegray-700">
+          <img  alt="logo" src="../../dist/img/plan.png" class="h-2rem" />
+        </Button>
+
+      </div>
+    </Sidebar>
 
   </template>
   
@@ -18,13 +28,15 @@
 
   import SpeedDial from 'primevue/speeddial';
   import Sidebar from 'primevue/sidebar';
+  import Button from 'primevue/button';
 
 
   export default {
     name: 'Toolbar-box',
     components: {
         SpeedDial,
-        Sidebar
+        Sidebar,
+        Button
     },
   data() {
     return {
@@ -37,21 +49,16 @@
         {
             label: 'Change Map',
             icon: 'pi pi-map',
-            
             command: () => {
-                // this.$toast.add({ severity: 'info', summary: 'Add', detail: 'Data Added' });
                 this.visibleRight=  true;
-
             }
         },
               {
             label: 'Delete',
             icon: 'pi pi-trash',
             command: () => {
-                // this.$toast.add({ severity: 'error', summary: 'Delete', detail: 'Data Deleted' });
             }
         },
-        
       ]
       }
     },
@@ -109,7 +116,21 @@
 }
 
 .sidebar{
-    z-index: 2;}
+    z-index: 2;
+}
 
+.typeCartes{
+  display: flex;
+  align-items: center;  
+  flex-direction: column;
+}
+img{
+  width: 100%;
+
+}
+#boutonCarte {
+  margin: 5% ;
+  padding: 0%;
+}
 </style>
 
