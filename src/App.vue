@@ -1,7 +1,6 @@
 <template>
 
     <Header ></Header>
-    <Panel></Panel>
     <Map></Map>
     <Footer></Footer>
     <Toolbar></Toolbar>
@@ -17,16 +16,15 @@
 import Header from './components/Header.vue'
 import Footer from './components/Footer.vue'
 import Map from './components/Map.vue'
-import Panel from './components/Panel.vue'
 import Toolbar from './components/Toolbar.vue'
 
 export default {
   name: 'App',
+ 
   components: {
     Header,
     Map,
     Footer,
-    Panel,
     Toolbar,
   }
 }
