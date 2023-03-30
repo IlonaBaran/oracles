@@ -157,11 +157,9 @@ export default {
                         },
                         {
                             name: 'Texas',
-                            cities: [
-                                { cname: 'Austin', code: 'US-AU' },
+                            cities: [ { cname: 'Austin', code: 'US-AU' },
                                 { cname: 'Dallas', code: 'US-DA' },
-                                { cname: 'Houston', code: 'US-HO' }
-                            ]
+                                { cname: 'Houston', code: 'US-HO' } ]
                         }
                     ]
                 }
@@ -205,7 +203,6 @@ export default {
         printGraph(){
             return this.selectedGraph;
         }
-    },
     
         const chartOptions = reactive({
          type: 'simpleLine',
