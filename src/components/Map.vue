@@ -1,12 +1,11 @@
 <template>
   <div id="viewerDiv" class="viewer">
   </div>
-  <Toolbar :view=view @updateTilt="updateTilt"></Toolbar>
+  <Toolbar></Toolbar>
 </template>
 
 <script>
 /* eslint-disable */
-import MapViewer from "../services/MapViewer.js"
 import Toolbar from "./Toolbar.vue";
 import '../../node_modules/itowns/examples/css/widgets.css'
 import { FileSource, THREE, Style, proj4, Extent, FeatureGeometryLayer, Coordinates, GlobeView, WMTSSource, WMSSource, ColorLayer, ElevationLayer, } from "../../node_modules/itowns/dist/itowns";
@@ -16,11 +15,6 @@ export default {
   name: 'mapComponent',
   components: {
     Toolbar,
-  },
-  data() {
-    return {
-      view: null
-    };
   },
   created() {
     const viewerDiv = document.getElementById('viewerDiv');
