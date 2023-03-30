@@ -199,10 +199,7 @@ export default {
     },  
     setup() {    
             return this.selectedScenario;
-        },
-        printGraph(){
-            return this.selectedGraph;
-        }
+       
     
         const chartOptions = reactive({
          type: 'simpleLine',
