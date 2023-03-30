@@ -1,35 +1,23 @@
 <template>
-
-    
-    <div class="buttonPanel">
-        <Button  v-styleclass="{ selector: '.card', toggleClass: 'p-hidden' }" type="button" icon="pi pi-bars" label="" />
-    <MultiSelect v-model="selectedCities" :options="cities" filter optionLabel="name" placeholder="Sélection Scénarios"  
-                    :maxSelectedLabels="3" class="w-full md:w-20rem selectScenario" />
-                    <CascadeSelect v-model="selectedCity" :options="countries" optionLabel="cname" optionGroupLabel="name"
-                :optionGroupChildren="['states', 'cities']" style="min-width: 14rem" placeholder="Sélection Graphique" class="selectGraph" />
-               
-    </div>
+ 
 
     <!-- Panel de gauche -->
     <div class="card p-hidden">
 
         <!-- Texte présent dedans -->
         <Card>
+            <template #title>
+                Options                
+            </template>
 
-
-                <template #title>
-                    Options 
-                </template>
-
-                <template #subtitle>
-                     </template>
+        
+              
 
                 <template #content>
                     <ScrollPanel style="width: 100%; height: 550px">
-
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam deserunt quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque
-                    quas!
-
+                    
+                    <p>Scénarios: {{selectedScenario}}</p>
+                    <p>Graphiques: {{ selectedGraph}}</p>
                     <!--
                     <JSCharting :options="chartOptions" ></JSCharting>
                     <JSCharting :options="chartOptions2" ></JSCharting>
@@ -58,15 +46,13 @@
 
 
 <script>
-// import Fieldset from 'primevue/fieldset';
-import Checkbox from 'primevue/checkbox';
-import Button from 'primevue/button';
 import Card from 'primevue/card';
-import MultiSelect from 'primevue/multiselect';
-import CascadeSelect from 'primevue/cascadeselect';
 import ScrollPanel from 'primevue/scrollpanel';
 
 import { ref } from "vue";
+import { reactive } from 'vue';
+import JSCharting from 'jscharting-vue';
+
 
 import { reactive } from "vue";
 // import JSCharting from 'jscharting-vue';
@@ -76,19 +62,23 @@ import { reactive } from "vue";
 
 export default {
     name: 'panelComponent',
+    props: {
+            selectedScenario: String,
+            selectedGraph: String
+
+        },
 
     components: {
-        Checkbox,
-        Button,
         Card,
-        MultiSelect,
-        CascadeSelect,
-        ScrollPanel
+
+        ScrollPanel,
+        JSCharting
     },
 
     
     data() {
         return {
+<!--
             myData: 'Valeur initiale des données',
             checked : ref(false),
             checkedPanel : ref(false),
@@ -177,7 +167,8 @@ export default {
                 }
             ]
 }
-       
+       -->
+
     },
 
   methods: {
@@ -209,6 +200,12 @@ export default {
         },
     },  
     setup() {    
+            return this.selectedScenario;
+        },
+        printGraph(){
+            return this.selectedGraph;
+        }
+    },
     
         const chartOptions = reactive({
          type: 'simpleLine',
@@ -389,9 +386,9 @@ export default {
 .card{
     z-index: 3;
     position: absolute;
-    width:25%;
+    width:50%;
     height:70%;
-    top:10%;
+    top:180%;
 }
 .test{
     z-index: 3;
@@ -407,6 +404,12 @@ export default {
 }
 p{
     margin: 0px;
+
+}
+
+.p-multiselect {
+    margin-right: 10px;
+    margin-left: 10px;
 
 }
 
