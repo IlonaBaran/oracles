@@ -93,14 +93,14 @@ export default {
             checked : ref(false),
             checkedPanel : ref(false),
             selectedCities: null,
-            cities: [
-                { name: 'New York', code: 'NY' },
-                { name: 'Rome', code: 'RM' },
-                { name: 'London', code: 'LDN' },
-                { name: 'Istanbul', code: 'IST' },
-                { name: 'Paris', code: 'PRS' }
-            ],
-            // cities: this.myData,
+            // cities: [
+            //     { name: 'New York', code: 'NY' },
+            //     { name: 'Rome', code: 'RM' },
+            //     { name: 'London', code: 'LDN' },
+            //     { name: 'Istanbul', code: 'IST' },
+            //     { name: 'Paris', code: 'PRS' }
+            // ],
+            cities: this.myData,
             selectedCity: null,
             countries: [
                 {
