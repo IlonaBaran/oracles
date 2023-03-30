@@ -46,6 +46,7 @@
 
 
 <script>
+/* eslint-disable */
 import Card from 'primevue/card';
 import ScrollPanel from 'primevue/scrollpanel';
 
