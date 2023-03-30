@@ -15,8 +15,10 @@
     "itowns": "^2.39.0",
     "primeicons": "^6.0.1",
     "primevue": "^3.26.0",
+    "proj4": "^2.9.0",
     "python-shell": "^5.0.0",
     "regenerator-runtime": "^0.13.7",
+    "three": "^0.146.0",
     "vue": "^3.2.13"
   },
   "devDependencies": {
