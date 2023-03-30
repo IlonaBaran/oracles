@@ -50,7 +50,7 @@ export default {
 
     // ADD NAVIGATION TOOLS :
     new Navigation(view, {
-      position: 'bottom-right',
+      position: 'bottom-left',
       translate: { y: -40 },
     });
 
