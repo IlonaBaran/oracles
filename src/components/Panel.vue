@@ -27,16 +27,27 @@
                 <template #content>
                     <ScrollPanel style="width: 100%; height: 550px">
 
-                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam deserunt quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque
                     quas!
+
+                    <!--
                     <JSCharting :options="chartOptions" ></JSCharting>
                     <JSCharting :options="chartOptions2" ></JSCharting>
-                    <JSCharting :options="chartOptions3" ></JSCharting>
-                </p>
+                    <JSCharting :options="chartOptions3" ></JSCharting> -->
+
                     <!-- Ajout d'une checkbox pour voir si l'ajout d'élément fonctionne -->
                     <Checkbox v-model="checked" :binary="true" />
-                                </ScrollPanel>
+
+                    <button @click="getPosts">Show Posts</button>
+                    <p id="resulatScript"></p>                    
+
+                     <div>
+                        <button @click="getDossier">Mettre à jour les données</button>
+                        <p id="dossier"></p>
+                        <p>Données: {{ cities }}</p>
+                    </div>
+
+                    </ScrollPanel>
 
                 </template>
 
@@ -44,11 +55,9 @@
     </div>
 
 </template>
+
+
 <script>
-
-
-
-
 // import Fieldset from 'primevue/fieldset';
 import Checkbox from 'primevue/checkbox';
 import Button from 'primevue/button';
@@ -57,10 +66,13 @@ import MultiSelect from 'primevue/multiselect';
 import CascadeSelect from 'primevue/cascadeselect';
 import ScrollPanel from 'primevue/scrollpanel';
 
-import { reactive } from 'vue';
-import JSCharting from 'jscharting-vue';
-
 import { ref } from "vue";
+
+import { reactive } from "vue";
+// import JSCharting from 'jscharting-vue';
+
+// var L = [];
+
 
 export default {
     name: 'panelComponent',
@@ -71,12 +83,13 @@ export default {
         Card,
         MultiSelect,
         CascadeSelect,
-        ScrollPanel,
-        JSCharting
+        ScrollPanel
     },
+
     
     data() {
         return {
+            myData: 'Valeur initiale des données',
             checked : ref(false),
             checkedPanel : ref(false),
             selectedCities: null,
@@ -87,6 +100,7 @@ export default {
                 { name: 'Istanbul', code: 'IST' },
                 { name: 'Paris', code: 'PRS' }
             ],
+            // cities: this.myData,
             selectedCity: null,
             countries: [
                 {
@@ -173,11 +187,29 @@ export default {
         },
         print(){
             return this.selectedCities;
-        }
-    },
+        },
+        getPosts() {
+            fetch('http://127.0.0.1:5000/test')
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                var resulatScript = document.getElementById("resulatScript");
+                resulatScript.innerText += data["message"] ;
+                });
+        },
+
+        getDossier() {
+            fetch('http://127.0.0.1:5000/arboresance')
+            .then(response => response.json())
+            .then(data => {
+                this.cities = data;
+                console.log(this.cities);
+
+        });
+        },
+    },  
+    setup() {    
     
-    setup() {        
-        
         const chartOptions = reactive({
          type: 'simpleLine',
          series: [
@@ -338,8 +370,10 @@ export default {
         });
 
       return { chartOptions, chartOptions2, chartOptions3 }; 
+
     }
 }
+    
 </script>
 
 
