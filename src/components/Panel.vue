@@ -10,76 +10,60 @@
                 Options                
             </template>
 
-        
-              
-
                 <template #content>
                     <ScrollPanel style="width: 100%; height: 550px">
+                                                            <p>Scénarios: {{ selectedScenario }}</p>
+                                                            <p>Graphiques: {{ selectedGraph }}</p>
+                                                            <!-- <p>
+                                                <JSCharting :options="chartOptions" ></JSCharting>
+                                                <JSCharting :options="chartOptions2" ></JSCharting>
+                                                <JSCharting :options="chartOptions3" ></JSCharting>
+                                            </p> -->
+                                                            <button @click="getPosts">Show Posts</button>
+                                                            <p id="resulatScript"></p>                    
                     
-                    <p>Scénarios: {{selectedScenario}}</p>
-                    <p>Graphiques: {{ selectedGraph}}</p>
-                    <!--
-                    <JSCharting :options="chartOptions" ></JSCharting>
-                    <JSCharting :options="chartOptions2" ></JSCharting>
-                    <JSCharting :options="chartOptions3" ></JSCharting> -->
+                                                             <div>
+                                                                <button @click="getDossier">Mettre à jour les données</button>
+                                                                <p id="dossier"></p>
+                                                                <p>Données: {{ cities }}</p>
+                                                            </div>
+                                                        </ScrollPanel>
 
-                    <!-- Ajout d'une checkbox pour voir si l'ajout d'élément fonctionne -->
-                    <Checkbox v-model="checked" :binary="true" />
-
-                    <button @click="getPosts">Show Posts</button>
-                    <p id="resulatScript"></p>                    
-
-                     <div>
-                        <button @click="getDossier">Mettre à jour les données</button>
-                        <p id="dossier"></p>
-                        <p>Données: {{ cities }}</p>
-                    </div>
-
-                    </ScrollPanel>
-
-                </template>
-
-        </Card>
-    </div>
+                                                    </template>
+                                                </Card>
+                                            </div>
 
 </template>
 
-
 <script>
 /* eslint-disable */
+
 import Card from 'primevue/card';
 import ScrollPanel from 'primevue/scrollpanel';
 
-import { ref } from "vue";
-//import { reactive } from 'vue';
+import { reactive } from 'vue';
 import JSCharting from 'jscharting-vue';
+//import { reactive } from "vue";
+import { ref } from "vue";
 
-
-import { reactive } from "vue";
-// import JSCharting from 'jscharting-vue';
-
-// var L = [];
 
 
 export default {
     name: 'panelComponent',
     props: {
-            selectedScenario: String,
-            selectedGraph: String
+        selectedScenario: String,
+        selectedGraph: String
 
-        },
+    },
 
     components: {
         Card,
-
         ScrollPanel,
         JSCharting
     },
 
-    
     data() {
         return {
-
             myData: 'Valeur initiale des données',
             checked : ref(false),
             checkedPanel : ref(false),
@@ -165,207 +149,181 @@ export default {
                     ]
                 }
             ]
-}
-       
-
+        }
     },
 
-  methods: {
+    methods: {
         toggle(event) {
             this.$refs.op.toggle(event);
 
         },
-        print(){
-            return this.selectedCities;
-        },
-        getPosts() {
-            fetch('http://127.0.0.1:5000/test')
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-                var resulatScript = document.getElementById("resulatScript");
-                resulatScript.innerText += data["message"] ;
-                });
-        },
 
-        getDossier() {
-            fetch('http://127.0.0.1:5000/arboresance')
-            .then(response => response.json())
-            .then(data => {
-                this.cities = data;
-                console.log(this.cities);
 
-        });
-        },
-    },  
-    setup() {    
-            return this.selectedScenario;
-       
-    
-        const chartOptions = reactive({
-         type: 'simpleLine',
-         series: [
-            {
-               points: [
-                  { x: 'A', y: 50 },
-                  { x: 'B', y: 30 },
-                  { x: 'C', y: 50 }
-                  ]
-              }
-          ]
-        });
+        setup() {
 
-      const chartOptions2 = reactive({
-        //  type: 'horizontal column',
-        //type: 'simpleLine',
-        legend: { 
-            visible: true,
-            position: 'bottom right',
-            // legendEntry_visible: false
-        },
-		title: { label: { text: 'Cost over time' } },
-		yAxis: [
-            /* Main axis is defined first. */
-            { formatString: 'c' },
-            /* Secondary axis will sync with main axis by default. */
-            // {
-            // 	id: 'secondY',
-            // 	orientation: 'opposite',
-            // 	line: { color: '#e2e2e2' },
-            // 	defaultTick: {
-            // 		enabled: false,
-            // 		gridLine: { visible: false }
-            // 	}
-            // }
-        ],
-		xAxis: {
-            crosshair: { enabled: true },
-            scale: { type: 'time' }
-        },
-		defaultSeries: {
-            type: 'line',
-            defaultPoint: { 
-                marker: { visible: false } 
-            },
-            // lastPoint: {
-            // 	label: { text: '<b>%seriesName</b>' },
-            // 	yAxisTick: {
-            // 		axisId: 'secondY',
-            // 		label: { text: '%yValue' }
-            // 	}
-            // }
-        },
+            const chartOptions = reactive({
+                type: 'simpleLine',
+                series: [
+                    {
+                        points: [
+                            { x: 'A', y: 50 },
+                            { x: 'B', y: 30 },
+                            { x: 'C', y: 50 }
+                        ]
+                    }
+                ]
+            });
 
-         series: [
-				{
-					name: 'Purchases',
-					points: [
-						['1/1/2020', 29.9],
-						['2/1/2020', 97.5],
-						['3/1/2020', 110.4],
-						['4/1/2020', 129.2],
-						['5/1/2020', 144.0],
-						['6/1/2020', 176.0],
-						['7/1/2020', 182.0],
-						['8/1/2020', 186.0],
-						['9/1/2020', 181.0],
-						['10/1/2020', 178.0],
-						['11/1/2020', 184.0],
-						['12/1/2020', 176.0]
-					]
-				},
-				{
-					name: 'Taxes',
-					points: [
-						['1/1/2020', 86.9],
-						['2/1/2020', 79.5],
-						['3/1/2020', 95.4],
-						['4/1/2020', 97.2],
-						['5/1/2020', 123.0],
-						['6/1/2020', 111.0],
-						['7/1/2020', 122.0],
-						['8/1/2020', 135.0],
-						['9/1/2020', 140.0],
-						['10/1/2020', 139.0],
-						['11/1/2020', 135.0],
-						['12/1/2020', 132.0]
-					]
-				},
-				{
-					name: 'Supplies',
-					points: [
-						['1/1/2020', 129.9],
-						['2/1/2020', 111.5],
-						['3/1/2020', 66.4],
-						['4/1/2020', 29.2],
-						['5/1/2020', 88.0],
-						['6/1/2020', 102.0],
-						['7/1/2020', 82.0],
-						['8/1/2020', 75.0],
-						['9/1/2020', 162.0],
-						['10/1/2020', 110.0],
-						['11/1/2020', 90.0],
-						['12/1/2020', 85.0]
-					]
-				},
-				{
-					name: 'Rent',
-					points: [
-						['1/1/2020', 56.9],
-						['2/1/2020', 56.5],
-						['3/1/2020', 56.4],
-						['4/1/2020', 56.2],
-						['5/1/2020', 75.0],
-						['6/1/2020', 56.0],
-						['7/1/2020', 56.0],
-						['8/1/2020', 56.0],
-						['9/1/2020', 56.0],
-						['10/1/2020', 67.0],
-						['11/1/2020', 67.0],
-						['12/1/2020', 67.0]
-					]
-				}
-         ]
-        });
+            const chartOptions2 = reactive({
+                //  type: 'horizontal column',
+                //type: 'simpleLine',
+                legend: {
+                    visible: true,
+                    position: 'bottom right',
+                    // legendEntry_visible: false
+                },
+                title: { label: { text: 'Cost over time' } },
+                yAxis: [
+                    /* Main axis is defined first. */
+                    { formatString: 'c' },
+                    /* Secondary axis will sync with main axis by default. */
+                    // {
+                    // 	id: 'secondY',
+                    // 	orientation: 'opposite',
+                    // 	line: { color: '#e2e2e2' },
+                    // 	defaultTick: {
+                    // 		enabled: false,
+                    // 		gridLine: { visible: false }
+                    // 	}
+                    // }
+                ],
+                xAxis: {
+                    crosshair: { enabled: true },
+                    scale: { type: 'time' }
+                },
+                defaultSeries: {
+                    type: 'line',
+                    defaultPoint: {
+                        marker: { visible: false }
+                    },
+                    // lastPoint: {
+                    // 	label: { text: '<b>%seriesName</b>' },
+                    // 	yAxisTick: {
+                    // 		axisId: 'secondY',
+                    // 		label: { text: '%yValue' }
+                    // 	}
+                    // }
+                },
 
-        const chartOptions3 = reactive({
-        debug: true, 
-        type: 'column', 
-        yAxis: { 
-            scale_type: 'stacked', 
-            label_text: 'Units Sold'
-        }, 
-        title_label_text: 'Acme Tool Sales', 
-        xAxis: { 
-            label_text: 'Quarter', 
-            categories: ['Q1', 'Q2', 'Q3', 'Q4'] 
-        },          
-        series: [ 
-            { 
-            name: 'Saw', 
-            id: 's1', 
-            points: [230, 240, 267, 238] 
-            }, 
-            { 
-            name: 'Hammer', 
-            points: [325, 367, 382, 371] 
-            }, 
-            { 
-            name: 'Grinder', 
-            points: [285, 292, 267, 218] 
-            }, 
-            { 
-            name: 'Drill', 
-            points: [185, 192, 198, 248] 
-            } 
-        ] 
-        });
+                series: [
+                    {
+                        name: 'Purchases',
+                        points: [
+                            ['1/1/2020', 29.9],
+                            ['2/1/2020', 97.5],
+                            ['3/1/2020', 110.4],
+                            ['4/1/2020', 129.2],
+                            ['5/1/2020', 144.0],
+                            ['6/1/2020', 176.0],
+                            ['7/1/2020', 182.0],
+                            ['8/1/2020', 186.0],
+                            ['9/1/2020', 181.0],
+                            ['10/1/2020', 178.0],
+                            ['11/1/2020', 184.0],
+                            ['12/1/2020', 176.0]
+                        ]
+                    },
+                    {
+                        name: 'Taxes',
+                        points: [
+                            ['1/1/2020', 86.9],
+                            ['2/1/2020', 79.5],
+                            ['3/1/2020', 95.4],
+                            ['4/1/2020', 97.2],
+                            ['5/1/2020', 123.0],
+                            ['6/1/2020', 111.0],
+                            ['7/1/2020', 122.0],
+                            ['8/1/2020', 135.0],
+                            ['9/1/2020', 140.0],
+                            ['10/1/2020', 139.0],
+                            ['11/1/2020', 135.0],
+                            ['12/1/2020', 132.0]
+                        ]
+                    },
+                    {
+                        name: 'Supplies',
+                        points: [
+                            ['1/1/2020', 129.9],
+                            ['2/1/2020', 111.5],
+                            ['3/1/2020', 66.4],
+                            ['4/1/2020', 29.2],
+                            ['5/1/2020', 88.0],
+                            ['6/1/2020', 102.0],
+                            ['7/1/2020', 82.0],
+                            ['8/1/2020', 75.0],
+                            ['9/1/2020', 162.0],
+                            ['10/1/2020', 110.0],
+                            ['11/1/2020', 90.0],
+                            ['12/1/2020', 85.0]
+                        ]
+                    },
+                    {
+                        name: 'Rent',
+                        points: [
+                            ['1/1/2020', 56.9],
+                            ['2/1/2020', 56.5],
+                            ['3/1/2020', 56.4],
+                            ['4/1/2020', 56.2],
+                            ['5/1/2020', 75.0],
+                            ['6/1/2020', 56.0],
+                            ['7/1/2020', 56.0],
+                            ['8/1/2020', 56.0],
+                            ['9/1/2020', 56.0],
+                            ['10/1/2020', 67.0],
+                            ['11/1/2020', 67.0],
+                            ['12/1/2020', 67.0]
+                        ]
+                    }
+                ]
+            });
 
-      return { chartOptions, chartOptions2, chartOptions3 }; 
+            const chartOptions3 = reactive({
+                debug: true,
+                type: 'column',
+                yAxis: {
+                    scale_type: 'stacked',
+                    label_text: 'Units Sold'
+                },
+                title_label_text: 'Acme Tool Sales',
+                xAxis: {
+                    label_text: 'Quarter',
+                    categories: ['Q1', 'Q2', 'Q3', 'Q4']
+                },
+                series: [
+                    {
+                        name: 'Saw',
+                        id: 's1',
+                        points: [230, 240, 267, 238]
+                    },
+                    {
+                        name: 'Hammer',
+                        points: [325, 367, 382, 371]
+                    },
+                    {
+                        name: 'Grinder',
+                        points: [285, 292, 267, 218]
+                    },
+                    {
+                        name: 'Drill',
+                        points: [185, 192, 198, 248]
+                    }
+                ]
+            });
 
+            return { chartOptions, chartOptions2, chartOptions3 };
     }
 }
-    
+}
 </script>
 
 
@@ -399,12 +357,6 @@ export default {
 }
 p{
     margin: 0px;
-
-}
-
-.p-multiselect {
-    margin-right: 10px;
-    margin-left: 10px;
 
 }
 
