@@ -78,7 +78,7 @@ export default {
     
     data() {
         return {
-<!--
+
             myData: 'Valeur initiale des données',
             checked : ref(false),
             checkedPanel : ref(false),
@@ -167,7 +167,7 @@ export default {
                 }
             ]
 }
-       -->
+       
 
     },
 
