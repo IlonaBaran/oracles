@@ -10,7 +10,11 @@ import Toolbar from "./Toolbar.vue";
 import '../../node_modules/itowns/examples/css/widgets.css'
 import { FileSource, THREE, Style, proj4, Extent, FeatureGeometryLayer, Coordinates, GlobeView, WMTSSource, WMSSource, ColorLayer, ElevationLayer, } from "../../node_modules/itowns/dist/itowns";
 import { Navigation } from '../../node_modules/itowns/dist/itowns_widgets.js';
-import { routeLayer, planIGNv2Layer, orthoLayer } from '../services/WMTS_service.js'
+import {
+  routeLayer, planIGNv2Layer, orthoLayer,
+  batiLayer, pciLayer, demLayer, demHRLayer,
+  courbeNiveauLayer, hydroLayer
+} from '../services/WMTS_service.js'
 
 export default {
   name: 'mapComponent',
@@ -49,10 +53,15 @@ export default {
       translate: { y: -40 },
     });
 
-
+    // view.addLayer(demHRLayer);
     // view.addLayer(orthoLayer);
-    // view.addLayer(planIGNv2Layer);
     // view.addLayer(routeLayer);
+    // view.addLayer(batiLayer);
+    // view.addLayer(pciLayer);
+    // view.addLayer(courbeNiveauLayer);
+    view.addLayer(planIGNv2Layer);
+    view.addLayer(hydroLayer)
+
 
     const batsource = new FileSource({
       url: 'gavres_bati.geojson',
