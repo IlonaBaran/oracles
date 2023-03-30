@@ -10,30 +10,55 @@
                 Options                
             </template>
 
-            <template #content>
-                <ScrollPanel style="width: 100%; height: 550px">
+        
+              
+
+                <template #content>
+                    <ScrollPanel style="width: 100%; height: 550px">
+                    
                     <p>Scénarios: {{selectedScenario}}</p>
                     <p>Graphiques: {{ selectedGraph}}</p>
-                    <p>
-                        <JSCharting :options="chartOptions" ></JSCharting>
-                        <JSCharting :options="chartOptions2" ></JSCharting>
-                        <JSCharting :options="chartOptions3" ></JSCharting>
-                    </p>
-                </ScrollPanel>
+                    <!--
+                    <JSCharting :options="chartOptions" ></JSCharting>
+                    <JSCharting :options="chartOptions2" ></JSCharting>
+                    <JSCharting :options="chartOptions3" ></JSCharting> -->
 
-            </template>
+                    <!-- Ajout d'une checkbox pour voir si l'ajout d'élément fonctionne -->
+                    <Checkbox v-model="checked" :binary="true" />
+
+                    <button @click="getPosts">Show Posts</button>
+                    <p id="resulatScript"></p>                    
+
+                     <div>
+                        <button @click="getDossier">Mettre à jour les données</button>
+                        <p id="dossier"></p>
+                        <p>Données: {{ cities }}</p>
+                    </div>
+
+                    </ScrollPanel>
+
+                </template>
+
         </Card>
     </div>
 
 </template>
 
+
 <script>
+/* eslint-disable */
 import Card from 'primevue/card';
 import ScrollPanel from 'primevue/scrollpanel';
 
-import { reactive } from 'vue';
+import { ref } from "vue";
+//import { reactive } from 'vue';
 import JSCharting from 'jscharting-vue';
 
+
+import { reactive } from "vue";
+// import JSCharting from 'jscharting-vue';
+
+// var L = [];
 
 
 export default {
@@ -46,13 +71,103 @@ export default {
 
     components: {
         Card,
+
         ScrollPanel,
         JSCharting
     },
+
     
     data() {
         return {
-        }
+
+            myData: 'Valeur initiale des données',
+            checked : ref(false),
+            checkedPanel : ref(false),
+            selectedCities: null,
+            // cities: [
+            //     { name: 'New York', code: 'NY' },
+            //     { name: 'Rome', code: 'RM' },
+            //     { name: 'London', code: 'LDN' },
+            //     { name: 'Istanbul', code: 'IST' },
+            //     { name: 'Paris', code: 'PRS' }
+            // ],
+            cities: this.myData,
+            selectedCity: null,
+            countries: [
+                {
+                    name: 'Australia',
+                    code: 'AU',
+                    states: [
+                        {
+                            name: 'New South Wales',
+                            cities: [
+                                { cname: 'Sydney', code: 'A-SY' },
+                                { cname: 'Newcastle', code: 'A-NE' },
+                                { cname: 'Wollongong', code: 'A-WO' }
+                            ]
+                        },
+                        {
+                            name: 'Queensland',
+                            cities: [
+                                { cname: 'Brisbane', code: 'A-BR' },
+                                { cname: 'Townsville', code: 'A-TO' }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    name: 'Canada',
+                    code: 'CA',
+                    states: [
+                        {
+                            name: 'Quebec',
+                            cities: [
+                                { cname: 'Montreal', code: 'C-MO' },
+                                { cname: 'Quebec City', code: 'C-QU' }
+                            ]
+                        },
+                        {
+                            name: 'Ontario',
+                            cities: [
+                                { cname: 'Ottawa', code: 'C-OT' },
+                                { cname: 'Toronto', code: 'C-TO' }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    name: 'United States',
+                    code: 'US',
+                    states: [
+                        {
+                            name: 'California',
+                            cities: [
+                                { cname: 'Los Angeles', code: 'US-LA' },
+                                { cname: 'San Diego', code: 'US-SD' },
+                                { cname: 'San Francisco', code: 'US-SF' }
+                            ]
+                        },
+                        {
+                            name: 'Florida',
+                            cities: [
+                                { cname: 'Jacksonville', code: 'US-JA' },
+                                { cname: 'Miami', code: 'US-MI' },
+                                { cname: 'Tampa', code: 'US-TA' },
+                                { cname: 'Orlando', code: 'US-OR' }
+                            ]
+                        },
+                        {
+                            name: 'Texas',
+                            cities: [ { cname: 'Austin', code: 'US-AU' },
+                                { cname: 'Dallas', code: 'US-DA' },
+                                { cname: 'Houston', code: 'US-HO' } ]
+                        }
+                    ]
+                }
+            ]
+}
+       
+
     },
 
   methods: {
@@ -61,15 +176,32 @@ export default {
 
         },
         print(){
-            return this.selectedScenario;
+            return this.selectedCities;
         },
-        printGraph(){
-            return this.selectedGraph;
-        }
-    },
+        getPosts() {
+            fetch('http://127.0.0.1:5000/test')
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                var resulatScript = document.getElementById("resulatScript");
+                resulatScript.innerText += data["message"] ;
+                });
+        },
+
+        getDossier() {
+            fetch('http://127.0.0.1:5000/arboresance')
+            .then(response => response.json())
+            .then(data => {
+                this.cities = data;
+                console.log(this.cities);
+
+        });
+        },
+    },  
+    setup() {    
+            return this.selectedScenario;
+       
     
-    setup() {        
-        
         const chartOptions = reactive({
          type: 'simpleLine',
          series: [
@@ -230,8 +362,10 @@ export default {
         });
 
       return { chartOptions, chartOptions2, chartOptions3 }; 
+
     }
 }
+    
 </script>
 
 

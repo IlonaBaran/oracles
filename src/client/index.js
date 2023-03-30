@@ -47,6 +47,28 @@ export async function scene() {
         extent: viewExtent,
     });
 
+    // //definin the source for the satellite color image  ortho-image
+    // const sourceOrtho = new itowns.WMSSource({
+    //     url: "https://wxs.ign.fr/ortho/geoportail/r/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities",
+    //     name: "HR.ORTHOIMAGERY.ORTHOPHOTOS",
+    //     format: 'image/png',
+    //     crs: 'EPSG:2154',
+    //     extent: viewExtent,
+    // });
+
+
+
+
+    // //definin the source for the satellite color image  ortho-image
+    // const sourceOrtho = new itowns.WMSSource({
+    //     url: "https://wxs.ign.fr/essentiels/geoportail/tms/1.0.0/PLAN.IGN/metadata.json/",
+    //     name: "PLAN.IGN",
+    //     format: 'pbf',
+    //     crs: 'EPSG:3857',
+    //     extent: viewExtent,
+    // });
+
+
     //defining the color layer, ortho-image
     const layerOrtho = new itowns.ColorLayer('Ortho', { source: sourceOrtho });
     // adding it to the view

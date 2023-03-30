@@ -25,6 +25,7 @@
     "regenerator-runtime": "^0.13.7",
     "three": "^0.146.0",
     "turf": "^3.0.14",
+    "usepython": "^0.0.11",
     "vue": "^3.2.13",
     "vue-plotly": "^1.1.0",
     "vue-router": "^4.1.6",
