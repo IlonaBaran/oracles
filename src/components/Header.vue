@@ -17,13 +17,7 @@
 
 <!-- Il sert a transmettre les paramètres de l'utilisateur a la vue 'Panel': les scenarios choisis et le graph choisis -->
         <button @click="emitData">Transmettre des données</button>
-        <Panel :selectedScenario="selectedScenario" :selectedGraph="selectedGraph" />
-        <!-- <Panel :selectedScenario="this.selectedScenario" :selectedGraph="this.selectedGraph"></Panel> -->
-
-<!-- fetch d'un fichier local,voir s'iln'y a pas deprobleme de cors -->
-        <button @click="testFetchFile">Fetch d'un fichier local</button>
-
-
+        <Panel :selectedScenario="this.selectedScenario" :selectedGraph="this.selectedGraph"></Panel>
 
     </template>
 
@@ -65,9 +59,9 @@ export default {
             options : ref(['Gâvres', 'Arcachon']),
             checked : ref(false),
     
-            selectedScenario: null,
             scenario: null,
-            selectedGraph: null,
+            selectedScenario: [],
+            selectedGraph: [],
 
             countries: [
                 {
@@ -92,15 +86,6 @@ export default {
     methods: {
         toggle(event) {
             this.$refs.op.toggle(event);
-        },
-
-        // RECUPERATION DES DONNES AVEC DES FECTH
-        testFetchFile() {
-            fetch('http://localhost:8080/S_1.json')
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-            })
         },
 
         //  Récupérer le nom des dossiers et les transmettre à la variable scenario

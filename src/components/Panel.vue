@@ -18,13 +18,14 @@
                     quam perferendis esse, cupiditate neque quas!
 
                     <!-- Affichage dans le panel des paramètres saisies par l'utilisateur dans le header -->
-                    <p>{{ selectedScenario }}</p>
-                    <p>{{ selectedGraph }}</p>
+                    <!-- <p>{{ selectedScenario }}</p>
+                    <p>{{ selectedGraph }}</p> -->
                     <button @click="chemin_fichier">Afficher les données dans la console</button>
+                    <!-- fetch d'un fichier local,voir s'iln'y a pas deprobleme de cors -->
+                    <button @click="chemin_fichier">Fetch d'un fichier local</button>
 
-
-                    <!-- AFFICHAGE DES GRAPHIQUES 
                     <JSCharting :options="chartOptions" ></JSCharting>
+                    <!-- AFFICHAGE DES GRAPHIQUES 
                     <JSCharting :options="chartOptions2" ></JSCharting>
                     <JSCharting :options="chartOptions3" ></JSCharting> -->
 
@@ -44,8 +45,8 @@ import Card from 'primevue/card';
 import ScrollPanel from 'primevue/scrollpanel';
 
 import { ref } from "vue";
-// import { reactive } from "vue";
-// import JSCharting from 'jscharting-vue';
+import { reactive } from "vue";
+import JSCharting from 'jscharting-vue';
 
 
 export default {
@@ -54,53 +55,80 @@ export default {
     components: {
         Checkbox,
         Card,
-        ScrollPanel
+        ScrollPanel,
+        JSCharting
     },
 
     data() {
         return {
             checked : ref(false),
             checkedPanel : ref(false),
-            // LIRE UN FICHIER EN LOCAL
-            fileContent: null,
         }
     },
 
     props: {
           selectedScenario: {
-            type: String,
+            type: Object,
             required: true
         },
         selectedGraph: {
-            type: String,
+            type: Object,
             required: true
         }
     },
 
-    methods: {
-    chemin_fichier() {
-        // for (const property in this.selectedScenario){
-        //     console.log(`${this.selectedScenario[property]}`);
-        // }
-        var L = [];
-        for (const element of this.selectedScenario) {
-            //console.log(element["name"]);
-            L.push("C:/Users/wanti/Downloads/oracles_data/donnees/BDD_Simu_2022_02_17/jsonData/" + element["name"]);
-         }
 
-        console.log(this.selectedGraph);7
-        console.log(L);
+    setup() {
+        const chartOptions = ref(null);
+        return {
+            chartOptions
+        };
     },
 
-    // mounted() {
-    //     const xhr = new XMLHttpRequest();
-    //     xhr.open('GET', 'C:/Users/wanti/Downloads/oracles_data/donnees/BDD_Simu_2022_02_17/jsonData/S_1.json');
-    //     xhr.onload = () => {
-    //         this.fileContent = xhr.responseText;
-    //     };
-    //     xhr.send();
-    //     console.log(xhr);
-    // }
+    methods: {
+        lineChart(data) {    
+            const chartOptions = reactive({
+            defaultSeries: { 
+                type: 'line', 
+                defaultPoint_marker_visible: false
+            },
+            series: [
+                {
+                points: data
+                }
+            ]
+            });
+            return { chartOptions }; 
+        },
+
+        chemin_fichier() {
+            var L = [];
+            // var marre = [];
+            for (const element of this.selectedScenario) {
+                //console.log(element["name"]);
+                // RECUPERATION DES DONNES AVEC DES FECTH - c
+                var file = 'http://localhost:8081/' + element["name"] + '.json';
+                fetch(file)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    for (const property in data){
+                        var dict = {
+                            x: `${data[property]["heure"]}`,
+                            y: parseFloat(`${data[property]["Maree(m)"]}`),
+                        };
+                        L.push(dict);
+                    }
+                    console.log(L);
+                    // this.lineChart(L);
+                    this.chartOptions = this.lineChart(L).chartOptions;
+                })
+            }
+
+            // console.log(this.selectedGraph);
+            // console.log(L);
+        }
+    }
 
     // setup() {    
     //     const chartOptions = reactive({
@@ -115,6 +143,8 @@ export default {
     //           }
     //       ]
     //     });
+    //     return { chartOptions }; 
+    // }
 
     //   const chartOptions2 = reactive({
     //     //  type: 'horizontal column',
@@ -262,7 +292,6 @@ export default {
     //     });
 
     //   return { chartOptions, chartOptions2, chartOptions3 }; 
-    }
 }
 </script>
 
