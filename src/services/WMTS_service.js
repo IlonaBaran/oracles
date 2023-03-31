@@ -1,30 +1,5 @@
 import { WMTSSource, ColorLayer, ElevationLayer } from "itowns";
 
-//Reseau Routier
-var routeSource = new WMTSSource({
-    url: 'https://wxs.ign.fr/topographie/geoportail/wmts',
-    crs: "EPSG:3857",
-    name: 'TRANSPORTNETWORKS.ROADS',
-    tileMatrixSet: 'PM',
-    format: 'image/png',
-})
-
-export var routeLayer = new ColorLayer('Ortho', {
-    source: routeSource,
-});
-
-//Reseau Hydo
-var hydroSource = new WMTSSource({
-    url: 'https://wxs.ign.fr/topographie/geoportail/wmts',
-    crs: "EPSG:3857",
-    name: 'HYDROGRAPHY.HYDROGRAPHY',
-    tileMatrixSet: 'PM',
-    format: 'image/png',
-})
-
-export var hydroLayer = new ColorLayer('hydro', {
-    source: hydroSource,
-});
 
 //Carte Topo
 var planIGNv2Source = new WMTSSource({
@@ -33,9 +8,10 @@ var planIGNv2Source = new WMTSSource({
     name: 'GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2',
     tileMatrixSet: 'PM',
     format: 'image/png',
+
 })
 
-export var planIGNv2Layer = new ColorLayer('Ortho', {
+export var planIGNv2Layer = new ColorLayer('plan', {
     source: planIGNv2Source,
 });
 
@@ -67,21 +43,6 @@ export var batiLayer = new ColorLayer('Bati', {
     source: batiSource,
 });
 
-
-//PARCELLAIRE 
-var pciSource = new WMTSSource({
-    url: 'https://wxs.ign.fr/parcellaire/geoportail/wmts',
-    crs: "EPSG:3857",
-    name: 'CADASTRALPARCELS.PARCELLAIRE_EXPRESS',
-    tileMatrixSet: 'PM',
-    format: 'image/png',
-    style: 'normal'
-})
-
-export var pciLayer = new ColorLayer('pci', {
-    source: pciSource,
-});
-
 //Elevation high res ... super slow!!
 var demHRSource = new WMTSSource({
     url: 'https://wxs.ign.fr/altimetrie/geoportail/wmts',
@@ -104,7 +65,14 @@ var demSource = new WMTSSource({
     name: 'ELEVATION.ELEVATIONGRIDCOVERAGE',
     tileMatrixSet: 'WGS84G',
     format: 'image/x-bil;bits=32',
-    style: 'normal'
+    style: 'normal',
+    tileMatrixSetLimits: {
+        minTileRow: 21,
+        maxTileRow: 35,
+        minTileCol: 20,
+        maxTileCol: 41,
+    }
+
 })
 
 export var demLayer = new ElevationLayer('dem', {
