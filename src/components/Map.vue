@@ -10,6 +10,10 @@ import Toolbar from "./Toolbar.vue";
 import '../../node_modules/itowns/examples/css/widgets.css'
 import { FileSource, THREE, Style, proj4, Extent, FeatureGeometryLayer, Coordinates, GlobeView, WMTSSource, WMSSource, ColorLayer, ElevationLayer, } from "../../node_modules/itowns/dist/itowns";
 import { Navigation } from '../../node_modules/itowns/dist/itowns_widgets.js';
+import {
+  planIGNv2Layer, orthoLayer, batiLayer,
+  demLayer, demHRLayer, courbeNiveauLayer
+} from '../services/WMTS_service.js'
 
 export default {
   name: 'mapComponent',
@@ -48,27 +52,24 @@ export default {
       translate: { y: -40 },
     });
 
-    var orthoSource = new WMTSSource({
-      url: 'https://wxs.ign.fr/essentiels/geoportail/wmts/',
-      crs: "EPSG:3857",
-      name: 'ORTHOIMAGERY.ORTHOPHOTOS',
-      tileMatrixSet: 'PM',
-      format: 'image/jpeg',
-      style: 'normal'
-    })
-
-    var orthoLayer = new ColorLayer('Ortho', {
-      source: orthoSource,
-    });
+    // view.addLayer(planIGNv2Layer);
 
     view.addLayer(orthoLayer);
+    // view.addLayer(demLayer);
+    view.addLayer(demHRLayer);
+    // view.addLayer(routeLayer);
+    // view.addLayer(batiLayer);
+    // view.addLayer(courbeNiveauLayer);
+
+    // view.removeLayer(planIGNv2Layer.id);
+
+
 
     const batsource = new FileSource({
       url: 'gavres_bati.geojson',
       crs: 'EPSG:2154',
       format: 'application/json',
     });
-
 
     let basic = new FeatureGeometryLayer('basic', {
       // Use a FileSource to load a single file once
