@@ -38,7 +38,6 @@
 </template>
 
 <script>
-import Checkbox from 'primevue/checkbox';
 /* eslint-disable */
 
 import Card from 'primevue/card';
