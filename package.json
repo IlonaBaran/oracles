@@ -11,19 +11,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@turf/turf": "^5.1.6",
     "core-js": "^3.8.3",
-    "data": "^0.6.1",
-    "geotiff": "^1.0.0-beta.16",
-    "ol": "^6.5.0",
-    "ol-mapbox-style": "^6.3.0",
-    "parcel-bundler": "^1.12.4",
+    "http-server": "^14.1.1",
+    "itowns": "^2.39.0",
     "primeicons": "^6.0.1",
     "primevue": "^3.26.0",
-    "proj4": "^2.6.3",
+    "proj4": "^2.9.0",
+    "python-shell": "^5.0.0",
     "regenerator-runtime": "^0.13.7",
-    "three": "^0.124.0",
-    "turf": "^3.0.14",
+    "three": "^0.146.0",
     "vue": "^3.2.13"
   },
   "devDependencies": {
@@ -34,11 +30,7 @@
     "@vue/cli-service": "~5.0.0",
     "eslint": "^7.32.0",
     "eslint-plugin-vue": "^8.0.3",
-    "parcel-plugin-static-files-copy": "^2.5.0"
-  },
-  "staticFiles": {
-    "staticPath": "data",
-    "watcherGlob": "**"
+    "jscharting-vue": "^2.4.0"
   },
   "description": "",
   "eslintConfig": {
