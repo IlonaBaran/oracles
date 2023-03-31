@@ -44,7 +44,6 @@ import Checkbox from 'primevue/checkbox';
 import Card from 'primevue/card';
 import ScrollPanel from 'primevue/scrollpanel';
 
-import { reactive } from 'vue';
 import JSCharting from 'jscharting-vue';
 import { ref } from "vue";
 import { reactive } from "vue";
