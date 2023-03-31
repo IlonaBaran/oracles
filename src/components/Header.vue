@@ -5,35 +5,30 @@
     <template #start>
 
         <Button  v-styleclass="{ selector: '.card', toggleClass: 'p-hidden' }" type="button" icon="pi pi-bars" label="" />
-        <MultiSelect v-model="selectedScenario" :options="cities" filter optionLabel="name" placeholder="Sélection Scénarios"  
+        <MultiSelect v-model="selectedScenario" :options="scenario" filter optionLabel="name" placeholder="Sélection Scénarios"  
                     :maxSelectedLabels="3" class="w-full md:w-20rem selectScenario margin-right:15px"
                     :selectedScenario="this.selectedScenario" />
         <CascadeSelect v-model="selectedGraph" :options="countries" optionLabel="name" optionGroupLabel="name"
                 :optionGroupChildren="['states']" style="min-width: 14rem " placeholder="Sélection Graphique" class="selectGraph" 
                 />
 
-                <!-- test ilona  -->
-                <!-- <button @click="getPosts">Show Posts</button>
-                    <p id="resulatScript"></p>                     -->
+<!-- Pour le moment, j'ai besoin de cliquer sur le bouton pour afficher tous les scenarios dans le multiselect -->
+        <button @click="getDossier">Affichage des scenarios</button>
 
-                    <div>
-                    <button @click="getDossier">Affichage des scenarios</button>
-                    <!-- <p id="dossier"></p> -->
-                    <!-- <p>Données: {{ this.cities }}</p> -->
-                </div>
-        </template>
+<!-- Il sert a transmettre les paramètres de l'utilisateur a la vue 'Panel': les scenarios choisis et le graph choisis -->
+        <button @click="emitData">Transmettre des données</button>
+        <Panel :selectedScenario="this.selectedScenario" :selectedGraph="this.selectedGraph"></Panel>
+
+    </template>
 
     <template #end>
       <SelectButton v-model="value" :options="options" aria-labelledby="basic" />
     </template>
 
-
   </Toolbar>
-  <Panel :selectedGraph="this.selectedGraph" :selectedScenario="this.selectedScenario" >
-  </Panel>
-
   </div>
 </template>
+
 
 <script>
 import { ref } from "vue";
@@ -59,24 +54,15 @@ export default {
     },
 
     data() {
-        return {
-                    
-          value : ref('Gâvres'),
-          options : ref(['Gâvres', 'Arcachon']),
-          checked : ref(false),
-                      
-        // selectedCities: null,
+        return {                    
+            value : ref('Gâvres'),
+            options : ref(['Gâvres', 'Arcachon']),
+            checked : ref(false),
+    
+            scenario: null,
+            selectedScenario: [],
+            selectedGraph: [],
 
-           selectedScenario: null,
-            // cities: [
-            //     { name: 'Scénario 1', code: 1 },
-            //     { name: 'Scénario 2', code: 2 },
-            //     { name: 'Scénario 3', code: 3 },
-            //     { name: 'Scénario 4', code: 4 },
-            //     { name: 'Scénario 5', code: 5 }
-            // ],
-            cities: null,
-            selectedGraph: null,
             countries: [
                 {
                     name: '2D',
@@ -96,24 +82,13 @@ export default {
             ]
         }
     },
-      methods: {
+
+    methods: {
         toggle(event) {
             this.$refs.op.toggle(event);
-
-        },
-        print(){
-            return this.selectedCities;
-        },
-        getPosts() {
-            fetch('http://127.0.0.1:5000/test')
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-                var resulatScript = document.getElementById("resulatScript");
-                resulatScript.innerText += data["message"] ;
-                });
         },
 
+        //  Récupérer le nom des dossiers et les transmettre à la variable scenario
         getDossier() {
             fetch('http://127.0.0.1:5000/arboresance')
             .then(response => response.json())
@@ -121,7 +96,6 @@ export default {
                 var L = [];
 
                 for (const property in data){
-                    console.log(`${data[property]}`);
                     var dict = {
                         name: `${data[property]}`,
                         code: `${data[property]}`
@@ -129,18 +103,16 @@ export default {
                     L.push(dict);
                 }
 
-                this.cities = L;
+                this.scenario = L;
             });
-        }
+        },
     }, 
 
 }
-
-
 </script>
 
-<style>
 
+<style>
 .toolBar{
     z-index: 2;
     position: absolute;
@@ -171,5 +143,4 @@ export default {
     margin-left: 10px;
 
 }
-
 </style>
