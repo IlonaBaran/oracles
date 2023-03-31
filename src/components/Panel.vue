@@ -14,15 +14,15 @@
                     <!-- Affichage dans le panel des paramètres saisies par l'utilisateur dans le header -->
                     <!-- <p>{{ selectedScenario }}</p>
                     <p>{{ selectedGraph }}</p> -->
-                    <button @click="chemin_fichier">Afficher les données dans la console</button>
-                    <!-- fetch d'un fichier local,voir s'iln'y a pas deprobleme de cors -->
-                    <button @click="chemin_fichier">Fetch d'un fichier local</button>
 
-                    <JSCharting :options="chartOptions"></JSCharting>
-                    <!-- AFFICHAGE DES GRAPHIQUES 
-                    <JSCharting :options="chartOptions2" ></JSCharting>
-                    <JSCharting :options="chartOptions3" ></JSCharting> -->
+                    <button @click="lineChartAffichage">Affichage d'un diagramme en ligne</button>
+                    <button @click="roseVentAffichage">Affichage d'un diagramme rose des vents</button>
 
+                    <button @click="lineChartAffichage">Affichage d'un diagramme rose des vents</button>
+                    <apexchart  :options="this.chartOptions"  :series="this.series"/>    
+    
+                        <!-- AFFICHAGE DES GRAPHIQUES 
+                    <JSCharting :options="chartOptions" ></JSCharting> -->
 
                 </ScrollPanel>
 
@@ -33,34 +33,27 @@
 
 <script>
 /* eslint-disable */
-
+import { ApexChart } from 'vue3-apexcharts';
 import Card from 'primevue/card';
 import ScrollPanel from 'primevue/scrollpanel';
 
-import JSCharting from 'jscharting-vue';
 import { ref } from "vue";
 import { reactive } from "vue";
 
 
 export default {
     name: 'panelComponent',
-    props: {
-        selectedScenario: String,
-        selectedGraph: String
-
-    },
-
     components: {
-
         Card,
         ScrollPanel,
-        JSCharting
     },
 
     data() {
         return {
             checked: ref(false),
             checkedPanel: ref(false),
+            chartOptions: ref(false),
+            series: ref(null),
         }
     },
 
@@ -75,73 +68,207 @@ export default {
         }
     },
 
-
-    setup() {
-        const chartOptions = ref(null);
-        return {
-            chartOptions
-        };
-    },
-
     methods: {
-        lineChart(data) {
-            const chartOptions = reactive({
-                defaultSeries: {
+        lineChart(){
+            this.chartOptions = reactive({
+                chart: {
+                    id: 'mychart',
+                    height: 350,
                     type: 'line',
-                    defaultPoint_marker_visible: false
-                },
-                series: [
-                    {
-                        points: data
+                    zoom: {
+                        enabled: false
                     }
-                ]
-            });
-            return { chartOptions };
-        },
+                },
+                dataLabels: {
+                    enabled: false
+                },
+                stroke: {
+                    curve: 'straight'
+                },
+                title: {
+                    text: 'Product Trends by Month',
+                    align: 'left'
+                },
+                grid: {
+                    row: {
+                        colors: ['#f3f3f3', 'transparent'],
+                        opacity: 0.5
+                    },
+                },
+                xaxis: {
+                    tooltip: {
+                        enabled: false
+                    },
+                    categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
+                }
+        });
 
-        chemin_fichier() {
-            var L = [];
-            // var marre = [];
-            for (const element of this.selectedScenario) {
-                //console.log(element["name"]);
-                // RECUPERATION DES DONNES AVEC DES FECTH - c
-                var file = 'http://localhost:8081/' + element["name"] + '.json';
-                fetch(file)
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log(data);
-                        for (const property in data) {
-                            var dict = {
-                                x: `${data[property]["heure"]}`,
-                                y: parseFloat(`${data[property]["Maree(m)"]}`),
-                            };
-                            L.push(dict);
-                        }
-                        console.log(L);
-                        // this.lineChart(L);
-                        this.chartOptions = this.lineChart(L).chartOptions;
-                    })
-            }
+        this.series =  [{
+            name: "Desktops",
+            data: [10, 41, 35, 51, 49, 62, 69, 91, 148]
+        }]
+     },
 
-            // console.log(this.selectedGraph);
-            // console.log(L);
-        }
+        // lineChartAffichage() {
+        // var abcisses = [];
+        // var ordonnees = [];
+        // for (const element of this.selectedScenario) {
+        //     // RECUPERATION DES DONNES AVEC DES FECTH - c
+        //     var file = 'http://localhost:8081/' + element["name"] + '.json';
+        //     fetch(file)
+        //         .then(response => response.json())
+        //         .then(data => {
+        //             console.log(data);
+        //             for (const property in data) {
+        //                 // var dict = {
+        //                 //     x: `${data[property]["heure"]}`,
+        //                 //     y: parseFloat(`${data[property]["Maree(m)"]}`),
+        //                 // };
+        //                 abcisses.push(`${data[property]["heure"]}`);
+        //                 ordonnees.push(parseFloat(`${data[property]["Maree(m)"]}`));
+        //             }
+        //             // this.lineChart();
+        //             // this.lineChart(abcisses, ordonnees);
+
+        //         })
+        //     }
+        // },
     }
 
-    // setup() {    
-    //     const chartOptions = reactive({
-    //      type: 'simpleLine',
-    //      series: [
-    //         {
-    //            points: [
-    //               { x: 'A', y: 50 },
-    //               { x: 'B', y: 30 },
-    //               { x: 'C', y: 50 }
-    //               ]
-    //           }
-    //       ]
-    //     });
-    //     return { chartOptions }; 
+
+
+    // methods: {
+    //     lineChart() {
+    //         this.chartOptions = {
+    //         chart: {
+    //             type: 'line'
+    //         },
+    //         series: [{
+    //             name: 'Sales',
+    //             data: [30,40,35,50,49,60,70,91,125]
+    //         }],
+    //         xaxis: {
+    //             categories: [2000,2001,2002,2003,2004,2005,2006,2007,2008]
+    //         }
+        //     this.chartOptions = reactive({
+        //         defaultSeries: {
+        //             type: 'line',
+        //             defaultPoint_marker_visible: false
+        //         },
+        //         series: [
+        //             {
+        //                 points: data
+        //             }
+        //         ]
+        //     });
+        //     }
+        // },
+
+        // roseChart(){
+        //     this.chartOptions2 = reactive({
+        //         // type: 'windrose column',
+        //         type: 'radar column', 
+        //         animation_duration: 1000, 
+        //         title: { 
+        //             label_text: 'Wind Rose Chart', 
+        //             position: 'center'
+        //         }, 
+        //         legend: { 
+        //             title_label_text: 'Wind Speed (in mph)', 
+        //             position: 'bottom', 
+        //             template: '%icon %name', 
+        //             reversed: true
+        //         }, 
+        //         annotations: [{ 
+        //             label: { 
+        //                 text: 'Calm: 17%<br>Avg speed: 7.9 mph', 
+        //                 style_fontSize: 14 
+        //             }, 
+        //             position: 'inside bottom right'
+        //         }], 
+        //         defaultSeries_shape_padding: 0.02, 
+        //         yAxis: { 
+        //             defaultTick_label_text: '%value%', 
+        //             scale: { type: 'stacked' }, 
+        //             alternateGridFill: 'none'
+        //         }, 
+        //         xAxis: { 
+        //             scale: { range: [0, 360], interval: 45 }, 
+        //             customTicks: [ 
+        //                 { value: 360, label_text: 'N' }, 
+        //                 { value: 45, label_text: 'NE' }, 
+        //                 { value: 90, label_text: 'E' }, 
+        //                 { value: 135, label_text: 'SE' }, 
+        //                 { value: 180, label_text: 'S' }, 
+        //                 { value: 225, label_text: 'SW' }, 
+        //                 { value: 270, label_text: 'W' }, 
+        //                 { value: 315, label_text: 'NW' } 
+        //             ] 
+        //         }, 
+        //         series: [{
+        //             name: 'Wind Speed (in mph)',
+        //             data: [
+        //                 { angle: 5, speed: 0, value: 0.50 },
+        //                 { angle: 15, speed: 135, value: 0.40 },
+        //                 { angle: 15, speed: 180, value: 0.20 }
+        //             ],
+        //             fillColors: [
+        //                 '#c62828',
+        //                 '#ff7043',
+        //                 '#fff176',
+        //                 '#aed581',
+        //                 '#80cbc4'
+        //             ]
+        //         }]
+        //     });
+        // },
+    
+        // lineChartAffichage() {
+        // this.chart = new ApexCharts(document.querySelector("#chart"), this.chartOptions);
+        // this.chart.render();
+        // var L = [];
+        // for (const element of this.selectedScenario) {
+        //     // RECUPERATION DES DONNES AVEC DES FECTH - c
+        //     var file = 'http://localhost:8081/' + element["name"] + '.json';
+        //     fetch(file)
+        //         .then(response => response.json())
+        //         .then(data => {
+        //             console.log(data);
+        //             for (const property in data) {
+        //                 var dict = {
+        //                     x: `${data[property]["heure"]}`,
+        //                     y: parseFloat(`${data[property]["Maree(m)"]}`),
+        //                 };
+        //                 L.push(dict);
+        //             }
+        //             this.lineChart();
+        //         })
+        //     }
+//         },
+//   },
+
+//         roseVentAffichage() {
+//             var L = [];
+//            this.roseChart();
+
+            // for (const element of this.selectedScenario) {
+            //     // RECUPERATION DES DONNES AVEC DES FECTH - c
+            //     var file = 'http://localhost:8081/' + element["name"] + '.json';
+            //     fetch(file)
+            //         .then(response => response.json())
+            //         .then(data => {
+            //             console.log(data);
+            //             for (const property in data) {
+            //                 var dict = {
+            //                     angle: parseFloat(`${data[property]["Dir(vent)()"]}`),
+            //                     speed: parseFloat(`${data[property]["U(vent)(m)"]}`),
+            //                 };
+            //                 L.push(dict);
+            //             }
+            //             // this.lineChart(L);
+            //         })
+    //         // }
+    //     }
     // }
 
     //   const chartOptions2 = reactive({

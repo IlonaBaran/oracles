@@ -20,7 +20,8 @@
     "python-shell": "^5.0.0",
     "regenerator-runtime": "^0.13.7",
     "three": "^0.146.0",
-    "vue": "^3.2.13"
+    "vue": "^3.2.13",
+    "vue3-apexcharts": "^1.4.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
