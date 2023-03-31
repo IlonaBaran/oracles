@@ -43,8 +43,6 @@ html, body{
  height: 100vh;
 }
 
-Header{
-  height:10px;
-}
+
 
 </style>

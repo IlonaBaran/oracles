@@ -44,7 +44,7 @@ export default {
 
     // ADD NAVIGATION TOOLS :
     new Navigation(view, {
-      position: 'bottom-left',
+      position: 'bottom-right',
       translate: { y: -40 },
     });
 
@@ -117,8 +117,8 @@ export default {
 .viewer {
   display: flex;
   background-color: blue;
-  margin-top: 40px;
-  height: 95%;
+  margin-top: 5%;
+  height: 91%;
   z-index: 0;
 
 }
