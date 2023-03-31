@@ -3,7 +3,7 @@
       <!-- <button @click="toggleLegend" class="button">{{ legend }}</button> -->
     </div>
     <div class="dial">
-      <SpeedDial  :model="items" direction="up" class="right-0 bottom-0"  :tooltipOptions="{ position: 'right' }" />
+                        <SpeedDial  :model="items" direction="down" :style="{ top: 'calc(5% + 32px)', right: 'calc(5px)' }" class="right-0 top-0"  :tooltipOptions="{ position: 'right' }" />
     </div>
     <Sidebar class='sidebar' v-model:visible="visibleRight" position="right">
       <h2>Fonds de carte</h2>
@@ -110,9 +110,7 @@
 
 .dial{
     z-index: 2;
-    position: absolute;
-    bottom: 28%;
-    right: 6%;
+
 }
 
 .sidebar{

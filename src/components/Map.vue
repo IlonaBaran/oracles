@@ -44,7 +44,7 @@ export default {
 
     // ADD NAVIGATION TOOLS :
     new Navigation(view, {
-      position: 'bottom-left',
+      position: 'bottom-right',
       translate: { y: -40 },
     });
 
