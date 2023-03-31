@@ -11,7 +11,7 @@
             <template #subtitle></template>
 
             <template #content>
-                <ScrollPanel style="width: 100%; height: 550px">
+                <ScrollPanel style="width: 100%; height: 75vh " class="custombar1">
 
                     Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error 
                     repudiandae numquam deserunt quisquam repellat libero asperiores earum nam nobis, culpa ratione 
@@ -29,31 +29,37 @@
                     <JSCharting :options="chartOptions2" ></JSCharting>
                     <JSCharting :options="chartOptions3" ></JSCharting> -->
 
-                    <!-- Ajout d'une checkbox pour voir si l'ajout d'élément fonctionne -->
-                    <Checkbox v-model="checked" :binary="true" />
-
+               
                 </ScrollPanel>
+
             </template>
         </Card>
     </div>
 </template>
 
-
 <script>
 import Checkbox from 'primevue/checkbox';
+/* eslint-disable */
+
 import Card from 'primevue/card';
 import ScrollPanel from 'primevue/scrollpanel';
 
+import { reactive } from 'vue';
+import JSCharting from 'jscharting-vue';
 import { ref } from "vue";
 import { reactive } from "vue";
-import JSCharting from 'jscharting-vue';
 
 
 export default {
     name: 'panelComponent',
+    props: {
+        selectedScenario: String,
+        selectedGraph: String
+
+    },
 
     components: {
-        Checkbox,
+
         Card,
         ScrollPanel,
         JSCharting
@@ -292,40 +298,64 @@ export default {
     //     });
 
     //   return { chartOptions, chartOptions2, chartOptions3 }; 
+
 }
 </script>
 
 
 <style>
-.buttonPanel{
- z-index: 2;
+.buttonPanel {
+    z-index: 2;
     position: absolute;
-    top:1%;
-    left:1%;    
+    top: 1%;
+    left: 1%;
     gap: 20px;
 
 }
-.card{
+
+.card {
     z-index: 3;
     position: absolute;
-    width:25%;
-    height:70%;
-    top:10%;
+    width: 50%;
+
 }
-.test{
+
+.test {
     z-index: 3;
     position: absolute;
-    width:25%;
-    top:10%;
+    width: 25%;
+    top: 10%;
 }
-#app .p-card .p-card-title{
+
+#app .p-card .p-card-title {
     font-size: 1rem;
     font-weight: 700;
     margin-bottom: 0.5rem;
+    top: 5%;
+
 
 }
-p{
+
+#app .p-card-body {
+    height: calc(87vh);
+
+}
+
+p {
     margin: 0px;
 }
 
+.p-scrollpanel.custombar1 .p-scrollpanel-wrapper {
+    border-right: 10px solid var(--surface-ground);
+}
+
+.p-scrollpanel.custombar1 .p-scrollpanel-bar {
+    background-color: var(--primary-300);
+    opacity: 1;
+    transition: background-color 0.3s;
+}
+
+.p-scrollpanel.custombar1 .p-scrollpanel-bar:hover {
+    background-color: var(--primary-400);
+}
 </style>
