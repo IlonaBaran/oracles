@@ -52,9 +52,9 @@ export default {
       translate: { y: -40 },
     });
 
-    // view.addLayer(planIGNv2Layer);
+    view.addLayer(planIGNv2Layer);
 
-    view.addLayer(orthoLayer);
+    //view.addLayer(orthoLayer);
     // view.addLayer(demLayer);
     view.addLayer(demHRLayer);
     // view.addLayer(routeLayer);
@@ -118,8 +118,7 @@ export default {
 .viewer {
   display: flex;
   background-color: blue;
-  margin-top: 5%;
-  height: 91%;
+  height: 96%;
   z-index: 0;
 
 }
