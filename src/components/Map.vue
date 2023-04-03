@@ -1,7 +1,8 @@
 <template>
   <div id="viewerDiv" class="viewer">
   </div>
-  <Toolbar @icon-clicked="toggleHelpText" ref="childComponent" @change-building="building"></Toolbar>
+  <Toolbar @icon-clicked="toggleHelpText" ref="childComponent" @change-building="building" @reinit-view="cameraView">
+  </Toolbar>
 </template>
 
 <script>
@@ -98,6 +99,20 @@ export default {
     building() {
       view.tileLayer.attachedLayers[3].visible = this.$refs.childComponent.visibleBuilding;
       view.notifyChange()
+    },
+
+    cameraView() {
+
+      console.log(view.camera.camera3D.position.x);
+      console.log(view.camera.camera3D.position.y);
+      console.log(view.camera.camera3D.position.z);
+      console.log("----");
+
+      view.camera.camera3D.position.x = 4295077.582429348;
+      view.camera.camera3D.position.y = -251632.32006396126;
+      view.camera.camera3D.position.z = 4696062.254883134;
+      view.notifyChange();
+
     }
 
   }
