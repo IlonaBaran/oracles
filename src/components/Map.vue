@@ -84,47 +84,6 @@ export default {
     // view.removeLayer(planIGNv2Layer.id);
 
 
-    const batsource = new FileSource({
-      url: 'gavres_bati.geojson',
-      crs: 'EPSG:2154',
-      format: 'application/json',
-    });
-
-    let basic = new FeatureGeometryLayer('basic', {
-      // Use a FileSource to load a single file once
-      source: batsource,
-      transparent: true,
-      opacity: 0.7,
-      //zoom: { min: 10 },
-      style: new Style({
-        fill: {
-          color: setColor,
-          base_altitude: setAltitude,
-          extrusion_height: setExtrusion,
-        }
-      })
-    });
-
-    view.addLayer(basic);
-
-    function setAltitude(properties) {
-      if (properties.altitude_sol != null) {
-        return properties.altitude_sol + properties.hauteur;
-      } else {
-        //What to do when there is not floor value?
-        return 5;
-      }
-    }
-
-    function setExtrusion(properties) {
-      return properties.hauteur;
-    }
-
-    function setColor(properties) {
-
-      return new THREE.Color(0xffaaaa);
-    }
-
 
   },
   methods: {
@@ -135,7 +94,15 @@ export default {
         view.removeLayer(orthoLayer.id);
         view.addLayer(planIGNv2Layer);
 
+
       }
+      else {
+        console.log("pass else")
+        view.removeLayer(planIGNv2Layer.id);
+        view.addLayer(orthoLayer);
+
+      }
+
 
     }
 
