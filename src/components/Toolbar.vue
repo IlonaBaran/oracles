@@ -10,7 +10,20 @@
   </div>
   <Sidebar class='sidebar' v-model:visible="visibleRight" position="right">
     <h2>Fonds de carte</h2>
-    <div class="typeCartes">
+
+    <div class="typeCartes" v-if="this.mapSelected == 'ortho'">
+      <Button id="boutonCarte" value='ortho' @click="$emit('icon-clicked', changeMapToOrtho())"
+        class="bg-bluegray-600 hover:bg-bluegray-400 border-bluegray-700 " disabled>
+        <img alt="logo" src="../../public/img/ortho.png" class="h-2rem" />
+      </Button>
+
+      <Button id="boutonCarte" value='plan' @click="$emit('icon-clicked', changeMapToPlan(), this.mapSelected)"
+        class="bg-bluegray-600 hover:bg-bluegray-400 border-bluegray-700">
+        <img alt="logo" src="../../public/img/plan.png" class="h-2rem" value='plan' />
+      </Button>
+    </div>
+
+    <div class="typeCartes" v-else-if="this.mapSelected == 'plan'">
 
       <Button id="boutonCarte" value='ortho' @click="$emit('icon-clicked', changeMapToOrtho())"
         class="bg-bluegray-600 hover:bg-bluegray-400 border-bluegray-700 ">
@@ -18,7 +31,7 @@
       </Button>
 
       <Button id="boutonCarte" value='plan' @click="$emit('icon-clicked', changeMapToPlan(), this.mapSelected)"
-        class="bg-bluegray-600 hover:bg-bluegray-400 border-bluegray-700">
+        class="bg-bluegray-600 hover:bg-bluegray-400 border-bluegray-700" disabled>
         <img alt="logo" src="../../public/img/plan.png" class="h-2rem" value='plan' />
       </Button>
     </div>
