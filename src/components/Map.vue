@@ -16,6 +16,10 @@ import {
 } from '../services/WMTS_service.js'
 import { ref } from "vue";
 
+import {
+  bati3DLayer
+} from '../services/WFS_service.js'
+
 export default {
   name: 'mapComponent',
   props: {
@@ -70,9 +74,9 @@ export default {
     // view.addLayer(routeLayer);
     // view.addLayer(batiLayer);
     // view.addLayer(courbeNiveauLayer);
+    view.addLayer(bati3DLayer);
 
     // view.removeLayer(planIGNv2Layer.id);
-
 
 
     const batsource = new FileSource({
@@ -129,6 +133,7 @@ export default {
       }
 
     }
+
   }
 }
 </script>
