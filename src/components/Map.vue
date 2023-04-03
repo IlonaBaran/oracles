@@ -169,7 +169,7 @@ export default {
           vertices.push(Xo + i * Xsize);
           vertices.push(Yo + j * Ysize);
           if (rows[i][j]) {
-            vertices.push(rows[i][j] + 4696062);
+            vertices.push(rows[i][j]);
           } else {
             vertices.push(0)
           }
@@ -177,7 +177,7 @@ export default {
           vertices.push(Xo + (i + 1) * Xsize);
           vertices.push(Yo + j * Ysize);
           if (rows[i][j]) {
-            vertices.push(rows[i + 1][j] + 4696062);
+            vertices.push(rows[i + 1][j]);
           } else {
             vertices.push(0)
           }
@@ -185,7 +185,7 @@ export default {
           vertices.push(Xo + i * Xsize);
           vertices.push(Yo + (j + 1) * Ysize);
           if (rows[i][j]) {
-            vertices.push(rows[i][j + 1] + 4696062);
+            vertices.push(rows[i][j + 1]);
           } else {
             vertices.push(0)
           }
@@ -193,7 +193,7 @@ export default {
           vertices.push(Xo + i * Xsize);
           vertices.push(Yo + (j + 1) * Ysize);
           if (rows[i][j]) {
-            vertices.push(rows[i][j + 1] + 4696062);
+            vertices.push(rows[i][j + 1]);
           } else {
             vertices.push(0)
           }
@@ -201,7 +201,7 @@ export default {
           vertices.push(Xo + (i + 1) * Xsize);
           vertices.push(Yo + j * Ysize);
           if (rows[i][j]) {
-            vertices.push(rows[i + 1][j] + 4696062);
+            vertices.push(rows[i + 1][j]);
           } else {
             vertices.push(0)
           }
@@ -210,7 +210,7 @@ export default {
           vertices.push(Xo + (i + 1) * Xsize);
           vertices.push(Yo + (j + 1) * Ysize);
           if (rows[i][j]) {
-            vertices.push(rows[i + 1][j + 1] + 4696062);
+            vertices.push(rows[i + 1][j + 1]);
           } else {
             vertices.push(0)
           }
