@@ -1,7 +1,7 @@
 <template>
   <div id="viewerDiv" class="viewer">
   </div>
-  <Toolbar></Toolbar>
+  <Toolbar @icon-clicked="toggleHelpText" ref="childComponent"></Toolbar>
 </template>
 
 <script>
@@ -14,9 +14,19 @@ import {
   planIGNv2Layer, orthoLayer, batiLayer,
   demLayer, demHRLayer, courbeNiveauLayer
 } from '../services/WMTS_service.js'
+import { ref } from "vue";
 
 export default {
   name: 'mapComponent',
+  props: {
+    mapSelected: String,
+  },
+  data() {
+    return {
+      viewNew: ref(false),
+    }
+  },
+
   components: {
     Toolbar,
   },
@@ -44,17 +54,17 @@ export default {
       range: 2500
     };
 
-    let view = new GlobeView(viewerDiv, placement);
-
+    const view = new GlobeView(viewerDiv, placement);
+    //viewNew = new GlobeView(viewerDiv, placement);
     // ADD NAVIGATION TOOLS :
     new Navigation(view, {
       position: 'bottom-right',
       translate: { y: -40 },
     });
 
-    view.addLayer(planIGNv2Layer);
+    //view.addLayer(planIGNv2Layer);
 
-    //view.addLayer(orthoLayer);
+    view.addLayer(orthoLayer);
     // view.addLayer(demLayer);
     view.addLayer(demHRLayer);
     // view.addLayer(routeLayer);
@@ -109,6 +119,16 @@ export default {
 
   },
   methods: {
+    toggleHelpText() {
+      console.log(this.$refs.childComponent.mapSelected);
+      if (this.$refs.childComponent.mapSelected == "plan") {
+
+        // view.removeLayer(orthoLayer.id);
+        // view.addLayer(planIGNv2Layer);
+
+      }
+
+    }
   }
 }
 </script>

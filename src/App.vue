@@ -1,8 +1,8 @@
 <template>
   <Header></Header>
-  <!-- <Map></Map> -->
+  <Map></Map>
   <Footer></Footer>
-  <Toolbar></Toolbar>
+  <!-- <Toolbar></Toolbar> -->
 </template>
 
 <script>
@@ -13,17 +13,17 @@
 
 import Header from './components/Header.vue'
 import Footer from './components/Footer.vue'
-// import Map from './components/Map.vue'
-import Toolbar from './components/Toolbar.vue'
+import Map from './components/Map.vue'
+// import Toolbar from './components/Toolbar.vue'
 
 export default {
   name: 'App',
 
   components: {
     Header,
-    // Map,
+    Map,
     Footer,
-    Toolbar,
+    // Toolbar,
   }
 }
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <Map></Map>
+  <!-- <Map :mapSelected="this.mapSelected"></Map> -->
 
   <div class="toolbar">
     <!-- <button @click="toggleLegend" class="button">{{ legend }}</button> -->
@@ -12,16 +12,15 @@
     <h2>Fonds de carte</h2>
     <div class="typeCartes">
 
-      <Button id="boutonCarte" value='ortho' @click="changeMapToOrtho()"
+      <Button id="boutonCarte" value='ortho' @click="$emit('icon-clicked', changeMapToOrtho())"
         class="bg-bluegray-600 hover:bg-bluegray-400 border-bluegray-700 ">
         <img alt="logo" src="../../public/img/ortho.png" class="h-2rem" />
       </Button>
 
-      <Button id="boutonCarte" value='plan' @click="changeMapToPlan()"
+      <Button id="boutonCarte" value='plan' @click="$emit('icon-clicked', changeMapToPlan(), this.mapSelected)"
         class="bg-bluegray-600 hover:bg-bluegray-400 border-bluegray-700">
         <img alt="logo" src="../../public/img/plan.png" class="h-2rem" value='plan' />
       </Button>
-      {{ mapSelected }}
     </div>
   </Sidebar>
 </template>
@@ -33,7 +32,7 @@
 import SpeedDial from 'primevue/speeddial';
 import Sidebar from 'primevue/sidebar';
 import Button from 'primevue/button';
-import Map from './Map.vue';
+// import Map from './Map.vue';
 
 
 export default {
@@ -42,7 +41,7 @@ export default {
     SpeedDial,
     Sidebar,
     Button,
-    Map
+    // Map
 
   },
   data() {
