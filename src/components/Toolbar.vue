@@ -88,9 +88,10 @@ export default {
           }
         },
         {
-          label: 'Réinitialiser la vue',
-          icon: 'pi pi-trash',
+          label: 'Recentrer la vue',
+          icon: 'pi pi-undo',
           command: () => {
+            this.$emit('reinit-view');
           }
         },
       ]
