@@ -18,7 +18,7 @@
                     <button @click="lineChartAffichage">Affichage d'un diagramme en ligne</button>
                     <button @click="roseVentAffichage">Affichage d'un diagramme rose des vents</button>
 
-                    <button @click="lineChartAffichage">Affichage d'un diagramme rose des vents</button>
+                    <button @click="lineChart">Affichage d'un diagramme rose des vents</button>
                     <apexchart  :options="this.chartOptions"  :series="this.series"/>    
     
                         <!-- AFFICHAGE DES GRAPHIQUES 
@@ -31,6 +31,10 @@
     </div>
 </template>
 
+
+
+
+
 <script>
 /* eslint-disable */
 import { ApexChart } from 'vue3-apexcharts';
@@ -40,21 +44,12 @@ import ScrollPanel from 'primevue/scrollpanel';
 import { ref } from "vue";
 import { reactive } from "vue";
 
-
 export default {
     name: 'panelComponent',
+
     components: {
         Card,
         ScrollPanel,
-    },
-
-    data() {
-        return {
-            checked: ref(false),
-            checkedPanel: ref(false),
-            chartOptions: ref(false),
-            series: ref(null),
-        }
     },
 
     props: {
@@ -65,49 +60,90 @@ export default {
         selectedGraph: {
             type: Object,
             required: true
-        }
+        },
+        // chartOptions: {
+        //     type: Object,
+        //     required: true
+        // },
+        // series: {
+        //     type: Object,
+        //     required: true
+        // }
     },
 
-    methods: {
-        lineChart(){
-            this.chartOptions = reactive({
-                chart: {
-                    id: 'mychart',
-                    height: 350,
-                    type: 'line',
-                    zoom: {
-                        enabled: false
-                    }
-                },
-                dataLabels: {
-                    enabled: false
-                },
-                stroke: {
-                    curve: 'straight'
-                },
-                title: {
-                    text: 'Product Trends by Month',
-                    align: 'left'
-                },
-                grid: {
-                    row: {
-                        colors: ['#f3f3f3', 'transparent'],
-                        opacity: 0.5
-                    },
-                },
-                xaxis: {
-                    tooltip: {
-                        enabled: false
-                    },
-                    categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
-                }
-        });
 
-        this.series =  [{
-            name: "Desktops",
-            data: [10, 41, 35, 51, 49, 62, 69, 91, 148]
-        }]
-     },
+    data() {
+        return {
+//             checked: ref(false),
+//             checkedPanel: ref(false),
+            chartOptions: ref(false),
+            series: ref(null),
+            // chartOptions: {
+            //     chart: {
+            //     height: 350,
+            //     type: 'line',
+            //     },
+            //     series: [{
+            //     name: 'sales',
+            //     data: [30, 40, 35, 50, 49, 60, 70, 91, 125]
+            //     }],
+            //     xaxis: {
+            //     categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
+            //     }
+            // },
+            // series: [{
+            //     name: 'sales',
+            //     data: [30, 40, 35, 50, 49, 60, 70, 91, 125]
+            // }]
+        };
+    },
+
+
+        methods: {
+            lineChart(){
+                this.chartOptions = reactive({
+                    chart: {
+                        id: 'mychart',
+                        height: 350,
+                        type: 'line',
+                        zoom: {
+                            enabled: false
+                        }
+                    },
+                    dataLabels: {
+                        enabled: false
+                    },
+                    stroke: {
+                        curve: 'straight'
+                    },
+                    title: {
+                        text: 'Product Trends by Month',
+                        align: 'left'
+                    },
+                    grid: {
+                        row: {
+                            colors: ['#f3f3f3', 'transparent'],
+                            opacity: 0.5
+                        },
+                    },
+                    xaxis: {
+                        tooltip: {
+                            enabled: false
+                        },
+                        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
+                    }
+            });
+
+            this.series =  [{
+                name: "Desktops",
+                data: [10, 41, 35, 51, 49, 62, 69, 91, 148]
+            }]
+        },
+    },
+};
+
+
+
 
         // lineChartAffichage() {
         // var abcisses = [];
@@ -133,7 +169,7 @@ export default {
         //         })
         //     }
         // },
-    }
+    // }
 
 
 
@@ -418,7 +454,7 @@ export default {
 
     //   return { chartOptions, chartOptions2, chartOptions3 }; 
 
-}
+// }
 </script>
 
 
