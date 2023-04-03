@@ -11,8 +11,8 @@ import '../../node_modules/itowns/examples/css/widgets.css'
 import { FileSource, THREE, Style, proj4, Extent, FeatureGeometryLayer, Coordinates, GlobeView, WMTSSource, WMSSource, ColorLayer, ElevationLayer, } from "../../node_modules/itowns/dist/itowns";
 import { Navigation } from '../../node_modules/itowns/dist/itowns_widgets.js';
 import {
-  planIGNv2Layer, orthoLayer, batiLayer,
-  demLayer, demHRLayer, courbeNiveauLayer
+  planIGNv2Layer, orthoLayer,
+  demHRLayer
 } from '../services/WMTS_service.js'
 import { ref } from "vue";
 
@@ -74,20 +74,9 @@ export default {
 
 
     view.addLayer(planIGNv2Layer);
-    // view.addLayer(demLayer);
     view.addLayer(demHRLayer);
-    // view.addLayer(routeLayer);
-    // view.addLayer(batiLayer);
-    // view.addLayer(courbeNiveauLayer);
     view.addLayer(bati3DLayer);
     view.addLayer(orthoLayer);
-
-    console.log(view);
-
-    // view.removeLayer(planIGNv2Layer.id);
-
-
-
   },
   methods: {
     toggleHelpText() {
@@ -97,22 +86,13 @@ export default {
         view.tileLayer.attachedLayers[1].visible = true;
         view.tileLayer.attachedLayers[4].visible = false;
         view.notifyChange()
-
-
-        console.log(view);
-
       }
       else {
         view.tileLayer.attachedLayers[1].visible = false;
         view.tileLayer.attachedLayers[4].visible = true;
         view.notifyChange()
-
-        console.log(view)
       }
-
-
     }
-
   }
 }
 </script>
