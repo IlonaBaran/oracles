@@ -63,18 +63,32 @@ export default {
       legend2D: '2D',
       legend3D: '3D',
       visibleRight: false,
+      visibleBuilding: false,
       mapSelected: "ortho",
 
       items: [
         {
-          label: 'Change Map',
+          label: 'Changer fond de carte',
           icon: 'pi pi-map',
           command: () => {
             this.visibleRight = true;
           }
+        }, {
+          label: 'Afficher/Masquer les bâtiments',
+          icon: 'pi pi-building',
+          command: () => {
+            this.$emit('change-building');
+
+            if (this.visibleBuilding) {
+              this.visibleBuilding = false;
+            }
+            else {
+              this.visibleBuilding = true;
+            }
+          }
         },
         {
-          label: 'Delete',
+          label: 'Réinitialiser la vue',
           icon: 'pi pi-trash',
           command: () => {
           }

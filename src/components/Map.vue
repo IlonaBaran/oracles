@@ -1,7 +1,7 @@
 <template>
   <div id="viewerDiv" class="viewer">
   </div>
-  <Toolbar @icon-clicked="toggleHelpText" ref="childComponent"></Toolbar>
+  <Toolbar @icon-clicked="toggleHelpText" ref="childComponent" @change-building="building"></Toolbar>
 </template>
 
 <script>
@@ -28,6 +28,7 @@ export default {
   name: 'mapComponent',
   props: {
     mapSelected: String,
+    visibleBuilding: Boolean,
   },
   data() {
     return {
@@ -80,7 +81,7 @@ export default {
   },
   methods: {
     toggleHelpText() {
-      console.log(this.$refs.childComponent.mapSelected);
+
       if (this.$refs.childComponent.mapSelected == "plan") {
 
         view.tileLayer.attachedLayers[1].visible = true;
@@ -92,7 +93,13 @@ export default {
         view.tileLayer.attachedLayers[4].visible = true;
         view.notifyChange()
       }
+    },
+
+    building() {
+      view.tileLayer.attachedLayers[3].visible = this.$refs.childComponent.visibleBuilding;
+      view.notifyChange()
     }
+
   }
 }
 </script>
