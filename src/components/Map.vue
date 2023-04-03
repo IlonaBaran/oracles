@@ -12,6 +12,7 @@ import {
   Style,
   proj4,
   Extent,
+  GeometryLayer,
   FeatureGeometryLayer,
   Coordinates,
   GlobeView,
@@ -22,11 +23,16 @@ import {
   Fetcher
 } from "../../node_modules/itowns/dist/itowns";
 import { Navigation } from "../../node_modules/itowns/dist/itowns_widgets.js";
-
+import TIFFParser from '../../node_modules/itowns/examples/js/plugins/TIFFParser.js';
+// import * as THREE from 'three';
 import * as GeoTIFF from 'geotiff';
 import { async } from "regenerator-runtime";
 import { Mesh, MeshStandardMaterial, PlaneGeometry, RepeatWrapping, Texture, TextureLoader } from "three";
 import { scene } from "@/client";
+import { ref } from 'vue';
+
+
+let view = ref(false);
 
 export default {
   name: "mapComponent",
@@ -59,7 +65,7 @@ export default {
       range: 2500,
     };
 
-    let view = new GlobeView(viewerDiv, placement);
+    view = new GlobeView(viewerDiv, placement);
 
     // ADD NAVIGATION TOOLS :
     new Navigation(view, {
@@ -80,7 +86,7 @@ export default {
       source: orthoSource,
     });
 
-    view.addLayer(orthoLayer);
+    //view.addLayer(orthoLayer);
 
     const batsource = new FileSource({
       url: "gavres_bati.geojson",
@@ -103,7 +109,7 @@ export default {
       }),
     });
 
-    view.addLayer(basic);
+    //view.addLayer(basic);
 
     function setAltitude(properties) {
       if (properties.altitude_sol != null) {
@@ -129,31 +135,120 @@ export default {
     xhr.open("GET", url)
     xhr.responseType = 'arraybuffer';
     xhr.onload = async function (e) {
+
       var buffer = await xhr.response;
       const tiff = await GeoTIFF.fromArrayBuffer(buffer);
       const image = await tiff.getImage();
       const bbox = await image.getBoundingBox();
-      const data = await image.readRasters();
       const width = await image.getWidth();
       const height = await image.getHeight();
+      const data = await image.readRasters();
 
-      console.log('tiff', tiff, 'image', image, 'bbox', bbox, 'data', data, 'width', width, 'height', height)
-      var geometry = new THREE.PlaneGeometry(width, height, width - 1, height - 1);
-      console.log(Object.values(geometry).find(value => value === "vertices"))
+      // extract a subarray with the first 530*790=419,700 elements
+      const subarray = data[0].subarray(0, 530 * 790);
 
-      for (var i = 0, l = geometry.vertices.length; i < l; i++) {
-        geometry.vertices[i].z = data[i] / 65535 * 25;
+      // split the subarray into rows of 790 elements
+      const rows = [];
+      for (let i = 0; i < subarray.length; i += 790) {
+        rows.push(subarray.slice(i, i + 790));
       }
-      var material = new THREE.MeshPhongMaterial({
-        color: 0xdddddd, 
-        wireframe: true
+      const Xo = bbox[0];
+      const Xf = bbox[2];
+      const Yo = bbox[1];
+      const Yf = bbox[3];
+
+      const Xsize = (Xf - Xo) / width;
+      const Ysize = (Yf - Yo) / height;
+
+      let geometry = new THREE.BufferGeometry();
+      let vertices = [];
+      let colors = [];
+
+      for (let i = 0; i < width - 1; i++) {
+        for (let j = 0; j < height - 1; j++) {
+          vertices.push(Xo + i * Xsize);
+          vertices.push(Yo + j * Ysize);
+          if (rows[i][j]) {
+            vertices.push(rows[i][j] + 4696062);
+          } else {
+            vertices.push(0)
+          }
+
+          vertices.push(Xo + (i + 1) * Xsize);
+          vertices.push(Yo + j * Ysize);
+          if (rows[i][j]) {
+            vertices.push(rows[i + 1][j] + 4696062);
+          } else {
+            vertices.push(0)
+          }
+
+          vertices.push(Xo + i * Xsize);
+          vertices.push(Yo + (j + 1) * Ysize);
+          if (rows[i][j]) {
+            vertices.push(rows[i][j + 1] + 4696062);
+          } else {
+            vertices.push(0)
+          }
+
+          vertices.push(Xo + i * Xsize);
+          vertices.push(Yo + (j + 1) * Ysize);
+          if (rows[i][j]) {
+            vertices.push(rows[i][j + 1] + 4696062);
+          } else {
+            vertices.push(0)
+          }
+
+          vertices.push(Xo + (i + 1) * Xsize);
+          vertices.push(Yo + j * Ysize);
+          if (rows[i][j]) {
+            vertices.push(rows[i + 1][j] + 4696062);
+          } else {
+            vertices.push(0)
+          }
+
+
+          vertices.push(Xo + (i + 1) * Xsize);
+          vertices.push(Yo + (j + 1) * Ysize);
+          if (rows[i][j]) {
+            vertices.push(rows[i + 1][j + 1] + 4696062);
+          } else {
+            vertices.push(0)
+          }
+
+        };
+      };
+      console.log(vertices)
+      geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(vertices), 3));
+
+      // create material
+      const material = new THREE.MeshBasicMaterial({
+        transparent: true,
+        opacity: 0.8,
+        color: 0xff4500
       });
 
-      var plane = new THREE.Mesh(geometry, material);
-      view.addLayer(plane);
+      let mesh = new THREE.Mesh(geometry, material);
+
+      view.scene.add(mesh);
+
+
+
+
+      // view.scene.children[3].position.x = 222955.5;
+      // view.scene.children[3].position.y = 6750269.5;
+      // view.scene.children[3].position.z = 4696062;
+      // view.notifyChange()
+      console.log(view.scene)
+
 
     };
     xhr.send();
+
+    // view.camera.camera3D.position.x = 0;
+    // view.camera.camera3D.position.y = 0;
+    // view.camera.camera3D.position.z = 0;
+    // view.notifyChange()
+
 
   },
   methods: {},
