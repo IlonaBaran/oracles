@@ -1,7 +1,7 @@
 <template>
   <div id="viewerDiv" class="viewer">
   </div>
-  <Toolbar></Toolbar>
+  <Toolbar @icon-clicked="toggleHelpText" ref="childComponent"></Toolbar>
 </template>
 
 <script>
@@ -14,6 +14,7 @@ import {
   planIGNv2Layer, orthoLayer, batiLayer,
   demLayer, demHRLayer, courbeNiveauLayer
 } from '../services/WMTS_service.js'
+import { ref } from "vue";
 
 import {
   bati3DLayer
@@ -21,6 +22,15 @@ import {
 
 export default {
   name: 'mapComponent',
+  props: {
+    mapSelected: String,
+  },
+  data() {
+    return {
+      viewNew: ref(false),
+    }
+  },
+
   components: {
     Toolbar,
   },
@@ -48,15 +58,15 @@ export default {
       range: 2500
     };
 
-    let view = new GlobeView(viewerDiv, placement);
-
+    const view = new GlobeView(viewerDiv, placement);
+    //viewNew = new GlobeView(viewerDiv, placement);
     // ADD NAVIGATION TOOLS :
     new Navigation(view, {
       position: 'bottom-right',
       translate: { y: -40 },
     });
 
-    // view.addLayer(planIGNv2Layer);
+    //view.addLayer(planIGNv2Layer);
 
     view.addLayer(orthoLayer);
     // view.addLayer(demLayer);
@@ -68,6 +78,62 @@ export default {
 
     // view.removeLayer(planIGNv2Layer.id);
 
+
+    const batsource = new FileSource({
+      url: 'gavres_bati.geojson',
+      crs: 'EPSG:2154',
+      format: 'application/json',
+    });
+
+    let basic = new FeatureGeometryLayer('basic', {
+      // Use a FileSource to load a single file once
+      source: batsource,
+      transparent: true,
+      opacity: 0.7,
+      //zoom: { min: 10 },
+      style: new Style({
+        fill: {
+          color: setColor,
+          base_altitude: setAltitude,
+          extrusion_height: setExtrusion,
+        }
+      })
+    });
+
+    view.addLayer(basic);
+
+    function setAltitude(properties) {
+      if (properties.altitude_sol != null) {
+        return properties.altitude_sol + properties.hauteur;
+      } else {
+        //What to do when there is not floor value?
+        return 5;
+      }
+    }
+
+    function setExtrusion(properties) {
+      return properties.hauteur;
+    }
+
+    function setColor(properties) {
+
+      return new THREE.Color(0xffaaaa);
+    }
+
+
+  },
+  methods: {
+    toggleHelpText() {
+      console.log(this.$refs.childComponent.mapSelected);
+      if (this.$refs.childComponent.mapSelected == "plan") {
+
+        // view.removeLayer(orthoLayer.id);
+        // view.addLayer(planIGNv2Layer);
+
+      }
+
+    }
+
   }
 }
 </script>
@@ -77,8 +143,7 @@ export default {
 .viewer {
   display: flex;
   background-color: blue;
-  margin-top: 5%;
-  height: 91%;
+  height: 96%;
   z-index: 0;
 
 }

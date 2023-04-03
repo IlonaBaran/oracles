@@ -76,13 +76,16 @@ export default {
    
 <style>
 .footer {
+    position: absolute;
     width: 100%;
     height: 4%;
+    bottom: 0%;
+
     background-color: #6366F1;
     display: flex;
     align-items: center;
     justify-content: space-around;
     color: #6366F1;
-    z-index: 0;
+    z-index: 2;
 }
 </style>

@@ -1,4 +1,6 @@
 <template>
+  <!-- <Map :mapSelected="this.mapSelected"></Map> -->
+
   <div class="toolbar">
     <!-- <button @click="toggleLegend" class="button">{{ legend }}</button> -->
   </div>
@@ -10,14 +12,15 @@
     <h2>Fonds de carte</h2>
     <div class="typeCartes">
 
-      <Button id="boutonCarte" class="bg-bluegray-600 hover:bg-bluegray-400 border-bluegray-700 ">
+      <Button id="boutonCarte" value='ortho' @click="$emit('icon-clicked', changeMapToOrtho())"
+        class="bg-bluegray-600 hover:bg-bluegray-400 border-bluegray-700 ">
         <img alt="logo" src="../../public/img/ortho.png" class="h-2rem" />
       </Button>
 
-      <Button id="boutonCarte" class="bg-bluegray-600 hover:bg-bluegray-400 border-bluegray-700">
-        <img alt="logo" src="../../public/img/plan.png" class="h-2rem" />
+      <Button id="boutonCarte" value='plan' @click="$emit('icon-clicked', changeMapToPlan(), this.mapSelected)"
+        class="bg-bluegray-600 hover:bg-bluegray-400 border-bluegray-700">
+        <img alt="logo" src="../../public/img/plan.png" class="h-2rem" value='plan' />
       </Button>
-
     </div>
   </Sidebar>
 </template>
@@ -29,6 +32,7 @@
 import SpeedDial from 'primevue/speeddial';
 import Sidebar from 'primevue/sidebar';
 import Button from 'primevue/button';
+// import Map from './Map.vue';
 
 
 export default {
@@ -36,7 +40,9 @@ export default {
   components: {
     SpeedDial,
     Sidebar,
-    Button
+    Button,
+    // Map
+
   },
   data() {
     return {
@@ -44,6 +50,7 @@ export default {
       legend2D: '2D',
       legend3D: '3D',
       visibleRight: false,
+      mapSelected: "ortho",
 
       items: [
         {
@@ -69,6 +76,13 @@ export default {
     }
   },
   methods: {
+    changeMapToOrtho() {
+      this.mapSelected = "ortho";
+    },
+    changeMapToPlan() {
+      this.mapSelected = "plan";
+    },
+
     toggleLegend() {
       // Toggle the boolean value of is2D
       this.is2D = !this.is2D;
