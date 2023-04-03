@@ -64,6 +64,7 @@ export default {
     };
 
     view = new GlobeView(viewerDiv, placement);
+
     //viewNew = new GlobeView(viewerDiv, placement);
     // ADD NAVIGATION TOOLS :
     new Navigation(view, {
@@ -71,15 +72,17 @@ export default {
       translate: { y: -40 },
     });
 
-    //view.addLayer(planIGNv2Layer);
 
-    view.addLayer(orthoLayer);
+    view.addLayer(planIGNv2Layer);
     // view.addLayer(demLayer);
     view.addLayer(demHRLayer);
     // view.addLayer(routeLayer);
     // view.addLayer(batiLayer);
     // view.addLayer(courbeNiveauLayer);
     view.addLayer(bati3DLayer);
+    view.addLayer(orthoLayer);
+
+    console.log(view);
 
     // view.removeLayer(planIGNv2Layer.id);
 
@@ -90,17 +93,21 @@ export default {
     toggleHelpText() {
       console.log(this.$refs.childComponent.mapSelected);
       if (this.$refs.childComponent.mapSelected == "plan") {
-        console.log("pass if")
-        view.removeLayer(orthoLayer.id);
-        view.addLayer(planIGNv2Layer);
 
+        view.tileLayer.attachedLayers[1].visible = true;
+        view.tileLayer.attachedLayers[4].visible = false;
+        view.notifyChange()
+
+
+        console.log(view);
 
       }
       else {
-        console.log("pass else")
-        view.removeLayer(planIGNv2Layer.id);
-        view.addLayer(orthoLayer);
+        view.tileLayer.attachedLayers[1].visible = false;
+        view.tileLayer.attachedLayers[4].visible = true;
+        view.notifyChange()
 
+        console.log(view)
       }
 
 
