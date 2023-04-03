@@ -16,13 +16,15 @@
                     <p>{{ selectedGraph }}</p> -->
 
                     <button @click="lineChartAffichage">Affichage d'un diagramme en ligne</button>
-                    <button @click="roseVentAffichage">Affichage d'un diagramme rose des vents</button>
-
-                    <button @click="lineChart">Affichage d'un diagramme rose des vents</button>
                     <apexchart  :options="this.chartOptions"  :series="this.series"/>    
-    
-                        <!-- AFFICHAGE DES GRAPHIQUES 
-                    <JSCharting :options="chartOptions" ></JSCharting> -->
+
+                    <button @click="roseVentAffichage">Affichage d'un diagramme rose des vents</button>
+                    <!-- <apexchart  :options="this.chartOptions2" :series="this.series2"/>     -->
+                    <!-- <div ref="chart"></div> -->
+                    <!-- <highcharts  :options="this.chartOptions2"></highcharts> -->
+
+                    <button @click="heatMapAffichage">Affichage d'un diagramme de chaleur</button>
+                    <apexchart  :options="this.chartOptions3" :series="this.series3"/>    
 
                 </ScrollPanel>
 
@@ -38,6 +40,9 @@
 <script>
 /* eslint-disable */
 import { ApexChart } from 'vue3-apexcharts';
+// import { Highcharts } from 'highcharts';
+import * as d3 from 'd3';
+
 import Card from 'primevue/card';
 import ScrollPanel from 'primevue/scrollpanel';
 
@@ -61,41 +66,35 @@ export default {
             type: Object,
             required: true
         },
-        // chartOptions: {
-        //     type: Object,
-        //     required: true
-        // },
-        // series: {
-        //     type: Object,
-        //     required: true
-        // }
     },
 
 
     data() {
         return {
-//             checked: ref(false),
-//             checkedPanel: ref(false),
-            chartOptions: ref(false),
+            checked: ref(false),
+            checkedPanel: ref(false),
+
+            // LINE
+            chartOptions: ref(null),
             series: ref(null),
-            // chartOptions: {
-            //     chart: {
-            //     height: 350,
-            //     type: 'line',
-            //     },
-            //     series: [{
-            //     name: 'sales',
-            //     data: [30, 40, 35, 50, 49, 60, 70, 91, 125]
-            //     }],
-            //     xaxis: {
-            //     categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
-            //     }
-            // },
-            // series: [{
-            //     name: 'sales',
-            //     data: [30, 40, 35, 50, 49, 60, 70, 91, 125]
-            // }]
-        };
+
+            // ROSE WIND HIGHCHARTJS
+            chartOptions2: ref(null),
+            // series2: ref(null),
+
+            // ROSE WIND D3
+            data: [
+                {category: 'A', values: [10, 20, 30]},
+                {category: 'B', values: [40, 50, 60]},
+                {category: 'C', values: [70, 80, 90]}
+            ],
+            width: 500,
+            height: 500,
+
+            // CHALEUR
+            chartOptions3: ref(null),
+            series3: ref(null),
+        }
     },
 
 
@@ -106,6 +105,7 @@ export default {
                         id: 'mychart',
                         height: 350,
                         type: 'line',
+                        defaultPoint_marker_visible: false,
                         zoom: {
                             enabled: false
                         }
@@ -139,125 +139,293 @@ export default {
                 data: [10, 41, 35, 51, 49, 62, 69, 91, 148]
             }]
         },
-    },
+
+        lineChartAffichage() {
+            // var abcisses = [];
+            // var ordonnees = [];
+            // for (const element of this.selectedScenario) {
+            //     // RECUPERATION DES DONNES AVEC DES FECTH - c
+            //     var file = 'http://localhost:8081/' + element["name"] + '.json';
+            //     fetch(file)
+            //         .then(response => response.json())
+            //         .then(data => {
+            //             console.log(data);
+            //             for (const property in data) {
+            //                 // var dict = {
+            //                 //     x: `${data[property]["heure"]}`,
+            //                 //     y: parseFloat(`${data[property]["Maree(m)"]}`),
+            //                 // };
+            //                 abcisses.push(`${data[property]["heure"]}`);
+            //                 ordonnees.push(parseFloat(`${data[property]["Maree(m)"]}`));
+            //             }
+            //             // this.lineChart();
+            //             // this.lineChart(abcisses, ordonnees);
+
+            //         })
+            //     }
+            this.lineChart();
+        },
+
+
+
+        roseChartHIGHCHARTS(){
+            this.chartOptions2 = reactive({
+                chart: {
+                    polar: true,
+                    type: "column",
+                },
+                title: {
+                    text: "Wind Rose",
+                },
+                xAxis: {
+                    categories: [
+                        "N",
+                        "NNE",
+                        "NE",
+                        "ENE",
+                        "E",
+                        "ESE",
+                        "SE",
+                        "SSE",
+                        "S",
+                        "SSW",
+                        "SW",
+                        "WSW",
+                        "W",
+                        "WNW",
+                        "NW",
+                        "NNW",
+                    ],
+                    tickmarkPlacement: "on",
+                    lineWidth: 0,
+                },
+                yAxis: {
+                    min: 0,
+                    endOnTick: false,
+                    showLastLabel: true,
+                    title: {
+                        text: "Frequency (%)",
+                        align: "high",
+                    },
+                },
+                tooltip: {
+                    shared: true,
+                    pointFormat: '<span style="color:{point.color}">\u25CF</span> {series.name}: <b>{point.y}%</b><br/>',
+                },
+                legend: {
+                    align: "right",
+                    verticalAlign: "middle",
+                    layout: "vertical",
+                },
+                plotOptions: {
+                    column: {
+                        pointPadding: 0,
+                        borderWidth: 0,
+                        groupPadding: 0,
+                        shadow: false,
+                    },
+                },
+                series: [
+                    {
+                        name: "North",
+                        data: [5, 3, 4, 7, 2, 3, 5, 7, 8, 6, 4, 2, 3, 5, 4, 3],
+                        pointPlacement: "between",
+                    },
+                    {
+                        name: "North-East",
+                        data: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 18, 16, 14, 12, 10, 8],
+                        pointPlacement: "between",
+                    },
+                    {
+                        name: "East",
+                        data: [10, 12, 14, 16, 18, 20, 18, 16, 14, 12, 10, 8, 6, 4, 2, 1],
+                        pointPlacement: "between",
+                    },
+                    {
+                        name: "South-East",
+                        data: [1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 18, 16, 14, 12, 10],
+                        pointPlacement: "between",
+                    },
+                    {
+                        name: "South",
+                        data: [2, 3, 5, 7, 8, 6, 4, 2, 3, 5, 7, 4, 3, 2, 1, 1],
+                        pointPlacement: "between",
+                    },
+                    {
+                        name: "South-West",
+                        data: [1, 2, 3, 5, 7, 9, 11, 13, 15, 17, 19, 20, 18, 16, 14, 12],
+                        pointPlacement: "between",
+                    },
+                    {
+                        name: "West",
+                        data: [5, 6, 8, 10, 12, 14, 16, 18, 20, 18, 16, 14, 12, 10, 8, 6],
+                        pointPlacement: "between",
+                    },
+                    {
+                        name: "North-West",
+                        data: [10, 8, 6, 4, 2, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20],
+                        pointPlacement: "between",
+                    },
+                ]
+            });
+        },
+
+        roseChartD3() {
+            // //    this.roseChart();
+            const svg = d3.select(this.$refs.chart)
+            .append('svg')
+            .style("width", "100%")
+            .style("height", "auto")
+            .style("font", "10px sans-serif")
+            .append('g');
+
+            const categories = this.data.map(d => d.category);
+            const numCategories = categories.length;
+            const numValues = this.data[0].values.length;
+
+            const stack = d3.stack().keys(d3.range(numValues));
+
+            const dataStack = stack(this.data.map(d => d.values));
+
+            const innerRadius = 50;
+            const outerRadius = Math.min(this.width, this.height) / 2 - 10;
+
+            const x = d3.scaleBand()
+            .domain(categories)
+            .range([0, 2 * Math.PI])
+            .align(0);
+
+            const y = d3.scaleRadial()
+            .range([innerRadius, outerRadius])
+            .domain([0, d3.max(dataStack, d => d3.max(d, d => d[1]))]);
+
+            const z = d3.scaleOrdinal()
+            .range(['#98abc5', '#8a89a6', '#7b6888']);
+
+            svg.selectAll('g')
+
+            .data(dataStack)
+            .enter().append('g')
+            .attr('fill', d => z(d.key))
+            .selectAll('path')
+            .data(d => d)
+            .enter().append('path')
+            .attr('d', d3.arc()
+                .innerRadius(d => y(d[0]))
+                .outerRadius(d => y(d[1]))
+                .startAngle(d => x(d.data.category))
+                .endAngle(d => x(d.data.category) + x.bandwidth())
+                .padAngle(0.01)
+                .padRadius(innerRadius)
+            )
+            .attr('stroke', 'white')
+            .style('stroke-width', '2px')
+            .style('opacity', 0.7);
+        },
+
+        roseVentAffichage(){
+        },
+
+        heatMapAffichage() {
+            var dict = {};
+            for (const element of this.selectedScenario) {
+                var elem = `${element["name"]}`;
+                dict[elem] = elem;
+            }
+            fetch('http://localhost:5000/api/data', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(dict)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Données envoyées avec succès !');        
+                fetch('http://localhost:5000/api/data')
+                .then(response => response.json())
+                .then(data => {
+                console.log(data);
+                })
+            })
+            .catch(error => {
+                console.error('Erreur lors de l\'envoi des données :', error);
+            });
+        },
+
+        sendData(data) {
+            // const data = { /* Vos données ici */ };
+            fetch('127.0.0.1:5000/api/data', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Données envoyées avec succès !');
+            })
+            .catch(error => {
+                console.error('Erreur lors de l\'envoi des données :', error);
+            });
+        },
+
+        heatMap(){
+            this.chartOptions3 = {
+                 chart: {
+                        type: 'heatmap',
+                        height: 550,
+                    },
+                    dataLabels: {
+                        enabled: true,
+                    },
+                    colors: ['#008FFB'],
+                    title: {
+                        text: 'Heatmap Chart',
+                        align: 'left',
+                },
+                xaxis: {
+                    tooltip: {
+                        enabled: false
+                    },
+                    type: 'category',
+                    // categories: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+                    categories: ['Monday', 'Tuesday', 'Wednesday'],
+
+                },
+                yaxis: {
+                    categories: ['Morning', 'Afternoon', 'Evening'],
+                },
+                tooltip: {
+                    enabled: true,
+                    y: {
+                        formatter: (val) => {
+                        return val + ' hours'
+                        },
+                    },
+                },
+            },
+
+            this.series3 = [{
+          name: 'Metric1',
+          data: [11, 12, 8],
+        },
+        {
+          name: 'Metric2',
+          data: [10, 7, 13],
+        },
+        {
+          name: 'Metric3',
+          data: [1, 2, 3],
+        },
+      ]},
+    }
+
 };
 
 
 
-
-        // lineChartAffichage() {
-        // var abcisses = [];
-        // var ordonnees = [];
-        // for (const element of this.selectedScenario) {
-        //     // RECUPERATION DES DONNES AVEC DES FECTH - c
-        //     var file = 'http://localhost:8081/' + element["name"] + '.json';
-        //     fetch(file)
-        //         .then(response => response.json())
-        //         .then(data => {
-        //             console.log(data);
-        //             for (const property in data) {
-        //                 // var dict = {
-        //                 //     x: `${data[property]["heure"]}`,
-        //                 //     y: parseFloat(`${data[property]["Maree(m)"]}`),
-        //                 // };
-        //                 abcisses.push(`${data[property]["heure"]}`);
-        //                 ordonnees.push(parseFloat(`${data[property]["Maree(m)"]}`));
-        //             }
-        //             // this.lineChart();
-        //             // this.lineChart(abcisses, ordonnees);
-
-        //         })
-        //     }
-        // },
-    // }
-
-
-
-    // methods: {
-    //     lineChart() {
-    //         this.chartOptions = {
-    //         chart: {
-    //             type: 'line'
-    //         },
-    //         series: [{
-    //             name: 'Sales',
-    //             data: [30,40,35,50,49,60,70,91,125]
-    //         }],
-    //         xaxis: {
-    //             categories: [2000,2001,2002,2003,2004,2005,2006,2007,2008]
-    //         }
-        //     this.chartOptions = reactive({
-        //         defaultSeries: {
-        //             type: 'line',
-        //             defaultPoint_marker_visible: false
-        //         },
-        //         series: [
-        //             {
-        //                 points: data
-        //             }
-        //         ]
-        //     });
-        //     }
-        // },
-
-        // roseChart(){
-        //     this.chartOptions2 = reactive({
-        //         // type: 'windrose column',
-        //         type: 'radar column', 
-        //         animation_duration: 1000, 
-        //         title: { 
-        //             label_text: 'Wind Rose Chart', 
-        //             position: 'center'
-        //         }, 
-        //         legend: { 
-        //             title_label_text: 'Wind Speed (in mph)', 
-        //             position: 'bottom', 
-        //             template: '%icon %name', 
-        //             reversed: true
-        //         }, 
-        //         annotations: [{ 
-        //             label: { 
-        //                 text: 'Calm: 17%<br>Avg speed: 7.9 mph', 
-        //                 style_fontSize: 14 
-        //             }, 
-        //             position: 'inside bottom right'
-        //         }], 
-        //         defaultSeries_shape_padding: 0.02, 
-        //         yAxis: { 
-        //             defaultTick_label_text: '%value%', 
-        //             scale: { type: 'stacked' }, 
-        //             alternateGridFill: 'none'
-        //         }, 
-        //         xAxis: { 
-        //             scale: { range: [0, 360], interval: 45 }, 
-        //             customTicks: [ 
-        //                 { value: 360, label_text: 'N' }, 
-        //                 { value: 45, label_text: 'NE' }, 
-        //                 { value: 90, label_text: 'E' }, 
-        //                 { value: 135, label_text: 'SE' }, 
-        //                 { value: 180, label_text: 'S' }, 
-        //                 { value: 225, label_text: 'SW' }, 
-        //                 { value: 270, label_text: 'W' }, 
-        //                 { value: 315, label_text: 'NW' } 
-        //             ] 
-        //         }, 
-        //         series: [{
-        //             name: 'Wind Speed (in mph)',
-        //             data: [
-        //                 { angle: 5, speed: 0, value: 0.50 },
-        //                 { angle: 15, speed: 135, value: 0.40 },
-        //                 { angle: 15, speed: 180, value: 0.20 }
-        //             ],
-        //             fillColors: [
-        //                 '#c62828',
-        //                 '#ff7043',
-        //                 '#fff176',
-        //                 '#aed581',
-        //                 '#80cbc4'
-        //             ]
-        //         }]
-        //     });
-        // },
     
         // lineChartAffichage() {
         // this.chart = new ApexCharts(document.querySelector("#chart"), this.chartOptions);
