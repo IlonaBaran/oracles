@@ -20,6 +20,10 @@ import {
   bati3DLayer
 } from '../services/WFS_service.js'
 
+
+let view = ref(false);
+
+
 export default {
   name: 'mapComponent',
   props: {
@@ -56,9 +60,10 @@ export default {
     var placement = {
       coord: new Coordinates('EPSG:4326', coord[0], coord[1]),
       range: 2500
+
     };
 
-    const view = new GlobeView(viewerDiv, placement);
+    view = new GlobeView(viewerDiv, placement);
     //viewNew = new GlobeView(viewerDiv, placement);
     // ADD NAVIGATION TOOLS :
     new Navigation(view, {
@@ -126,9 +131,9 @@ export default {
     toggleHelpText() {
       console.log(this.$refs.childComponent.mapSelected);
       if (this.$refs.childComponent.mapSelected == "plan") {
-
-        // view.removeLayer(orthoLayer.id);
-        // view.addLayer(planIGNv2Layer);
+        console.log("pass if")
+        view.removeLayer(orthoLayer.id);
+        view.addLayer(planIGNv2Layer);
 
       }
 
