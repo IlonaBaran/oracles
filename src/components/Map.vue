@@ -100,6 +100,17 @@ export default {
       view.tileLayer.attachedLayers[3].visible = this.$refs.childComponent.visibleBuilding;
       view.notifyChange()
     },
+
+    cameraView() {
+      view.camera.camera3D.position.x = 4295077.582429348;
+      view.notifyChange();
+
+      view.camera.camera3D.position.y = -251632.32006396126;
+      view.notifyChange();
+
+      view.camera.camera3D.position.z = 4696062.254883134;
+      view.notifyChange();
+    }
   }
 };
 </script>

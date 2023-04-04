@@ -36,6 +36,8 @@ Ilona Baran, Léa Fredoc, Jacqueline Williams & Fernando Rico Quintero
 ## Project status
 Development & Maintenance will cease on 28/04/2023
 
-
-
+## Librairies
+List of the different libraries used:
+* [primeVue](https://primevue.org/) used for the interface; 
+* [ApexCharts.js](https://apexcharts.com/) used for charts; 
 
