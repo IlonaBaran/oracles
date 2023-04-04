@@ -13,7 +13,7 @@ app = Flask(__name__)
 @app.route('/arboresance')
 def arboresance():
     cwd = os.getcwd()
-    data = os.listdir( cwd +'/flask/Data')
+    data = os.listdir( cwd +'/data')
     dico = {}
     for i in range (len(data)):
         dico[i] = data[i]
