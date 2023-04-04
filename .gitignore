@@ -32,3 +32,5 @@ src/assets/
 package-lock.json
 
 flask/Data
+flask/jsonData
+flask/output_rasters
