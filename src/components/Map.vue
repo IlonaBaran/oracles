@@ -1,41 +1,43 @@
 <template>
-  <div id="viewerDiv" class="viewer"></div>
+  <div id="viewerDiv" class="viewer">
+  </div>
+  <Toolbar @icon-clicked="changeMap" ref="childComponent" @change-building="building" @reinit-view="cameraView">
+  </Toolbar>
+
 </template>
 
 <script>
 /* eslint-disable */
 import Toolbar from "./Toolbar.vue";
-import "../../node_modules/itowns/examples/css/widgets.css";
+import '../../node_modules/itowns/examples/css/widgets.css'
+import { FileSource, THREE, Style, proj4, Extent, FeatureGeometryLayer, Coordinates, GlobeView, WMTSSource, WMSSource, ColorLayer, ElevationLayer, } from "../../node_modules/itowns/dist/itowns";
+import { Navigation } from '../../node_modules/itowns/dist/itowns_widgets.js';
 import {
-  FileSource,
-  THREE,
-  Style,
-  proj4,
-  Extent,
-  GeometryLayer,
-  FeatureGeometryLayer,
-  Coordinates,
-  GlobeView,
-  WMTSSource,
-  WMSSource,
-  ColorLayer,
-  ElevationLayer,
-  Fetcher
-} from "../../node_modules/itowns/dist/itowns";
-import { Navigation } from "../../node_modules/itowns/dist/itowns_widgets.js";
-import TIFFParser from '../../node_modules/itowns/examples/js/plugins/TIFFParser.js';
-// import * as THREE from 'three';
-import * as GeoTIFF from 'geotiff';
-import { async } from "regenerator-runtime";
-import { Mesh, MeshStandardMaterial, PlaneGeometry, RepeatWrapping, Texture, TextureLoader } from "three";
-import { scene } from "@/client";
-import { ref } from 'vue';
+  planIGNv2Layer, orthoLayer,
+  demHRLayer
+} from '../services/WMTS_service.js'
+import { ref } from "vue";
+
+import {
+  bati3DLayer
+} from '../services/WFS_service.js'
 
 
 let view = ref(false);
 
+
 export default {
-  name: "mapComponent",
+  name: 'mapComponent',
+  props: {
+    mapSelected: String,
+    visibleBuilding: Boolean,
+  },
+  data() {
+    return {
+      viewNew: ref(false),
+    }
+  },
+
   components: {
     Toolbar,
   },
@@ -61,72 +63,44 @@ export default {
     );
 
     var placement = {
-      coord: new Coordinates("EPSG:4326", coord[0], coord[1]),
-      range: 2500,
+      coord: new Coordinates('EPSG:4326', coord[0], coord[1]),
+      range: 2500
     };
 
     view = new GlobeView(viewerDiv, placement);
 
+    //viewNew = new GlobeView(viewerDiv, placement);
     // ADD NAVIGATION TOOLS :
     new Navigation(view, {
-      position: "bottom-left",
+      position: 'bottom-right',
       translate: { y: -40 },
     });
 
-    var orthoSource = new WMTSSource({
-      url: "https://wxs.ign.fr/essentiels/geoportail/wmts/",
-      crs: "EPSG:3857",
-      name: "ORTHOIMAGERY.ORTHOPHOTOS",
-      tileMatrixSet: "PM",
-      format: "image/jpeg",
-      style: "normal",
-    });
 
-    var orthoLayer = new ColorLayer("Ortho", {
-      source: orthoSource,
-    });
+    view.addLayer(planIGNv2Layer);
+    view.addLayer(demHRLayer);
+    view.addLayer(bati3DLayer);
+    view.addLayer(orthoLayer);
+  },
+  methods: {
+    changeMap() {
 
-    //view.addLayer(orthoLayer);
-
-    const batsource = new FileSource({
-      url: "gavres_bati.geojson",
-      crs: "EPSG:2154",
-      format: "application/json",
-    });
-
-    let basic = new FeatureGeometryLayer("basic", {
-      // Use a FileSource to load a single file once
-      source: batsource,
-      transparent: true,
-      opacity: 0.7,
-      //zoom: { min: 10 },
-      style: new Style({
-        fill: {
-          color: setColor,
-          base_altitude: setAltitude,
-          extrusion_height: setExtrusion,
-        },
-      }),
-    });
-
-    //view.addLayer(basic);
-
-    function setAltitude(properties) {
-      if (properties.altitude_sol != null) {
-        return properties.altitude_sol + properties.hauteur;
-      } else {
-        //What to do when there is not floor value?
-        return 5;
+      if (this.$refs.childComponent.mapSelected == "plan") {
+        view.tileLayer.attachedLayers[1].visible = true;
+        view.tileLayer.attachedLayers[4].visible = false;
+        view.notifyChange()
       }
-    }
+      else {
+        view.tileLayer.attachedLayers[1].visible = false;
+        view.tileLayer.attachedLayers[4].visible = true;
+        view.notifyChange()
+      }
+    },
 
-    function setExtrusion(properties) {
-      return properties.hauteur;
-    }
-
-    function setColor(properties) {
-      return new THREE.Color(0xffaaaa);
-    }
+    building() {
+      view.tileLayer.attachedLayers[3].visible = this.$refs.childComponent.visibleBuilding;
+      view.notifyChange()
+    },
 
     //Adding Geotiff of water heights (the localhost link is due to the use of http-server)
     let url = 'http://localhost:8080/donnees/BDD_Simu_2022_02_17/output_rasters/mean_hmax.tif';
@@ -260,8 +234,7 @@ export default {
 .viewer {
   display: flex;
   background-color: blue;
-  margin-top: 40px;
-  height: 95%;
+  height: 96%;
   z-index: 0;
 }
 </style>

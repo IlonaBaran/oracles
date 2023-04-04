@@ -8,6 +8,7 @@ dist
 lib
 node_modules
 .parcel-cache
+data
 
 # local env files
 .env.local
