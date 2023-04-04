@@ -1,126 +1,84 @@
 <template>
-  <!-- <Map :mapSelected="this.mapSelected"></Map> -->
-
-  <div class="toolbar">
-    <!-- <button @click="toggleLegend" class="button">{{ legend }}</button> -->
-  </div>
-  <div class="dial">
-    <SpeedDial :model="items" direction="down" :style="{ top: 'calc(5% + 36px)', right: 'calc(5px)' }"
-      class="right-0 top-0" :tooltipOptions="{ position: 'right' }" />
-  </div>
-  <Sidebar class='sidebar' v-model:visible="visibleRight" position="right">
-    <h2>Fonds de carte</h2>
-
-    <div class="typeCartes" v-if="this.mapSelected == 'ortho'">
-      <Button id="boutonCarte" value='ortho' @click="$emit('icon-clicked', changeMapToOrtho())"
-        class="bg-bluegray-600 hover:bg-bluegray-400 border-bluegray-700 " disabled>
-        <img alt="logo" src="../../public/img/ortho.png" class="h-2rem" />
-      </Button>
-
-      <Button id="boutonCarte" value='plan' @click="$emit('icon-clicked', changeMapToPlan(), this.mapSelected)"
-        class="bg-bluegray-600 hover:bg-bluegray-400 border-bluegray-700">
-        <img alt="logo" src="../../public/img/plan.png" class="h-2rem" value='plan' />
-      </Button>
+    <div class="toolbar">
+      <!-- <button @click="toggleLegend" class="button">{{ legend }}</button> -->
     </div>
-
-    <div class="typeCartes" v-else-if="this.mapSelected == 'plan'">
-
-      <Button id="boutonCarte" value='ortho' @click="$emit('icon-clicked', changeMapToOrtho())"
-        class="bg-bluegray-600 hover:bg-bluegray-400 border-bluegray-700 ">
-        <img alt="logo" src="../../public/img/ortho.png" class="h-2rem" />
-      </Button>
-
-      <Button id="boutonCarte" value='plan' @click="$emit('icon-clicked', changeMapToPlan(), this.mapSelected)"
-        class="bg-bluegray-600 hover:bg-bluegray-400 border-bluegray-700" disabled>
-        <img alt="logo" src="../../public/img/plan.png" class="h-2rem" value='plan' />
-      </Button>
+    <div class="dial">
+      <SpeedDial  :model="items" direction="up" class="right-0 bottom-0"  :tooltipOptions="{ position: 'right' }" />
     </div>
-  </Sidebar>
-</template>
+    <Sidebar class='sidebar' v-model:visible="visibleRight" position="right">
+      <h2>Fonds de carte</h2>
+      <div class="typeCartes">
+        
+        <Button  id="boutonCarte" class="bg-bluegray-600 hover:bg-bluegray-400 border-bluegray-700 ">
+          <img alt="logo" src="../../public/img/ortho.png" class="h-2rem" />
+        </Button>
+
+        <Button  id="boutonCarte" class="bg-bluegray-600 hover:bg-bluegray-400 border-bluegray-700">
+          <img  alt="logo" src="../../public/img/plan.png" class="h-2rem" />
+        </Button>
+
+      </div>
+    </Sidebar>
+
+  </template>
   
 
 
 <script>
 
-import SpeedDial from 'primevue/speeddial';
-import Sidebar from 'primevue/sidebar';
-import Button from 'primevue/button';
-// import Map from './Map.vue';
+  import SpeedDial from 'primevue/speeddial';
+  import Sidebar from 'primevue/sidebar';
+  import Button from 'primevue/button';
 
 
-export default {
-  name: 'Toolbar-box',
-  components: {
-    SpeedDial,
-    Sidebar,
-    Button,
-    // Map
-
-  },
+  export default {
+    name: 'Toolbar-box',
+    components: {
+        SpeedDial,
+        Sidebar,
+        Button
+    },
   data() {
     return {
       is2D: true,
       legend2D: '2D',
       legend3D: '3D',
       visibleRight: false,
-      visibleBuilding: false,
-      mapSelected: "ortho",
 
       items: [
         {
-          label: 'Changer fond de carte',
-          icon: 'pi pi-map',
-          command: () => {
-            this.visibleRight = true;
-          }
-        }, {
-          label: 'Afficher/Masquer les bâtiments',
-          icon: 'pi pi-building',
-          command: () => {
-            this.$emit('change-building');
-
-            if (this.visibleBuilding) {
-              this.visibleBuilding = false;
+            label: 'Change Map',
+            icon: 'pi pi-map',
+            command: () => {
+                this.visibleRight=  true;
             }
-            else {
-              this.visibleBuilding = true;
-            }
-          }
         },
-        {
-          label: 'Recentrer la vue',
-          icon: 'pi pi-undo',
-          command: () => {
-            this.$emit('reinit-view');
-          }
+              {
+            label: 'Delete',
+            icon: 'pi pi-trash',
+            command: () => {
+            }
         },
       ]
-    }
-  },
-  computed: {
-    legend() {
-      // Return the appropriate legend based on the boolean value of is2D
-      return this.is2D ? this.legend2D : this.legend3D;
-    }
-  },
-  methods: {
-    changeMapToOrtho() {
-      this.mapSelected = "ortho";
+      }
     },
-    changeMapToPlan() {
-      this.mapSelected = "plan";
+    computed: {
+      legend() {
+        // Return the appropriate legend based on the boolean value of is2D
+        return this.is2D ? this.legend2D : this.legend3D;
+      }
     },
-
-    toggleLegend() {
-      // Toggle the boolean value of is2D
-      this.is2D = !this.is2D;
+    methods: {
+      toggleLegend() {
+        // Toggle the boolean value of is2D
+        this.is2D = !this.is2D;
+      }
     }
   }
-}
 </script>
   
-<style>
-.button {
+  <style>
+ .button {
   display: inline-block;
   padding: 10px 15px;
   font-size: 12px;
@@ -139,42 +97,39 @@ export default {
   right: 2%;
 }
 
-.button:hover {
-  background-color: #6366f1
-}
+.button:hover {background-color: #6366f1}
 
 .button:active {
   background-color: #6366f1;
   box-shadow: 0 5px #666;
   transform: translateY(4px);
 }
-
-.toolbar {
+.toolbar{
   z-index: 2;
 }
 
-.dial {
-  z-index: 2;
-
+.dial{
+    z-index: 2;
+    position: absolute;
+    bottom: 28%;
+    right: 6%;
 }
 
-.sidebar {
-  z-index: 2;
+.sidebar{
+    z-index: 2;
 }
 
-.typeCartes {
+.typeCartes{
   display: flex;
-  align-items: center;
+  align-items: center;  
   flex-direction: column;
 }
-
-img {
+img{
   width: 100%;
 
 }
-
 #boutonCarte {
-  margin: 5%;
+  margin: 5% ;
   padding: 0%;
 }
 </style>
