@@ -3,15 +3,15 @@
   </div>
   <Toolbar @icon-clicked="changeMap" ref="childComponent" @change-building="building" @reinit-view="cameraView">
   </Toolbar>
-
 </template>
 
 <script>
 /* eslint-disable */
 import Toolbar from "./Toolbar.vue";
 import '../../node_modules/itowns/examples/css/widgets.css'
-import { FileSource, THREE, Style, proj4, Extent, FeatureGeometryLayer, Coordinates, GlobeView, WMTSSource, WMSSource, ColorLayer, ElevationLayer, } from "../../node_modules/itowns/dist/itowns";
+import { FileSource, THREE, Style, proj4, Extent, FeatureGeometryLayer, Coordinates, GlobeView, WMTSSource, WMSSource, ColorLayer, ElevationLayer, Copy, As } from "../../node_modules/itowns/dist/itowns";
 import { Navigation } from '../../node_modules/itowns/dist/itowns_widgets.js';
+import * as GeoTIFF from 'geotiff';
 import {
   planIGNv2Layer, orthoLayer,
   demHRLayer
@@ -45,7 +45,10 @@ export default {
     const viewerDiv = document.getElementById("viewerDiv");
   },
   mounted() {
+
     const coord = [-3.35291, 47.69651];
+    const coord3 = new THREE.Vector3(-3.35291, 47.69651, 0);
+
 
     //defining projection coordinate unit
     proj4.defs(
@@ -81,26 +84,7 @@ export default {
     view.addLayer(demHRLayer);
     view.addLayer(bati3DLayer);
     view.addLayer(orthoLayer);
-  },
-  methods: {
-    changeMap() {
 
-      if (this.$refs.childComponent.mapSelected == "plan") {
-        view.tileLayer.attachedLayers[1].visible = true;
-        view.tileLayer.attachedLayers[4].visible = false;
-        view.notifyChange()
-      }
-      else {
-        view.tileLayer.attachedLayers[1].visible = false;
-        view.tileLayer.attachedLayers[4].visible = true;
-        view.notifyChange()
-      }
-    },
-
-    building() {
-      view.tileLayer.attachedLayers[3].visible = this.$refs.childComponent.visibleBuilding;
-      view.notifyChange()
-    },
 
     //Adding Geotiff of water heights (the localhost link is due to the use of http-server)
     let url = 'http://localhost:8080/donnees/BDD_Simu_2022_02_17/output_rasters/mean_hmax.tif';
@@ -136,7 +120,7 @@ export default {
 
       let geometry = new THREE.BufferGeometry();
       let vertices = [];
-      let colors = [];
+
 
       for (let i = 0; i < width - 1; i++) {
         for (let j = 0; j < height - 1; j++) {
@@ -191,7 +175,7 @@ export default {
 
         };
       };
-      console.log(vertices)
+
       geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(vertices), 3));
 
       // create material
@@ -202,30 +186,39 @@ export default {
       });
 
       let mesh = new THREE.Mesh(geometry, material);
-
+      mesh.updateMatrixWorld();
       view.scene.add(mesh);
+      view.mesh = mesh;
+      view.notifyChange();
 
-
-
-
-      // view.scene.children[3].position.x = 222955.5;
-      // view.scene.children[3].position.y = 6750269.5;
-      // view.scene.children[3].position.z = 4696062;
-      // view.notifyChange()
-      console.log(view.scene)
-
+      console.log(view.mesh)
 
     };
     xhr.send();
 
-    // view.camera.camera3D.position.x = 0;
-    // view.camera.camera3D.position.y = 0;
-    // view.camera.camera3D.position.z = 0;
-    // view.notifyChange()
-
-
   },
-  methods: {},
+  beforeUnmount() {
+    this.$refs.myCanvas.removeEventListener('mousedown', this.onMouseDown);
+    this.$refs.myCanvas.removeEventListener('mouseup', this.onMouseUp);
+  },
+  methods: {
+    changeMap() {
+      if (this.$refs.childComponent.mapSelected == "plan") {
+        view.tileLayer.attachedLayers[1].visible = true;
+        view.tileLayer.attachedLayers[4].visible = false;
+        view.notifyChange();
+      } else {
+        view.tileLayer.attachedLayers[1].visible = false;
+        view.tileLayer.attachedLayers[4].visible = true;
+        view.notifyChange();
+      }
+    },
+    building() {
+      view.tileLayer.attachedLayers[3].visible = this.$refs.childComponent.visibleBuilding;
+      view.notifyChange();
+    }
+  },
+
 };
 </script>
 
