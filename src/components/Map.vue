@@ -3,6 +3,7 @@
   </div>
   <Toolbar @icon-clicked="changeMap" ref="childComponent" @change-building="building" @reinit-view="cameraView">
   </Toolbar>
+
 </template>
 
 <script>
@@ -41,28 +42,29 @@ export default {
     Toolbar,
   },
   created() {
-    const viewerDiv = document.getElementById('viewerDiv');
-
+    const viewerDiv = document.getElementById("viewerDiv");
   },
   mounted() {
     const coord = [-3.35291, 47.69651];
 
     //defining projection coordinate unit
     proj4.defs(
-      'EPSG:2154',
-      '+proj=lcc +lat_1=49 +lat_2=44 +lat_0=46.5 +lon_0=3 +x_0=700000 +y_0=6600000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs'
+      "EPSG:2154",
+      "+proj=lcc +lat_1=49 +lat_2=44 +lat_0=46.5 +lon_0=3 +x_0=700000 +y_0=6600000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"
     );
 
     //defining the views geographic extent, how far does it go
     const viewExtent = new Extent(
-      'EPSG:2154',
-      222955.5000, 224545.5000, 6750269.5000, 6752639.5000
+      "EPSG:2154",
+      222955.5,
+      224545.5,
+      6750269.5,
+      6752639.5
     );
 
     var placement = {
       coord: new Coordinates('EPSG:4326', coord[0], coord[1]),
       range: 2500
-
     };
 
     view = new GlobeView(viewerDiv, placement);
@@ -84,7 +86,6 @@ export default {
     changeMap() {
 
       if (this.$refs.childComponent.mapSelected == "plan") {
-
         view.tileLayer.attachedLayers[1].visible = true;
         view.tileLayer.attachedLayers[4].visible = false;
         view.notifyChange()
@@ -101,16 +102,131 @@ export default {
       view.notifyChange()
     },
 
-    cameraView() {
-      view.camera.camera3D.position.x = 4295077.582429348;
-      view.camera.camera3D.position.y = -251632.32006396126;
-      view.camera.camera3D.position.z = 4696062.254883134;
-      view.notifyChange();
+    //Adding Geotiff of water heights (the localhost link is due to the use of http-server)
+    let url = 'http://localhost:8080/donnees/BDD_Simu_2022_02_17/output_rasters/mean_hmax.tif';
 
-    }
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", url)
+    xhr.responseType = 'arraybuffer';
+    xhr.onload = async function (e) {
 
-  }
-}
+      var buffer = await xhr.response;
+      const tiff = await GeoTIFF.fromArrayBuffer(buffer);
+      const image = await tiff.getImage();
+      const bbox = await image.getBoundingBox();
+      const width = await image.getWidth();
+      const height = await image.getHeight();
+      const data = await image.readRasters();
+
+      // extract a subarray with the first 530*790=419,700 elements
+      const subarray = data[0].subarray(0, 530 * 790);
+
+      // split the subarray into rows of 790 elements
+      const rows = [];
+      for (let i = 0; i < subarray.length; i += 790) {
+        rows.push(subarray.slice(i, i + 790));
+      }
+      const Xo = bbox[0];
+      const Xf = bbox[2];
+      const Yo = bbox[1];
+      const Yf = bbox[3];
+
+      const Xsize = (Xf - Xo) / width;
+      const Ysize = (Yf - Yo) / height;
+
+      let geometry = new THREE.BufferGeometry();
+      let vertices = [];
+      let colors = [];
+
+      for (let i = 0; i < width - 1; i++) {
+        for (let j = 0; j < height - 1; j++) {
+          vertices.push(Xo + i * Xsize);
+          vertices.push(Yo + j * Ysize);
+          if (rows[i][j]) {
+            vertices.push(rows[i][j]);
+          } else {
+            vertices.push(0)
+          }
+
+          vertices.push(Xo + (i + 1) * Xsize);
+          vertices.push(Yo + j * Ysize);
+          if (rows[i][j]) {
+            vertices.push(rows[i + 1][j]);
+          } else {
+            vertices.push(0)
+          }
+
+          vertices.push(Xo + i * Xsize);
+          vertices.push(Yo + (j + 1) * Ysize);
+          if (rows[i][j]) {
+            vertices.push(rows[i][j + 1]);
+          } else {
+            vertices.push(0)
+          }
+
+          vertices.push(Xo + i * Xsize);
+          vertices.push(Yo + (j + 1) * Ysize);
+          if (rows[i][j]) {
+            vertices.push(rows[i][j + 1]);
+          } else {
+            vertices.push(0)
+          }
+
+          vertices.push(Xo + (i + 1) * Xsize);
+          vertices.push(Yo + j * Ysize);
+          if (rows[i][j]) {
+            vertices.push(rows[i + 1][j]);
+          } else {
+            vertices.push(0)
+          }
+
+
+          vertices.push(Xo + (i + 1) * Xsize);
+          vertices.push(Yo + (j + 1) * Ysize);
+          if (rows[i][j]) {
+            vertices.push(rows[i + 1][j + 1]);
+          } else {
+            vertices.push(0)
+          }
+
+        };
+      };
+      console.log(vertices)
+      geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(vertices), 3));
+
+      // create material
+      const material = new THREE.MeshBasicMaterial({
+        transparent: true,
+        opacity: 0.8,
+        color: 0xff4500
+      });
+
+      let mesh = new THREE.Mesh(geometry, material);
+
+      view.scene.add(mesh);
+
+
+
+
+      // view.scene.children[3].position.x = 222955.5;
+      // view.scene.children[3].position.y = 6750269.5;
+      // view.scene.children[3].position.z = 4696062;
+      // view.notifyChange()
+      console.log(view.scene)
+
+
+    };
+    xhr.send();
+
+    // view.camera.camera3D.position.x = 0;
+    // view.camera.camera3D.position.y = 0;
+    // view.camera.camera3D.position.z = 0;
+    // view.notifyChange()
+
+
+  },
+  methods: {},
+};
 </script>
 
 
@@ -120,6 +236,5 @@ export default {
   background-color: blue;
   height: 96%;
   z-index: 0;
-
 }
 </style>
