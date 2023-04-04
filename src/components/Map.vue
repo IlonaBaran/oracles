@@ -3,7 +3,6 @@
   </div>
   <Toolbar @icon-clicked="changeMap" ref="childComponent" @change-building="building" @reinit-view="cameraView">
   </Toolbar>
-
 </template>
 
 <script>
@@ -101,131 +100,7 @@ export default {
       view.tileLayer.attachedLayers[3].visible = this.$refs.childComponent.visibleBuilding;
       view.notifyChange()
     },
-
-    //Adding Geotiff of water heights (the localhost link is due to the use of http-server)
-    let url = 'http://localhost:8080/donnees/BDD_Simu_2022_02_17/output_rasters/mean_hmax.tif';
-
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", url)
-    xhr.responseType = 'arraybuffer';
-    xhr.onload = async function (e) {
-
-      var buffer = await xhr.response;
-      const tiff = await GeoTIFF.fromArrayBuffer(buffer);
-      const image = await tiff.getImage();
-      const bbox = await image.getBoundingBox();
-      const width = await image.getWidth();
-      const height = await image.getHeight();
-      const data = await image.readRasters();
-
-      // extract a subarray with the first 530*790=419,700 elements
-      const subarray = data[0].subarray(0, 530 * 790);
-
-      // split the subarray into rows of 790 elements
-      const rows = [];
-      for (let i = 0; i < subarray.length; i += 790) {
-        rows.push(subarray.slice(i, i + 790));
-      }
-      const Xo = bbox[0];
-      const Xf = bbox[2];
-      const Yo = bbox[1];
-      const Yf = bbox[3];
-
-      const Xsize = (Xf - Xo) / width;
-      const Ysize = (Yf - Yo) / height;
-
-      let geometry = new THREE.BufferGeometry();
-      let vertices = [];
-      let colors = [];
-
-      for (let i = 0; i < width - 1; i++) {
-        for (let j = 0; j < height - 1; j++) {
-          vertices.push(Xo + i * Xsize);
-          vertices.push(Yo + j * Ysize);
-          if (rows[i][j]) {
-            vertices.push(rows[i][j]);
-          } else {
-            vertices.push(0)
-          }
-
-          vertices.push(Xo + (i + 1) * Xsize);
-          vertices.push(Yo + j * Ysize);
-          if (rows[i][j]) {
-            vertices.push(rows[i + 1][j]);
-          } else {
-            vertices.push(0)
-          }
-
-          vertices.push(Xo + i * Xsize);
-          vertices.push(Yo + (j + 1) * Ysize);
-          if (rows[i][j]) {
-            vertices.push(rows[i][j + 1]);
-          } else {
-            vertices.push(0)
-          }
-
-          vertices.push(Xo + i * Xsize);
-          vertices.push(Yo + (j + 1) * Ysize);
-          if (rows[i][j]) {
-            vertices.push(rows[i][j + 1]);
-          } else {
-            vertices.push(0)
-          }
-
-          vertices.push(Xo + (i + 1) * Xsize);
-          vertices.push(Yo + j * Ysize);
-          if (rows[i][j]) {
-            vertices.push(rows[i + 1][j]);
-          } else {
-            vertices.push(0)
-          }
-
-
-          vertices.push(Xo + (i + 1) * Xsize);
-          vertices.push(Yo + (j + 1) * Ysize);
-          if (rows[i][j]) {
-            vertices.push(rows[i + 1][j + 1]);
-          } else {
-            vertices.push(0)
-          }
-
-        };
-      };
-      console.log(vertices)
-      geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(vertices), 3));
-
-      // create material
-      const material = new THREE.MeshBasicMaterial({
-        transparent: true,
-        opacity: 0.8,
-        color: 0xff4500
-      });
-
-      let mesh = new THREE.Mesh(geometry, material);
-
-      view.scene.add(mesh);
-
-
-
-
-      // view.scene.children[3].position.x = 222955.5;
-      // view.scene.children[3].position.y = 6750269.5;
-      // view.scene.children[3].position.z = 4696062;
-      // view.notifyChange()
-      console.log(view.scene)
-
-
-    };
-    xhr.send();
-
-    // view.camera.camera3D.position.x = 0;
-    // view.camera.camera3D.position.y = 0;
-    // view.camera.camera3D.position.z = 0;
-    // view.notifyChange()
-
-
-  },
-  methods: {},
+  }
 };
 </script>
 
