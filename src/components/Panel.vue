@@ -57,6 +57,8 @@ export default {
         ScrollPanel,
     },
 
+    // inject: ["lineChartAffichage"],
+
     props: {
         selectedScenario: {
             type: Object,
@@ -75,8 +77,44 @@ export default {
             checkedPanel: ref(false),
 
             // LINE
-            chartOptions: ref(null),
-            series: ref(null),
+            chartOptions: {
+                    chart: {
+                        id: 'mychart',
+                        height: 350,
+                        type: 'line',
+                        defaultPoint_marker_visible: false,
+                        zoom: {
+                            enabled: false
+                        }
+                    },
+                    dataLabels: {
+                        enabled: false
+                    },
+                    stroke: {
+                        curve: 'straight'
+                    },
+                    title: {
+                        text: 'Product Trends by Month',
+                        align: 'left'
+                    },
+                    grid: {
+                        row: {
+                            colors: ['#f3f3f3', 'transparent'],
+                            opacity: 0.5
+                        },
+                    },
+                    xaxis: {
+                        tooltip: {
+                            enabled: false
+                        },
+                        categories: ["02:40", "02:50", "03:10", "03:20"],
+                    }
+                },
+            
+            series:  [{
+                name: "Desktops",
+                data: [1, 2, 3, 4]
+            }],
 
             // ROSE WIND HIGHCHARTJS
             chartOptions2: ref(null),
@@ -99,7 +137,31 @@ export default {
 
 
         methods: {
-            lineChart(){
+            affichageAllGraph(){
+                let graph = this.selectedGraph["name"];
+                if (graph = "Graph2D 1"){
+                    lineChartAffichage();
+                }
+                else if (graph = "Graph2D 2"){
+                    // lineChartAffichage();
+                }
+                else if (graph = "Graph2D 3"){
+                    // lineChartAffichage();
+                }
+                else if (graph = "Graph3D 1"){
+                    // lineChartAffichage();
+                }
+                else if (graph = "Graph3D 2"){
+                    heatMapAffichage();
+                }
+
+            },
+
+
+            lineChart(abcisses, ordonnees){
+                console.log(abcisses);
+                console.log(ordonnees);
+                // console.log(typeof abcisses);
                 this.chartOptions = reactive({
                     chart: {
                         id: 'mychart',
@@ -130,42 +192,49 @@ export default {
                         tooltip: {
                             enabled: false
                         },
-                        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
+                        // categories: ["02:40", "02:50", "03:10", "03:20"],
+                        categories: abcisses,
+                        // categories: ["02:40", "02:50", "03:00", "03:10", "03:20", "03:30", "03:40", "03:50", "04:00", "04:10", "04:20", "04:30", "04:40", "04:50", "05:00", "05:10", "05:20", "05:30", "05:40", "05:50", "06:00", "06:10", "06:20", "06:30", "06:40", "06:50", "07:00", "07:10", "07:20", "07:30", "07:40", "07:50", "08:00", "08:10", "08:20", "08:30"]
                     }
             });
 
             this.series =  [{
                 name: "Desktops",
-                data: [10, 41, 35, 51, 49, 62, 69, 91, 148]
+                // data: [10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51]
+                data: ordonnees
             }]
         },
 
         lineChartAffichage() {
-            // var abcisses = [];
-            // var ordonnees = [];
-            // for (const element of this.selectedScenario) {
-            //     // RECUPERATION DES DONNES AVEC DES FECTH - c
-            //     var file = 'http://localhost:8081/' + element["name"] + '.json';
-            //     fetch(file)
-            //         .then(response => response.json())
-            //         .then(data => {
-            //             console.log(data);
-            //             for (const property in data) {
-            //                 // var dict = {
-            //                 //     x: `${data[property]["heure"]}`,
-            //                 //     y: parseFloat(`${data[property]["Maree(m)"]}`),
-            //                 // };
-            //                 abcisses.push(`${data[property]["heure"]}`);
-            //                 ordonnees.push(parseFloat(`${data[property]["Maree(m)"]}`));
-            //             }
-            //             // this.lineChart();
-            //             // this.lineChart(abcisses, ordonnees);
+            var abcisses = new Array();
+            var ordonnees = new Array() ;
+            for (const element of this.selectedScenario) {
+                var file = 'http://localhost:8081/' + element["name"] + '.json';
+                fetch(file)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data);
+                        for (const property in data) {
+                            // var dict = {
+                            //     x: `${data[property]["heure"]}`,
+                            //     y: parseFloat(`${data[property]["Maree(m)"]}`),
+                            // };
+                            abcisses.push(data[property]["heure"]);
+                            ordonnees.push(parseFloat(data[property]["Maree(m)"]));
+                        }
+                    })
+                }
+            // this.lineChart(abcisses, ordonnees);
+            // this.lineChart(abcisses,  [10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51]);
+            this.lineChart(abcisses,  ordonnees);
 
-            //         })
-            //     }
-            this.lineChart();
+
+            // console.log(abcisses);
+            // var hrgu = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'];
+            // console.log( hrgu);
+            // console.log(typeof hrgu);
+            // console.log(typeof [10, 41, 35, 51, 49, 62, 69, 91, 148]);
         },
-
 
 
         roseChartHIGHCHARTS(){
@@ -326,33 +395,6 @@ export default {
         roseVentAffichage(){
         },
 
-        heatMapAffichage() {
-            var dict = {};
-            for (const element of this.selectedScenario) {
-                var elem = `${element["name"]}`;
-                dict[elem] = elem;
-            }
-            fetch('http://localhost:5000/api/data', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(dict)
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Données envoyées avec succès !');        
-                fetch('http://localhost:5000/api/data')
-                .then(response => response.json())
-                .then(data => {
-                console.log(data);
-                })
-            })
-            .catch(error => {
-                console.error('Erreur lors de l\'envoi des données :', error);
-            });
-        },
-
         sendData(data) {
             // const data = { /* Vos données ici */ };
             fetch('127.0.0.1:5000/api/data', {
@@ -371,7 +413,50 @@ export default {
             });
         },
 
-        heatMap(){
+        heatMapAffichage() {
+            var listDataPlot= [];
+            for (const element of this.selectedScenario) {
+                fetch('http://localhost:8081/' + `${element["name"]}` + '.json')
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    var dict = {};
+                    for (const property in data) {
+                        var dict = {
+                            name: `${element["name"]}`,
+                            data: parseFloat(`${data[property]["Hs(vagues)(m)"]}`),
+                        };
+                        listDataPlot.push(dict);
+                    }
+                })
+            }
+
+            this.heatMap(listDataPlot);
+            console.log(listDataPlot);
+            console.log("_______________");
+            //  POUR LE DIAGRAMME 3 
+            // fetch('http://localhost:5000/api/data', {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json'
+            //     },
+            //     body: JSON.stringify(dict)
+            // })
+            // .then(response => response.json())
+            // .then(data => {
+            //     console.log('Données envoyées avec succès !');        
+            //     fetch('http://localhost:5000/api/data')
+            //     .then(response => response.json())
+            //     .then(data => {
+            //     console.log(data);
+            //     })
+            // })
+            // .catch(error => {
+            //     console.error('Erreur lors de l\'envoi des données :', error);
+            // });
+        },
+
+        heatMap(donnees){
             this.chartOptions3 = {
                  chart: {
                         type: 'heatmap',
@@ -407,19 +492,26 @@ export default {
                 },
             },
 
-            this.series3 = [{
-          name: 'Metric1',
-          data: [11, 12, 8],
-        },
-        {
-          name: 'Metric2',
-          data: [10, 7, 13],
-        },
-        {
-          name: 'Metric3',
-          data: [1, 2, 3],
-        },
-      ]},
+    //         this.series3 = [
+    //     {
+    //       name: 'Metric1',
+    //       data: [11, 12, 8],
+    //     },
+    //     {
+    //       name: 'Metric2',
+    //       data: [10, 7, 13],
+    //     },
+    //     {
+    //       name: 'Metric3',
+    //       data: [1, 2, 3],
+    //     },
+    //     {
+    //       name: 'Metric4',
+    //       data: [1, 20, 3],
+    //     },
+    //   ]
+        this.series3 = donnees;
+      },
     }
 
 };
@@ -427,29 +519,7 @@ export default {
 
 
     
-        // lineChartAffichage() {
-        // this.chart = new ApexCharts(document.querySelector("#chart"), this.chartOptions);
-        // this.chart.render();
-        // var L = [];
-        // for (const element of this.selectedScenario) {
-        //     // RECUPERATION DES DONNES AVEC DES FECTH - c
-        //     var file = 'http://localhost:8081/' + element["name"] + '.json';
-        //     fetch(file)
-        //         .then(response => response.json())
-        //         .then(data => {
-        //             console.log(data);
-        //             for (const property in data) {
-        //                 var dict = {
-        //                     x: `${data[property]["heure"]}`,
-        //                     y: parseFloat(`${data[property]["Maree(m)"]}`),
-        //                 };
-        //                 L.push(dict);
-        //             }
-        //             this.lineChart();
-        //         })
-        //     }
-//         },
-//   },
+
 
 //         roseVentAffichage() {
 //             var L = [];
