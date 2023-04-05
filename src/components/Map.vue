@@ -1,5 +1,5 @@
 <template>
-  <div id="viewerDiv" class="viewer">
+  <div id="viewerDiv" class="viewer" @click="showCoords">
   </div>
   <Toolbar @icon-clicked="changeMap" ref="childComponent" @change-building="building" @reinit-view="cameraView">
   </Toolbar>
@@ -80,6 +80,10 @@ export default {
     view.addLayer(demHRLayer);
     view.addLayer(bati3DLayer);
     view.addLayer(orthoLayer);
+
+    console.log(view)
+
+
   },
   methods: {
     changeMap() {
@@ -110,7 +114,13 @@ export default {
 
       view.camera.camera3D.position.z = 4696062.254883134;
       view.notifyChange();
+    },
+    showCoords(e) {
+      console.log('view', view.eventToViewCoords(e))
+      console.log('normalized', view.eventToNormalizedCoords(e))
+      console.log('world', view.getPickingPositionFromDepth())
     }
+
   }
 };
 </script>
