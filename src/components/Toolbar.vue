@@ -1,17 +1,28 @@
 <template>
-  <!-- <Map :mapSelected="this.mapSelected"></Map> -->
-
-  <div class="toolbar">
-    <!-- <button @click="toggleLegend" class="button">{{ legend }}</button> -->
-  </div>
+  <!-- Dial permettant l'affichage des différents outils et paramètres de la carte  -->
   <div class="dial">
     <SpeedDial :model="items" direction="down" :style="{ top: 'calc(5% + 36px)', right: 'calc(5px)' }"
       class="right-0 top-0" :tooltipOptions="{ position: 'right' }" />
   </div>
+
+  <!-- Sidebar de la sélection des hmax à afficher -->
+  <Sidebar class='sidebar' v-model:visible="visibleHmax" position="right">
+    <h2 style="text-align:center;">Sélection des hMax à afficher</h2>
+    <div class="centerDiv">
+      <p style="margin-bottom:20px;">Sélectionnez un ou plusieurs scénarios pour afficher leurs hauteur maximale
+        associée.
+      </p>
+      <MultiSelect v-model="selectedScenario" :options="scenario" filter optionLabel="name"
+        placeholder="Sélection Scénarios" :maxSelectedLabels="3" class="w-full md:w-20rem selectScenario"
+        :selectedScenario="this.selectedScenario" />
+    </div>
+  </Sidebar>
+
+  <!-- Sidebar de la sélection du fond de carte -->
   <Sidebar class='sidebar' v-model:visible="visibleRight" position="right">
     <h2>Fonds de carte</h2>
-
-    <div class="typeCartes" v-if="this.mapSelected == 'ortho'">
+    <!-- Désactivation du bouton ortho si le fond de carte actuel est déjà l'ortho -->
+    <div class="centerDiv" v-if="this.mapSelected == 'ortho'">
       <Button id="boutonCarte" value='ortho' @click="$emit('icon-clicked', changeMapToOrtho())"
         class="bg-bluegray-600 hover:bg-bluegray-400 border-bluegray-700 " disabled>
         <img alt="logo" src="../../public/img/ortho.png" class="h-2rem" />
@@ -23,7 +34,8 @@
       </Button>
     </div>
 
-    <div class="typeCartes" v-else-if="this.mapSelected == 'plan'">
+    <!-- Désactivation du bouton plan si le fond de carte actuel est déjà le plan -->
+    <div class="centerDiv" v-else-if="this.mapSelected == 'plan'">
 
       <Button id="boutonCarte" value='ortho' @click="$emit('icon-clicked', changeMapToOrtho())"
         class="bg-bluegray-600 hover:bg-bluegray-400 border-bluegray-700 ">
@@ -41,11 +53,10 @@
 
 
 <script>
-
+// Import des éléments des librairies
 import SpeedDial from 'primevue/speeddial';
 import Sidebar from 'primevue/sidebar';
 import Button from 'primevue/button';
-// import Map from './Map.vue';
 
 
 export default {
@@ -54,31 +65,42 @@ export default {
     SpeedDial,
     Sidebar,
     Button,
-    // Map
 
   },
   data() {
     return {
-      is2D: true,
-      legend2D: '2D',
-      legend3D: '3D',
-      visibleRight: false,
-      visibleBuilding: false,
-      mapSelected: "ortho",
 
+      visibleRight: false, // visibilité du panel de fonds de carte
+      visibleBuilding: false, // visibilité des bâtiments
+      visibleHmax: false, // visibilité du hmax
+      mapSelected: "ortho", // fond de carte sélectionné
+
+      // Liste des éléments du speedDial
       items: [
         {
           label: 'Changer fond de carte',
           icon: 'pi pi-map',
           command: () => {
+            // si le bouton est cliqué on affiche le panel
             this.visibleRight = true;
           }
-        }, {
+        },
+        {
+          label: 'Afficher les hauteurs maximales',
+          icon: 'pi pi-globe',
+          command: () => {
+            // si le bouton est cliqué on affiche le panel
+            this.visibleHmax = true;
+          }
+        },
+        {
           label: 'Afficher/Masquer les bâtiments',
           icon: 'pi pi-building',
           command: () => {
+            // Si le bouton est cliqué on emet "change-building" au composant parent Map.vue
+            // La fonction alors appelé affichera ou non la couche de bâtiments en fonction
+            // de la valeur de this.visibleBuilding
             this.$emit('change-building');
-
             if (this.visibleBuilding) {
               this.visibleBuilding = false;
             }
@@ -91,30 +113,24 @@ export default {
           label: 'Recentrer la vue',
           icon: 'pi pi-undo',
           command: () => {
+            // Si le bouton est cliqué on emet "reinit-view" au composant parent Map.vue
+            // On replace la caméra aux coordonnées d'origines
             this.$emit('reinit-view');
           }
         },
       ]
     }
   },
-  computed: {
-    legend() {
-      // Return the appropriate legend based on the boolean value of is2D
-      return this.is2D ? this.legend2D : this.legend3D;
-    }
-  },
+
   methods: {
+    // Les deux fonctions suivantes permettent de changer la valeur de mapSelected en fonction
+    // du bouton cliqué
     changeMapToOrtho() {
       this.mapSelected = "ortho";
     },
     changeMapToPlan() {
       this.mapSelected = "plan";
     },
-
-    toggleLegend() {
-      // Toggle the boolean value of is2D
-      this.is2D = !this.is2D;
-    }
   }
 }
 </script>
@@ -162,7 +178,7 @@ export default {
   z-index: 2;
 }
 
-.typeCartes {
+.centerDiv {
   display: flex;
   align-items: center;
   flex-direction: column;
