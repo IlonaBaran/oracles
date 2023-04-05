@@ -21,6 +21,7 @@ import { ref } from "vue";
 import {
   bati3DLayer
 } from '../services/WFS_service.js'
+import { inheritLeadingComments } from "@babel/types";
 
 
 let view = ref(false);
@@ -47,7 +48,6 @@ export default {
   mounted() {
 
     const coord = [-3.35291, 47.69651];
-    const coord3 = new THREE.Vector3(-3.35291, 47.69651, 0);
 
 
     //defining projection coordinate unit
@@ -114,79 +114,115 @@ export default {
       const Xf = bbox[2];
       const Yo = bbox[1];
       const Yf = bbox[3];
+      const center = [(Xo + Xf) / 2, (Yo + Yf) / 2]
+      const coord3 = new Coordinates('EPSG:2154', center[0], center[1]);
+
 
       const Xsize = (Xf - Xo) / width;
       const Ysize = (Yf - Yo) / height;
 
       let geometry = new THREE.BufferGeometry();
-      let vertices = [];
+
+      const vertices = [
+        -width * Xsize / 2, height * Ysize / 2, 0,         // top left
+        width * Xsize / 2, height * Ysize / 2, 0,          // top right
+        -width * Xsize / 2, -height * Ysize / 2, 0,        // bottom left
+        -width * Xsize / 2, -height * Ysize / 2, 0,        // bottom left
+        width * Xsize / 2, height * Ysize / 2, 0,          // top right
+        width * Xsize / 2, -height * Ysize / 2, 0,         // bottom right
+      ];
+
+      let indices = [];
+
+      // for (let i = 0; i < width - 1; i++) {
+      //   for (let j = 0; j < height - 1; j++) {
+
+      //     vertices.push(i * Xsize);
+      //     vertices.push(j * Ysize);
+      //     if (rows[i][j]) {
+      //       vertices.push(rows[i][j]);
+      //     } else {
+      //       vertices.push(0);
+      //     }
+      //     indices.push(rows[i][j]);
+
+      //     vertices.push((i + 1) * Xsize);
+      //     vertices.push(j * Ysize);
+      //     if (rows[i][j]) {
+      //       vertices.push(rows[i + 1][j]);
+      //     } else {
+      //       vertices.push(0);
+      //     }
+      //     indices.push(rows[i][j]);
 
 
-      for (let i = 0; i < width - 1; i++) {
-        for (let j = 0; j < height - 1; j++) {
-          vertices.push(Xo + i * Xsize);
-          vertices.push(Yo + j * Ysize);
-          if (rows[i][j]) {
-            vertices.push(rows[i][j]);
-          } else {
-            vertices.push(0)
-          }
-
-          vertices.push(Xo + (i + 1) * Xsize);
-          vertices.push(Yo + j * Ysize);
-          if (rows[i][j]) {
-            vertices.push(rows[i + 1][j]);
-          } else {
-            vertices.push(0)
-          }
-
-          vertices.push(Xo + i * Xsize);
-          vertices.push(Yo + (j + 1) * Ysize);
-          if (rows[i][j]) {
-            vertices.push(rows[i][j + 1]);
-          } else {
-            vertices.push(0)
-          }
-
-          vertices.push(Xo + i * Xsize);
-          vertices.push(Yo + (j + 1) * Ysize);
-          if (rows[i][j]) {
-            vertices.push(rows[i][j + 1]);
-          } else {
-            vertices.push(0)
-          }
-
-          vertices.push(Xo + (i + 1) * Xsize);
-          vertices.push(Yo + j * Ysize);
-          if (rows[i][j]) {
-            vertices.push(rows[i + 1][j]);
-          } else {
-            vertices.push(0)
-          }
+      //     vertices.push(i * Xsize);
+      //     vertices.push((j + 1) * Ysize);
+      //     if (rows[i][j]) {
+      //       vertices.push(rows[i][j + 1]);
+      //     } else {
+      //       vertices.push(0);
+      //     }
+      //     indices.push(rows[i][j]);
 
 
-          vertices.push(Xo + (i + 1) * Xsize);
-          vertices.push(Yo + (j + 1) * Ysize);
-          if (rows[i][j]) {
-            vertices.push(rows[i + 1][j + 1]);
-          } else {
-            vertices.push(0)
-          }
+      //     vertices.push(i * Xsize);
+      //     vertices.push((j + 1) * Ysize);
+      //     if (rows[i][j]) {
+      //       vertices.push(rows[i][j + 1]);
+      //     } else {
+      //       vertices.push(0);
+      //     }
+      //     indices.push(rows[i][j]);
 
-        };
-      };
 
+      //     vertices.push((i + 1) * Xsize);
+      //     vertices.push(j * Ysize);
+      //     if (rows[i][j]) {
+      //       vertices.push(rows[i + 1][j]);
+      //     } else {
+      //       vertices.push(0);
+      //     }
+      //     indices.push(rows[i][j]);
+
+
+
+      //     vertices.push((i + 1) * Xsize);
+      //     vertices.push((j + 1) * Ysize);
+      //     if (rows[i][j]) {
+      //       vertices.push(rows[i + 1][j + 1]);
+      //     } else {
+      //       vertices.push(0);
+      //     }
+      //     indices.push(rows[i][j]);
+
+
+      //   };
+      // };
+      let rect = new Float32Array([0, 0, 0, 1, 1, 1, 0, 0, 1, 0, 1, 1]);
       geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(vertices), 3));
+      geometry.setAttribute('normal', new THREE.BufferAttribute(rect, 3));
+
 
       // create material
       const material = new THREE.MeshBasicMaterial({
         transparent: true,
         opacity: 0.8,
-        color: 0xff4500
+        color: 0xff4500,
+        side: THREE.DoubleSide
       });
 
       let mesh = new THREE.Mesh(geometry, material);
+      let lambert93 = viewExtent.center();
+      coord3.altitude += 100;
+
+      mesh.position.copy(coord3.as(view.referenceCrs));
+      mesh.lookAt(new THREE.Vector3(0, 0, 0));
+
       mesh.updateMatrixWorld();
+      lambert93.altitude += 30;
+
+
       view.scene.add(mesh);
       view.mesh = mesh;
       view.notifyChange();
@@ -196,10 +232,6 @@ export default {
     };
     xhr.send();
 
-  },
-  beforeUnmount() {
-    this.$refs.myCanvas.removeEventListener('mousedown', this.onMouseDown);
-    this.$refs.myCanvas.removeEventListener('mouseup', this.onMouseUp);
   },
   methods: {
     changeMap() {
