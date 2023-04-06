@@ -57,6 +57,7 @@
 import SpeedDial from 'primevue/speeddial';
 import Sidebar from 'primevue/sidebar';
 import Button from 'primevue/button';
+import MultiSelect from 'primevue/multiselect';
 
 
 export default {
@@ -65,6 +66,7 @@ export default {
     SpeedDial,
     Sidebar,
     Button,
+    MultiSelect
 
   },
   data() {
