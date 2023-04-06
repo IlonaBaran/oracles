@@ -1,0 +1,40 @@
+version: "3"
+services:
+  flask-server:
+    build:
+      context: flask
+      dockerfile: Dockerfile
+    volumes:
+       - ./data/Data:/flask/data
+    ports:
+      - "5000:5000"
+    networks:
+      - tcp1
+
+  http-server:
+    build:
+      context: http-server
+      dockerfile: Dockerfile
+    volumes:
+      - ./data:/http-server/data
+    ports:
+      - "8080:8080"
+    networks:
+      - tcp1
+  
+  app:
+    build:
+      context: . 
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8080"
+    networks:
+      - tcp1
+    depends_on:
+      - http-server
+      - flask-server
+
+volumes:
+  data:
+networks:
+  tcp1:
