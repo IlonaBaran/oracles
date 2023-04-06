@@ -87,7 +87,7 @@ export default {
 
 
     //Adding Geotiff of water heights (the localhost link is due to the use of http-server)
-    let url = 'http://localhost:8080/donnees/BDD_Simu_2022_02_17/output_rasters/mean_hmax.tif';
+    let url = 'http://localhost:8080/donnees/BDD_Simu_2022_02_17/output_rasters/S_1/S_1_hmax.tif';
 
     var xhr = new XMLHttpRequest();
     xhr.open("GET", url)
@@ -114,7 +114,7 @@ export default {
       const Xf = bbox[2];
       const Yo = bbox[1];
       const Yf = bbox[3];
-      const center = [(Xo + Xf) / 2, (Yo + Yf) / 2]
+      const center = [Xf, Yo]
       const coord3 = new Coordinates('EPSG:2154', center[0], center[1]);
 
 
@@ -123,105 +123,52 @@ export default {
 
       let geometry = new THREE.BufferGeometry();
 
-      const vertices = [
-        -width * Xsize / 2, height * Ysize / 2, 0,         // top left
-        width * Xsize / 2, height * Ysize / 2, 0,          // top right
-        -width * Xsize / 2, -height * Ysize / 2, 0,        // bottom left
-        -width * Xsize / 2, -height * Ysize / 2, 0,        // bottom left
-        width * Xsize / 2, height * Ysize / 2, 0,          // top right
-        width * Xsize / 2, -height * Ysize / 2, 0,         // bottom right
-      ];
+      const vertices = [];
 
-      let indices = [];
+      // //this just draws the extent of the image on the earth
+      // const vertices = [
+      //   -width * Xsize / 2, height * Ysize / 2, 0,         // top left
+      //   width * Xsize / 2, height * Ysize / 2, 0,          // top right
+      //   -width * Xsize / 2, -height * Ysize / 2, 0,        // bottom left
+      //   -width * Xsize / 2, -height * Ysize / 2, 0,        // bottom left
+      //   width * Xsize / 2, height * Ysize / 2, 0,          // top right
+      //   width * Xsize / 2, -height * Ysize / 2, 0,         // bottom right 
+      // ];
 
-      // for (let i = 0; i < width - 1; i++) {
-      //   for (let j = 0; j < height - 1; j++) {
+      let indices = [0, 0, 0, 1, 1, 1, 0, 0, 1, 0, 1, 1];
 
-      //     vertices.push(i * Xsize);
-      //     vertices.push(j * Ysize);
-      //     if (rows[i][j]) {
-      //       vertices.push(rows[i][j]);
-      //     } else {
-      //       vertices.push(0);
-      //     }
-      //     indices.push(rows[i][j]);
+      for (let i = 0; i < width - 1; i++) {
+        for (let j = 0; j < height - 1; j++) {
 
-      //     vertices.push((i + 1) * Xsize);
-      //     vertices.push(j * Ysize);
-      //     if (rows[i][j]) {
-      //       vertices.push(rows[i + 1][j]);
-      //     } else {
-      //       vertices.push(0);
-      //     }
-      //     indices.push(rows[i][j]);
+          vertices.push(
+            i * Xsize, j * Ysize, rows[i][j], // top left
+            (i + 1) * Xsize, j * Ysize, rows[i + 1][j], // top right
+            i * Xsize, (j + 1) * Ysize, rows[i][j + 1], // bottom left
 
-
-      //     vertices.push(i * Xsize);
-      //     vertices.push((j + 1) * Ysize);
-      //     if (rows[i][j]) {
-      //       vertices.push(rows[i][j + 1]);
-      //     } else {
-      //       vertices.push(0);
-      //     }
-      //     indices.push(rows[i][j]);
-
-
-      //     vertices.push(i * Xsize);
-      //     vertices.push((j + 1) * Ysize);
-      //     if (rows[i][j]) {
-      //       vertices.push(rows[i][j + 1]);
-      //     } else {
-      //       vertices.push(0);
-      //     }
-      //     indices.push(rows[i][j]);
-
-
-      //     vertices.push((i + 1) * Xsize);
-      //     vertices.push(j * Ysize);
-      //     if (rows[i][j]) {
-      //       vertices.push(rows[i + 1][j]);
-      //     } else {
-      //       vertices.push(0);
-      //     }
-      //     indices.push(rows[i][j]);
-
-
-
-      //     vertices.push((i + 1) * Xsize);
-      //     vertices.push((j + 1) * Ysize);
-      //     if (rows[i][j]) {
-      //       vertices.push(rows[i + 1][j + 1]);
-      //     } else {
-      //       vertices.push(0);
-      //     }
-      //     indices.push(rows[i][j]);
-
-
-      //   };
-      // };
-      let rect = new Float32Array([0, 0, 0, 1, 1, 1, 0, 0, 1, 0, 1, 1]);
+            i * Xsize, (j + 1) * Ysize, rows[i][j + 1], // bottom left
+            (i + 1) * Xsize, j * Ysize, rows[i + 1][j], // top right
+            (i + 1) * Xsize, (j + 1) * Ysize, rows[i + 1][j + 1] // bottom right
+          );
+        };
+      };
+      console.log(vertices)
       geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(vertices), 3));
-      geometry.setAttribute('normal', new THREE.BufferAttribute(rect, 3));
+      geometry.setAttribute('normal', new THREE.BufferAttribute(new Float32Array(indices), 3));
 
 
       // create material
       const material = new THREE.MeshBasicMaterial({
         transparent: true,
         opacity: 0.8,
-        color: 0xff4500,
+        color: 0xE0FFFF,
         side: THREE.DoubleSide
       });
 
       let mesh = new THREE.Mesh(geometry, material);
-      let lambert93 = viewExtent.center();
-      coord3.altitude += 100;
-
       mesh.position.copy(coord3.as(view.referenceCrs));
       mesh.lookAt(new THREE.Vector3(0, 0, 0));
 
       mesh.updateMatrixWorld();
-      lambert93.altitude += 30;
-
 
       view.scene.add(mesh);
       view.mesh = mesh;
