@@ -15,11 +15,20 @@ The goal of Oracles, project by the French National Research Agency is to addres
 
 ```git clone https://github.com/IlonaBaran/oracles.git```
 
-* Set up project
+## Retrieve data and launch project
 
-``` npm install ```
+If you have access to this project you will be provided with a data.zip folder that you should unzip at root of project
 
-* launch Vue project
+inside /data should be :
+    * /Data
+    * /jsonData
+    * /output_rasters
+
+* launch project
+
+``` docker-compose up ```
+
+* launch development server
 
 ``` npm run serve ```
 
