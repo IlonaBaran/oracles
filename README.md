@@ -11,6 +11,12 @@ The goal of Oracles, project by the French National Research Agency is to addres
 ...
 
 ## Installation
+
+* Install Docker 
+
+https://docs.docker.com/desktop/install/windows-install/
+
+
 * clone repo
 
 ```git clone https://github.com/IlonaBaran/oracles.git```
