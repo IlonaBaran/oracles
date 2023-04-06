@@ -120,6 +120,9 @@ export default {
             this.$refs.panelRef.nomDeLaMethodeDansPanel();
         }
     },
+    mounted() {
+        this.getDossier();
+    }
 
 }
 </script>
