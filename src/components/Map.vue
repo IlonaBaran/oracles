@@ -87,7 +87,7 @@ export default {
 
 
     //Adding Geotiff of water heights (the localhost link is due to the use of http-server)
-    let url = 'http://localhost:8080/donnees/BDD_Simu_2022_02_17/output_rasters/S_1/S_1_hmax.tif';
+    let url = 'http://localhost:8081/donnees/BDD_Simu_2022_02_17/output_rasters/max_hmax.tif';
 
     var xhr = new XMLHttpRequest();
     xhr.open("GET", url)
@@ -102,14 +102,6 @@ export default {
       const height = await image.getHeight();
       const data = await image.readRasters();
 
-      // extract a subarray with the first 530*790=419,700 elements
-      const subarray = data[0].subarray(0, 530 * 790);
-
-      // split the subarray into rows of 790 elements
-      const rows = [];
-      for (let i = 0; i < subarray.length; i += 790) {
-        rows.push(subarray.slice(i, i + 790));
-      }
       const Xo = bbox[0];
       const Xf = bbox[2];
       const Yo = bbox[1];
@@ -124,34 +116,42 @@ export default {
       let geometry = new THREE.BufferGeometry();
 
       const vertices = [];
+      const indices = [];
 
-      // //this just draws the extent of the image on the earth
-      // const vertices = [
-      //   -width * Xsize / 2, height * Ysize / 2, 0,         // top left
-      //   width * Xsize / 2, height * Ysize / 2, 0,          // top right
-      //   -width * Xsize / 2, -height * Ysize / 2, 0,        // bottom left
-      //   -width * Xsize / 2, -height * Ysize / 2, 0,        // bottom left
-      //   width * Xsize / 2, height * Ysize / 2, 0,          // top right
-      //   width * Xsize / 2, -height * Ysize / 2, 0,         // bottom right 
-      // ];
+      for (let j = 0; j < width - 1; j++) {
+        for (let i = 0; i < height - 1; i++) {
 
-      let indices = [0, 0, 0, 1, 1, 1, 0, 0, 1, 0, 1, 1];
+          let topL = [(1 / width) * (j), 1 - (1 / height) * (i)];
+          let topR = [(1 / width) * (j), 1 - (1 / height) * (i + 1)];
+          let botL = [(1 / width) * (j + 1), 1 - (1 / height) * (i)];
+          let botR = [(1 / width) * (j + 1), 1 - (1 / height) * (i + 1)];
+
+          indices.push(topL);
+          indices.push(botL);
+          indices.push(topR);
+
+          indices.push(botL);
+          indices.push(topR);
+          indices.push(botR);
+
+        };
+      };
+
 
       for (let i = 0; i < width - 1; i++) {
         for (let j = 0; j < height - 1; j++) {
 
-          vertices.push(
-            i * Xsize, j * Ysize, rows[i][j], // top left
-            (i + 1) * Xsize, j * Ysize, rows[i + 1][j], // top right
-            i * Xsize, (j + 1) * Ysize, rows[i][j + 1], // bottom left
+          vertices.push(i * Xsize, j * Ysize, data[0][i + j * width]), // top left
+            vertices.push((i + 1) * Xsize, j * Ysize, data[0][(i + 1) + j * width]), // top right
+            vertices.push(i * Xsize, (j + 1) * Ysize, data[0][i + (j + 1) * width]), // bottom left
 
-            i * Xsize, (j + 1) * Ysize, rows[i][j + 1], // bottom left
-            (i + 1) * Xsize, j * Ysize, rows[i + 1][j], // top right
-            (i + 1) * Xsize, (j + 1) * Ysize, rows[i + 1][j + 1] // bottom right
-          );
+            vertices.push(i * Xsize, (j + 1) * Ysize, data[0][i + (j + 1) * width]), // bottom left
+            vertices.push((i + 1) * Xsize, j * Ysize, data[0][(i + 1) + j * width]), // top right
+            vertices.push((i + 1) * Xsize, (j + 1) * Ysize, data[0][(i + 1) + (j + 1) * width] // bottom right
+            );
         };
       };
-      console.log(vertices)
+      console.log(vertices, indices)
       geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(vertices), 3));
       geometry.setAttribute('normal', new THREE.BufferAttribute(new Float32Array(indices), 3));
 
@@ -159,12 +159,13 @@ export default {
       // create material
       const material = new THREE.MeshBasicMaterial({
         transparent: true,
-        opacity: 0.8,
+        opacity: 0.5,
         color: 0xE0FFFF,
         side: THREE.DoubleSide
       });
 
       let mesh = new THREE.Mesh(geometry, material);
+      //coord3.altitude = + 50;
       mesh.position.copy(coord3.as(view.referenceCrs));
       mesh.lookAt(new THREE.Vector3(0, 0, 0));
 
@@ -173,8 +174,6 @@ export default {
       view.scene.add(mesh);
       view.mesh = mesh;
       view.notifyChange();
-
-      console.log(view.mesh)
 
     };
     xhr.send();
