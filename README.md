@@ -34,6 +34,10 @@ inside /data should be :
 
 ``` docker-compose up ```
 
+    * flask server : http://localhost:5000/arboresance
+    * http server : http://localhost:8080
+    * app : http://localhost:8081
+
 * launch development server
 
 ``` npm run serve ```
