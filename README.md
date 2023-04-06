@@ -11,15 +11,34 @@ The goal of Oracles, project by the French National Research Agency is to addres
 ...
 
 ## Installation
+
+* Install Docker 
+
+https://docs.docker.com/desktop/install/windows-install/
+
+
 * clone repo
 
 ```git clone https://github.com/IlonaBaran/oracles.git```
 
-* Set up project
+## Retrieve data and launch project
 
-``` npm install ```
+If you have access to this project you will be provided with a data.zip folder that you should unzip at root of project
 
-* launch Vue project
+inside /data should be :
+    * /Data
+    * /jsonData
+    * /output_rasters
+
+* launch project
+
+``` docker-compose up ```
+
+    * flask server : http://localhost:5000/arboresance
+    * http server : http://localhost:8080
+    * app : http://localhost:8081
+
+* launch development server
 
 ``` npm run serve ```
 
