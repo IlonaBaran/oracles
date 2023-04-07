@@ -87,7 +87,7 @@ export default {
 
 
     //Adding Geotiff of water heights (the localhost link is due to the use of http-server)
-    let url = 'http://localhost:8081/donnees/BDD_Simu_2022_02_17/output_rasters/max_hmax.tif';
+    let url = 'http://localhost:8080/ore__kbz_mnt_litto3d_5m.tif';
 
     var xhr = new XMLHttpRequest();
     xhr.open("GET", url)
@@ -95,8 +95,11 @@ export default {
     xhr.onload = async function (e) {
 
       var buffer = await xhr.response;
+      //Creating an image from the http response
       const tiff = await GeoTIFF.fromArrayBuffer(buffer);
       const image = await tiff.getImage();
+
+      //Getting metadata and data from the image
       const bbox = await image.getBoundingBox();
       const width = await image.getWidth();
       const height = await image.getHeight();
@@ -106,17 +109,22 @@ export default {
       const Xf = bbox[2];
       const Yo = bbox[1];
       const Yf = bbox[3];
-      const center = [Xf, Yo]
-      const coord3 = new Coordinates('EPSG:2154', center[0], center[1]);
 
+      //Specifying the origin of the image
+      const origin = [Xo, Yo]
+      const coord3 = new Coordinates('EPSG:2154', origin[0], origin[1]);
 
+      //Calculating the pixel size
       const Xsize = (Xf - Xo) / width;
       const Ysize = (Yf - Yo) / height;
 
+      //Creating the THREEJs Geometry
       let geometry = new THREE.BufferGeometry();
 
       const vertices = [];
       const indices = [];
+
+      //Creating the indices table by pushing two triangles for each pixel
 
       for (let j = 0; j < width - 1; j++) {
         for (let i = 0; i < height - 1; i++) {
@@ -137,6 +145,8 @@ export default {
         };
       };
 
+      //Creating the vertices table, pushing the coordinates 
+      //and the height data extracted from the image
 
       for (let i = 0; i < width - 1; i++) {
         for (let j = 0; j < height - 1; j++) {
@@ -152,22 +162,25 @@ export default {
         };
       };
       console.log(vertices, indices)
+
+      //Setting attributes to the geometry
       geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(vertices), 3));
       geometry.setAttribute('normal', new THREE.BufferAttribute(new Float32Array(indices), 3));
 
 
       // create material
       const material = new THREE.MeshBasicMaterial({
-        transparent: true,
-        opacity: 0.5,
+        wireframe: true,
+        //opacity: 0.9,
         color: 0xE0FFFF,
         side: THREE.DoubleSide
       });
 
       let mesh = new THREE.Mesh(geometry, material);
-      //coord3.altitude = + 50;
+      coord3.altitude = + 500;
       mesh.position.copy(coord3.as(view.referenceCrs));
       mesh.lookAt(new THREE.Vector3(0, 0, 0));
+      mesh.rotateY(Math.PI);
 
       mesh.updateMatrixWorld();
 
