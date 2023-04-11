@@ -114,7 +114,7 @@ export default {
     building() {
       view.tileLayer.attachedLayers[3].visible = this.$refs.childComponent.visibleBuilding;
       view.notifyChange();
-  },
+    },
 
     cameraView() {
       view.camera.camera3D.position.x = 4295077.582429348;
