@@ -22,7 +22,7 @@ import {
   bati3DLayer
 } from '../services/WFS_service.js'
 import { inheritLeadingComments } from "@babel/types";
-
+import { getHeightMesh } from '../services/Height_service.js'
 
 let view = ref(false);
 
@@ -51,7 +51,7 @@ export default {
 
 
     //defining projection coordinate unit
-    proj4.defs(
+    const proj2154 = proj4.defs(
       "EPSG:2154",
       "+proj=lcc +lat_1=49 +lat_2=44 +lat_0=46.5 +lon_0=3 +x_0=700000 +y_0=6600000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"
     );
@@ -86,110 +86,18 @@ export default {
     view.addLayer(orthoLayer);
 
 
-    //Adding Geotiff of water heights (the localhost link is due to the use of http-server)
-    let url = 'http://localhost:8080/ore__kbz_mnt_litto3d_5m.tif';
+    // //Adding Geotiff of water heights (the localhost link is due to the use of http-server)
+    let url = 'http://localhost:8080/gavres_mnt.tif';
 
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", url)
-    xhr.responseType = 'arraybuffer';
-    xhr.onload = async function (e) {
+    getHeightMesh(url).then(mesh => {
 
-      var buffer = await xhr.response;
-      //Creating an image from the http response
-      const tiff = await GeoTIFF.fromArrayBuffer(buffer);
-      const image = await tiff.getImage();
-
-      //Getting metadata and data from the image
-      const bbox = await image.getBoundingBox();
-      const width = await image.getWidth();
-      const height = await image.getHeight();
-      const data = await image.readRasters();
-
-      const Xo = bbox[0];
-      const Xf = bbox[2];
-      const Yo = bbox[1];
-      const Yf = bbox[3];
-
-      //Specifying the origin of the image
-      const origin = [Xo, Yo]
-      const coord3 = new Coordinates('EPSG:2154', origin[0], origin[1]);
-
-      //Calculating the pixel size
-      const Xsize = (Xf - Xo) / width;
-      const Ysize = (Yf - Yo) / height;
-
-      //Creating the THREEJs Geometry
-      let geometry = new THREE.BufferGeometry();
-
-      const vertices = [];
-      const indices = [];
-
-      //Creating the indices table by pushing two triangles for each pixel
-
-      for (let j = 0; j < width - 1; j++) {
-        for (let i = 0; i < height - 1; i++) {
-
-          let topL = [(1 / width) * (j), 1 - (1 / height) * (i)];
-          let topR = [(1 / width) * (j), 1 - (1 / height) * (i + 1)];
-          let botL = [(1 / width) * (j + 1), 1 - (1 / height) * (i)];
-          let botR = [(1 / width) * (j + 1), 1 - (1 / height) * (i + 1)];
-
-          indices.push(topL);
-          indices.push(botL);
-          indices.push(topR);
-
-          indices.push(botL);
-          indices.push(topR);
-          indices.push(botR);
-
-        };
-      };
-
-      //Creating the vertices table, pushing the coordinates 
-      //and the height data extracted from the image
-
-      for (let i = 0; i < width - 1; i++) {
-        for (let j = 0; j < height - 1; j++) {
-
-          vertices.push(i * Xsize, j * Ysize, data[0][i + j * width]), // top left
-            vertices.push((i + 1) * Xsize, j * Ysize, data[0][(i + 1) + j * width]), // top right
-            vertices.push(i * Xsize, (j + 1) * Ysize, data[0][i + (j + 1) * width]), // bottom left
-
-            vertices.push(i * Xsize, (j + 1) * Ysize, data[0][i + (j + 1) * width]), // bottom left
-            vertices.push((i + 1) * Xsize, j * Ysize, data[0][(i + 1) + j * width]), // top right
-            vertices.push((i + 1) * Xsize, (j + 1) * Ysize, data[0][(i + 1) + (j + 1) * width] // bottom right
-            );
-        };
-      };
-      console.log(vertices, indices)
-
-      //Setting attributes to the geometry
-      geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(vertices), 3));
-      geometry.setAttribute('normal', new THREE.BufferAttribute(new Float32Array(indices), 3));
-
-
-      // create material
-      const material = new THREE.MeshBasicMaterial({
-        wireframe: true,
-        //opacity: 0.9,
-        color: 0xE0FFFF,
-        side: THREE.DoubleSide
-      });
-
-      let mesh = new THREE.Mesh(geometry, material);
-      coord3.altitude = + 500;
-      mesh.position.copy(coord3.as(view.referenceCrs));
-      mesh.lookAt(new THREE.Vector3(0, 0, 0));
-      mesh.rotateY(Math.PI);
-
-      mesh.updateMatrixWorld();
+      console.log('mesh', mesh)
 
       view.scene.add(mesh);
       view.mesh = mesh;
       view.notifyChange();
 
-    };
-    xhr.send();
+    })
 
   },
   methods: {
