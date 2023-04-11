@@ -85,16 +85,16 @@ export default {
     view.addLayer(bati3DLayer);
     view.addLayer(orthoLayer);
 
-    // //Adding Geotiff of water heights (the localhost link is due to the use of http-server)
-    let url = 'http://localhost:8080/gavres_mnt.tif';
+    // // //Adding Geotiff of water heights (the localhost link is due to the use of http-server)
+    // let url = 'http://localhost:8080/gavres_mnt.tif';
 
-    getHeightMesh(url).then(mesh => {
+    // getHeightMesh(url).then(mesh => {
 
-      view.scene.add(mesh);
-      view.mesh = mesh;
-      view.notifyChange();
+    //   view.scene.add(mesh);
+    //   view.mesh = mesh;
+    //   view.notifyChange();
 
-    })
+    // })
 
   },
   methods: {
