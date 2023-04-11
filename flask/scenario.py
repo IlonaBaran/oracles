@@ -85,42 +85,5 @@ def heatmapV2F():
 
 
 
-
-def moyenneTif(liste):
-    # Définir la liste des fichiers TIFF
-    # file_list = ["file1.tif", "file2.tif", "file3.tif"]
-    
-    # Ouvrir le premier fichier pour récupérer les dimensions
-    dataset = gdal.Open(liste[0], gdal.GA_ReadOnly)
-    cols = dataset.RasterXSize
-    rows = dataset.RasterYSize
-    
-    # Initialiser le tableau de résultats
-    data = np.zeros((rows, cols), dtype=np.float)
-    
-    # Boucler sur tous les fichiers et ajouter leurs valeurs à la moyenne
-    for file in liste:
-        dataset = gdal.Open(file, gdal.GA_ReadOnly)
-        band = dataset.GetRasterBand(1)
-        band_data = band.ReadAsArray()
-        data += band_data
-    
-    # Calculer la moyenne
-    data /= len(liste)  # DATA CONTIENT LES VALEURS ON PEUT S EN SERVIR POUR AFFICHER ENSUITE
-    
-    # Créer un nouveau fichier TIFF pour stocker la moyenne
-    driver = gdal.GetDriverByName("GTiff")
-    out_dataset = driver.Create("average.tif", cols, rows, 1, gdal.GDT_Float32)
-    out_band = out_dataset.GetRasterBand(1)
-    out_band.WriteArray(data)
-    
-    # Fermer les fichiers
-    out_band = None
-    out_dataset = None
-    dataset = None
-    
-    return data 
-
-
 if __name__ == "__main__":
     app.run(debug=True)
