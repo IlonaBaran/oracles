@@ -14,17 +14,27 @@
                     <!-- Affichage dans le panel des paramètres saisies par l'utilisateur dans le header -->
                     <!-- <p>{{ selectedScenario }}</p>
                     <p>{{ selectedGraph }}</p> -->
-
-                    <button @click="lineChartAffichage">Affichage d'un diagramme en ligne</button>
-                    <apexchart  :options="this.chartOptions"  :series="this.series"/>    
-
+                    
+                    <div v-if="selectedGraph.name == 'Ligne'">
+                        <button @click="lineChartAffichage">Affichage d'un diagramme en ligne</button>
+                        <apexchart  :options="this.chartOptions"  :series="this.series"/>    
+                    </div>
+    
+                    <div v-if="selectedGraph.name == 'Rose des vents'">
+                        
                     <button @click="roseVentAffichage">Affichage d'un diagramme rose des vents</button>
                     <!-- <apexchart  :options="this.chartOptions2" :series="this.series2"/>     -->
                     <!-- <div ref="chart"></div> -->
                     <!-- <highcharts  :options="this.chartOptions2"></highcharts> -->
+                    </div>
 
+                    <div v-if="selectedGraph.name == 'Chaleur'">
+                        
                     <button @click="heatMapAffichage">Affichage d'un diagramme de chaleur</button>
                     <apexchart  :options="this.chartOptions3" :series="this.series3"/>    
+
+                    </div>
+
 
                 </ScrollPanel>
 
@@ -209,7 +219,7 @@ export default {
             var abcisses = new Array();
             var ordonnees = new Array() ;
             for (const element of this.selectedScenario) {
-                var file = 'http://localhost:8081/' + element["name"] + '.json';
+                var file = 'http://localhost:8080/' + element["name"] + '.json';
                 fetch(file)
                     .then(response => response.json())
                     .then(data => {
@@ -416,7 +426,7 @@ export default {
         heatMapAffichage() {
             var listDataPlot= [];
             for (const element of this.selectedScenario) {
-                fetch('http://localhost:8081/' + `${element["name"]}` + '.json')
+                fetch('http://localhost:8080/' + `${element["name"]}` + '.json')
                 .then(response => response.json())
                 .then(data => {
                     console.log(data);
