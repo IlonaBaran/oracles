@@ -14,24 +14,24 @@
                     <!-- Affichage dans le panel des paramètres saisies par l'utilisateur dans le header -->
                     <!-- <p>{{ selectedScenario }}</p>
                     <p>{{ selectedGraph }}</p> -->
-                    
+
                     <div v-if="selectedGraph.name == 'Ligne'">
                         <button @click="lineChartAffichage">Affichage d'un diagramme en ligne</button>
-                        <apexchart  :options="this.chartOptions"  :series="this.series"/>    
+                        <apexchart :options="this.chartOptions" :series="this.series" />
                     </div>
-    
+
                     <div v-if="selectedGraph.name == 'Rose des vents'">
-                        
-                    <button @click="roseVentAffichage">Affichage d'un diagramme rose des vents</button>
-                    <!-- <apexchart  :options="this.chartOptions2" :series="this.series2"/>     -->
-                    <!-- <div ref="chart"></div> -->
-                    <!-- <highcharts  :options="this.chartOptions2"></highcharts> -->
+
+                        <button @click="roseVentAffichage">Affichage d'un diagramme rose des vents</button>
+                        <!-- <apexchart  :options="this.chartOptions2" :series="this.series2"/>     -->
+                        <!-- <div ref="chart"></div> -->
+                        <!-- <highcharts  :options="this.chartOptions2"></highcharts> -->
                     </div>
 
                     <div v-if="selectedGraph.name == 'Chaleur'">
-                        
-                    <button @click="heatMapAffichage">Affichage d'un diagramme de chaleur</button>
-                    <apexchart  :options="this.chartOptions3" :series="this.series3"/>    
+
+                        <button @click="heatMapAffichage">Affichage d'un diagramme de chaleur</button>
+                        <apexchart :options="this.chartOptions3" :series="this.series3" />
 
                     </div>
 
@@ -88,40 +88,40 @@ export default {
 
             // LINE
             chartOptions: {
-                    chart: {
-                        id: 'mychart',
-                        height: 350,
-                        type: 'line',
-                        defaultPoint_marker_visible: false,
-                        zoom: {
-                            enabled: false
-                        }
-                    },
-                    dataLabels: {
+                chart: {
+                    id: 'mychart',
+                    height: 350,
+                    type: 'line',
+                    defaultPoint_marker_visible: false,
+                    zoom: {
                         enabled: false
-                    },
-                    stroke: {
-                        curve: 'straight'
-                    },
-                    title: {
-                        text: 'Product Trends by Month',
-                        align: 'left'
-                    },
-                    grid: {
-                        row: {
-                            colors: ['#f3f3f3', 'transparent'],
-                            opacity: 0.5
-                        },
-                    },
-                    xaxis: {
-                        tooltip: {
-                            enabled: false
-                        },
-                        categories: ["02:40", "02:50", "03:10", "03:20"],
                     }
                 },
-            
-            series:  [{
+                dataLabels: {
+                    enabled: false
+                },
+                stroke: {
+                    curve: 'straight'
+                },
+                title: {
+                    text: 'Product Trends by Month',
+                    align: 'left'
+                },
+                grid: {
+                    row: {
+                        colors: ['#f3f3f3', 'transparent'],
+                        opacity: 0.5
+                    },
+                },
+                xaxis: {
+                    tooltip: {
+                        enabled: false
+                    },
+                    categories: ["02:40", "02:50", "03:10", "03:20"],
+                }
+            },
+
+            series: [{
                 name: "Desktops",
                 data: [1, 2, 3, 4]
             }],
@@ -132,9 +132,9 @@ export default {
 
             // ROSE WIND D3
             data: [
-                {category: 'A', values: [10, 20, 30]},
-                {category: 'B', values: [40, 50, 60]},
-                {category: 'C', values: [70, 80, 90]}
+                { category: 'A', values: [10, 20, 30] },
+                { category: 'B', values: [40, 50, 60] },
+                { category: 'C', values: [70, 80, 90] }
             ],
             width: 500,
             height: 500,
@@ -146,69 +146,69 @@ export default {
     },
 
 
-        methods: {
-            affichageAllGraph(){
-                let graph = this.selectedGraph["name"];
-                if (graph = "Graph2D 1"){
-                    lineChartAffichage();
-                }
-                else if (graph = "Graph2D 2"){
-                    // lineChartAffichage();
-                }
-                else if (graph = "Graph2D 3"){
-                    // lineChartAffichage();
-                }
-                else if (graph = "Graph3D 1"){
-                    // lineChartAffichage();
-                }
-                else if (graph = "Graph3D 2"){
-                    heatMapAffichage();
-                }
+    methods: {
+        affichageAllGraph() {
+            let graph = this.selectedGraph["name"];
+            if (graph = "Graph2D 1") {
+                lineChartAffichage();
+            }
+            else if (graph = "Graph2D 2") {
+                // lineChartAffichage();
+            }
+            else if (graph = "Graph2D 3") {
+                // lineChartAffichage();
+            }
+            else if (graph = "Graph3D 1") {
+                // lineChartAffichage();
+            }
+            else if (graph = "Graph3D 2") {
+                heatMapAffichage();
+            }
 
-            },
+        },
 
 
-            lineChart(abcisses, ordonnees){
-                console.log(abcisses);
-                console.log(ordonnees);
-                // console.log(typeof abcisses);
-                this.chartOptions = reactive({
-                    chart: {
-                        id: 'mychart',
-                        height: 350,
-                        type: 'line',
-                        defaultPoint_marker_visible: false,
-                        zoom: {
-                            enabled: false
-                        }
+        lineChart(abcisses, ordonnees) {
+            console.log(abcisses);
+            console.log(ordonnees);
+            // console.log(typeof abcisses);
+            this.chartOptions = reactive({
+                chart: {
+                    id: 'mychart',
+                    height: 350,
+                    type: 'line',
+                    defaultPoint_marker_visible: false,
+                    zoom: {
+                        enabled: false
+                    }
+                },
+                dataLabels: {
+                    enabled: false
+                },
+                stroke: {
+                    curve: 'straight'
+                },
+                title: {
+                    text: 'Product Trends by Month',
+                    align: 'left'
+                },
+                grid: {
+                    row: {
+                        colors: ['#f3f3f3', 'transparent'],
+                        opacity: 0.5
                     },
-                    dataLabels: {
+                },
+                xaxis: {
+                    tooltip: {
                         enabled: false
                     },
-                    stroke: {
-                        curve: 'straight'
-                    },
-                    title: {
-                        text: 'Product Trends by Month',
-                        align: 'left'
-                    },
-                    grid: {
-                        row: {
-                            colors: ['#f3f3f3', 'transparent'],
-                            opacity: 0.5
-                        },
-                    },
-                    xaxis: {
-                        tooltip: {
-                            enabled: false
-                        },
-                        // categories: ["02:40", "02:50", "03:10", "03:20"],
-                        categories: abcisses,
-                        // categories: ["02:40", "02:50", "03:00", "03:10", "03:20", "03:30", "03:40", "03:50", "04:00", "04:10", "04:20", "04:30", "04:40", "04:50", "05:00", "05:10", "05:20", "05:30", "05:40", "05:50", "06:00", "06:10", "06:20", "06:30", "06:40", "06:50", "07:00", "07:10", "07:20", "07:30", "07:40", "07:50", "08:00", "08:10", "08:20", "08:30"]
-                    }
+                    // categories: ["02:40", "02:50", "03:10", "03:20"],
+                    categories: abcisses,
+                    // categories: ["02:40", "02:50", "03:00", "03:10", "03:20", "03:30", "03:40", "03:50", "04:00", "04:10", "04:20", "04:30", "04:40", "04:50", "05:00", "05:10", "05:20", "05:30", "05:40", "05:50", "06:00", "06:10", "06:20", "06:30", "06:40", "06:50", "07:00", "07:10", "07:20", "07:30", "07:40", "07:50", "08:00", "08:10", "08:20", "08:30"]
+                }
             });
 
-            this.series =  [{
+            this.series = [{
                 name: "Desktops",
                 // data: [10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51]
                 data: ordonnees
@@ -217,9 +217,9 @@ export default {
 
         lineChartAffichage() {
             var abcisses = new Array();
-            var ordonnees = new Array() ;
+            var ordonnees = new Array();
             for (const element of this.selectedScenario) {
-                var file = 'http://localhost:8080/' + element["name"] + '.json';
+                var file = 'http://localhost:8080/jsonData/' + element["name"] + '.json';
                 fetch(file)
                     .then(response => response.json())
                     .then(data => {
@@ -233,10 +233,10 @@ export default {
                             ordonnees.push(parseFloat(data[property]["Maree(m)"]));
                         }
                     })
-                }
+            }
             // this.lineChart(abcisses, ordonnees);
             // this.lineChart(abcisses,  [10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51]);
-            this.lineChart(abcisses,  ordonnees);
+            this.lineChart(abcisses, ordonnees);
 
 
             // console.log(abcisses);
@@ -247,7 +247,7 @@ export default {
         },
 
 
-        roseChartHIGHCHARTS(){
+        roseChartHIGHCHARTS() {
             this.chartOptions2 = reactive({
                 chart: {
                     polar: true,
@@ -352,11 +352,11 @@ export default {
         roseChartD3() {
             // //    this.roseChart();
             const svg = d3.select(this.$refs.chart)
-            .append('svg')
-            .style("width", "100%")
-            .style("height", "auto")
-            .style("font", "10px sans-serif")
-            .append('g');
+                .append('svg')
+                .style("width", "100%")
+                .style("height", "auto")
+                .style("font", "10px sans-serif")
+                .append('g');
 
             const categories = this.data.map(d => d.category);
             const numCategories = categories.length;
@@ -370,39 +370,39 @@ export default {
             const outerRadius = Math.min(this.width, this.height) / 2 - 10;
 
             const x = d3.scaleBand()
-            .domain(categories)
-            .range([0, 2 * Math.PI])
-            .align(0);
+                .domain(categories)
+                .range([0, 2 * Math.PI])
+                .align(0);
 
             const y = d3.scaleRadial()
-            .range([innerRadius, outerRadius])
-            .domain([0, d3.max(dataStack, d => d3.max(d, d => d[1]))]);
+                .range([innerRadius, outerRadius])
+                .domain([0, d3.max(dataStack, d => d3.max(d, d => d[1]))]);
 
             const z = d3.scaleOrdinal()
-            .range(['#98abc5', '#8a89a6', '#7b6888']);
+                .range(['#98abc5', '#8a89a6', '#7b6888']);
 
             svg.selectAll('g')
 
-            .data(dataStack)
-            .enter().append('g')
-            .attr('fill', d => z(d.key))
-            .selectAll('path')
-            .data(d => d)
-            .enter().append('path')
-            .attr('d', d3.arc()
-                .innerRadius(d => y(d[0]))
-                .outerRadius(d => y(d[1]))
-                .startAngle(d => x(d.data.category))
-                .endAngle(d => x(d.data.category) + x.bandwidth())
-                .padAngle(0.01)
-                .padRadius(innerRadius)
-            )
-            .attr('stroke', 'white')
-            .style('stroke-width', '2px')
-            .style('opacity', 0.7);
+                .data(dataStack)
+                .enter().append('g')
+                .attr('fill', d => z(d.key))
+                .selectAll('path')
+                .data(d => d)
+                .enter().append('path')
+                .attr('d', d3.arc()
+                    .innerRadius(d => y(d[0]))
+                    .outerRadius(d => y(d[1]))
+                    .startAngle(d => x(d.data.category))
+                    .endAngle(d => x(d.data.category) + x.bandwidth())
+                    .padAngle(0.01)
+                    .padRadius(innerRadius)
+                )
+                .attr('stroke', 'white')
+                .style('stroke-width', '2px')
+                .style('opacity', 0.7);
         },
 
-        roseVentAffichage(){
+        roseVentAffichage() {
         },
 
         sendData(data) {
@@ -414,31 +414,31 @@ export default {
                 },
                 body: JSON.stringify(data)
             })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Données envoyées avec succès !');
-            })
-            .catch(error => {
-                console.error('Erreur lors de l\'envoi des données :', error);
-            });
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Données envoyées avec succès !');
+                })
+                .catch(error => {
+                    console.error('Erreur lors de l\'envoi des données :', error);
+                });
         },
 
         heatMapAffichage() {
-            var listDataPlot= [];
+            var listDataPlot = [];
             for (const element of this.selectedScenario) {
-                fetch('http://localhost:8080/' + `${element["name"]}` + '.json')
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data);
-                    var dict = {};
-                    for (const property in data) {
-                        var dict = {
-                            name: `${element["name"]}`,
-                            data: parseFloat(`${data[property]["Hs(vagues)(m)"]}`),
-                        };
-                        listDataPlot.push(dict);
-                    }
-                })
+                fetch('http://localhost:8080/jsonData' + `${element["name"]}` + '.json')
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data);
+                        var dict = {};
+                        for (const property in data) {
+                            var dict = {
+                                name: `${element["name"]}`,
+                                data: parseFloat(`${data[property]["Hs(vagues)(m)"]}`),
+                            };
+                            listDataPlot.push(dict);
+                        }
+                    })
             }
 
             this.heatMap(listDataPlot);
@@ -466,19 +466,19 @@ export default {
             // });
         },
 
-        heatMap(donnees){
+        heatMap(donnees) {
             this.chartOptions3 = {
-                 chart: {
-                        type: 'heatmap',
-                        height: 550,
-                    },
-                    dataLabels: {
-                        enabled: true,
-                    },
-                    colors: ['#008FFB'],
-                    title: {
-                        text: 'Heatmap Chart',
-                        align: 'left',
+                chart: {
+                    type: 'heatmap',
+                    height: 550,
+                },
+                dataLabels: {
+                    enabled: true,
+                },
+                colors: ['#008FFB'],
+                title: {
+                    text: 'Heatmap Chart',
+                    align: 'left',
                 },
                 xaxis: {
                     tooltip: {
@@ -496,39 +496,39 @@ export default {
                     enabled: true,
                     y: {
                         formatter: (val) => {
-                        return val + ' hours'
+                            return val + ' hours'
                         },
                     },
                 },
             },
 
-    //         this.series3 = [
-    //     {
-    //       name: 'Metric1',
-    //       data: [11, 12, 8],
-    //     },
-    //     {
-    //       name: 'Metric2',
-    //       data: [10, 7, 13],
-    //     },
-    //     {
-    //       name: 'Metric3',
-    //       data: [1, 2, 3],
-    //     },
-    //     {
-    //       name: 'Metric4',
-    //       data: [1, 20, 3],
-    //     },
-    //   ]
-        this.series3 = donnees;
-      },
+                //         this.series3 = [
+                //     {
+                //       name: 'Metric1',
+                //       data: [11, 12, 8],
+                //     },
+                //     {
+                //       name: 'Metric2',
+                //       data: [10, 7, 13],
+                //     },
+                //     {
+                //       name: 'Metric3',
+                //       data: [1, 2, 3],
+                //     },
+                //     {
+                //       name: 'Metric4',
+                //       data: [1, 20, 3],
+                //     },
+                //   ]
+                this.series3 = donnees;
+        },
     }
 
 };
 
 
 
-    
+
 
 
 //         roseVentAffichage() {
@@ -558,7 +558,7 @@ export default {
     //   const chartOptions2 = reactive({
     //     //  type: 'horizontal column',
     //     //type: 'simpleLine',
-    //     legend: { 
+    //     legend: {
     //         visible: true,
     //         position: 'bottom right',
     //         // legendEntry_visible: false
@@ -567,7 +567,7 @@ export default {
     // 	yAxis: [
     //         /* Main axis is defined first. */
     //         { formatString: 'c' },
-    /* Secondary axis will sync with main axis by default. */
+/* Secondary axis will sync with main axis by default. */
     // {
     // 	id: 'secondY',
     // 	orientation: 'opposite',
@@ -584,8 +584,8 @@ export default {
     // },
     // defaultSeries: {
     //     type: 'line',
-    //     defaultPoint: { 
-    //         marker: { visible: false } 
+    //     defaultPoint: {
+    //         marker: { visible: false }
     //     },
     // lastPoint: {
     // 	label: { text: '<b>%seriesName</b>' },
@@ -668,39 +668,39 @@ export default {
     // });
 
     //     const chartOptions3 = reactive({
-    //     debug: true, 
-    //     type: 'column', 
-    //     yAxis: { 
-    //         scale_type: 'stacked', 
+    //     debug: true,
+    //     type: 'column',
+    //     yAxis: {
+    //         scale_type: 'stacked',
     //         label_text: 'Units Sold'
-    //     }, 
-    //     title_label_text: 'Acme Tool Sales', 
-    //     xAxis: { 
-    //         label_text: 'Quarter', 
-    //         categories: ['Q1', 'Q2', 'Q3', 'Q4'] 
-    //     },          
-    //     series: [ 
-    //         { 
-    //         name: 'Saw', 
-    //         id: 's1', 
-    //         points: [230, 240, 267, 238] 
-    //         }, 
-    //         { 
-    //         name: 'Hammer', 
-    //         points: [325, 367, 382, 371] 
-    //         }, 
-    //         { 
-    //         name: 'Grinder', 
-    //         points: [285, 292, 267, 218] 
-    //         }, 
-    //         { 
-    //         name: 'Drill', 
-    //         points: [185, 192, 198, 248] 
-    //         } 
-    //     ] 
+    //     },
+    //     title_label_text: 'Acme Tool Sales',
+    //     xAxis: {
+    //         label_text: 'Quarter',
+    //         categories: ['Q1', 'Q2', 'Q3', 'Q4']
+    //     },
+    //     series: [
+    //         {
+    //         name: 'Saw',
+    //         id: 's1',
+    //         points: [230, 240, 267, 238]
+    //         },
+    //         {
+    //         name: 'Hammer',
+    //         points: [325, 367, 382, 371]
+    //         },
+    //         {
+    //         name: 'Grinder',
+    //         points: [285, 292, 267, 218]
+    //         },
+    //         {
+    //         name: 'Drill',
+    //         points: [185, 192, 198, 248]
+    //         }
+    //     ]
     //     });
 
-    //   return { chartOptions, chartOptions2, chartOptions3 }; 
+    //   return { chartOptions, chartOptions2, chartOptions3 };
 
 // }
 </script>
