@@ -22,7 +22,8 @@
                 <button @click="getDossier">Affichage des scenarios</button>
 
                 <!-- Il sert a transmettre les paramètres de l'utilisateur a la vue 'Panel': les scenarios choisis et le graph choisis -->
-                <button @click="emitData">Transmettre des données</button>
+                <button @click="emitData">Transmettre des données </button>
+                <!-- <button @click="affichageAllGraph">Transmettre des données </button> -->
 
             </template>
 
@@ -98,6 +99,10 @@ export default {
         }
     },
 
+    // provide: {
+    //     affichageAllGraph: () => this.$refs.panel.affichageAllGraph(),
+    // },
+
     methods: {
         toggle(event) {
             this.$refs.op.toggle(event);
@@ -121,6 +126,10 @@ export default {
                     this.scenario = L;
                 });
         },
+
+        appelMethodeDansPanel() {
+            this.$refs.panelRef.nomDeLaMethodeDansPanel();
+        }
     },
 
 }
