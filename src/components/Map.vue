@@ -9,8 +9,9 @@
 /* eslint-disable */
 import Toolbar from "./Toolbar.vue";
 import '../../node_modules/itowns/examples/css/widgets.css'
-import { FileSource, THREE, Style, proj4, Extent, FeatureGeometryLayer, Coordinates, GlobeView, WMTSSource, WMSSource, ColorLayer, ElevationLayer, } from "../../node_modules/itowns/dist/itowns";
+import { FileSource, THREE, Style, proj4, Extent, FeatureGeometryLayer, Coordinates, GlobeView, WMTSSource, WMSSource, ColorLayer, ElevationLayer, Copy, As } from "../../node_modules/itowns/dist/itowns";
 import { Navigation } from '../../node_modules/itowns/dist/itowns_widgets.js';
+import * as GeoTIFF from 'geotiff';
 import {
   planIGNv2Layer, orthoLayer,
   demHRLayer
@@ -20,7 +21,8 @@ import { ref } from "vue";
 import {
   bati3DLayer
 } from '../services/WFS_service.js'
-
+import { inheritLeadingComments } from "@babel/types";
+import { getHeightMesh } from '../services/Height_service.js'
 
 let view = ref(false);
 
@@ -44,10 +46,12 @@ export default {
     const viewerDiv = document.getElementById("viewerDiv");
   },
   mounted() {
+
     const coord = [-3.35291, 47.69651];
 
+
     //defining projection coordinate unit
-    proj4.defs(
+    const proj2154 = proj4.defs(
       "EPSG:2154",
       "+proj=lcc +lat_1=49 +lat_2=44 +lat_0=46.5 +lon_0=3 +x_0=700000 +y_0=6600000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"
     );
@@ -81,29 +85,36 @@ export default {
     view.addLayer(bati3DLayer);
     view.addLayer(orthoLayer);
 
-    console.log(view)
+    // //Adding Geotiff of water heights (the localhost link is due to the use of http-server)
+    let url = 'http://localhost:8080/gavres_mnt.tif';
 
+    getHeightMesh(url).then(mesh => {
+
+      console.log('mesh', mesh)
+
+      view.scene.add(mesh);
+      view.mesh = mesh;
+      view.notifyChange();
+
+    })
 
   },
   methods: {
     changeMap() {
-
       if (this.$refs.childComponent.mapSelected == "plan") {
         view.tileLayer.attachedLayers[1].visible = true;
         view.tileLayer.attachedLayers[4].visible = false;
-        view.notifyChange()
-      }
-      else {
+        view.notifyChange();
+      } else {
         view.tileLayer.attachedLayers[1].visible = false;
         view.tileLayer.attachedLayers[4].visible = true;
-        view.notifyChange()
+        view.notifyChange();
       }
     },
-
     building() {
       view.tileLayer.attachedLayers[3].visible = this.$refs.childComponent.visibleBuilding;
-      view.notifyChange()
-    },
+      view.notifyChange();
+  },
 
     cameraView() {
       view.camera.camera3D.position.x = 4295077.582429348;
@@ -122,6 +133,7 @@ export default {
     }
 
   }
+
 };
 </script>
 
