@@ -90,8 +90,6 @@ export default {
 
     getHeightMesh(url).then(mesh => {
 
-      console.log('mesh', mesh)
-
       view.scene.add(mesh);
       view.mesh = mesh;
       view.notifyChange();
@@ -125,11 +123,6 @@ export default {
 
       view.camera.camera3D.position.z = 4696062.254883134;
       view.notifyChange();
-    },
-    showCoords(e) {
-      console.log('view', view.eventToViewCoords(e))
-      console.log('normalized', view.eventToNormalizedCoords(e))
-      console.log('world', view.getPickingPositionFromDepth())
     }
 
   }

@@ -42,8 +42,6 @@ export async function getHeightMesh(url) {
 
             //Specifying the origin of the image
             const origin = [Xo, Yf];
-
-            console.log(origin)
             let coord3 = new Coordinates('EPSG:2154', origin[0], origin[1]);
 
             //Creating the THREEJs Geometry
@@ -89,7 +87,6 @@ export async function getHeightMesh(url) {
                         );
                 };
             };
-            console.log(vertices)
 
             //Setting attributes to the geometry
             geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(vertices), 3));
