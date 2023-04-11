@@ -18,8 +18,6 @@
                     :optionGroupChildren="['states']" style="min-width: 14rem " placeholder="Sélection Graphique"
                     class="selectGraph" />
 
-                <!-- Pour le moment, j'ai besoin de cliquer sur le bouton pour afficher tous les scenarios dans le multiselect -->
-                <button @click="getDossier">Affichage des scenarios</button>
 
                 <!-- Il sert a transmettre les paramètres de l'utilisateur a la vue 'Panel': les scenarios choisis et le graph choisis -->
                 <button @click="emitData">Transmettre des données </button>
