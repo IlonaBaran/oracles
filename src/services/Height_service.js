@@ -71,19 +71,27 @@ export async function getHeightMesh(url) {
                 };
             };
 
+            function minuszero(value) {
+                if (value <= 0) {
+                    return -2
+                } else {
+                    return value
+                }
+
+            }
             //Creating the vertices table, pushing the coordinates 
             //and the height data extracted from the image
 
             for (let i = 0; i < width - 1; i++) {
                 for (let j = 0; j < height - 1; j++) {
 
-                    vertices.push(i * Xsize, j * Ysize, data[0][i + j * width]), // top left
-                        vertices.push((i + 1) * Xsize, j * Ysize, data[0][(i + 1) + j * width]), // top right
-                        vertices.push(i * Xsize, (j + 1) * Ysize, data[0][i + (j + 1) * width]), // bottom left
+                    vertices.push(i * Xsize, j * Ysize, minuszero(data[0][i + j * width])), // top left
+                        vertices.push((i + 1) * Xsize, j * Ysize, minuszero(data[0][(i + 1) + j * width])), // top right
+                        vertices.push(i * Xsize, (j + 1) * Ysize, minuszero(data[0][i + (j + 1) * width])), // bottom left
 
-                        vertices.push(i * Xsize, (j + 1) * Ysize, data[0][i + (j + 1) * width]), // bottom left
-                        vertices.push((i + 1) * Xsize, j * Ysize, data[0][(i + 1) + j * width]), // top right
-                        vertices.push((i + 1) * Xsize, (j + 1) * Ysize, data[0][(i + 1) + (j + 1) * width] // bottom right
+                        vertices.push(i * Xsize, (j + 1) * Ysize, minuszero(data[0][i + (j + 1) * width])), // bottom left
+                        vertices.push((i + 1) * Xsize, j * Ysize, minuszero(data[0][(i + 1) + j * width])), // top right
+                        vertices.push((i + 1) * Xsize, (j + 1) * Ysize, minuszero(data[0][(i + 1) + (j + 1) * width]) // bottom right
                         );
                 };
             };
@@ -95,14 +103,14 @@ export async function getHeightMesh(url) {
 
             // create material
             const material = new THREE.MeshBasicMaterial({
-                wireframe: true,
-                //opacity: 0.9,
+                transparent: true,
+                opacity: 0.8,
                 color: 0xE0FFFF,
                 side: THREE.DoubleSide
             });
 
             let mesh = new THREE.Mesh(geometry, material);
-            coord3.altitude = + 100;
+            //coord3.altitude = + 100;
 
             mesh.position.copy(coord3.as('EPSG:4978'));
             mesh.lookAt(new THREE.Vector3(0, 0, 0));
