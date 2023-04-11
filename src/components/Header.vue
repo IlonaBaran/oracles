@@ -20,7 +20,7 @@
 
 
                 <!-- Il sert a transmettre les paramètres de l'utilisateur a la vue 'Panel': les scenarios choisis et le graph choisis -->
-                <button @click="emitData">Transmettre des données </button>
+                <!-- <button @click="emitData">Transmettre des données </button> -->
                 <!-- <button @click="affichageAllGraph">Transmettre des données </button> -->
 
             </template>
@@ -82,9 +82,9 @@ export default {
                     name: '2D',
                     code: '2D',
                     states: [
-                        { name: 'Graph2D 1' },
-                        { name: 'Graph2D 2' },
-                        { name: 'Graph2D 3' }]
+                        { name: 'Ligne' },
+                        { name: 'Rose des vents' },
+                        { name: 'Chaleur' }]
                 },
                 {
                     name: '3D',
