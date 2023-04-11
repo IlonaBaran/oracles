@@ -2,13 +2,18 @@
 <template>
     <div class="toolBar">
         <Toolbar>
+            <!-- Eléments présents sur la gauche de la barre -->
             <template #start>
-
+                <!-- Affichage du Panel présent dans Panel.vue -->
                 <Button v-styleclass="{ selector: '.card', toggleClass: 'p-hidden' }" type="button" icon="pi pi-bars"
                     label="" />
+
+                <!-- Outil de sélection des scénarios -->
                 <MultiSelect v-model="selectedScenario" :options="scenario" filter optionLabel="name"
                     placeholder="Sélection Scénarios" :maxSelectedLabels="3"
                     class="w-full md:w-20rem selectScenario margin-right:15px" :selectedScenario="this.selectedScenario" />
+
+                <!-- Outil de sélection des graphiques -->
                 <CascadeSelect v-model="selectedGraph" :options="countries" optionLabel="name" optionGroupLabel="name"
                     :optionGroupChildren="['states']" style="min-width: 14rem " placeholder="Sélection Graphique"
                     class="selectGraph" />
@@ -22,12 +27,14 @@
 
             </template>
 
+            <!-- Eléments présents sur la droite de la barre -->
             <template #end>
+                <!-- Sélection de la zone d'étude (Gâvre/Arcachon) -->
                 <SelectButton v-model="value" :options="options" aria-labelledby="basic" />
             </template>
-
         </Toolbar>
 
+        <!-- Ajout du composant présent dans Panel.vue, passage des valeurs des arguments selectedScenario et selectedGraph -->
         <Panel :selectedScenario="this.selectedScenario" :selectedGraph="this.selectedGraph"></Panel>
 
     </div>
@@ -35,10 +42,14 @@
 
 
 <script>
+
+// Import d'une fonction
 import { ref } from "vue";
 
-import Panel from './Panel.vue'
+// Import du composant
+import Panel from './Panel.vue';
 
+// Import des éléments des librairies
 import Toolbar from 'primevue/toolbar';
 import SelectButton from 'primevue/selectbutton';
 import Button from 'primevue/button';

@@ -28,7 +28,8 @@ def index():
 
 @app.route('/arboresance')
 def arboresance():
-    data = os.listdir('C:/Users/wanti/Downloads/oracles_data/donnees/BDD_Simu_2022_02_17/Data')
+    cwd = os.getcwd()
+    data = os.listdir( cwd +'/data')
     dico = {}
     for i in range (len(data)):
         dico[i] = data[i]

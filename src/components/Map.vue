@@ -1,7 +1,8 @@
 <template>
-  <div id="viewerDiv" class="viewer">
+  <div id="viewerDiv" class="viewer" @click="showCoords">
   </div>
-  <Toolbar></Toolbar>
+  <Toolbar @icon-clicked="changeMap" ref="childComponent" @change-building="building" @reinit-view="cameraView">
+  </Toolbar>
 </template>
 
 <script>
@@ -11,32 +12,53 @@ import '../../node_modules/itowns/examples/css/widgets.css'
 import { FileSource, THREE, Style, proj4, Extent, FeatureGeometryLayer, Coordinates, GlobeView, WMTSSource, WMSSource, ColorLayer, ElevationLayer, } from "../../node_modules/itowns/dist/itowns";
 import { Navigation } from '../../node_modules/itowns/dist/itowns_widgets.js';
 import {
-  planIGNv2Layer, orthoLayer, batiLayer,
-  demLayer, demHRLayer, courbeNiveauLayer
+  planIGNv2Layer, orthoLayer,
+  demHRLayer
 } from '../services/WMTS_service.js'
+import { ref } from "vue";
+
+import {
+  bati3DLayer
+} from '../services/WFS_service.js'
+
+
+let view = ref(false);
+
 
 export default {
   name: 'mapComponent',
+  props: {
+    mapSelected: String,
+    visibleBuilding: Boolean,
+  },
+  data() {
+    return {
+      viewNew: ref(false),
+    }
+  },
+
   components: {
     Toolbar,
   },
   created() {
-    const viewerDiv = document.getElementById('viewerDiv');
-
+    const viewerDiv = document.getElementById("viewerDiv");
   },
   mounted() {
     const coord = [-3.35291, 47.69651];
 
     //defining projection coordinate unit
     proj4.defs(
-      'EPSG:2154',
-      '+proj=lcc +lat_1=49 +lat_2=44 +lat_0=46.5 +lon_0=3 +x_0=700000 +y_0=6600000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs'
+      "EPSG:2154",
+      "+proj=lcc +lat_1=49 +lat_2=44 +lat_0=46.5 +lon_0=3 +x_0=700000 +y_0=6600000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"
     );
 
     //defining the views geographic extent, how far does it go
     const viewExtent = new Extent(
-      'EPSG:2154',
-      222955.5000, 224545.5000, 6750269.5000, 6752639.5000
+      "EPSG:2154",
+      222955.5,
+      224545.5,
+      6750269.5,
+      6752639.5
     );
 
     var placement = {
@@ -44,73 +66,63 @@ export default {
       range: 2500
     };
 
-    let view = new GlobeView(viewerDiv, placement);
+    view = new GlobeView(viewerDiv, placement);
 
+    //viewNew = new GlobeView(viewerDiv, placement);
     // ADD NAVIGATION TOOLS :
     new Navigation(view, {
       position: 'bottom-right',
       translate: { y: -40 },
     });
 
-    // view.addLayer(planIGNv2Layer);
 
-    view.addLayer(orthoLayer);
-    // view.addLayer(demLayer);
+    view.addLayer(planIGNv2Layer);
     view.addLayer(demHRLayer);
-    // view.addLayer(routeLayer);
-    // view.addLayer(batiLayer);
-    // view.addLayer(courbeNiveauLayer);
+    view.addLayer(bati3DLayer);
+    view.addLayer(orthoLayer);
 
-    // view.removeLayer(planIGNv2Layer.id);
-
-
-
-    const batsource = new FileSource({
-      url: 'gavres_bati.geojson',
-      crs: 'EPSG:2154',
-      format: 'application/json',
-    });
-
-    let basic = new FeatureGeometryLayer('basic', {
-      // Use a FileSource to load a single file once
-      source: batsource,
-      transparent: true,
-      opacity: 0.7,
-      //zoom: { min: 10 },
-      style: new Style({
-        fill: {
-          color: setColor,
-          base_altitude: setAltitude,
-          extrusion_height: setExtrusion,
-        }
-      })
-    });
-
-    view.addLayer(basic);
-
-    function setAltitude(properties) {
-      if (properties.altitude_sol != null) {
-        return properties.altitude_sol + properties.hauteur;
-      } else {
-        //What to do when there is not floor value?
-        return 5;
-      }
-    }
-
-    function setExtrusion(properties) {
-      return properties.hauteur;
-    }
-
-    function setColor(properties) {
-
-      return new THREE.Color(0xffaaaa);
-    }
+    console.log(view)
 
 
   },
   methods: {
+    changeMap() {
+
+      if (this.$refs.childComponent.mapSelected == "plan") {
+        view.tileLayer.attachedLayers[1].visible = true;
+        view.tileLayer.attachedLayers[4].visible = false;
+        view.notifyChange()
+      }
+      else {
+        view.tileLayer.attachedLayers[1].visible = false;
+        view.tileLayer.attachedLayers[4].visible = true;
+        view.notifyChange()
+      }
+    },
+
+    building() {
+      view.tileLayer.attachedLayers[3].visible = this.$refs.childComponent.visibleBuilding;
+      view.notifyChange()
+    },
+
+    cameraView() {
+      view.camera.camera3D.position.x = 4295077.582429348;
+      view.notifyChange();
+
+      view.camera.camera3D.position.y = -251632.32006396126;
+      view.notifyChange();
+
+      view.camera.camera3D.position.z = 4696062.254883134;
+      view.notifyChange();
+    },
+    showCoords(e) {
+      console.log('view', view.eventToViewCoords(e))
+      console.log('normalized', view.eventToNormalizedCoords(e))
+      console.log('world', view.getPickingPositionFromDepth())
+    }
+
   }
-}
+};
 </script>
 
 
@@ -118,9 +130,7 @@ export default {
 .viewer {
   display: flex;
   background-color: blue;
-  margin-top: 5%;
-  height: 91%;
+  height: 96%;
   z-index: 0;
-
 }
 </style>
