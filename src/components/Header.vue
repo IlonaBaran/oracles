@@ -18,8 +18,6 @@
                     :optionGroupChildren="['states']" style="min-width: 14rem " placeholder="Sélection Graphique"
                     class="selectGraph" />
 
-                <!-- Pour le moment, j'ai besoin de cliquer sur le bouton pour afficher tous les scenarios dans le multiselect -->
-                <button @click="getDossier">Affichage des scenarios</button>
 
                 <!-- Il sert a transmettre les paramètres de l'utilisateur a la vue 'Panel': les scenarios choisis et le graph choisis -->
                 <button @click="emitData">Transmettre des données </button>
@@ -110,6 +108,7 @@ export default {
 
         //  Récupérer le nom des dossiers et les transmettre à la variable scenario
         getDossier() {
+            console.log("données à charger")
             fetch('http://127.0.0.1:5000/arboresance')
                 .then(response => response.json())
                 .then(data => {
@@ -131,6 +130,7 @@ export default {
             this.$refs.panelRef.nomDeLaMethodeDansPanel();
         }
     },
+    mounted() { this.getDossier() }
 
 }
 </script>
