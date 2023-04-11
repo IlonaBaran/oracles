@@ -81,11 +81,11 @@ export default {
     height: 4%;
     bottom: 0%;
 
-    background-color: #6366F1;
+    background-color: #14B8A6;
     display: flex;
     align-items: center;
     justify-content: space-around;
-    color: #6366F1;
+    color: #14B8A6;
     z-index: 2;
 }
 </style>

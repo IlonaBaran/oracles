@@ -1,5 +1,5 @@
 <template>
-  <div id="viewerDiv" class="viewer">
+  <div id="viewerDiv" class="viewer" @click="showCoords">
   </div>
   <Toolbar @icon-clicked="changeMap" ref="childComponent" @change-building="building" @reinit-view="cameraView">
   </Toolbar>
@@ -85,7 +85,6 @@ export default {
     view.addLayer(bati3DLayer);
     view.addLayer(orthoLayer);
 
-
     // //Adding Geotiff of water heights (the localhost link is due to the use of http-server)
     let url = 'http://localhost:8080/gavres_mnt.tif';
 
@@ -115,8 +114,25 @@ export default {
     building() {
       view.tileLayer.attachedLayers[3].visible = this.$refs.childComponent.visibleBuilding;
       view.notifyChange();
-    }
   },
+
+    cameraView() {
+      view.camera.camera3D.position.x = 4295077.582429348;
+      view.notifyChange();
+
+      view.camera.camera3D.position.y = -251632.32006396126;
+      view.notifyChange();
+
+      view.camera.camera3D.position.z = 4696062.254883134;
+      view.notifyChange();
+    },
+    showCoords(e) {
+      console.log('view', view.eventToViewCoords(e))
+      console.log('normalized', view.eventToNormalizedCoords(e))
+      console.log('world', view.getPickingPositionFromDepth())
+    }
+
+  }
 
 };
 </script>
