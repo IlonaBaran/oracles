@@ -527,7 +527,7 @@ export default {
 
             // for (const element of this.selectedScenario) {
             //     // RECUPERATION DES DONNES AVEC DES FECTH - c
-            //     var file = 'http://localhost:8081/' + element["name"] + '.json';
+            //     var file = 'http://localhost:0/' + element["name"] + '.json';
             //     fetch(file)
             //         .then(response => response.json())
             //         .then(data => {
