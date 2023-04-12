@@ -15,7 +15,9 @@
                     <!-- <p>{{ selectedScenario }}</p>
                     <p>{{ selectedGraph }}</p> -->
 
-                    <div v-if="selectedGraph.name == 'Ligne' && lineChartAffichage">
+                    <div v-if="selectedGraph.name == 'Ligne'">
+                    <!-- <div v-if="selectedGraph.name == 'Ligne' && lineChartAffichage"> -->
+
                         <button @click="lineChartAffichage('Maree(m)')">Elevation - cycle des marées</button>
                         <button @click="lineChartAffichage('Surcote(m)')">Elevation supplémentaire du niveau de l'eau (prise en compte des conditions météorologiques et atmosphériques)</button>
                         <button @click="lineChartAffichage('Hs(vagues)(m)')">Hauteur significative des vagues</button>
@@ -103,13 +105,13 @@ export default {
                 dataLabels: {
                     enabled: false
                 },
-                stroke: {
-                    curve: 'straight'
-                },
-                title: {
-                    text: 'Product Trends by Month',
-                    align: 'left'
-                },
+                // stroke: {
+                //     curve: 'straight'
+                // },
+                // title: {
+                //     text: 'Product Trends by Month',
+                //     align: 'left'
+                // },
                 grid: {
                     row: {
                         colors: ['#f3f3f3', 'transparent'],
@@ -153,32 +155,14 @@ export default {
 
 
     methods: {
-        affichageAllGraph() {
-            let graph = this.selectedGraph["name"];
-            if (graph = "Graph2D 1") {
-                lineChartAffichage();
-            }
-            else if (graph = "Graph2D 2") {
-                // lineChartAffichage();
-            }
-            else if (graph = "Graph2D 3") {
-                // lineChartAffichage();
-            }
-            else if (graph = "Graph3D 1") {
-                // lineChartAffichage();
-            }
-            else if (graph = "Graph3D 2") {
-                heatMapAffichage();
-            }
-
-        },
-
-
-        lineChart(abscisses, ordonnees) {
+        lineChart(type, abscisses, ordonnees) {
+            console.log(abscisses);
+            console.log(ordonnees);
+            // this.series = null;
+            // this.chartOptions = null;
 
             this.series = [{
-                name: "Marée (m)",
-                //data: [0.01, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51]
+                name: type,
                 data: ordonnees
             }]
             this.chartOptions = reactive({
@@ -217,11 +201,12 @@ export default {
                     }
             });
 
+            console.log(this.series);
+            console.log(this.chartOptions);
+            console.log("____________");
         },
 
-        lineChartAffichage(texte) {
-            console.log(texte);
-            console.log("_______________________");
+        lineChartAffichage(type) {
             let abscisses = [];
             let ordonnees = [];
 
@@ -236,14 +221,15 @@ export default {
                             //     y: parseFloat(`${data[property]["Maree(m)"]}`),
                             // };
                             abscisses.push(data[property]["heure"]);
-                            //ordonnees.push(parseFloat(data[property]["Maree(m)"]));
-                            ordonnees.push(data[property][texte]);
-                            // ordonnees.push(data[property]["Maree(m)"]);
-
+                            ordonnees.push(data[property][type]);
                         }
                     })
             }
-            this.lineChart(abscisses, ordonnees);
+
+            console.log(type);
+            console.log("_______________________");
+
+            this.lineChart(type, abscisses, ordonnees);
         },
 
 
