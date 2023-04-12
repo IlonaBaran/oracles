@@ -16,7 +16,10 @@
                     <p>{{ selectedGraph }}</p> -->
 
                     <div v-if="selectedGraph.name == 'Ligne' && lineChartAffichage">
-                        <button @click="lineChartAffichage">Affichage d'un diagramme en ligne</button>
+                        <button @click="lineChartAffichage('Maree(m)')">Elevation - cycle des marées</button>
+                        <button @click="lineChartAffichage('Surcote(m)')">Elevation supplémentaire du niveau de l'eau (prise en compte des conditions météorologiques et atmosphériques)</button>
+                        <button @click="lineChartAffichage('Hs(vagues)(m)')">Hauteur significative des vagues</button>
+                        <button @click="lineChartAffichage('U(vent)(m)')">Vitesse du vent</button>
                         <apexchart :options="this.chartOptions" :series="this.series" />
                     </div>
 
@@ -211,14 +214,14 @@ export default {
                     type: 'datetime',
                     categories: abscisses,
                     overwriteCategories: abscisses,
-
-                    //categories: ["02:40", "02:50", "03:00", "03:10", "03:20", "03:30", "03:40", "03:50", "04:00", "04:10", "04:20", "04:30", "04:40", "04:50", "05:00", "05:10", "05:20", "05:30", "05:40", "05:50", "06:00", "06:10", "06:20", "06:30", "06:40", "06:50", "07:00", "07:10", "07:20", "07:30", "07:40", "07:50", "08:00", "08:10", "08:20", "08:30"]
-                }
+                    }
             });
 
         },
 
-        lineChartAffichage() {
+        lineChartAffichage(texte) {
+            console.log(texte);
+            console.log("_______________________");
             let abscisses = [];
             let ordonnees = [];
 
@@ -227,7 +230,6 @@ export default {
                 fetch(file)
                     .then(response => response.json())
                     .then(data => {
-                        // console.log(data);
                         for (const property in data) {
                             // var dict = {
                             //     x: `${data[property]["heure"]}`,
@@ -235,21 +237,13 @@ export default {
                             // };
                             abscisses.push(data[property]["heure"]);
                             //ordonnees.push(parseFloat(data[property]["Maree(m)"]));
-                            ordonnees.push(data[property]["Maree(m)"]);
+                            ordonnees.push(data[property][texte]);
+                            // ordonnees.push(data[property]["Maree(m)"]);
 
                         }
                     })
             }
-            // this.lineChart(abscisses, ordonnees);
-            // this.lineChart(abscisses,  [10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51]);
             this.lineChart(abscisses, ordonnees);
-
-
-            // console.log(abscisses);
-            // var hrgu = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'];
-            // console.log( hrgu);
-            // console.log(typeof hrgu);
-            // console.log(typeof [10, 41, 35, 51, 49, 62, 69, 91, 148]);
         },
 
 
