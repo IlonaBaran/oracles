@@ -37,8 +37,14 @@ export async function getHeightMesh(url) {
             const Yf = bbox[3];
 
             //Calculating the pixel size
-            const Xsize = (Xf - Xo) / width;
-            const Ysize = -(Yf - Yo) / height;
+            let Xsize = (Xf - Xo) / width;
+            let Ysize = -(Yf - Yo) / height;
+
+            Xsize = Xsize * 1.25;
+            Ysize = Ysize * 0.98;
+
+            console.log(Xsize, Ysize)
+
 
             //Specifying the origin of the image
             const origin = [Xo, Yf];
@@ -103,6 +109,7 @@ export async function getHeightMesh(url) {
 
             // create material
             const material = new THREE.MeshBasicMaterial({
+                wireframe: true,
                 transparent: true,
                 opacity: 0.8,
                 color: 0xE0FFFF,
@@ -110,12 +117,14 @@ export async function getHeightMesh(url) {
             });
 
             let mesh = new THREE.Mesh(geometry, material);
-            //coord3.altitude = + 100;
+            coord3.altitude = + 10;
 
             mesh.position.copy(coord3.as('EPSG:4978'));
             mesh.lookAt(new THREE.Vector3(0, 0, 0));
             mesh.rotateY(Math.PI);
+
             mesh.updateMatrixWorld();
+            console.log(mesh)
 
             // Return the mesh
             resolve(mesh);
