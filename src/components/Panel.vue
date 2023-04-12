@@ -158,13 +158,15 @@ export default {
         lineChart(type, abscisses, ordonnees) {
             console.log(abscisses);
             console.log(ordonnees);
+
             // this.series = null;
             // this.chartOptions = null;
 
-            this.series = [{
-                name: type,
-                data: ordonnees
-            }]
+            // this.series = [{
+            //     name: type,
+            //     data: ordonnees
+            // }]
+            this.series = ordonnees,
             this.chartOptions = reactive({
                 chart: {
                     id: 'mychart',
@@ -206,6 +208,7 @@ export default {
             console.log("____________");
         },
 
+
         lineChartAffichage(type) {
             let abscisses = [];
             let ordonnees = [];
@@ -215,21 +218,44 @@ export default {
                 fetch(file)
                     .then(response => response.json())
                     .then(data => {
-                        for (const property in data) {
-                            // var dict = {
-                            //     x: `${data[property]["heure"]}`,
-                            //     y: parseFloat(`${data[property]["Maree(m)"]}`),
-                            // };
-                            abscisses.push(data[property]["heure"]);
-                            ordonnees.push(data[property][type]);
-                        }
-                    })
-            }
+                        // for (const property in data) {
+                        //     // var dict = {
+                        //     //     x: `${data[property]["heure"]}`,
+                        //     //     y: parseFloat(`${data[property]["Maree(m)"]}`),
+                        //     // };
+                        //     abscisses.push(data[property]["heure"]);
+                        //     ordonnees.push(data[property][type]);
+                        // }
+                        // Boucle pour avoir toutes les abscisses possibles
 
-            console.log(type);
-            console.log("_______________________");
+
+                        for (const property in data) {
+                            // console.log(abscisses.indexOf(`${data[property]["heure"]}`));
+                            if (abscisses.indexOf(`${data[property]["heure"]}`) == -1){
+                                abscisses.push(`${data[property]["heure"]}`);
+                            }                             
+                        };
+
+                        abscisses.sort()
+                    
+                        // 1 dictionnaire = 1 scenario, il se remet à 0 à chaque nouveau scénario
+                        var dict = {};  
+                        dict["name"] = `${element["name"]}`;
+
+                        // L : tableau pour mettre les valeurs du scénario dedans. On ajoutera L au tableau à la fin de la boucle for
+                        var L = new Array(abscisses.length).fill(0);
+
+                        for (const property in data) {
+                            if (abscisses.indexOf(`${data[property]["heure"]}`) != -1){
+                                L[abscisses.indexOf(`${data[property]["heure"]}`)] = `${data[property][type]}`;                          
+                            }  
+                        };
+                        dict["data"] = L;
+                        ordonnees.push(dict);
+                    })
 
             this.lineChart(type, abscisses, ordonnees);
+            }
         },
 
 
@@ -439,7 +465,8 @@ export default {
                         };
                     // })
                     // .then()
-                    
+
+                        abscisses.sort()
                     
                         // 1 dictionnaire = 1 scenario, il se remet à 0 à chaque nouveau scénario
                         var dict = {};  
@@ -492,10 +519,10 @@ export default {
             this.chartOptions3 = {
                 chart: {
                     type: 'heatmap',
-                    height: 550,
+                    // height: 550,
                 },
                 dataLabels: {
-                    enabled: true,
+                    // enabled: true,
                 },
                 colors: ['#008FFB'],
                 title: {
@@ -516,14 +543,14 @@ export default {
                 yaxis: {
                     categories: ['Morning', 'Afternoon', 'Evening'],
                 },
-                tooltip: {
-                    enabled: true,
-                    y: {
-                        formatter: (val) => {
-                            return val + ' hours'
-                        },
-                    },
-                },
+                // tooltip: {
+                //     enabled: true,
+                //     y: {
+                //         formatter: (val) => {
+                //             return val + ' hours'
+                //         },
+                //     },
+                // },
             },
 
             // this.series3 = [
