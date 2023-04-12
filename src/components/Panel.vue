@@ -198,7 +198,7 @@ export default {
                     type: 'datetime',
                     categories: abscisses,
                     overwriteCategories: abscisses,
-                    }
+                }
             });
 
             console.log(this.series);
@@ -391,6 +391,9 @@ export default {
         roseVentAffichage() {
         },
 
+
+
+
         sendData(data) {
             // const data = { /* Vos données ici */ };
             fetch('127.0.0.1:5000/api/data', {
@@ -409,27 +412,58 @@ export default {
                 });
         },
 
+
+
+
         heatMapAffichage() {
+            // valeurs a afficher --> ordonnées
             var listDataPlot = [];
+            // données temporelles --> abscisses
+            var abscisses = new Array();
+
             for (const element of this.selectedScenario) {
                 fetch('http://localhost:8080/jsonData/' + `${element["name"]}` + '.json')
                     .then(response => response.json())
                     .then(data => {
-                        console.log(data);
-                        var dict = {};
+                        // console.log(data);
+                        // Boucle pour avoir toutes les abscisses possibles
                         for (const property in data) {
-                            var dict = {
-                                name: `${element["name"]}`,
-                                data: parseFloat(`${data[property]["Hs(vagues)(m)"]}`),
-                            };
-                            listDataPlot.push(dict);
-                        }
+                            // console.log(abscisses.indexOf(`${data[property]["heure"]}`));
+                            console.log(property);
+                            console.log(abscisses.indexOf(`${data[property]["heure"]}`))
+                            console.log("aaaa");
+                            
+                            if (abscisses.indexOf(`${data[property]["heure"]}`) == -1){
+                                abscisses.push(`${data[property]["heure"]}`);
+                            }                             
+                        };
+                    // })
+                    // .then()
+                    
+                    
+                        // 1 dictionnaire = 1 scenario, il se remet à 0 à chaque nouveau scénario
+                        var dict = {};  
+                        dict["name"] = `${element["name"]}`;
+
+                        // L : tableau pour mettre les valeurs du scénario dedans. On ajoutera L au tableau à la fin de la boucle for
+                        var L = new Array(abscisses.length).fill(0);
+
+                        for (const property in data) {
+                            if (abscisses.indexOf(`${data[property]["heure"]}`) != -1){
+                                L[abscisses.indexOf(`${data[property]["heure"]}`)] = `${data[property]["Hs(vagues)(m)"]}`;                          
+                            }  
+                        };
+                        dict["data"] = L;
+                        listDataPlot.push(dict);
                     })
             }
 
-            this.heatMap(listDataPlot);
+            this.heatMap(listDataPlot, abscisses);
+
+            console.log(abscisses);
             console.log(listDataPlot);
-            console.log("_______________");
+
+
             //  POUR LE DIAGRAMME 3 
             // fetch('http://localhost:5000/api/data', {
             //     method: 'POST',
@@ -452,7 +486,9 @@ export default {
             // });
         },
 
-        heatMap(donnees) {
+
+
+        heatMap(donnees, abscisses) {            
             this.chartOptions3 = {
                 chart: {
                     type: 'heatmap',
@@ -472,7 +508,9 @@ export default {
                     },
                     type: 'category',
                     // categories: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-                    categories: ['Monday', 'Tuesday', 'Wednesday'],
+                    // categories: ['Monday', 'Tuesday', 'Wednesday'],
+                    categories: abscisses,
+                    overwriteCategories: abscisses,
 
                 },
                 yaxis: {
@@ -488,25 +526,26 @@ export default {
                 },
             },
 
-                //         this.series3 = [
-                //     {
-                //       name: 'Metric1',
-                //       data: [11, 12, 8],
-                //     },
-                //     {
-                //       name: 'Metric2',
-                //       data: [10, 7, 13],
-                //     },
-                //     {
-                //       name: 'Metric3',
-                //       data: [1, 2, 3],
-                //     },
-                //     {
-                //       name: 'Metric4',
-                //       data: [1, 20, 3],
-                //     },
-                //   ]
-                this.series3 = donnees;
+            // this.series3 = [
+            //     {
+            //         name: 'Metric1',
+            //         data: [11, 12, 8],
+            //     },
+            //     {
+            //         name: 'Metric2',
+            //         data: [10, 7, 13],
+            //     },
+            //     {
+            //         name: 'Metric3',
+            //         data: [1, 2, 3],
+            //     },
+            //     {
+            //         name: 'Metric4',
+            //         data: [1, 20, 3],
+            //     },
+            // ]
+                  
+            this.series3 = donnees;
         },
     }
 
