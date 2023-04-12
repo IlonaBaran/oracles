@@ -15,7 +15,7 @@
                     <!-- <p>{{ selectedScenario }}</p>
                     <p>{{ selectedGraph }}</p> -->
 
-                    <div v-if="selectedGraph.name == 'Ligne'">
+                    <div v-if="selectedGraph.name == 'Ligne' && lineChartAffichage">
                         <button @click="lineChartAffichage">Affichage d'un diagramme en ligne</button>
                         <apexchart :options="this.chartOptions" :series="this.series" />
                     </div>
@@ -117,14 +117,17 @@ export default {
                     tooltip: {
                         enabled: false
                     },
-                    categories: ["02:40", "02:50", "03:10", "03:20"],
+                    categories: [],
                 }
             },
 
-            series: [{
-                name: "Desktops",
-                data: [1, 2, 3, 4]
-            }],
+            // series: [{
+            //     name: "Desktops",
+            //     data: [1, 2, 3, 4]
+            // }],
+
+            series: [],
+
 
             // ROSE WIND HIGHCHARTJS
             chartOptions2: ref(null),
@@ -168,10 +171,13 @@ export default {
         },
 
 
-        lineChart(abcisses, ordonnees) {
-            console.log(abcisses);
-            console.log(ordonnees);
-            // console.log(typeof abcisses);
+        lineChart(abscisses, ordonnees) {
+
+            this.series = [{
+                name: "Marée (m)",
+                //data: [0.01, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51]
+                data: ordonnees
+            }]
             this.chartOptions = reactive({
                 chart: {
                     id: 'mychart',
@@ -202,44 +208,44 @@ export default {
                     tooltip: {
                         enabled: false
                     },
-                    // categories: ["02:40", "02:50", "03:10", "03:20"],
-                    categories: abcisses,
-                    // categories: ["02:40", "02:50", "03:00", "03:10", "03:20", "03:30", "03:40", "03:50", "04:00", "04:10", "04:20", "04:30", "04:40", "04:50", "05:00", "05:10", "05:20", "05:30", "05:40", "05:50", "06:00", "06:10", "06:20", "06:30", "06:40", "06:50", "07:00", "07:10", "07:20", "07:30", "07:40", "07:50", "08:00", "08:10", "08:20", "08:30"]
+                    type: 'datetime',
+                    categories: abscisses,
+                    overwriteCategories: abscisses,
+
+                    //categories: ["02:40", "02:50", "03:00", "03:10", "03:20", "03:30", "03:40", "03:50", "04:00", "04:10", "04:20", "04:30", "04:40", "04:50", "05:00", "05:10", "05:20", "05:30", "05:40", "05:50", "06:00", "06:10", "06:20", "06:30", "06:40", "06:50", "07:00", "07:10", "07:20", "07:30", "07:40", "07:50", "08:00", "08:10", "08:20", "08:30"]
                 }
             });
 
-            this.series = [{
-                name: "Desktops",
-                // data: [10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51]
-                data: ordonnees
-            }]
         },
 
         lineChartAffichage() {
-            var abcisses = new Array();
-            var ordonnees = new Array();
+            let abscisses = [];
+            let ordonnees = [];
+
             for (const element of this.selectedScenario) {
                 var file = 'http://localhost:8080/jsonData/' + element["name"] + '.json';
                 fetch(file)
                     .then(response => response.json())
                     .then(data => {
-                        console.log(data);
+                        // console.log(data);
                         for (const property in data) {
                             // var dict = {
                             //     x: `${data[property]["heure"]}`,
                             //     y: parseFloat(`${data[property]["Maree(m)"]}`),
                             // };
-                            abcisses.push(data[property]["heure"]);
-                            ordonnees.push(parseFloat(data[property]["Maree(m)"]));
+                            abscisses.push(data[property]["heure"]);
+                            //ordonnees.push(parseFloat(data[property]["Maree(m)"]));
+                            ordonnees.push(data[property]["Maree(m)"]);
+
                         }
                     })
             }
-            // this.lineChart(abcisses, ordonnees);
-            // this.lineChart(abcisses,  [10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51]);
-            this.lineChart(abcisses, ordonnees);
+            // this.lineChart(abscisses, ordonnees);
+            // this.lineChart(abscisses,  [10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51, 10, 41, 35, 51]);
+            this.lineChart(abscisses, ordonnees);
 
 
-            // console.log(abcisses);
+            // console.log(abscisses);
             // var hrgu = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'];
             // console.log( hrgu);
             // console.log(typeof hrgu);
@@ -426,7 +432,7 @@ export default {
         heatMapAffichage() {
             var listDataPlot = [];
             for (const element of this.selectedScenario) {
-                fetch('http://localhost:8080/jsonData' + `${element["name"]}` + '.json')
+                fetch('http://localhost:8080/jsonData/' + `${element["name"]}` + '.json')
                     .then(response => response.json())
                     .then(data => {
                         console.log(data);
