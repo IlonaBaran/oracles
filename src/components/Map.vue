@@ -61,8 +61,7 @@ export default {
     );
 
     var placement = {
-      coord: viewExtent.center(),
-      tilt: 12
+      coord: viewExtent.center()
     }
 
     // Create the planar view
@@ -103,6 +102,8 @@ export default {
       view.notifyChange();
 
     })
+    view.controls.enableRotation = false;
+    view.notifyChange();
 
   },
   methods: {
@@ -132,30 +133,20 @@ export default {
       view.camera.camera3D.position.z = 2500.719216284468985;
       view.notifyChange();
     }, showCoords(e) {
-      console.log('view', view)
-      // view.camera.camera3D.rotation.set(view.camera.camera3D.rotation.x, Math.PI / 2, view.camera.camera3D.rotation.y)
-      console.log('quat', view.camera.camera3D.quaternion)
-      console.log('rot', view.camera.camera3D.rotation)
-      console.log('pos', view.camera.camera3D.position)
-
-      // view.camera.camera3D.rotation.set(1, 1, 0);
-
+      //console.log('view', view)
 
     },
     vue2d() {
-      console.log(view.camera.camera3D.quaternion.w)
+      view.controls.goToTopView();
       view.controls.enableRotation = false;
-      view.camera.camera3D.quaternion.w = 1
-      console.log(view.camera.camera3D.quaternion.w)
       view.notifyChange();
       console.log("i caught the 2d orders")
 
     },
     vue3d() {
-      console.log(view.camera.camera3D.quaternion.w)
+
       view.controls.enableRotation = true;
-      view.camera.camera3D.quaternion.w = 0.83;
-      console.log(view.camera.camera3D.quaternion.w)
+
       view.notifyChange();
 
       console.log("i caught the 3d orders")
