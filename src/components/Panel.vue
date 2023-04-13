@@ -12,12 +12,21 @@
                 <ScrollPanel style="width: 100%; height: 75vh " class="custombar1">
 
                     <div v-if="selectedGraph.name == 'Ligne'">
-                    <!-- <div v-if="selectedGraph.name == 'Ligne' && lineChartAffichage"> -->
+                        <!-- <div v-if="selectedGraph.name == 'Ligne' && lineChartAffichage"> -->
+
+
                         <button @click="lineChartAffichage('Maree(m)')">Elevation - cycle des marées</button>
-                        <button @click="lineChartAffichage('Surcote(m)')">Elevation supplémentaire du niveau de l'eau (prise en compte des conditions météorologiques et atmosphériques)</button>
+                        <button @click="lineChartAffichage('Surcote(m)')">Elevation supplémentaire du niveau de l'eau
+                            (prise
+                            en compte des conditions météorologiques et atmosphériques)</button>
                         <button @click="lineChartAffichage('Hs(vagues)(m)')">Hauteur significative des vagues</button>
                         <button @click="lineChartAffichage('U(vent)(m)')">Vitesse du vent</button>
-                        <apexchart :options="this.chartOptions" :series="this.series" />
+
+                        <div v-if="this.affichageLigne == true">
+
+                            <apexchart :options="this.chartOptions" :series="this.series" />
+                        </div>
+
                     </div>
 
                     <div v-if="selectedGraph.name == 'Rose des vents'">
@@ -27,9 +36,14 @@
                     </div>
 
                     <div v-if="selectedGraph.name == 'Chaleur'">
-                        <button @click="heatMapAffichage">Affichage d'un diagramme de chaleur</button>
-                        <apexchart :options="this.chartOptions3" :series="this.series3" />
-                    </div>
+
+                        <!-- <button @click="heatMapAffichage">Affichage d'un diagramme de chaleur</button> -->
+
+                        <div v-if="this.affichageHeat == true">
+
+                            <apexchart :options="this.chartOptions3" :series="this.series3" />
+                        </div>
+</div>
 
                     <div v-if="selectedGraph.name == 'Graph3D 1'">
                         <button @click="TD1Affichage">jvrbrgunrjenguibgzy</button>
@@ -84,6 +98,10 @@ export default {
         return {
             checked: ref(false),
             checkedPanel: ref(false),
+            affichageLigne: false,
+            affichageHeat: false,
+
+            affichageRose: false,
 
             // LINE CHART - APEXCHARTS
             chartOptions: {
@@ -178,18 +196,28 @@ export default {
 
 
     methods: {
+        afficheGraph(type) {
+            this.affichageLigne = false;
+            this.lineChartAffichage(type);
+            this.heatMapAffichage();
+
+        },
+        reiAfficheGraph() {
+            this.affichageLigne = false;
+            this.affichageHeat = false;
+
+            //this.lineChartAffichage(type);
+        },
         lineChart(type, abscisses, ordonnees) {
             console.log(abscisses);
             console.log(ordonnees);
-
             // this.series = null;
             // this.chartOptions = null;
-
             // this.series = [{
             //     name: type,
             //     data: ordonnees
             // }]
-            this.series = ordonnees,
+            this.series = ordonnees;
             this.chartOptions = reactive({
                 chart: {
                     id: 'mychart',
@@ -220,22 +248,20 @@ export default {
                     tooltip: {
                         enabled: false
                     },
-                    type: 'datetime',
-                    categories: abscisses,
+
                     overwriteCategories: abscisses,
                 }
             });
+            this.affichageLigne = true;
 
             console.log(this.series);
             console.log(this.chartOptions);
             console.log("____________");
         },
-
-
         lineChartAffichage(type) {
+
             let abscisses = [];
             let ordonnees = [];
-
             for (const element of this.selectedScenario) {
                 var file = 'http://localhost:8080/jsonData/' + element["name"] + '.json';
                 fetch(file)
@@ -250,37 +276,31 @@ export default {
                         //     ordonnees.push(data[property][type]);
                         // }
                         // Boucle pour avoir toutes les abscisses possibles
-
-
                         for (const property in data) {
                             // console.log(abscisses.indexOf(`${data[property]["heure"]}`));
-                            if (abscisses.indexOf(`${data[property]["heure"]}`) == -1){
+                            if (abscisses.indexOf(`${data[property]["heure"]}`) == -1) {
                                 abscisses.push(`${data[property]["heure"]}`);
-                            }                             
+                            }
                         };
-
                         abscisses.sort()
-                    
-                        // 1 dictionnaire = 1 scenario, il se remet à 0 à chaque nouveau scénario
-                        var dict = {};  
-                        dict["name"] = `${element["name"]}`;
 
+                        // 1 dictionnaire = 1 scenario, il se remet à 0 à chaque nouveau scénario
+                        var dict = {};
+                        dict["name"] = `${element["name"]}`;
                         // L : tableau pour mettre les valeurs du scénario dedans. On ajoutera L au tableau à la fin de la boucle for
                         var L = new Array(abscisses.length).fill(0);
-
                         for (const property in data) {
-                            if (abscisses.indexOf(`${data[property]["heure"]}`) != -1){
-                                L[abscisses.indexOf(`${data[property]["heure"]}`)] = `${data[property][type]}`;                          
-                            }  
+                            if (abscisses.indexOf(`${data[property]["heure"]}`) != -1) {
+                                L[abscisses.indexOf(`${data[property]["heure"]}`)] = `${data[property][type]}`;
+                            }
                         };
                         dict["data"] = L;
                         ordonnees.push(dict);
                     })
 
-            this.lineChart(type, abscisses, ordonnees);
+                this.lineChart(type, abscisses, ordonnees);
             }
         },
-
 
         roseChartHIGHCHARTS() {
             // this.chartOptions2 = reactive({
@@ -506,28 +526,29 @@ export default {
                             console.log(property);
                             console.log(abscisses.indexOf(`${data[property]["heure"]}`))
                             console.log("aaaa");
-                            
-                            if (abscisses.indexOf(`${data[property]["heure"]}`) == -1){
+
+                            if (abscisses.indexOf(`${data[property]["heure"]}`) == -1) {
                                 abscisses.push(`${data[property]["heure"]}`);
-                            }                             
+                            }
                         };
 
                         abscisses.sort()
-                    
+
                         // 1 dictionnaire = 1 scenario, il se remet à 0 à chaque nouveau scénario
-                        var dict = {};  
+                        var dict = {};
                         dict["name"] = `${element["name"]}`;
 
                         // L : tableau pour mettre les valeurs du scénario dedans. On ajoutera L au tableau à la fin de la boucle for
                         var L = new Array(abscisses.length).fill(0);
 
                         for (const property in data) {
-                            if (abscisses.indexOf(`${data[property]["heure"]}`) != -1){
-                                L[abscisses.indexOf(`${data[property]["heure"]}`)] = `${data[property]["Hs(vagues)(m)"]}`;                          
-                            }  
+                            if (abscisses.indexOf(`${data[property]["heure"]}`) != -1) {
+                                L[abscisses.indexOf(`${data[property]["heure"]}`)] = `${data[property]["Hs(vagues)(m)"]}`;
+                            }
                         };
                         dict["data"] = L;
                         listDataPlot.push(dict);
+
                     })
             }
 
@@ -535,6 +556,7 @@ export default {
 
             console.log(abscisses);
             console.log(listDataPlot);
+            this.affichageHeat = true;
 
 
             //  POUR LE DIAGRAMME 3 
@@ -560,6 +582,7 @@ export default {
         },
 
 
+
         heatMap(donnees, abscisses) {            
             this.chartOptions3 = {
                 chart: {
@@ -582,6 +605,7 @@ export default {
                 yaxis: {
                     categories: ['Morning', 'Afternoon', 'Evening'], // ENCORE A MODIFIER CETTE PARTIE ??????
                 },
+
             },                  
             this.series3 = donnees;
         },
@@ -782,174 +806,176 @@ export default {
 //             var L = [];
 //            this.roseChart();
 
-            // for (const element of this.selectedScenario) {
-            //     // RECUPERATION DES DONNES AVEC DES FECTH - c
-            //     var file = 'http://localhost:0/' + element["name"] + '.json';
-            //     fetch(file)
-            //         .then(response => response.json())
-            //         .then(data => {
-            //             console.log(data);
-            //             for (const property in data) {
-            //                 var dict = {
-            //                     angle: parseFloat(`${data[property]["Dir(vent)()"]}`),
-            //                     speed: parseFloat(`${data[property]["U(vent)(m)"]}`),
-            //                 };
-            //                 L.push(dict);
-            //             }
-            //             // this.lineChart(L);
-            //         })
-    //         // }
-    //     }
-    // }
+// for (const element of this.selectedScenario) {
+//     // RECUPERATION DES DONNES AVEC DES FECTH - c
+//     var file = 'http://localhost:0/' + element["name"] + '.json';
+//     fetch(file)
+//         .then(response => response.json())
+//         .then(data => {
+//             console.log(data);
+//             for (const property in data) {
+//                 var dict = {
+//                     angle: parseFloat(`${data[property]["Dir(vent)()"]}`),
+//                     speed: parseFloat(`${data[property]["U(vent)(m)"]}`),
+//                 };
+//                 L.push(dict);
+//             }
+//             // this.lineChart(L);
+//         })
+//         // }
+//     }
+// }
 
-    //   const chartOptions2 = reactive({
-    //     //  type: 'horizontal column',
-    //     //type: 'simpleLine',
-    //     legend: {
-    //         visible: true,
-    //         position: 'bottom right',
-    //         // legendEntry_visible: false
-    //     },
-    // 	title: { label: { text: 'Cost over time' } },
-    // 	yAxis: [
-    //         /* Main axis is defined first. */
-    //         { formatString: 'c' },
+//   const chartOptions2 = reactive({
+//     //  type: 'horizontal column',
+//     //type: 'simpleLine',
+//     legend: {
+//         visible: true,
+//         position: 'bottom right',
+//         // legendEntry_visible: false
+//     },
+// 	title: { label: { text: 'Cost over time' } },
+// 	yAxis: [
+//         /* Main axis is defined first. */
+//         { formatString: 'c' },
 /* Secondary axis will sync with main axis by default. */
-    // {
-    // 	id: 'secondY',
-    // 	orientation: 'opposite',
-    // 	line: { color: '#e2e2e2' },
-    // 	defaultTick: {
-    // 		enabled: false,
-    // 		gridLine: { visible: false }
-    // 	}
-    // }
-    // ],
-    // xAxis: {
-    //     crosshair: { enabled: true },
-    //     scale: { type: 'time' }
-    // },
-    // defaultSeries: {
-    //     type: 'line',
-    //     defaultPoint: {
-    //         marker: { visible: false }
-    //     },
-    // lastPoint: {
-    // 	label: { text: '<b>%seriesName</b>' },
-    // 	yAxisTick: {
-    // 		axisId: 'secondY',
-    // 		label: { text: '%yValue' }
-    // 	}
-    // }
-    // }
-    //  series: [
-    // 		{
-    // 			name: 'Purchases',
-    // 			points: [
-    // 				['1/1/2020', 29.9],
-    // 				['2/1/2020', 97.5],
-    // 				['3/1/2020', 110.4],
-    // 				['4/1/2020', 129.2],
-    // 				['5/1/2020', 144.0],
-    // 				['6/1/2020', 176.0],
-    // 				['7/1/2020', 182.0],
-    // 				['8/1/2020', 186.0],
-    // 				['9/1/2020', 181.0],
-    // 				['10/1/2020', 178.0],
-    // 				['11/1/2020', 184.0],
-    // 				['12/1/2020', 176.0]
-    // 			]
-    // 		},
-    // 		{
-    // 			name: 'Taxes',
-    // 			points: [
-    // 				['1/1/2020', 86.9],
-    // 				['2/1/2020', 79.5],
-    // 				['3/1/2020', 95.4],
-    // 				['4/1/2020', 97.2],
-    // 				['5/1/2020', 123.0],
-    // 				['6/1/2020', 111.0],
-    // 				['7/1/2020', 122.0],
-    // 				['8/1/2020', 135.0],
-    // 				['9/1/2020', 140.0],
-    // 				['10/1/2020', 139.0],
-    // 				['11/1/2020', 135.0],
-    // 				['12/1/2020', 132.0]
-    // 			]
-    // 		},
-    // 		{
-    // 			name: 'Supplies',
-    // 			points: [
-    // 				['1/1/2020', 129.9],
-    // 				['2/1/2020', 111.5],
-    // 				['3/1/2020', 66.4],
-    // 				['4/1/2020', 29.2],
-    // 				['5/1/2020', 88.0],
-    // 				['6/1/2020', 102.0],
-    // 				['7/1/2020', 82.0],
-    // 				['8/1/2020', 75.0],
-    // 				['9/1/2020', 162.0],
-    // 				['10/1/2020', 110.0],
-    // 				['11/1/2020', 90.0],
-    // 				['12/1/2020', 85.0]
-    // 			]
-    // 		},
-    // 		{
-    // 			name: 'Rent',
-    // 			points: [
-    // 				['1/1/2020', 56.9],
-    // 				['2/1/2020', 56.5],
-    // 				['3/1/2020', 56.4],
-    // 				['4/1/2020', 56.2],
-    // 				['5/1/2020', 75.0],
-    // 				['6/1/2020', 56.0],
-    // 				['7/1/2020', 56.0],
-    // 				['8/1/2020', 56.0],
-    // 				['9/1/2020', 56.0],
-    // 				['10/1/2020', 67.0],
-    // 				['11/1/2020', 67.0],
-    // 				['12/1/2020', 67.0]
-    // 			]
-    // 		}
-    //  ]
-    // });
+// {
+// 	id: 'secondY',
+// 	orientation: 'opposite',
+// 	line: { color: '#e2e2e2' },
+// 	defaultTick: {
+// 		enabled: false,
+// 		gridLine: { visible: false }
+// 	}
+// }
+// ],
+// xAxis: {
+//     crosshair: { enabled: true },
+//     scale: { type: 'time' }
+// },
+// defaultSeries: {
+//     type: 'line',
+//     defaultPoint: {
+//         marker: { visible: false }
+//     },
+// lastPoint: {
+// 	label: { text: '<b>%seriesName</b>' },
+// 	yAxisTick: {
+// 		axisId: 'secondY',
+// 		label: { text: '%yValue' }
+// 	}
+// }
+// }
+//  series: [
+// 		{
+// 			name: 'Purchases',
+// 			points: [
+// 				['1/1/2020', 29.9],
+// 				['2/1/2020', 97.5],
+// 				['3/1/2020', 110.4],
+// 				['4/1/2020', 129.2],
+// 				['5/1/2020', 144.0],
+// 				['6/1/2020', 176.0],
+// 				['7/1/2020', 182.0],
+// 				['8/1/2020', 186.0],
+// 				['9/1/2020', 181.0],
+// 				['10/1/2020', 178.0],
+// 				['11/1/2020', 184.0],
+// 				['12/1/2020', 176.0]
+// 			]
+// 		},
+// 		{
+// 			name: 'Taxes',
+// 			points: [
+// 				['1/1/2020', 86.9],
+// 				['2/1/2020', 79.5],
+// 				['3/1/2020', 95.4],
+// 				['4/1/2020', 97.2],
+// 				['5/1/2020', 123.0],
+// 				['6/1/2020', 111.0],
+// 				['7/1/2020', 122.0],
+// 				['8/1/2020', 135.0],
+// 				['9/1/2020', 140.0],
+// 				['10/1/2020', 139.0],
+// 				['11/1/2020', 135.0],
+// 				['12/1/2020', 132.0]
+// 			]
+// 		},
+// 		{
+// 			name: 'Supplies',
+// 			points: [
+// 				['1/1/2020', 129.9],
+// 				['2/1/2020', 111.5],
+// 				['3/1/2020', 66.4],
+// 				['4/1/2020', 29.2],
+// 				['5/1/2020', 88.0],
+// 				['6/1/2020', 102.0],
+// 				['7/1/2020', 82.0],
+// 				['8/1/2020', 75.0],
+// 				['9/1/2020', 162.0],
+// 				['10/1/2020', 110.0],
+// 				['11/1/2020', 90.0],
+// 				['12/1/2020', 85.0]
+// 			]
+// 		},
+// 		{
+// 			name: 'Rent',
+// 			points: [
+// 				['1/1/2020', 56.9],
+// 				['2/1/2020', 56.5],
+// 				['3/1/2020', 56.4],
+// 				['4/1/2020', 56.2],
+// 				['5/1/2020', 75.0],
+// 				['6/1/2020', 56.0],
+// 				['7/1/2020', 56.0],
+// 				['8/1/2020', 56.0],
+// 				['9/1/2020', 56.0],
+// 				['10/1/2020', 67.0],
+// 				['11/1/2020', 67.0],
+// 				['12/1/2020', 67.0]
+// 			]
+// 		}
+//  ]
+// });
 
-    //     const chartOptions3 = reactive({
-    //     debug: true,
-    //     type: 'column',
-    //     yAxis: {
-    //         scale_type: 'stacked',
-    //         label_text: 'Units Sold'
-    //     },
-    //     title_label_text: 'Acme Tool Sales',
-    //     xAxis: {
-    //         label_text: 'Quarter',
-    //         categories: ['Q1', 'Q2', 'Q3', 'Q4']
-    //     },
-    //     series: [
-    //         {
-    //         name: 'Saw',
-    //         id: 's1',
-    //         points: [230, 240, 267, 238]
-    //         },
-    //         {
-    //         name: 'Hammer',
-    //         points: [325, 367, 382, 371]
-    //         },
-    //         {
-    //         name: 'Grinder',
-    //         points: [285, 292, 267, 218]
-    //         },
-    //         {
-    //         name: 'Drill',
-    //         points: [185, 192, 198, 248]
-    //         }
-    //     ]
-    //     });
+//     const chartOptions3 = reactive({
+//     debug: true,
+//     type: 'column',
+//     yAxis: {
+//         scale_type: 'stacked',
+//         label_text: 'Units Sold'
+//     },
+//     title_label_text: 'Acme Tool Sales',
+//     xAxis: {
+//         label_text: 'Quarter',
+//         categories: ['Q1', 'Q2', 'Q3', 'Q4']
+//     },
+//     series: [
+//         {
+//         name: 'Saw',
+//         id: 's1',
+//         points: [230, 240, 267, 238]
+//         },
+//         {
+//         name: 'Hammer',
+//         points: [325, 367, 382, 371]
+//         },
+//         {
+//         name: 'Grinder',
+//         points: [285, 292, 267, 218]
+//         },
+//         {
+//         name: 'Drill',
+//         points: [185, 192, 198, 248]
+//         }
+//     ]
+//     });
 
-    //   return { chartOptions, chartOptions2, chartOptions3 };
+//   return { chartOptions, chartOptions2, chartOptions3 };
 
 // }
+
+
 </script>
 
 
