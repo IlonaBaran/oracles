@@ -19,8 +19,11 @@
                     class="selectGraph" />
 
                 <Button v-styleclass="{ selector: '.card', toggleClass: 'p-hidden' }"
-                    @click="this.$refs.panelGraph.lineChartAffichage('Maree(m)')" icon="pi pi-check" aria-label="Valider"
+                    @click="this.$refs.panelGraph.afficheGraph('Maree(m)')" icon="pi pi-check" aria-label="Valider"
                     style="margin-left: 10px;" />
+
+                <Button v-styleclass="{ selector: '.card', toggleClass: 'p-hidden' }" @click="this.$refs.panelGraph.reiAfficheGraph()
+                " icon="pi pi-refresh" aria-label="Valider" style="margin-left: 10px;" />
 
                 <!-- Il sert a transmettre les paramètres de l'utilisateur a la vue 'Panel': les scenarios choisis et le graph choisis -->
                 <!-- <button @click="emitData">Transmettre des données </button> -->

@@ -19,11 +19,17 @@
                         <!-- <div v-if="selectedGraph.name == 'Ligne' && lineChartAffichage"> -->
 
                         <button @click="lineChartAffichage('Maree(m)')">Elevation - cycle des marées</button>
-                        <!-- <button @click="lineChartAffichage('Surcote(m)')">Elevation supplémentaire du niveau de l'eau (prise
+                        <button @click="lineChartAffichage('Surcote(m)')">Elevation supplémentaire du niveau de l'eau
+                            (prise
                             en compte des conditions météorologiques et atmosphériques)</button>
                         <button @click="lineChartAffichage('Hs(vagues)(m)')">Hauteur significative des vagues</button>
-                        <button @click="lineChartAffichage('U(vent)(m)')">Vitesse du vent</button> -->
-                        <apexchart :options="this.chartOptions" :series="this.series" />
+                        <button @click="lineChartAffichage('U(vent)(m)')">Vitesse du vent</button>
+
+                        <div v-if="this.affichageLigne == true">
+
+                            <apexchart :options="this.chartOptions" :series="this.series" />
+                        </div>
+
                     </div>
 
                     <div v-if="selectedGraph.name == 'Rose des vents'">
@@ -91,6 +97,10 @@ export default {
         return {
             checked: ref(false),
             checkedPanel: ref(false),
+            affichageLigne: false,
+            affichageHeat: false,
+
+            affichageRose: false,
 
             // LINE
             chartOptions: {
@@ -156,21 +166,24 @@ export default {
 
 
     methods: {
+        afficheGraph(type) {
+            this.affichageLigne = false;
+            this.lineChartAffichage(type);
+        },
+        reiAfficheGraph() {
+            this.affichageLigne = false;
+            //this.lineChartAffichage(type);
+        },
         lineChart(type, abscisses, ordonnees) {
             console.log(abscisses);
             console.log(ordonnees);
-
             // this.series = null;
             // this.chartOptions = null;
-
             // this.series = [{
             //     name: type,
             //     data: ordonnees
             // }]
-
             this.series = ordonnees;
-
-
             this.chartOptions = reactive({
                 chart: {
                     id: 'mychart',
@@ -201,22 +214,20 @@ export default {
                     tooltip: {
                         enabled: false
                     },
-                    type: 'datetime',
-                    categories: abscisses,
+
                     overwriteCategories: abscisses,
                 }
             });
+            this.affichageLigne = true;
 
             console.log(this.series);
             console.log(this.chartOptions);
             console.log("____________");
         },
-
-
         lineChartAffichage(type) {
+
             let abscisses = [];
             let ordonnees = [];
-
             for (const element of this.selectedScenario) {
                 var file = 'http://localhost:8080/jsonData/' + element["name"] + '.json';
                 fetch(file)
@@ -231,24 +242,19 @@ export default {
                         //     ordonnees.push(data[property][type]);
                         // }
                         // Boucle pour avoir toutes les abscisses possibles
-
-
                         for (const property in data) {
                             // console.log(abscisses.indexOf(`${data[property]["heure"]}`));
                             if (abscisses.indexOf(`${data[property]["heure"]}`) == -1) {
                                 abscisses.push(`${data[property]["heure"]}`);
                             }
                         };
-
                         abscisses.sort()
 
                         // 1 dictionnaire = 1 scenario, il se remet à 0 à chaque nouveau scénario
                         var dict = {};
                         dict["name"] = `${element["name"]}`;
-
                         // L : tableau pour mettre les valeurs du scénario dedans. On ajoutera L au tableau à la fin de la boucle for
                         var L = new Array(abscisses.length).fill(0);
-
                         for (const property in data) {
                             if (abscisses.indexOf(`${data[property]["heure"]}`) != -1) {
                                 L[abscisses.indexOf(`${data[property]["heure"]}`)] = `${data[property][type]}`;
@@ -257,11 +263,10 @@ export default {
                         dict["data"] = L;
                         ordonnees.push(dict);
                     })
-                //console.log("ordonnée apres fetch", ordonnees);
+
                 this.lineChart(type, abscisses, ordonnees);
             }
         },
-
 
         roseChartHIGHCHARTS() {
             this.chartOptions2 = reactive({
