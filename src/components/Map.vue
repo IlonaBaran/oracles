@@ -10,21 +10,11 @@
 import Toolbar from "./Toolbar.vue";
 import '../../node_modules/itowns/examples/css/widgets.css'
 import { FileSource, THREE, Style, proj4, Extent, FeatureGeometryLayer, Coordinates, GlobeView, PlanarView, WMTSSource, WMSSource, ColorLayer, ElevationLayer, Copy, As } from "../../node_modules/itowns/dist/itowns";
-import { Navigation } from '../../node_modules/itowns/dist/itowns_widgets.js';
-import * as GeoTIFF from 'geotiff';
-import {
-  planIGNv2Layer, orthoLayer,
-  demHRLayer
-} from '../services/WMTS_service.js'
 import { ref } from "vue";
-
-import {
-  bati3DLayer
-} from '../services/WFS_service.js'
-import { inheritLeadingComments } from "@babel/types";
 import { getHeightMesh } from '../services/Height_service.js'
-
 import { layerOrtho, layerDEM, layerPLAN } from '../services/WMS_service.js'
+import { basic } from '../services/FileSource_service.js'
+
 
 let view = ref(false);
 
@@ -59,7 +49,6 @@ export default {
 
     const frcoord = proj4('EPSG:3857', 'EPSG:2154', coord)
 
-    console.log(frcoord);
 
     //defining the views geographic extent, how far does it go
     const viewExtent = new Extent(
@@ -69,11 +58,6 @@ export default {
       6750269.5,
       6752639.5
     );
-
-    // var placement = {
-    //   coord: new Coordinates('EPSG:3857', coord[0], coord[1]),
-    //   range: 2500
-    // };
 
     var placement = {
       coord: viewExtent.center(),
@@ -95,13 +79,13 @@ export default {
 
     // view.addLayer(planIGNv2Layer);
     // view.addLayer(demHRLayer);
-    // view.addLayer(bati3DLayer);
+
 
     // view.addLayer(orthoLayer);
 
     view.addLayer(layerPLAN)
     view.addLayer(layerDEM);
-
+    view.addLayer(basic);
     view.addLayer(layerOrtho);
 
 
@@ -125,17 +109,17 @@ export default {
   methods: {
     changeMap() {
       if (this.$refs.childComponent.mapSelected == "plan") {
-        view.tileLayer.attachedLayers[1].visible = true;
-        view.tileLayer.attachedLayers[4].visible = false;
+        view.tileLayer.attachedLayers[1 - 1].visible = true;
+        view.tileLayer.attachedLayers[4 - 1].visible = false;
         view.notifyChange();
       } else {
-        view.tileLayer.attachedLayers[1].visible = false;
-        view.tileLayer.attachedLayers[4].visible = true;
+        view.tileLayer.attachedLayers[1 - 1].visible = false;
+        view.tileLayer.attachedLayers[4 - 1].visible = true;
         view.notifyChange();
       }
     },
     building() {
-      view.tileLayer.attachedLayers[3].visible = this.$refs.childComponent.visibleBuilding;
+      view.tileLayer.attachedLayers[3 - 1].visible = this.$refs.childComponent.visibleBuilding;
       view.notifyChange();
     },
 
@@ -150,6 +134,8 @@ export default {
       view.notifyChange();
     }, showCoords(e) {
       console.log(view.pickCoordinates(e));
+
+      console.log(view.camera.camera3D)
     }
 
   }

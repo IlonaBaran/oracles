@@ -112,12 +112,8 @@ export async function getHeightMesh(url) {
             });
 
             let mesh = new THREE.Mesh(geometry, material);
-
             mesh.position.copy(coord3.as('EPSG:2154'));
-
-
             mesh.updateMatrixWorld();
-            console.log(mesh)
 
             // Return the mesh
             resolve(mesh);

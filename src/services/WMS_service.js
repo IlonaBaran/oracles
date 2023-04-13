@@ -1,6 +1,6 @@
 
 /* eslint-disable */
-import { FileSource, THREE, Style, proj4, Extent, FeatureGeometryLayer, Coordinates, GlobeView, WMTSSource, WMSSource, ColorLayer, ElevationLayer, Copy, As } from "../../node_modules/itowns/dist/itowns";
+import { FileSource, THREE, Style, proj4, Extent, FeatureGeometryLayer, Coordinates, GlobeView, WFSSource, WMSSource, ColorLayer, ElevationLayer, Copy, As } from "../../node_modules/itowns/dist/itowns";
 
 //defining the views geographic extent, how far does it go
 const viewExtent = new Extent(
@@ -37,12 +37,49 @@ export const layerDEM = new ElevationLayer('DEM', { source: sourceDEM });
 
 // Define the source of the dem data
 const sourcePLAN = new WMSSource({
-    url: "https://wxs.ign.fr/lambert93/geoportail/wmts",
-    name: "GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2.L93",
+    url: "https://wxs.ign.fr/cartes/geoportail/r/wms",
+    name: "GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2",
     format: "image/png",
     crs: 'EPSG:2154',
     extent: viewExtent,
 });
 // Create the dem ElevationLayer and add it to the view
 export const layerPLAN = new ColorLayer('PLAN', { source: sourcePLAN });
+
+function setAltitude(properties) {
+    return properties.altitude_sol - properties.hauteur;
+}
+
+function setExtrusion(properties) {
+    return properties.hauteur;
+}
+
+function setColor() {
+    return new THREE.Color(0xffaaaa);
+}
+
+
+// Define the source of the dem data
+const sourceBATI = new FileSource({
+    url: "http://localhost:8080/gavres_bati.geojson",
+    format: "application/json",
+    crs: 'EPSG:2154',
+});
+// Create the dem ElevationLayer and add it to the view
+export const layerBATI = new FeatureGeometryLayer('BATI', {
+    source: sourceBATI,
+    transparent: true,
+    opacity: 0.7,
+    zoom: { min: 14 },
+    style: new Style({
+        fill: {
+            color: new THREE.Color(0xffaaaa),
+            base_altitude: 10,
+            extrusion_height: 40,
+        },
+    }),
+});
+
+
+
 
