@@ -134,7 +134,6 @@ export default {
       view.notifyChange();
     }, showCoords(e) {
       //console.log('view', view)
-
     },
     vue2d() {
       view.controls.goToTopView();
@@ -150,8 +149,7 @@ export default {
       view.notifyChange();
 
       console.log("i caught the 3d orders")
-
-    }
+    },
 
   }
 
