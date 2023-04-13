@@ -43,7 +43,7 @@
 
                             <apexchart :options="this.chartOptions3" :series="this.series3" />
                         </div>
-
+</div>
 
                     <div v-if="selectedGraph.name == 'Graph3D 1'">
                         <button @click="TD1Affichage">jvrbrgunrjenguibgzy</button>
