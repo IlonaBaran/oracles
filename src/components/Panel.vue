@@ -42,9 +42,12 @@
 
                     <div v-if="selectedGraph.name == 'Chaleur'">
 
-                        <button @click="heatMapAffichage">Affichage d'un diagramme de chaleur</button>
-                        <apexchart :options="this.chartOptions3" :series="this.series3" />
+                        <!-- <button @click="heatMapAffichage">Affichage d'un diagramme de chaleur</button> -->
 
+                        <div v-if="this.affichageHeat == true">
+
+                            <apexchart :options="this.chartOptions3" :series="this.series3" />
+                        </div>
                     </div>
 
 
@@ -169,9 +172,13 @@ export default {
         afficheGraph(type) {
             this.affichageLigne = false;
             this.lineChartAffichage(type);
+            this.heatMapAffichage();
+
         },
         reiAfficheGraph() {
             this.affichageLigne = false;
+            this.affichageHeat = false;
+
             //this.lineChartAffichage(type);
         },
         lineChart(type, abscisses, ordonnees) {
@@ -491,6 +498,7 @@ export default {
                         };
                         dict["data"] = L;
                         listDataPlot.push(dict);
+
                     })
             }
 
@@ -498,6 +506,7 @@ export default {
 
             console.log(abscisses);
             console.log(listDataPlot);
+            this.affichageHeat = true;
 
 
             //  POUR LE DIAGRAMME 3 
