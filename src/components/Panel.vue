@@ -19,10 +19,10 @@
                         <!-- <div v-if="selectedGraph.name == 'Ligne' && lineChartAffichage"> -->
 
                         <button @click="lineChartAffichage('Maree(m)')">Elevation - cycle des marées</button>
-                        <button @click="lineChartAffichage('Surcote(m)')">Elevation supplémentaire du niveau de l'eau (prise
+                        <!-- <button @click="lineChartAffichage('Surcote(m)')">Elevation supplémentaire du niveau de l'eau (prise
                             en compte des conditions météorologiques et atmosphériques)</button>
                         <button @click="lineChartAffichage('Hs(vagues)(m)')">Hauteur significative des vagues</button>
-                        <button @click="lineChartAffichage('U(vent)(m)')">Vitesse du vent</button>
+                        <button @click="lineChartAffichage('U(vent)(m)')">Vitesse du vent</button> -->
                         <apexchart :options="this.chartOptions" :series="this.series" />
                     </div>
 
@@ -167,42 +167,45 @@ export default {
             //     name: type,
             //     data: ordonnees
             // }]
-            this.series = ordonnees,
-                this.chartOptions = reactive({
-                    chart: {
-                        id: 'mychart',
-                        height: 350,
-                        type: 'line',
-                        defaultPoint_marker_visible: false,
-                        zoom: {
-                            enabled: false
-                        }
+
+            this.series = ordonnees;
+
+
+            this.chartOptions = reactive({
+                chart: {
+                    id: 'mychart',
+                    height: 350,
+                    type: 'line',
+                    defaultPoint_marker_visible: false,
+                    zoom: {
+                        enabled: false
+                    }
+                },
+                dataLabels: {
+                    enabled: false
+                },
+                stroke: {
+                    curve: 'straight'
+                },
+                title: {
+                    text: 'Product Trends by Month',
+                    align: 'left'
+                },
+                grid: {
+                    row: {
+                        colors: ['#f3f3f3', 'transparent'],
+                        opacity: 0.5
                     },
-                    dataLabels: {
+                },
+                xaxis: {
+                    tooltip: {
                         enabled: false
                     },
-                    stroke: {
-                        curve: 'straight'
-                    },
-                    title: {
-                        text: 'Product Trends by Month',
-                        align: 'left'
-                    },
-                    grid: {
-                        row: {
-                            colors: ['#f3f3f3', 'transparent'],
-                            opacity: 0.5
-                        },
-                    },
-                    xaxis: {
-                        tooltip: {
-                            enabled: false
-                        },
-                        type: 'datetime',
-                        categories: abscisses,
-                        overwriteCategories: abscisses,
-                    }
-                });
+                    type: 'datetime',
+                    categories: abscisses,
+                    overwriteCategories: abscisses,
+                }
+            });
 
             console.log(this.series);
             console.log(this.chartOptions);
@@ -254,7 +257,7 @@ export default {
                         dict["data"] = L;
                         ordonnees.push(dict);
                     })
-
+                //console.log("ordonnée apres fetch", ordonnees);
                 this.lineChart(type, abscisses, ordonnees);
             }
         },
