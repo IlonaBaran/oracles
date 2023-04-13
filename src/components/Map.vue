@@ -61,6 +61,7 @@ export default {
 
     var placement = {
       coord: viewExtent.center(),
+      tilt: 12
     }
 
     // Create the planar view
@@ -102,9 +103,6 @@ export default {
 
     })
 
-    console.log(view)
-
-
   },
   methods: {
     changeMap() {
@@ -133,9 +131,16 @@ export default {
       view.camera.camera3D.position.z = 2500.719216284468985;
       view.notifyChange();
     }, showCoords(e) {
-      console.log(view.pickCoordinates(e));
+      console.log('view', view)
+      // view.camera.camera3D.rotation.set(view.camera.camera3D.rotation.x, Math.PI / 2, view.camera.camera3D.rotation.y)
+      console.log('quat', view.camera.camera3D.quaternion)
+      console.log('rot', view.camera.camera3D.rotation)
+      console.log('pos', view.camera.camera3D.position)
 
-      console.log(view.camera.camera3D)
+      view.camera.camera3D.rotation.set(1, 1, 0);
+
+
+      view.notifyChange();
     }
 
   }
