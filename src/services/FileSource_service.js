@@ -5,8 +5,7 @@ function setAltitude(properties) {
     if (properties.altitude_sol != null) {
         return properties.altitude_sol + properties.hauteur;
     } else {
-        return 30;
-
+        return 3;
     }
 }
 
@@ -35,7 +34,7 @@ export let basic = new FeatureGeometryLayer('basic', {
     style: new Style({
         fill: {
             color: setColor,
-            base_altitude: 28,
+            base_altitude: setAltitude,
             extrusion_height: setExtrusion,
         }
     })
