@@ -24,11 +24,6 @@
 
                 <Button v-styleclass="{ selector: '.card', toggleClass: 'p-hidden' }" @click="this.$refs.panelGraph.reiAfficheGraph()
                 " icon="pi pi-refresh" aria-label="Valider" style="margin-left: 10px;" />
-
-                <!-- Il sert a transmettre les paramètres de l'utilisateur a la vue 'Panel': les scenarios choisis et le graph choisis -->
-                <!-- <button @click="emitData">Transmettre des données </button> -->
-                <!-- <button @click="affichageAllGraph">Transmettre des données </button> -->
-
             </template>
 
             <!-- Eléments présents sur la droite de la barre -->
@@ -90,6 +85,7 @@ export default {
                     states: [
                         { name: 'Ligne' },
                         { name: 'Rose des vents' },
+                        { name: 'Histogramme empilé' },
                         { name: 'Chaleur' }]
                 },
                 {
