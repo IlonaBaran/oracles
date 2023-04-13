@@ -37,12 +37,12 @@ export const layerDEM = new ElevationLayer('DEM', { source: sourceDEM });
 
 // Define the source of the dem data
 const sourcePLAN = new WMSSource({
-    url: "https://wxs.ign.fr/3ht7xcw6f7nciopo16etuqp2/geoportail/r/wms",
+    url: "https://wxs.ign.fr/lambert93/geoportail/wmts",
     name: "GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2.L93",
     format: "image/png",
     crs: 'EPSG:2154',
     extent: viewExtent,
 });
 // Create the dem ElevationLayer and add it to the view
-export const layerPLAN = new ElevationLayer('DEM', { source: sourcePLAN });
+export const layerPLAN = new ColorLayer('PLAN', { source: sourcePLAN });
 
