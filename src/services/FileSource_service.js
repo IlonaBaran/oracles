@@ -3,9 +3,9 @@ import { FileSource, THREE, Style, proj4, Extent, FeatureGeometryLayer, Coordina
 
 function setAltitude(properties) {
     if (properties.altitude_sol != null) {
-        return properties.altitude_sol + properties.hauteur;
+        return properties.altitude_sol;
     } else {
-        return 3;
+        return 0;
     }
 }
 
@@ -39,3 +39,4 @@ export let basic = new FeatureGeometryLayer('basic', {
         }
     })
 });
+
