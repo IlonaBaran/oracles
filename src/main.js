@@ -3,6 +3,10 @@ import App from './App.vue'
 import PrimeVue from 'primevue/config';
 import StyleClass from 'primevue/styleclass';
 import VueApexCharts from "vue3-apexcharts";
+import Highcharts from 'highcharts';
+import HighchartsVue from 'highcharts-vue';
+import VueHighcharts from 'vue3-highcharts';
+
 import * as d3 from 'd3';
 // import Highcharts from 'highcharts';
 // import VueHighcharts from 'vue-highcharts';
@@ -16,6 +20,10 @@ import "primeicons/primeicons.css"; //icons
 const app = createApp(App);
 app.use(PrimeVue);
 app.use(VueApexCharts);
+app.use(Highcharts);
+app.use(VueHighcharts);
+app.use(HighchartsVue);
+
 app.use(d3);
 // app.use(VueHighcharts, { Highcharts });
 app.directive('styleclass', StyleClass);
