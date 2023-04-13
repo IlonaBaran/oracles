@@ -137,10 +137,6 @@ export default {
       console.log('rot', view.camera.camera3D.rotation)
       console.log('pos', view.camera.camera3D.position)
 
-      view.camera.camera3D.rotation.set(1, 1, 0);
-
-
-      view.notifyChange();
     }
 
   }
