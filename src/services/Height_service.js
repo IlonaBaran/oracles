@@ -40,11 +40,6 @@ export async function getHeightMesh(url) {
             let Xsize = (Xf - Xo) / width;
             let Ysize = -(Yf - Yo) / height;
 
-            Xsize = Xsize * 1.25;
-            Ysize = Ysize * 0.98;
-
-            console.log(Xsize, Ysize)
-
 
             //Specifying the origin of the image
             const origin = [Xo, Yf];
@@ -117,11 +112,9 @@ export async function getHeightMesh(url) {
             });
 
             let mesh = new THREE.Mesh(geometry, material);
-            coord3.altitude = + 10;
 
-            mesh.position.copy(coord3.as('EPSG:4978'));
-            mesh.lookAt(new THREE.Vector3(0, 0, 0));
-            mesh.rotateY(Math.PI);
+            mesh.position.copy(coord3.as('EPSG:2154'));
+
 
             mesh.updateMatrixWorld();
             console.log(mesh)
