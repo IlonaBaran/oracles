@@ -27,12 +27,11 @@
 
                     <div v-if="selectedGraph.name == 'Rose des vents'">
                         <button @click="roseVentAffichage">Affichage d'un diagramme rose des vents</button>
-                        <!-- <apexchart  :options="this.chartOptions2" :series="this.series2"/>     -->
                         <vue-highcharts  :options="this.chartOptions2"></vue-highcharts>
                     </div>
 
                     <div v-if="selectedGraph.name == 'Histogramme empilé'">
-                        <div v-if="this.histogrammeAffichage == true">
+                        <div v-if="this.affichageHistogramme == true">
                             <apexchart :options="this.chartOptions5" :series="this.series5" />
                         </div>
                     </div>
