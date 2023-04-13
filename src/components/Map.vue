@@ -1,7 +1,8 @@
 <template>
   <div id="viewerDiv" class="viewer" @click="showCoords">
   </div>
-  <Toolbar @icon-clicked="changeMap" ref="childComponent" @change-building="building" @reinit-view="cameraView">
+  <Toolbar @icon-clicked="changeMap" ref="childComponent" @change-building="building" @reinit-view="cameraView"
+    @vue-2d="vue2d" @vue-3d="vue3d">
   </Toolbar>
 </template>
 
@@ -137,10 +138,28 @@ export default {
       console.log('rot', view.camera.camera3D.rotation)
       console.log('pos', view.camera.camera3D.position)
 
-      view.camera.camera3D.rotation.set(1, 1, 0);
+      // view.camera.camera3D.rotation.set(1, 1, 0);
 
 
+    },
+    vue2d() {
+      console.log(view.camera.camera3D.quaternion.w)
+      view.controls.enableRotation = false;
+      view.camera.camera3D.quaternion.w = 1
+      console.log(view.camera.camera3D.quaternion.w)
       view.notifyChange();
+      console.log("i caught the 2d orders")
+
+    },
+    vue3d() {
+      console.log(view.camera.camera3D.quaternion.w)
+      view.controls.enableRotation = true;
+      view.camera.camera3D.quaternion.w = 0.83;
+      console.log(view.camera.camera3D.quaternion.w)
+      view.notifyChange();
+
+      console.log("i caught the 3d orders")
+
     }
 
   }
