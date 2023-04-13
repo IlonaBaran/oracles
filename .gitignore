@@ -8,7 +8,9 @@ dist
 lib
 node_modules
 .parcel-cache
-data
+data/Data
+data/jsonData
+data/output_rasters
 
 # local env files
 .env.local
