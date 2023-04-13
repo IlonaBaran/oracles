@@ -1,7 +1,8 @@
 <template>
   <div id="viewerDiv" class="viewer" @click="showCoords">
   </div>
-  <Toolbar @icon-clicked="changeMap" ref="childComponent" @change-building="building" @reinit-view="cameraView">
+  <Toolbar @icon-clicked="changeMap" ref="childComponent" @change-building="building" @reinit-view="cameraView"
+    @vue-2d="vue2d" @vue-3d="vue3d">
   </Toolbar>
 </template>
 
@@ -60,8 +61,7 @@ export default {
     );
 
     var placement = {
-      coord: viewExtent.center(),
-      tilt: 12
+      coord: viewExtent.center()
     }
 
     // Create the planar view
@@ -102,6 +102,8 @@ export default {
       view.notifyChange();
 
     })
+    view.controls.enableRotation = false;
+    view.notifyChange();
 
   },
   methods: {
@@ -131,13 +133,23 @@ export default {
       view.camera.camera3D.position.z = 2500.719216284468985;
       view.notifyChange();
     }, showCoords(e) {
-      console.log('view', view)
-      // view.camera.camera3D.rotation.set(view.camera.camera3D.rotation.x, Math.PI / 2, view.camera.camera3D.rotation.y)
-      console.log('quat', view.camera.camera3D.quaternion)
-      console.log('rot', view.camera.camera3D.rotation)
-      console.log('pos', view.camera.camera3D.position)
+      //console.log('view', view)
+    },
+    vue2d() {
+      view.controls.goToTopView();
+      view.controls.enableRotation = false;
+      view.notifyChange();
+      console.log("i caught the 2d orders")
 
-    }
+    },
+    vue3d() {
+
+      view.controls.enableRotation = true;
+
+      view.notifyChange();
+
+      console.log("i caught the 3d orders")
+    },
 
   }
 

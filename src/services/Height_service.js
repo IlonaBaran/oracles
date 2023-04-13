@@ -21,16 +21,6 @@ export async function getHeightMesh(url) {
             const height = await image.getHeight();
             const data = await image.readRasters();
 
-            /*     function flipElev(data) {
-                  let maxElev = Math.max(data);
-                  return data.map(elev => maxElev - elev);
-                }
-          
-                const data2 = flipElev(data[0]);
-          
-                console.log(data2, data)
-           */
-
             const Xo = bbox[0];
             const Xf = bbox[2];
             const Yo = bbox[1];
@@ -51,11 +41,23 @@ export async function getHeightMesh(url) {
             const vertices = [];
             const indices = [];
 
-            //Creating the indices table by pushing two triangles for each pixel
+            function minuszero(value) {
+                if (value <= 0) {
+                    return -2
+                } else if (value > 8848) {
+                    return -2
+                } else {
+                    return value
+                }
 
-            for (let j = 0; j < width - 1; j++) {
-                for (let i = 0; i < height - 1; i++) {
+            }
+            //Creating the vertices table, pushing the coordinates 
+            //and the height data extracted from the image
 
+            for (let i = 0; i < width - 1; i++) {
+                for (let j = 0; j < height - 1; j++) {
+
+                    //Creating the indices table by pushing two triangles for each pixel
                     let topL = [(1 / width) * (j), 1 - (1 / height) * (i)];
                     let topR = [(1 / width) * (j), 1 - (1 / height) * (i + 1)];
                     let botL = [(1 / width) * (j + 1), 1 - (1 / height) * (i)];
@@ -69,22 +71,11 @@ export async function getHeightMesh(url) {
                     indices.push(topR);
                     indices.push(botR);
 
-                };
-            };
 
-            function minuszero(value) {
-                if (value <= 0) {
-                    return -2
-                } else {
-                    return value
-                }
 
-            }
-            //Creating the vertices table, pushing the coordinates 
-            //and the height data extracted from the image
+                    //Creating the vertices table, pushing the coordinates 
+                    //and the height data extracted from the image
 
-            for (let i = 0; i < width - 1; i++) {
-                for (let j = 0; j < height - 1; j++) {
 
                     vertices.push(i * Xsize, j * Ysize, minuszero(data[0][i + j * width])), // top left
                         vertices.push((i + 1) * Xsize, j * Ysize, minuszero(data[0][(i + 1) + j * width])), // top right
