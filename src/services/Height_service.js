@@ -2,6 +2,105 @@
 import * as GeoTIFF from 'geotiff';
 import { FileSource, THREE, Style, proj4, Extent, FeatureGeometryLayer, Coordinates, GlobeView, WMTSSource, WMSSource, ColorLayer, ElevationLayer, Copy, As } from "../../node_modules/itowns/dist/itowns";
 
+export async function getImage(url) {
+    return new Promise((resolve, reject) => {
+        // Adding Geotiff of water heights (the localhost link is due to the use of http-server)
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", url);
+        xhr.responseType = 'arraybuffer';
+        xhr.onload = async function (e) {
+            var buffer = await xhr.response;
+            //Creating an image from the http response
+            const tiff = await GeoTIFF.fromArrayBuffer(buffer);
+            const image = await tiff.getImage();
+            // Return the image
+            resolve(image);
+        }
+        xhr.onerror = reject;
+        xhr.send();
+
+    })
+}
+
+export async function getData(listOfImages) {
+
+    let datas = []
+
+    const bbox = await listOfImages[0].getBoundingBox();
+    const width = await listOfImages[0].getWidth();
+    const height = await listOfImages[0].getHeight();
+
+    for (let i = 0; i < listOfImages.length; i++) {
+        //Getting metadata and data from the image
+        const data = await listOfImages[i].readRasters();
+        datas.push(data[0]);
+        console.log('data', data[0])
+    }
+
+    let scenarios = {
+        bbox: bbox,
+        width: width,
+        height: height,
+        datas: datas
+    }
+
+    console.log('datas', datas)
+
+    return scenarios;
+}
+
+export function averageLists(lists) {
+
+
+
+    console.log('list', lists)
+
+
+    const numLists = lists.length;
+    const listLength = lists[0].length;
+
+
+
+    // Check that all lists have the sa>me length
+    if (!lists.every(list => list.length === listLength)) {
+        throw new Error('averageLists: all lists must have the same length');
+    }
+
+    const sums = Array.from({ length: listLength }, () => 0);
+
+    for (let i = 0; i < listLength; i++) {
+        for (let j = 0; j < numLists; j++) {
+            const value = lists[j][i];
+            if (!isNaN(value)) {
+                sums[i] += value;
+            }
+        }
+    }
+
+    return sums.map(sum => sum / numLists);
+}
+
+export function minLists(lists) {
+    const listLength = lists[0].length;
+    return lists.reduce((mins, list) => {
+        for (let i = 0; i < listLength; i++) {
+            mins[i] = Math.min(mins[i], list[i]);
+        }
+        return mins;
+    }, Array(listLength).fill(Number.MAX_SAFE_INTEGER));
+}
+
+export function maxLists(lists) {
+    const listLength = lists[0].length;
+    return lists.reduce((maxes, list) => {
+        for (let i = 0; i < listLength; i++) {
+            maxes[i] = Math.max(maxes[i], list[i]);
+        }
+        return maxes;
+    }, Array(listLength).fill(Number.MIN_SAFE_INTEGER));
+}
+
+
 export async function getHeightMesh(image) {
 
     //Getting metadata and data from the image
@@ -93,31 +192,6 @@ export async function getHeightMesh(image) {
     mesh.updateMatrixWorld();
 
     return mesh;
-}
-
-
-export async function getImage(url) {
-    return new Promise((resolve, reject) => {
-        // Adding Geotiff of water heights (the localhost link is due to the use of http-server)
-        var xhr = new XMLHttpRequest();
-        xhr.open("GET", url);
-        xhr.responseType = 'arraybuffer';
-        xhr.onload = async function (e) {
-            var buffer = await xhr.response;
-            //Creating an image from the http response
-            const tiff = await GeoTIFF.fromArrayBuffer(buffer);
-            const image = await tiff.getImage();
-            // Return the image
-            resolve(image);
-        }
-        xhr.onerror = reject;
-        xhr.send();
-
-    })
-}
-
-export function averageImages(listOfImage) {
-
 }
 
 

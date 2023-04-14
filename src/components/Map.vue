@@ -12,9 +12,10 @@ import Toolbar from "./Toolbar.vue";
 import '../../node_modules/itowns/examples/css/widgets.css'
 import { FileSource, THREE, Style, proj4, Extent, FeatureGeometryLayer, Coordinates, GlobeView, PlanarView, WMTSSource, WMSSource, ColorLayer, ElevationLayer, Copy, As } from "../../node_modules/itowns/dist/itowns";
 import { ref } from "vue";
-import { getHeightMesh } from '../services/Height_service.js'
+import { getHeightMesh, getImage, getData, averageLists, minLists, maxLists } from '../services/Height_service.js'
 import { layerOrtho, layerDEM, layerPLAN } from '../services/WMS_service.js'
 import { basic } from '../services/FileSource_service.js'
+import { image } from "d3-fetch";
 
 
 let view = ref(false);
@@ -69,39 +70,50 @@ export default {
       placement: placement,
     });
 
-
-    // //viewNew = new GlobeView(viewerDiv, placement);
-    // // ADD NAVIGATION TOOLS :
-    // new Navigation(view, {
-    //   position: 'bottom-right',
-    //   translate: { y: -40 },
-    // });
-
-
-    // view.addLayer(planIGNv2Layer);
-    // view.addLayer(demHRLayer);
-
-
-    // view.addLayer(orthoLayer);
-
     view.addLayer(layerPLAN)
-    view.addLayer(layerDEM);
-    view.addLayer(basic);
+    // view.addLayer(layerDEM);
+    // view.addLayer(basic);
     view.addLayer(layerOrtho);
 
-
-
-
-    // //Adding Geotiff of water heights (the localhost link is due to the use of http-server)
+    // // //Adding Geotiff of water heights (the localhost link is due to the use of http-server)
     let url = 'http://localhost:8080/gavres_mnt.tif';
 
-    getHeightMesh(url).then(mesh => {
+    // getImage(url).then(image => {
+    //   getHeightMesh(image).then(mesh => {
+    //     view.scene.add(mesh);
+    //     view.mesh = mesh;
+    //     view.notifyChange();
 
-      view.scene.add(mesh);
-      view.mesh = mesh;
-      view.notifyChange();
+    //   });
+    // })
 
+    getImage(url).then(image => {
+
+      let listImages = []
+      listImages.push(image);
+      console.log(listImages)
+
+      getHeightMesh(image).then(mesh => {
+        view.scene.add(mesh);
+        view.mesh = mesh;
+        view.notifyChange();
+      })
+
+      getData(listImages).then(scenarios => {
+        console.log(scenarios)
+
+        console.log(averageLists(scenarios.datas))
+        console.log('min', minLists(scenarios.datas))
+        console.log('max', maxLists(scenarios.datas))
+
+
+
+      })
     })
+
+
+
+
     view.controls.enableRotation = false;
     view.notifyChange();
 
@@ -139,16 +151,11 @@ export default {
       view.controls.goToTopView();
       view.controls.enableRotation = false;
       view.notifyChange();
-      console.log("i caught the 2d orders")
-
     },
     vue3d() {
 
       view.controls.enableRotation = true;
-
       view.notifyChange();
-
-      console.log("i caught the 3d orders")
     },
 
   }
