@@ -5,7 +5,7 @@
         <!-- Texte présent dedans -->
         <Card>
             <template #title>
-                Options
+                Graphiques
             </template>
 
             <template #content>
@@ -20,13 +20,18 @@
                         <!-- <button @click="lineChartAffichage('Hs(vagues)(m)')">Hauteur significative des vagues</button> -->
                         <!-- <button @click="lineChartAffichage('U(vent)(m)')">Vitesse du vent</button> -->
 
-                        <div v-if="this.affichageLigne == true">
+                        <!-- <div v-if="this.affichageLigne == true">
 
                             <apexchart :options="this.chartOptions" :series="this.series" />
                             <apexchart :options="this.chartOptionsSurcote" :series="this.seriesSurcote" />
                             <apexchart :options="this.chartOptionsVagues" :series="this.seriesVagues" />
                             <apexchart :options="this.chartOptionsVent" :series="this.seriesVent" />
 
+                        </div> -->
+                        <div v-if="this.affichageLigne == true">
+
+                            <GraphLine ref="graphLigne" :affichage-ligne="this.affichageLigne"
+                                :selected-scenario="this.selectedScenario"></GraphLine>
                         </div>
 
                     </div>
@@ -69,6 +74,10 @@ import { ApexChart } from 'vue3-apexcharts';
 import VueHighcharts from 'vue3-highcharts';
 import * as d3 from 'd3';
 
+// Import du composant
+import GraphLine from './GraphLine.vue';
+
+
 import Card from 'primevue/card';
 import ScrollPanel from 'primevue/scrollpanel';
 
@@ -82,6 +91,7 @@ export default {
         Card,
         ScrollPanel,
         VueHighcharts,
+        GraphLine
     },
 
     props: {
@@ -193,12 +203,12 @@ export default {
 
     methods: {
         afficheGraph() {
-
-            this.lineChartAffichage('Surcote(m)')
-            this.lineChartAffichage('Maree(m)');
-            this.lineChartAffichage('Hs(vagues)(m)');
-            this.lineChartAffichage('U(vent)(m)');
-
+            //this.$refs.graphLigne.test();
+            // this.$refs.graphLigne.lineChartAffichage('Surcote(m)');
+            // this.$refs.graphLigne.lineChartAffichage('Maree(m)');
+            // this.$refs.graphLigne.lineChartAffichage('Hs(vagues)(m)');
+            // this.$refs.graphLigne.lineChartAffichage('U(vent)(m)');
+            this.affichageLigne = true;
             this.heatMapAffichage();
 
         },
@@ -524,9 +534,9 @@ export default {
                         // Boucle pour avoir toutes les abscisses possibles
                         for (const property in data) {
                             // console.log(abscisses.indexOf(`${data[property]["heure"]}`));
-                            console.log(property);
-                            console.log(abscisses.indexOf(`${data[property]["heure"]}`))
-                            console.log("aaaa");
+                            // console.log(property);
+                            // console.log(abscisses.indexOf(`${data[property]["heure"]}`))
+                            // console.log("aaaa");
 
                             if (abscisses.indexOf(`${data[property]["heure"]}`) == -1) {
                                 abscisses.push(`${data[property]["heure"]}`);
