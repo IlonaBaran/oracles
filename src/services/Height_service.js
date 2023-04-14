@@ -113,3 +113,28 @@ export async function getHeightMesh(url) {
         xhr.send();
     });
 }
+
+
+export async function getTiff(url) {
+    return new Promise((resolve, reject) => {
+        // Adding Geotiff of water heights (the localhost link is due to the use of http-server)
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", url);
+        xhr.responseType = 'arraybuffer';
+        xhr.onload = async function (e) {
+            var buffer = await xhr.response;
+            //Creating an image from the http response
+            const tiff = await GeoTIFF.fromArrayBuffer(buffer);
+            const image = await tiff.getImage();
+
+            console.log(image)
+            // Return the mesh
+            resolve(image);
+        }
+        xhr.onerror = reject;
+        xhr.send();
+
+    })
+}
+
+
