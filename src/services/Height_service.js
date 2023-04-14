@@ -180,8 +180,8 @@ export async function getHeightMesh(image) {
     });
 
     let mesh = new THREE.Mesh(geometry, material);
+    coord3.altitude += 5;
     mesh.position.copy(coord3.as('EPSG:2154'));
-
     mesh.updateMatrixWorld();
 
     return mesh;
@@ -190,6 +190,7 @@ export async function getHeightMesh(image) {
 export async function getHeightFromScenarios(bbox, width, height, data) {
 
     console.log('scenarios data', data)
+
 
     const Xo = bbox[0];
     const Xf = bbox[2];
@@ -262,15 +263,11 @@ export async function getHeightFromScenarios(bbox, width, height, data) {
 
     // create material
     const material = new THREE.MeshBasicMaterial({
-        wireframe: true,
-        transparent: true,
-        opacity: 0.8,
-        color: 0xFFAAAA,
+        color: 0x0000FF,
         side: THREE.DoubleSide
     });
 
     let mesh = new THREE.Mesh(geometry, material);
-    coord3.altitude += 0
     mesh.position.copy(coord3.as('EPSG:2154'));
     mesh.updateMatrixWorld();
 

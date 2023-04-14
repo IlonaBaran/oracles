@@ -70,55 +70,52 @@ export default {
     view.addLayer(basic);
     view.addLayer(layerOrtho);
 
-    // // //Adding Geotiff of water heights (the localhost link is due to the use of http-server)
 
+    ////------------------------------------------------------
+    //RECUPERER UNE URL 
+    // getImage('http://localhost:8080/output_rasters/S_1040/S_1040_hmax.tif').then(image => {
+    //   getHeightMesh(image).then(mesh => {
+    //     view.scene.add(mesh);
+    //     view.mesh = mesh;
+    //     view.notifyChange();
+    //   })
+    // })
+
+
+    //------------------------------------------------------
+    //RECUPERER PLUSIEURS URL
     // let Scenarios = [
-    //   'http://localhost:8080/output_rasters/S_102/S_102_hmax.tif',
-    //   'http://localhost:8080/output_rasters/S_1035/S_1035_hmax.tif',
-    //   'http://localhost:8080/output_rasters/S_1044/S_1044_hmax.tif',
-    //   'http://localhost:8080/output_rasters/S_1027/S_1027_hmax.tif',
     //   'http://localhost:8080/output_rasters/S_1040/S_1040_hmax.tif',
     //   'http://localhost:8080/output_rasters/S_1069/S_1069_hmax.tif',
-    //   'http://localhost:8080/output_rasters/S_1052/S_1052_hmax.tif',
-    //   'http://localhost:8080/output_rasters/S_1070/S_1070_hmax.tif',
-    //   'http://localhost:8080/output_rasters/S_1222/S_1222_hmax.tif',
-    //   'http://localhost:8080/output_rasters/S_1230/S_1230_hmax.tif',
     // ]
 
-    let Scenarios = [
-      'http://localhost:8080/output_rasters/S_1040/S_1040_hmax.tif',
-      'http://localhost:8080/output_rasters/S_1069/S_1069_hmax.tif',
-    ]
+    // let listImages = [];
+    // Promise.all(Scenarios.map(getImage))
+    //   .then((images) => {
+    //     listImages = images;
+    //     console.log('All images loaded:', listImages);
 
+    //     getData(listImages)
+    //       .then(scenarios => {
 
-    let listImages = [];
-    Promise.all(Scenarios.map(getImage))
-      .then((images) => {
-        listImages = images;
-        console.log('All images loaded:', listImages);
+    //         let avgOfScenarios = [averageLists(scenarios.datas)];
+    //         let minOfScenarios = [minLists(scenarios.datas)];
+    //         let maxOfScenarios = [maxLists(scenarios.datas)];
 
-        getData(listImages)
-          .then(scenarios => {
+    //         let bbox = scenarios.bbox; let width = scenarios.width; let height = scenarios.height;
+    //         let data = maxOfScenarios;
 
-            let scenario = scenarios.datas;
-            let avgOfScenarios = [averageLists(scenarios.datas)];
-            let minOfScenarios = [minLists(scenarios.datas)];
-            let maxOfScenarios = [maxLists(scenarios.datas)];
+    //         console.log('data', data)
 
-            let bbox = scenarios.bbox; let width = scenarios.width; let height = scenarios.height;
-            let data = maxOfScenarios;
+    //         getHeightFromScenarios(bbox, width, height, data).then(mesh => {
+    //           view.scene.add(mesh);
+    //           view.mesh = mesh;
+    //           view.notifyChange();
+    //         })
 
-            console.log('data', data)
+    //       })
 
-            getHeightFromScenarios(bbox, width, height, data).then(mesh => {
-              view.scene.add(mesh);
-              view.mesh = mesh;
-              view.notifyChange();
-            })
-
-          })
-
-      })
+    //   })
 
     view.controls.enableRotation = false;
     view.notifyChange();
