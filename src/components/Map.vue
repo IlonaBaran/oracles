@@ -12,9 +12,10 @@ import Toolbar from "./Toolbar.vue";
 import '../../node_modules/itowns/examples/css/widgets.css'
 import { FileSource, THREE, Style, proj4, Extent, FeatureGeometryLayer, Coordinates, GlobeView, PlanarView, WMTSSource, WMSSource, ColorLayer, ElevationLayer, Copy, As } from "../../node_modules/itowns/dist/itowns";
 import { ref } from "vue";
-import { getHeightMesh } from '../services/Height_service.js'
+import { getHeightMesh, getImage, getData, averageLists, minLists, maxLists, getHeightFromScenarios } from '../services/Height_service.js'
 import { layerOrtho, layerDEM, layerPLAN } from '../services/WMS_service.js'
 import { basic } from '../services/FileSource_service.js'
+import { image } from "d3-fetch";
 
 
 let view = ref(false);
@@ -40,16 +41,11 @@ export default {
   },
   mounted() {
 
-    const coord = [-3.35291, 47.69651];
-
     //defining projection coordinate unit
     proj4.defs(
       "EPSG:2154",
       "+proj=lcc +lat_1=49 +lat_2=44 +lat_0=46.5 +lon_0=3 +x_0=700000 +y_0=6600000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"
     );
-
-    const frcoord = proj4('EPSG:3857', 'EPSG:2154', coord)
-
 
     //defining the views geographic extent, how far does it go
     const viewExtent = new Extent(
@@ -69,39 +65,58 @@ export default {
       placement: placement,
     });
 
-
-    // //viewNew = new GlobeView(viewerDiv, placement);
-    // // ADD NAVIGATION TOOLS :
-    // new Navigation(view, {
-    //   position: 'bottom-right',
-    //   translate: { y: -40 },
-    // });
-
-
-    // view.addLayer(planIGNv2Layer);
-    // view.addLayer(demHRLayer);
-
-
-    // view.addLayer(orthoLayer);
-
     view.addLayer(layerPLAN)
     view.addLayer(layerDEM);
     view.addLayer(basic);
     view.addLayer(layerOrtho);
 
 
+    ////------------------------------------------------------
+    //RECUPERER UNE URL 
+    // getImage('http://localhost:8080/output_rasters/S_1040/S_1040_hmax.tif').then(image => {
+    //   getHeightMesh(image).then(mesh => {
+    //     view.scene.add(mesh);
+    //     view.mesh = mesh;
+    //     view.notifyChange();
+    //   })
+    // })
 
 
-    // //Adding Geotiff of water heights (the localhost link is due to the use of http-server)
-    let url = 'http://localhost:8080/gavres_mnt.tif';
+    //------------------------------------------------------
+    //RECUPERER PLUSIEURS URL
+    // let Scenarios = [
+    //   'http://localhost:8080/output_rasters/S_1040/S_1040_hmax.tif',
+    //   'http://localhost:8080/output_rasters/S_1069/S_1069_hmax.tif',
+    // ]
 
-    getHeightMesh(url).then(mesh => {
+    // let listImages = [];
+    // Promise.all(Scenarios.map(getImage))
+    //   .then((images) => {
+    //     listImages = images;
+    //     console.log('All images loaded:', listImages);
 
-      view.scene.add(mesh);
-      view.mesh = mesh;
-      view.notifyChange();
+    //     getData(listImages)
+    //       .then(scenarios => {
 
-    })
+    //         let avgOfScenarios = [averageLists(scenarios.datas)];
+    //         let minOfScenarios = [minLists(scenarios.datas)];
+    //         let maxOfScenarios = [maxLists(scenarios.datas)];
+
+    //         let bbox = scenarios.bbox; let width = scenarios.width; let height = scenarios.height;
+    //         let data = maxOfScenarios;
+
+    //         console.log('data', data)
+
+    //         getHeightFromScenarios(bbox, width, height, data).then(mesh => {
+    //           view.scene.add(mesh);
+    //           view.mesh = mesh;
+    //           view.notifyChange();
+    //         })
+
+    //       })
+
+    //   })
+
     view.controls.enableRotation = false;
     view.notifyChange();
 
@@ -139,16 +154,10 @@ export default {
       view.controls.goToTopView();
       view.controls.enableRotation = false;
       view.notifyChange();
-      console.log("i caught the 2d orders")
-
     },
     vue3d() {
-
       view.controls.enableRotation = true;
-
       view.notifyChange();
-
-      console.log("i caught the 3d orders")
     },
 
   }
