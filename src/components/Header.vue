@@ -7,7 +7,7 @@
                 <!-- Affichage du Panel présent dans Panel.vue -->
                 <Button v-styleclass="{ selector: '.card', toggleClass: 'p-hidden' }" type="button"
                     icon="pi pi-chart-bar
-                                                                                                                                                                " label="" />
+                                                                                                                                                                    " label="" />
 
                 <!-- Outil de sélection des scénarios -->
                 <MultiSelect v-model="selectedScenario" :options="scenario" filter optionLabel="name"
@@ -47,7 +47,7 @@
                     <Button v-styleclass="{ selector: '.card', toggleClass: 'p-hidden' }" @click="this.reinitialisation()
                     " icon="pi pi-refresh" aria-label="Changer scénarios"
                         style="margin-left: 10px;" />
-                                                                    </div> -->
+                                                                        </div> -->
                 <!-- Il sert a transmettre les paramètres de l'utilisateur a la vue 'Panel': les scenarios choisis et le graph choisis -->
                 <!-- <button @click="emitData">Transmettre des données </button> -->
                 <!-- <button @click="affichageAllGraph">Transmettre des données </button> -->
@@ -137,7 +137,7 @@ export default {
         validation() {
             this.disabled = "";
             this.valide = " p-disabled";
-            this.$refs.panelGraph.afficheGraph('Maree(m)');
+            this.$refs.panelGraph.afficheGraph();
         },
         reinitialisation() {
             this.disabled = " p-disabled";

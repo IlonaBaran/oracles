@@ -25,6 +25,8 @@
                         <div v-if="this.affichageLigne == true">
 
                             <apexchart :options="this.chartOptions" :series="this.series" />
+                            <apexchart :options="this.chartOptionsSurcote" :series="this.seriesSurcote" />
+
                         </div>
 
                     </div>
@@ -100,38 +102,20 @@ export default {
             checkedPanel: ref(false),
             affichageLigne: false,
             affichageHeat: false,
-
             affichageRose: false,
 
             // LINE CHART - APEXCHARTS
             chartOptions: {
-                chart: {
-                    id: 'mychart',
-                    height: 350,
-                    type: 'line',
-                    defaultPoint_marker_visible: false,
-                    zoom: {
-                        enabled: false
-                    }
-                },
-                dataLabels: {
-                    enabled: false
-                },
-                grid: {
-                    row: {
-                        colors: ['#f3f3f3', 'transparent'],
-                        opacity: 0.5
-                    },
-                },
-                xaxis: {
-                    tooltip: {
-                        enabled: false
-                    },
-                    categories: [],
-                }
+                chart: { id: 'mychart', height: 350, type: 'line', defaultPoint_marker_visible: false, zoom: { nabled: false } },
+                dataLabels: { enabled: false, grid: { row: { colors: ['#f3f3f3', 'transparent'], opacity: 0.5 }, }, xaxis: { tooltip: { enabled: false }, categories: [], } },
             },
             series: [],
 
+            chartOptionsSurcote: {
+                chart: { id: 'mychart', height: 350, type: 'line', defaultPoint_marker_visible: false, zoom: { nabled: false } },
+                dataLabels: { enabled: false, grid: { row: { colors: ['#f3f3f3', 'transparent'], opacity: 0.5 }, }, xaxis: { tooltip: { enabled: false }, categories: [], } },
+            },
+            seriesSurcote: [],
 
             // ROSE WIND - HIGHCHARTJS
             chartOptions2: ({
@@ -196,10 +180,10 @@ export default {
 
 
     methods: {
-        afficheGraph(type) {
+        afficheGraph() {
 
-
-            this.lineChartAffichage(type);
+            this.lineChartAffichage('Surcote(m)')
+            this.lineChartAffichage('Maree(m)');
             this.heatMapAffichage();
 
         },
@@ -210,54 +194,31 @@ export default {
             //this.lineChartAffichage(type);
         },
         lineChart(type, abscisses, ordonnees) {
-            console.log(abscisses);
-            console.log(ordonnees);
-            // this.series = null;
-            // this.chartOptions = null;
-            // this.series = [{
-            //     name: type,
-            //     data: ordonnees
-            // }]
-            this.series = ordonnees;
-            this.chartOptions = reactive({
-                chart: {
-                    id: 'mychart',
-                    height: 350,
-                    type: 'line',
-                    defaultPoint_marker_visible: false,
-                    zoom: {
-                        enabled: false
-                    }
-                },
-                dataLabels: {
-                    enabled: false
-                },
-                stroke: {
-                    curve: 'straight'
-                },
-                title: {
-                    text: 'Product Trends by Month',
-                    align: 'left'
-                },
-                grid: {
-                    row: {
-                        colors: ['#f3f3f3', 'transparent'],
-                        opacity: 0.5
-                    },
-                },
-                xaxis: {
-                    tooltip: {
-                        enabled: false
-                    },
 
-                    overwriteCategories: abscisses,
-                }
-            });
+            if (type == "Maree(m)") {
+                this.series = ordonnees;
+                this.chartOptions = reactive({
+                    chart: { id: 'mychart', height: 350, type: 'line', defaultPoint_marker_visible: false, zoom: { enabled: false } },
+                    dataLabels: { enabled: false },
+                    stroke: { curve: 'straight' },
+                    title: { text: 'Maree(m) en fonction des heures de la journée', align: 'left' },
+                    grid: { row: { colors: ['#f3f3f3', 'transparent'], opacity: 0.5 }, },
+                    xaxis: { tooltip: { enabled: false }, overwriteCategories: abscisses, }
+                });
+            }
+            if (type == "Surcote(m)") {
+                this.seriesSurcote = ordonnees;
+                this.chartOptionsSurcote = reactive({
+                    chart: { id: 'mychart', height: 350, type: 'line', defaultPoint_marker_visible: false, zoom: { enabled: false } },
+                    dataLabels: { enabled: false },
+                    stroke: { curve: 'straight' },
+                    title: { text: 'Surcote(m) en fonction des heures de la journée', align: 'left' },
+                    grid: { row: { colors: ['#f3f3f3', 'transparent'], opacity: 0.5 }, },
+                    xaxis: { tooltip: { enabled: false }, overwriteCategories: abscisses, }
+                });
+            }
             this.affichageLigne = true;
 
-            console.log(this.series);
-            console.log(this.chartOptions);
-            console.log("____________");
         },
         lineChartAffichage(type) {
 
