@@ -12,20 +12,20 @@
                 <ScrollPanel style="width: 100%; height: 75vh " class="custombar1">
 
                     <div v-if="selectedGraph.name == 'Ligne'">
-                        <!-- <div v-if="selectedGraph.name == 'Ligne' && lineChartAffichage"> -->
 
-
-                        <button @click="lineChartAffichage('Maree(m)')">Elevation - cycle des marées</button>
-                        <button @click="lineChartAffichage('Surcote(m)')">Elevation supplémentaire du niveau de l'eau
+                        <!-- <button @click="lineChartAffichage('Maree(m)')">Elevation - cycle des marées</button> -->
+                        <!-- <button @click="lineChartAffichage('Surcote(m)')">Elevation supplémentaire du niveau de l'eau
                             (prise
-                            en compte des conditions météorologiques et atmosphériques)</button>
-                        <button @click="lineChartAffichage('Hs(vagues)(m)')">Hauteur significative des vagues</button>
-                        <button @click="lineChartAffichage('U(vent)(m)')">Vitesse du vent</button>
+                            en compte des conditions météorologiques et atmosphériques)</button> -->
+                        <!-- <button @click="lineChartAffichage('Hs(vagues)(m)')">Hauteur significative des vagues</button> -->
+                        <!-- <button @click="lineChartAffichage('U(vent)(m)')">Vitesse du vent</button> -->
 
                         <div v-if="this.affichageLigne == true">
 
                             <apexchart :options="this.chartOptions" :series="this.series" />
                             <apexchart :options="this.chartOptionsSurcote" :series="this.seriesSurcote" />
+                            <apexchart :options="this.chartOptionsVagues" :series="this.seriesVagues" />
+                            <apexchart :options="this.chartOptionsVent" :series="this.seriesVent" />
 
                         </div>
 
@@ -117,6 +117,18 @@ export default {
             },
             seriesSurcote: [],
 
+            chartOptionsVagues: {
+                chart: { id: 'mychart', height: 350, type: 'line', defaultPoint_marker_visible: false, zoom: { nabled: false } },
+                dataLabels: { enabled: false, grid: { row: { colors: ['#f3f3f3', 'transparent'], opacity: 0.5 }, }, xaxis: { tooltip: { enabled: false }, categories: [], } },
+            },
+            seriesVagues: [],
+
+            chartOptionsVent: {
+                chart: { id: 'mychart', height: 350, type: 'line', defaultPoint_marker_visible: false, zoom: { nabled: false } },
+                dataLabels: { enabled: false, grid: { row: { colors: ['#f3f3f3', 'transparent'], opacity: 0.5 }, }, xaxis: { tooltip: { enabled: false }, categories: [], } },
+            },
+            seriesVent: [],
+
             // ROSE WIND - HIGHCHARTJS
             chartOptions2: ({
                 chart: {
@@ -184,6 +196,9 @@ export default {
 
             this.lineChartAffichage('Surcote(m)')
             this.lineChartAffichage('Maree(m)');
+            this.lineChartAffichage('Hs(vagues)(m)');
+            this.lineChartAffichage('U(vent)(m)');
+
             this.heatMapAffichage();
 
         },
@@ -213,6 +228,30 @@ export default {
                     dataLabels: { enabled: false },
                     stroke: { curve: 'straight' },
                     title: { text: 'Surcote(m) en fonction des heures de la journée', align: 'left' },
+                    grid: { row: { colors: ['#f3f3f3', 'transparent'], opacity: 0.5 }, },
+                    xaxis: { tooltip: { enabled: false }, overwriteCategories: abscisses, }
+                });
+            }
+
+            if (type == "Hs(vagues)(m)") {
+                this.seriesVagues = ordonnees;
+                this.chartOptionsVagues = reactive({
+                    chart: { id: 'mychart', height: 350, type: 'line', defaultPoint_marker_visible: false, zoom: { enabled: false } },
+                    dataLabels: { enabled: false },
+                    stroke: { curve: 'straight' },
+                    title: { text: 'Hs(vagues)(m) en fonction des heures de la journée', align: 'left' },
+                    grid: { row: { colors: ['#f3f3f3', 'transparent'], opacity: 0.5 }, },
+                    xaxis: { tooltip: { enabled: false }, overwriteCategories: abscisses, }
+                });
+            }
+
+            if (type == "U(vent)(m)") {
+                this.seriesVent = ordonnees;
+                this.chartOptionsVent = reactive({
+                    chart: { id: 'mychart', height: 350, type: 'line', defaultPoint_marker_visible: false, zoom: { enabled: false } },
+                    dataLabels: { enabled: false },
+                    stroke: { curve: 'straight' },
+                    title: { text: 'U(vent)(m) en fonction des heures de la journée', align: 'left' },
                     grid: { row: { colors: ['#f3f3f3', 'transparent'], opacity: 0.5 }, },
                     xaxis: { tooltip: { enabled: false }, overwriteCategories: abscisses, }
                 });

@@ -5,9 +5,8 @@
             <!-- Eléments présents sur la gauche de la barre -->
             <template #start>
                 <!-- Affichage du Panel présent dans Panel.vue -->
-                <Button v-styleclass="{ selector: '.card', toggleClass: 'p-hidden' }" type="button"
-                    icon="pi pi-chart-bar
-                                                                                                                                                                    " label="" />
+                <Button v-styleclass="{ selector: '.card', toggleClass: 'p-hidden' }" type="button" icon="pi pi-chart-bar"
+                    label="" />
 
                 <!-- Outil de sélection des scénarios -->
                 <MultiSelect v-model="selectedScenario" :options="scenario" filter optionLabel="name"
@@ -19,39 +18,11 @@
                     :optionGroupChildren="['states']" style="min-width: 14rem " placeholder="Sélection Graphique"
                     class="selectGraph" />
 
-
-
-
                 <Button v-styleclass="{ selector: '.card', toggleClass: 'p-hidden' }" @click="this.validation();"
                     icon="pi pi-check" aria-label="Valider" style="margin-left: 10px;" class="validation" :class="valide" />
 
                 <Button v-styleclass="{ selector: '.card', toggleClass: 'p-hidden' }" @click="this.reinitialisation()
                 " icon="pi pi-refresh" aria-label="Changer scénarios" style="margin-left: 10px;" :class="disabled" />
-
-            <!--     
-                <div v-if="this.refresh == false">
-
-                    <Button v-styleclass="{ selector: '.card', toggleClass: 'p-hidden' }" @click="this.validation();"
-                        icon="pi pi-check" aria-label="Valider" style="margin-left: 10px;" class="validation" />
-
-                    <Button v-styleclass="{ selector: '.card', toggleClass: 'p-hidden' }" @click="this.$refs.panelGraph.reiAfficheGraph()
-                    " icon="pi pi-refresh" aria-label="Changer scénarios" style="margin-left: 10px;" disabled />
-                </div>
-
-                <div v-if="this.refresh == true">
-
-                    <Button v-styleclass="{ selector: '.card', toggleClass: 'p-hidden' }"
-                        @click="this.$refs.panelGraph.afficheGraph('Maree(m)')" icon="pi pi-check" aria-label="Valider"
-                        style="margin-left: 10px;" class="validation" disabled />
-
-                    <Button v-styleclass="{ selector: '.card', toggleClass: 'p-hidden' }" @click="this.reinitialisation()
-                    " icon="pi pi-refresh" aria-label="Changer scénarios"
-                        style="margin-left: 10px;" />
-                                                                        </div> -->
-                <!-- Il sert a transmettre les paramètres de l'utilisateur a la vue 'Panel': les scenarios choisis et le graph choisis -->
-                <!-- <button @click="emitData">Transmettre des données </button> -->
-                <!-- <button @click="affichageAllGraph">Transmettre des données </button> -->
-
 
             </template>
 
