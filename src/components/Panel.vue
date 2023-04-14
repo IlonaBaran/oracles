@@ -259,6 +259,8 @@ export default {
             this.affichageLigne = true;
 
         },
+
+
         lineChartAffichage(type) {
 
             let abscisses = [];
