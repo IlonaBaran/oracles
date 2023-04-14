@@ -31,13 +31,13 @@
 
                     </div>
 
-                    <div v-if="selectedGraph.name == 'Rose des vents'">
+                    <div v-else-if="selectedGraph.name == 'Rose des vents'">
                         <button @click="roseVentAffichage">Affichage d'un diagramme rose des vents</button>
                         <!-- <apexchart  :options="this.chartOptions2" :series="this.series2"/>     -->
                         <vue-highcharts :options="this.chartOptions2"></vue-highcharts>
                     </div>
 
-                    <div v-if="selectedGraph.name == 'Chaleur'">
+                    <div v-else-if="selectedGraph.name == 'Chaleur'">
 
                         <!-- <button @click="heatMapAffichage">Affichage d'un diagramme de chaleur</button> -->
 
@@ -47,9 +47,12 @@
                         </div>
                     </div>
 
-                    <div v-if="selectedGraph.name == 'Graph3D 1'">
+                    <div v-else-if="selectedGraph.name == 'Graph3D 1'">
                         <button @click="TD1Affichage">jvrbrgunrjenguibgzy</button>
                         <vue-highcharts :options="this.chartOptions4"></vue-highcharts>
+                    </div>
+                    <div v-else>
+                        <p>Veuillez choisir un type de graphique</p>
                     </div>
 
 
