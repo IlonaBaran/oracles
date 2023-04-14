@@ -34,7 +34,6 @@ export async function getData(listOfImages) {
         //Getting metadata and data from the image
         const data = await listOfImages[i].readRasters();
         datas.push(data[0]);
-        console.log('data', data[0])
     }
 
     let scenarios = {
@@ -44,29 +43,19 @@ export async function getData(listOfImages) {
         datas: datas
     }
 
-    console.log('datas', datas)
-
     return scenarios;
 }
 
 export function averageLists(lists) {
-
-
-
-    console.log('list', lists)
-
-
     const numLists = lists.length;
     const listLength = lists[0].length;
-
-
 
     // Check that all lists have the sa>me length
     if (!lists.every(list => list.length === listLength)) {
         throw new Error('averageLists: all lists must have the same length');
     }
 
-    const sums = Array.from({ length: listLength }, () => 0);
+    const sums = new Float32Array(listLength).fill(0);
 
     for (let i = 0; i < listLength; i++) {
         for (let j = 0; j < numLists; j++) {
@@ -82,24 +71,25 @@ export function averageLists(lists) {
 
 export function minLists(lists) {
     const listLength = lists[0].length;
+    const mins = new Float32Array(listLength).fill(Number.MAX_SAFE_INTEGER);
     return lists.reduce((mins, list) => {
         for (let i = 0; i < listLength; i++) {
             mins[i] = Math.min(mins[i], list[i]);
         }
         return mins;
-    }, Array(listLength).fill(Number.MAX_SAFE_INTEGER));
+    }, mins);
 }
 
 export function maxLists(lists) {
     const listLength = lists[0].length;
+    const maxes = new Float32Array(listLength).fill(Number.MIN_SAFE_INTEGER);
     return lists.reduce((maxes, list) => {
         for (let i = 0; i < listLength; i++) {
             maxes[i] = Math.max(maxes[i], list[i]);
         }
         return maxes;
-    }, Array(listLength).fill(Number.MIN_SAFE_INTEGER));
+    }, maxes);
 }
-
 
 export async function getHeightMesh(image) {
 
@@ -108,6 +98,8 @@ export async function getHeightMesh(image) {
     const width = await image.getWidth();
     const height = await image.getHeight();
     const data = await image.readRasters();
+
+    console.log('image read Raster', data)
 
     const Xo = bbox[0];
     const Xf = bbox[2];
@@ -189,7 +181,100 @@ export async function getHeightMesh(image) {
 
     let mesh = new THREE.Mesh(geometry, material);
     mesh.position.copy(coord3.as('EPSG:2154'));
+
     mesh.updateMatrixWorld();
+
+    return mesh;
+}
+
+export async function getHeightFromScenarios(bbox, width, height, data) {
+
+    console.log('scenarios data', data)
+
+    const Xo = bbox[0];
+    const Xf = bbox[2];
+    const Yo = bbox[1];
+    const Yf = bbox[3];
+
+    //Calculating the pixel size
+    let Xsize = (Xf - Xo) / width;
+    let Ysize = -(Yf - Yo) / height;
+
+
+    //Specifying the origin of the image
+    const origin = [Xo, Yf];
+    let coord3 = new Coordinates('EPSG:2154', origin[0], origin[1]);
+
+    //Creating the THREEJs Geometry
+    let geometry = new THREE.BufferGeometry();
+
+    const vertices = [];
+    const indices = [];
+
+    function minuszero(value) {
+        if (value <= 0) {
+            return -2
+        } else if (value > 8848) {
+            return -2
+        } else {
+            return value
+        }
+
+    }
+    //Creating the vertices table, pushing the coordinates 
+    //and the height data extracted from the image
+
+    for (let i = 0; i < width - 1; i++) {
+        for (let j = 0; j < height - 1; j++) {
+
+            //Creating the indices table by pushing two triangles for each pixel
+            let topL = [(1 / width) * (j), 1 - (1 / height) * (i)];
+            let topR = [(1 / width) * (j), 1 - (1 / height) * (i + 1)];
+            let botL = [(1 / width) * (j + 1), 1 - (1 / height) * (i)];
+            let botR = [(1 / width) * (j + 1), 1 - (1 / height) * (i + 1)];
+
+            indices.push(topL);
+            indices.push(botL);
+            indices.push(topR);
+
+            indices.push(botL);
+            indices.push(topR);
+            indices.push(botR);
+
+            //Creating the vertices table, pushing the coordinates 
+            //and the height data extracted from the image
+
+            vertices.push(i * Xsize, j * Ysize, minuszero(data[0][i + j * width])), // top left
+                vertices.push((i + 1) * Xsize, j * Ysize, minuszero(data[0][(i + 1) + j * width])), // top right
+                vertices.push(i * Xsize, (j + 1) * Ysize, minuszero(data[0][i + (j + 1) * width])), // bottom left
+
+                vertices.push(i * Xsize, (j + 1) * Ysize, minuszero(data[0][i + (j + 1) * width])), // bottom left
+                vertices.push((i + 1) * Xsize, j * Ysize, minuszero(data[0][(i + 1) + j * width])), // top right
+                vertices.push((i + 1) * Xsize, (j + 1) * Ysize, minuszero(data[0][(i + 1) + (j + 1) * width]) // bottom right
+                );
+        };
+    };
+
+    //Setting attributes to the geometry
+    geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(vertices), 3));
+    geometry.setAttribute('normal', new THREE.BufferAttribute(new Float32Array(indices), 3));
+
+
+    // create material
+    const material = new THREE.MeshBasicMaterial({
+        wireframe: true,
+        transparent: true,
+        opacity: 0.8,
+        color: 0xFFAAAA,
+        side: THREE.DoubleSide
+    });
+
+    let mesh = new THREE.Mesh(geometry, material);
+    coord3.altitude += 0
+    mesh.position.copy(coord3.as('EPSG:2154'));
+    mesh.updateMatrixWorld();
+
+    console.log('mesh', mesh);
 
     return mesh;
 }

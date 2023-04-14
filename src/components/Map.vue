@@ -12,7 +12,7 @@ import Toolbar from "./Toolbar.vue";
 import '../../node_modules/itowns/examples/css/widgets.css'
 import { FileSource, THREE, Style, proj4, Extent, FeatureGeometryLayer, Coordinates, GlobeView, PlanarView, WMTSSource, WMSSource, ColorLayer, ElevationLayer, Copy, As } from "../../node_modules/itowns/dist/itowns";
 import { ref } from "vue";
-import { getHeightMesh, getImage, getData, averageLists, minLists, maxLists } from '../services/Height_service.js'
+import { getHeightMesh, getImage, getData, averageLists, minLists, maxLists, getHeightFromScenarios } from '../services/Height_service.js'
 import { layerOrtho, layerDEM, layerPLAN } from '../services/WMS_service.js'
 import { basic } from '../services/FileSource_service.js'
 import { image } from "d3-fetch";
@@ -41,16 +41,11 @@ export default {
   },
   mounted() {
 
-    const coord = [-3.35291, 47.69651];
-
     //defining projection coordinate unit
     proj4.defs(
       "EPSG:2154",
       "+proj=lcc +lat_1=49 +lat_2=44 +lat_0=46.5 +lon_0=3 +x_0=700000 +y_0=6600000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"
     );
-
-    const frcoord = proj4('EPSG:3857', 'EPSG:2154', coord)
-
 
     //defining the views geographic extent, how far does it go
     const viewExtent = new Extent(
@@ -71,48 +66,59 @@ export default {
     });
 
     view.addLayer(layerPLAN)
-    // view.addLayer(layerDEM);
-    // view.addLayer(basic);
+    view.addLayer(layerDEM);
+    view.addLayer(basic);
     view.addLayer(layerOrtho);
 
     // // //Adding Geotiff of water heights (the localhost link is due to the use of http-server)
-    let url = 'http://localhost:8080/gavres_mnt.tif';
 
-    // getImage(url).then(image => {
-    //   getHeightMesh(image).then(mesh => {
-    //     view.scene.add(mesh);
-    //     view.mesh = mesh;
-    //     view.notifyChange();
+    // let Scenarios = [
+    //   'http://localhost:8080/output_rasters/S_102/S_102_hmax.tif',
+    //   'http://localhost:8080/output_rasters/S_1035/S_1035_hmax.tif',
+    //   'http://localhost:8080/output_rasters/S_1044/S_1044_hmax.tif',
+    //   'http://localhost:8080/output_rasters/S_1027/S_1027_hmax.tif',
+    //   'http://localhost:8080/output_rasters/S_1040/S_1040_hmax.tif',
+    //   'http://localhost:8080/output_rasters/S_1069/S_1069_hmax.tif',
+    //   'http://localhost:8080/output_rasters/S_1052/S_1052_hmax.tif',
+    //   'http://localhost:8080/output_rasters/S_1070/S_1070_hmax.tif',
+    //   'http://localhost:8080/output_rasters/S_1222/S_1222_hmax.tif',
+    //   'http://localhost:8080/output_rasters/S_1230/S_1230_hmax.tif',
+    // ]
 
-    //   });
-    // })
+    let Scenarios = [
+      'http://localhost:8080/output_rasters/S_1040/S_1040_hmax.tif',
+      'http://localhost:8080/output_rasters/S_1069/S_1069_hmax.tif',
+    ]
 
-    getImage(url).then(image => {
 
-      let listImages = []
-      listImages.push(image);
-      console.log(listImages)
+    let listImages = [];
+    Promise.all(Scenarios.map(getImage))
+      .then((images) => {
+        listImages = images;
+        console.log('All images loaded:', listImages);
 
-      getHeightMesh(image).then(mesh => {
-        view.scene.add(mesh);
-        view.mesh = mesh;
-        view.notifyChange();
+        getData(listImages)
+          .then(scenarios => {
+
+            let scenario = scenarios.datas;
+            let avgOfScenarios = [averageLists(scenarios.datas)];
+            let minOfScenarios = [minLists(scenarios.datas)];
+            let maxOfScenarios = [maxLists(scenarios.datas)];
+
+            let bbox = scenarios.bbox; let width = scenarios.width; let height = scenarios.height;
+            let data = maxOfScenarios;
+
+            console.log('data', data)
+
+            getHeightFromScenarios(bbox, width, height, data).then(mesh => {
+              view.scene.add(mesh);
+              view.mesh = mesh;
+              view.notifyChange();
+            })
+
+          })
+
       })
-
-      getData(listImages).then(scenarios => {
-        console.log(scenarios)
-
-        console.log(averageLists(scenarios.datas))
-        console.log('min', minLists(scenarios.datas))
-        console.log('max', maxLists(scenarios.datas))
-
-
-
-      })
-    })
-
-
-
 
     view.controls.enableRotation = false;
     view.notifyChange();
@@ -153,7 +159,6 @@ export default {
       view.notifyChange();
     },
     vue3d() {
-
       view.controls.enableRotation = true;
       view.notifyChange();
     },
