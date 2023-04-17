@@ -27,7 +27,11 @@
 
                     <div v-else-if="selectedGraph.name == 'Histogramme empilé'">
                         <div v-if="this.affichageHistogramme == true">
-                            <apexchart :options="this.chartOptions5" :series="this.series5" />
+                            <apexchart :options="this.chartOptions5Surcote" :series="this.series5Surcote" />
+                            <apexchart :options="this.chartOptions5Maree" :series="this.series5Maree" />
+                            <apexchart :options="this.chartOptions5Vagues" :series="this.series5Vagues" />
+                            <apexchart :options="this.chartOptions5Vent" :series="this.series5Vent" />
+
                         </div>
                     </div>
 
@@ -125,19 +129,11 @@ export default {
 
             // ROSE WIND - HIGHCHARTJS //
             chartOptions2: ({
-                chart: {
-                    type: 'line',
-                },
-                title: {
-                    text: 'En attente de données',
-                },
-                xAxis: {
-                    categories: [],
-                },
+                chart: {type: 'line',},
+                title: {text: 'En attente de données',},
+                xAxis: {categories: [],},
                 yAxis: {
-                    title: {
-                        text: 'En attente de données',
-                    },
+                    title: {text: 'En attente de données',},
                 },
                 series: [{
                     name: 'En attente de données',
@@ -147,7 +143,7 @@ export default {
 
 
             // DIAGRAMME EMPILE - APEXCHARTS
-            chartOptions5: ({
+            chartOptions5Surcote: ({
                 chart: {type: 'bar', height: 350, stacked: true, stackType: '100%'},
                 responsive: [{
                     breakpoint: 480,
@@ -158,10 +154,49 @@ export default {
                 legend: {position: 'right', offsetX: 0, offsetY: 50},
             }),
 
-            series5: [{
-                name: 'En attente de données',
-                data: []
-                }
+            series5Surcote: [{name: 'En attente de données', data: []}
+            ],
+
+            chartOptions5Maree: ({
+                chart: {type: 'bar', height: 350, stacked: true, stackType: '100%'},
+                responsive: [{
+                    breakpoint: 480,
+                    options: {legend: {position: 'bottom', offsetX: -10, offsetY: 0}}
+                }],
+                xaxis: {categories: []},
+                fill: {opacity: 1},
+                legend: {position: 'right', offsetX: 0, offsetY: 50},
+            }),
+
+            series5Maree: [{name: 'En attente de données', data: []}
+            ],
+
+            chartOptions5Vagues: ({
+                chart: {type: 'bar', height: 350, stacked: true, stackType: '100%'},
+                responsive: [{
+                    breakpoint: 480,
+                    options: {legend: {position: 'bottom', offsetX: -10, offsetY: 0}}
+                }],
+                xaxis: {categories: []},
+                fill: {opacity: 1},
+                legend: {position: 'right', offsetX: 0, offsetY: 50},
+            }),
+
+            series5Vagues: [{name: 'En attente de données', data: []}
+            ],
+
+            chartOptions5Vent: ({
+                chart: {type: 'bar', height: 350, stacked: true, stackType: '100%'},
+                responsive: [{
+                    breakpoint: 480,
+                    options: {legend: {position: 'bottom', offsetX: -10, offsetY: 0}}
+                }],
+                xaxis: {categories: []},
+                fill: {opacity: 1},
+                legend: {position: 'right', offsetX: 0, offsetY: 50},
+            }),
+
+            series5Vent: [{name: 'En attente de données', data: []}
             ],
 
             // HEAT MAP - APEXCHARTS
@@ -201,7 +236,10 @@ export default {
             this.lineChartAffichage('Hs(vagues)(m)');
             this.lineChartAffichage('U(vent)(m)');
             this.heatMapAffichage();
+            this.histogrammeAffichage('Surcote(m)');
             this.histogrammeAffichage('Maree(m)');
+            this.histogrammeAffichage('Hs(vagues)(m)');
+            this.histogrammeAffichage('U(vent)(m)');
         },
 
         reiAfficheGraph() {
@@ -422,15 +460,11 @@ export default {
             });
         },
 
-
-
-
         histogramm(type, abscisses, ordonnees){
             if (type == "Maree(m)") {
-                this.series5 = ordonnees;
-                this.chartOptions5 = reactive({
-                    // chart: {type: 'bar', height: 350, stacked: true, stackType: '100%'},
-                    chart: {type: 'bar', height: 350, stacked: true},
+                this.series5Maree = ordonnees;
+                this.chartOptions5Maree = reactive({
+                    chart: {type: 'bar', height: 350, stacked: true, stackType: '100%'},
                     responsive: [{
                         breakpoint: 480,
                         options: {legend: {position: 'bottom', offsetX: -10, offsetY: 0}}
@@ -440,54 +474,45 @@ export default {
                     legend: {position: 'right', offsetX: 0, offsetY: 50},
                 });
             }
-            // if (type == "Surcote(m)") {
-            //     this.seriesSurcote = ordonnees;
-            //     this.chartOptionsSurcote = reactive({
-            //         chart: { id: 'mychart', height: 350, type: 'line', defaultPoint_marker_visible: false, zoom: { enabled: false } },
-            //         dataLabels: { enabled: false },
-            //         stroke: { curve: 'straight' },
-            //         title: { text: 'Surcote(m) en fonction des heures de la journée', align: 'left' },
-            //         grid: { row: { colors: ['#f3f3f3', 'transparent'], opacity: 0.5 }, },
-            //         xaxis: { tooltip: { enabled: false }, overwriteCategories: abscisses, }
-            //     });
-            // }
-
-            // if (type == "Hs(vagues)(m)") {
-            //     this.seriesVagues = ordonnees;
-            //     this.chartOptionsVagues = reactive({
-            //         chart: { id: 'mychart', height: 350, type: 'line', defaultPoint_marker_visible: false, zoom: { enabled: false } },
-            //         dataLabels: { enabled: false },
-            //         stroke: { curve: 'straight' },
-            //         title: { text: 'Hs(vagues)(m) en fonction des heures de la journée', align: 'left' },
-            //         grid: { row: { colors: ['#f3f3f3', 'transparent'], opacity: 0.5 }, },
-            //         xaxis: { tooltip: { enabled: false }, overwriteCategories: abscisses, }
-            //     });
-            // }
-
-            // if (type == "U(vent)(m)") {
-            //     this.seriesVent = ordonnees;
-            //     this.chartOptionsVent = reactive({
-            //         chart: { id: 'mychart', height: 350, type: 'line', defaultPoint_marker_visible: false, zoom: { enabled: false } },
-            //         dataLabels: { enabled: false },
-            //         stroke: { curve: 'straight' },
-            //         title: { text: 'U(vent)(m) en fonction des heures de la journée', align: 'left' },
-            //         grid: { row: { colors: ['#f3f3f3', 'transparent'], opacity: 0.5 }, },
-            //         xaxis: { tooltip: { enabled: false }, overwriteCategories: abscisses, }
-            //     });
-            // }
-
-
-            // this.series5 = [{
-            //     name: 'PRODUCT A',
-            //     data: [44, 55, 41]
-            //     }, {
-            //     name: 'PRODUCT B',
-            //     data: [13, 23, 20]
-            //     }, {
-            //     name: 'PRODUCT C',
-            //     data: [11, 17, 15, 15, 21, 14, 15, 13]
-            // }];
-
+            else if (type == "Surcote(m)") {
+                this.series5Surcote = ordonnees;
+                this.chartOptions5Surcote = reactive({
+                    chart: {type: 'bar', height: 350, stacked: true, stackType: '100%'},
+                    responsive: [{
+                        breakpoint: 480,
+                        options: {legend: {position: 'bottom', offsetX: -10, offsetY: 0}}
+                    }],
+                    xaxis: {categories: abscisses},
+                    fill: {opacity: 1},
+                    legend: {position: 'right', offsetX: 0, offsetY: 50},
+                });
+            }
+            else if (type == "Hs(vagues)(m)") {
+                this.series5Vagues = ordonnees;
+                this.chartOptions5Vagues = reactive({
+                    chart: {type: 'bar', height: 350, stacked: true, stackType: '100%'},
+                    responsive: [{
+                        breakpoint: 480,
+                        options: {legend: {position: 'bottom', offsetX: -10, offsetY: 0}}
+                    }],
+                    xaxis: {categories: abscisses},
+                    fill: {opacity: 1},
+                    legend: {position: 'right', offsetX: 0, offsetY: 50},
+                });
+            }
+            else if (type == "U(vent)(m)") {
+                this.series5Vent = ordonnees;
+                this.chartOptions5Vent = reactive({
+                    chart: {type: 'bar', height: 350, stacked: true, stackType: '100%'},
+                    responsive: [{
+                        breakpoint: 480,
+                        options: {legend: {position: 'bottom', offsetX: -10, offsetY: 0}}
+                    }],
+                    xaxis: {categories: abscisses},
+                    fill: {opacity: 1},
+                    legend: {position: 'right', offsetX: 0, offsetY: 50},
+                });
+            }
             this.affichageHistogramme = true;
         },
 
@@ -499,56 +524,66 @@ export default {
             var listDataPlot = [];
             // valeurs à afficher --> abscisses
             var abscisses = [];
+            // Decoupage des ordonnées
+            var L = [];     
+            var s1 = new Array();     
+            var s2 = new Array();    
+            var s3 = new Array();    
+            var s4 = new Array();              
+            // Compteur pour mettre les valeurs dans les listes de decoupage
+            var elem = 0;
 
             for (const element of this.selectedScenario) {
+                var v1 = 0;
+                var v2 = 0;
+                var v3 = 0;
+                var v4 = 0;
                 fetch('http://localhost:8080/jsonData/' + `${element["name"]}` + '.json')
                     .then(response => response.json())
                     .then(data => {
                         abscisses.push(`${element["name"]}`);
-                        // Boucle pour avoir toutes les abscisses possibles
-                        // for (const property in data) {
-                        //     if (abscisses.indexOf(`${data[property]["heure"]}`) == -1) {
-                        //         abscisses.push(`${data[property]["heure"]}`);
-                        //     }
-                        // };
-
-                        // abscisses.sort()
-
-                        // 1 dictionnaire = 1 scenario, il se remet à 0 à chaque nouveau scénario                        
 
                         if (type == "Maree(m)") {
-                            var L = [0, 1, 2];
-                            var s1 = new Array(this.selectedScenario.length).fill(0);
-                            var s2 = new Array(this.selectedScenario.length).fill(0);
-                            var s3 = new Array(this.selectedScenario.length).fill(0);
-                            var s4 = new Array(this.selectedScenario.length).fill(0);
-                            var elem = 0;
+                            L = [0, 1, 2];
+                        }
+                        else if (type == "Surcote(m)") {
+                            L = [0, 0.50, 1];
+                        }
+                        else if (type == "Hs(vagues)(m)") {
+                            L = [2, 4, 6];
+                        }
+                        else if (type == "U(vent)(m)") {
+                            L = [5, 10, 15];
+                        }
 
-                            for (const property in data) {
-                                if (`${data[property]["Maree(m)"]}` < L[0]) {
-                                    s1[elem] += 1 ;
-                                }
-                                else if (`${data[property]["Maree(m)"]}` > L[0] && `${data[property]["Maree(m)"]}` < L[1]) {
-                                    s2[elem] += 1 ;
-                                }
-                                else if (`${data[property]["Maree(m)"]}` > L[1] && `${data[property]["Maree(m)"]}` < L[2]) {
-                                    s3[elem] += 1 ;
-                                }
-                                if (`${data[property]["Maree(m)"]}` > L[2]) {
-                                    s4[elem] += 1 ;
-                                } 
-                                elem += 1;
-                            };
-
-                        listDataPlot.push({ name : "inférieur à 0" , data : s1});
-                        listDataPlot.push({ name : "entre 0 et 1" , data : s2});
-                        listDataPlot.push({ name : "entre 1 et 2" , data : s3});
-                        listDataPlot.push({ name : "upérieur à 2" , data : s4});
-                        console.log(listDataPlot);       
-                        }      
+                        for (const property in data) {
+                            if (`${data[property][type]}` < L[0]) {
+                                v1 += 1;
+                            }
+                            else if (`${data[property][type]}` > L[0] && `${data[property][type]}` < L[1]) {
+                                v2 += 1;
+                            }
+                            else if (`${data[property][type]}` > L[1] && `${data[property][type]}` < L[2]) {
+                                v3 += 1;
+                            }
+                            if (`${data[property][type]}` > L[2]) {
+                                v4 += 1;
+                            }
+                        };   
+                        s1.push(v1);
+                        s2.push(v2);
+                        s3.push(v3);
+                        s4.push(v4);
                     })
+                elem += 1;
             }
-            this.histogramm("Maree(m)", abscisses, listDataPlot);   
+
+            console.log(listDataPlot);
+            listDataPlot.push({ name : "inférieur à " + L[0] , data : s1});
+            listDataPlot.push({ name : "entre " + L[0] + " et " + L[1], data : s2});
+            listDataPlot.push({ name : "entre " + L[1] + " et " + L[2], data : s3});
+            listDataPlot.push({ name : "supérieur à " + L[2] , data : s4});
+            this.histogramm(type, abscisses, listDataPlot);   
             this.affichageHistogramme = true;
         },
 
