@@ -2,125 +2,278 @@
 import * as GeoTIFF from 'geotiff';
 import { FileSource, THREE, Style, proj4, Extent, FeatureGeometryLayer, Coordinates, GlobeView, WMTSSource, WMSSource, ColorLayer, ElevationLayer, Copy, As } from "../../node_modules/itowns/dist/itowns";
 
-export async function getHeightMesh(url) {
+export async function getImage(url) {
     return new Promise((resolve, reject) => {
         // Adding Geotiff of water heights (the localhost link is due to the use of http-server)
         var xhr = new XMLHttpRequest();
         xhr.open("GET", url);
         xhr.responseType = 'arraybuffer';
         xhr.onload = async function (e) {
-
             var buffer = await xhr.response;
             //Creating an image from the http response
             const tiff = await GeoTIFF.fromArrayBuffer(buffer);
             const image = await tiff.getImage();
+            // Return the image
+            resolve(image);
+        }
+        xhr.onerror = reject;
+        xhr.send();
 
-            //Getting metadata and data from the image
-            const bbox = await image.getBoundingBox();
-            const width = await image.getWidth();
-            const height = await image.getHeight();
-            const data = await image.readRasters();
+    })
+}
 
-            /*     function flipElev(data) {
-                  let maxElev = Math.max(data);
-                  return data.map(elev => maxElev - elev);
-                }
-          
-                const data2 = flipElev(data[0]);
-          
-                console.log(data2, data)
-           */
+export async function getData(listOfImages) {
 
-            const Xo = bbox[0];
-            const Xf = bbox[2];
-            const Yo = bbox[1];
-            const Yf = bbox[3];
+    let datas = []
 
-            //Calculating the pixel size
-            const Xsize = (Xf - Xo) / width;
-            const Ysize = -(Yf - Yo) / height;
+    const bbox = await listOfImages[0].getBoundingBox();
+    const width = await listOfImages[0].getWidth();
+    const height = await listOfImages[0].getHeight();
 
-            //Specifying the origin of the image
-            const origin = [Xo, Yf];
-            let coord3 = new Coordinates('EPSG:2154', origin[0], origin[1]);
+    for (let i = 0; i < listOfImages.length; i++) {
+        //Getting metadata and data from the image
+        const data = await listOfImages[i].readRasters();
+        datas.push(data[0]);
+    }
 
-            //Creating the THREEJs Geometry
-            let geometry = new THREE.BufferGeometry();
+    let scenarios = {
+        bbox: bbox,
+        width: width,
+        height: height,
+        datas: datas
+    }
 
-            const vertices = [];
-            const indices = [];
+    return scenarios;
+}
+
+export function averageLists(lists) {
+    const numLists = lists.length;
+    const listLength = lists[0].length;
+
+    // Check that all lists have the sa>me length
+    if (!lists.every(list => list.length === listLength)) {
+        throw new Error('averageLists: all lists must have the same length');
+    }
+
+    const sums = new Float32Array(listLength).fill(0);
+
+    for (let i = 0; i < listLength; i++) {
+        for (let j = 0; j < numLists; j++) {
+            const value = lists[j][i];
+            if (!isNaN(value)) {
+                sums[i] += value;
+            }
+        }
+    }
+
+    return sums.map(sum => sum / numLists);
+}
+
+export function minLists(lists) {
+    const listLength = lists[0].length;
+    const mins = new Float32Array(listLength).fill(Number.MAX_SAFE_INTEGER);
+    return lists.reduce((mins, list) => {
+        for (let i = 0; i < listLength; i++) {
+            mins[i] = Math.min(mins[i], list[i]);
+        }
+        return mins;
+    }, mins);
+}
+
+export function maxLists(lists) {
+    const listLength = lists[0].length;
+    const maxes = new Float32Array(listLength).fill(Number.MIN_SAFE_INTEGER);
+    return lists.reduce((maxes, list) => {
+        for (let i = 0; i < listLength; i++) {
+            maxes[i] = Math.max(maxes[i], list[i]);
+        }
+        return maxes;
+    }, maxes);
+}
+
+export async function getHeightMesh(image) {
+
+    //Getting metadata and data from the image
+    const bbox = await image.getBoundingBox();
+    const width = await image.getWidth();
+    const height = await image.getHeight();
+    const data = await image.readRasters();
+
+    console.log('image read Raster', data)
+
+    const Xo = bbox[0];
+    const Xf = bbox[2];
+    const Yo = bbox[1];
+    const Yf = bbox[3];
+
+    //Calculating the pixel size
+    let Xsize = (Xf - Xo) / width;
+    let Ysize = -(Yf - Yo) / height;
+
+
+    //Specifying the origin of the image
+    const origin = [Xo, Yf];
+    let coord3 = new Coordinates('EPSG:2154', origin[0], origin[1]);
+
+    //Creating the THREEJs Geometry
+    let geometry = new THREE.BufferGeometry();
+
+    const vertices = [];
+    const indices = [];
+
+    function minuszero(value) {
+        if (value <= 0) {
+            return -2
+        } else if (value > 8848) {
+            return -2
+        } else {
+            return value
+        }
+
+    }
+    //Creating the vertices table, pushing the coordinates 
+    //and the height data extracted from the image
+
+    for (let i = 0; i < width - 1; i++) {
+        for (let j = 0; j < height - 1; j++) {
 
             //Creating the indices table by pushing two triangles for each pixel
+            let topL = [(1 / width) * (j), 1 - (1 / height) * (i)];
+            let topR = [(1 / width) * (j), 1 - (1 / height) * (i + 1)];
+            let botL = [(1 / width) * (j + 1), 1 - (1 / height) * (i)];
+            let botR = [(1 / width) * (j + 1), 1 - (1 / height) * (i + 1)];
 
-            for (let j = 0; j < width - 1; j++) {
-                for (let i = 0; i < height - 1; i++) {
+            indices.push(topL);
+            indices.push(botL);
+            indices.push(topR);
 
-                    let topL = [(1 / width) * (j), 1 - (1 / height) * (i)];
-                    let topR = [(1 / width) * (j), 1 - (1 / height) * (i + 1)];
-                    let botL = [(1 / width) * (j + 1), 1 - (1 / height) * (i)];
-                    let botR = [(1 / width) * (j + 1), 1 - (1 / height) * (i + 1)];
+            indices.push(botL);
+            indices.push(topR);
+            indices.push(botR);
 
-                    indices.push(topL);
-                    indices.push(botL);
-                    indices.push(topR);
-
-                    indices.push(botL);
-                    indices.push(topR);
-                    indices.push(botR);
-
-                };
-            };
-
-            function minuszero(value) {
-                if (value <= 0) {
-                    return -2
-                } else {
-                    return value
-                }
-
-            }
             //Creating the vertices table, pushing the coordinates 
             //and the height data extracted from the image
 
-            for (let i = 0; i < width - 1; i++) {
-                for (let j = 0; j < height - 1; j++) {
+            vertices.push(i * Xsize, j * Ysize, minuszero(data[0][i + j * width])), // top left
+                vertices.push((i + 1) * Xsize, j * Ysize, minuszero(data[0][(i + 1) + j * width])), // top right
+                vertices.push(i * Xsize, (j + 1) * Ysize, minuszero(data[0][i + (j + 1) * width])), // bottom left
 
-                    vertices.push(i * Xsize, j * Ysize, minuszero(data[0][i + j * width])), // top left
-                        vertices.push((i + 1) * Xsize, j * Ysize, minuszero(data[0][(i + 1) + j * width])), // top right
-                        vertices.push(i * Xsize, (j + 1) * Ysize, minuszero(data[0][i + (j + 1) * width])), // bottom left
-
-                        vertices.push(i * Xsize, (j + 1) * Ysize, minuszero(data[0][i + (j + 1) * width])), // bottom left
-                        vertices.push((i + 1) * Xsize, j * Ysize, minuszero(data[0][(i + 1) + j * width])), // top right
-                        vertices.push((i + 1) * Xsize, (j + 1) * Ysize, minuszero(data[0][(i + 1) + (j + 1) * width]) // bottom right
-                        );
-                };
-            };
-
-            //Setting attributes to the geometry
-            geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(vertices), 3));
-            geometry.setAttribute('normal', new THREE.BufferAttribute(new Float32Array(indices), 3));
-
-
-            // create material
-            const material = new THREE.MeshBasicMaterial({
-                transparent: true,
-                opacity: 0.8,
-                color: 0xE0FFFF,
-                side: THREE.DoubleSide
-            });
-
-            let mesh = new THREE.Mesh(geometry, material);
-            //coord3.altitude = + 100;
-
-            mesh.position.copy(coord3.as('EPSG:4978'));
-            mesh.lookAt(new THREE.Vector3(0, 0, 0));
-            mesh.rotateY(Math.PI);
-            mesh.updateMatrixWorld();
-
-            // Return the mesh
-            resolve(mesh);
+                vertices.push(i * Xsize, (j + 1) * Ysize, minuszero(data[0][i + (j + 1) * width])), // bottom left
+                vertices.push((i + 1) * Xsize, j * Ysize, minuszero(data[0][(i + 1) + j * width])), // top right
+                vertices.push((i + 1) * Xsize, (j + 1) * Ysize, minuszero(data[0][(i + 1) + (j + 1) * width]) // bottom right
+                );
         };
-        xhr.onerror = reject;
-        xhr.send();
+    };
+
+    //Setting attributes to the geometry
+    geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(vertices), 3));
+    geometry.setAttribute('normal', new THREE.BufferAttribute(new Float32Array(indices), 3));
+
+
+    // create material
+    const material = new THREE.MeshBasicMaterial({
+        wireframe: true,
+        transparent: true,
+        opacity: 0.8,
+        color: 0xE0FFFF,
+        side: THREE.DoubleSide
     });
+
+    let mesh = new THREE.Mesh(geometry, material);
+    coord3.altitude += 5;
+    mesh.position.copy(coord3.as('EPSG:2154'));
+    mesh.updateMatrixWorld();
+
+    return mesh;
 }
+
+export async function getHeightFromScenarios(bbox, width, height, data) {
+
+    console.log('scenarios data', data)
+
+
+    const Xo = bbox[0];
+    const Xf = bbox[2];
+    const Yo = bbox[1];
+    const Yf = bbox[3];
+
+    //Calculating the pixel size
+    let Xsize = (Xf - Xo) / width;
+    let Ysize = -(Yf - Yo) / height;
+
+
+    //Specifying the origin of the image
+    const origin = [Xo, Yf];
+    let coord3 = new Coordinates('EPSG:2154', origin[0], origin[1]);
+
+    //Creating the THREEJs Geometry
+    let geometry = new THREE.BufferGeometry();
+
+    const vertices = [];
+    const indices = [];
+
+    function minuszero(value) {
+        if (value <= 0) {
+            return -2
+        } else if (value > 8848) {
+            return -2
+        } else {
+            return value
+        }
+
+    }
+    //Creating the vertices table, pushing the coordinates 
+    //and the height data extracted from the image
+
+    for (let i = 0; i < width - 1; i++) {
+        for (let j = 0; j < height - 1; j++) {
+
+            //Creating the indices table by pushing two triangles for each pixel
+            let topL = [(1 / width) * (j), 1 - (1 / height) * (i)];
+            let topR = [(1 / width) * (j), 1 - (1 / height) * (i + 1)];
+            let botL = [(1 / width) * (j + 1), 1 - (1 / height) * (i)];
+            let botR = [(1 / width) * (j + 1), 1 - (1 / height) * (i + 1)];
+
+            indices.push(topL);
+            indices.push(botL);
+            indices.push(topR);
+
+            indices.push(botL);
+            indices.push(topR);
+            indices.push(botR);
+
+            //Creating the vertices table, pushing the coordinates 
+            //and the height data extracted from the image
+
+            vertices.push(i * Xsize, j * Ysize, minuszero(data[0][i + j * width])), // top left
+                vertices.push((i + 1) * Xsize, j * Ysize, minuszero(data[0][(i + 1) + j * width])), // top right
+                vertices.push(i * Xsize, (j + 1) * Ysize, minuszero(data[0][i + (j + 1) * width])), // bottom left
+
+                vertices.push(i * Xsize, (j + 1) * Ysize, minuszero(data[0][i + (j + 1) * width])), // bottom left
+                vertices.push((i + 1) * Xsize, j * Ysize, minuszero(data[0][(i + 1) + j * width])), // top right
+                vertices.push((i + 1) * Xsize, (j + 1) * Ysize, minuszero(data[0][(i + 1) + (j + 1) * width]) // bottom right
+                );
+        };
+    };
+
+    //Setting attributes to the geometry
+    geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(vertices), 3));
+    geometry.setAttribute('normal', new THREE.BufferAttribute(new Float32Array(indices), 3));
+
+
+    // create material
+    const material = new THREE.MeshBasicMaterial({
+        color: 0x0000FF,
+        side: THREE.DoubleSide
+    });
+
+    let mesh = new THREE.Mesh(geometry, material);
+    mesh.position.copy(coord3.as('EPSG:2154'));
+    mesh.updateMatrixWorld();
+
+    console.log('mesh', mesh);
+
+    return mesh;
+}
+
+

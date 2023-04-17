@@ -1,7 +1,8 @@
 <template>
   <div id="viewerDiv" class="viewer" @click="showCoords">
   </div>
-  <Toolbar @icon-clicked="changeMap" ref="childComponent" @change-building="building" @reinit-view="cameraView">
+  <Toolbar @icon-clicked="changeMap" ref="childComponent" @change-building="building" @reinit-view="cameraView"
+    @vue-2d="vue2d" @vue-3d="vue3d">
   </Toolbar>
 </template>
 
@@ -9,20 +10,13 @@
 /* eslint-disable */
 import Toolbar from "./Toolbar.vue";
 import '../../node_modules/itowns/examples/css/widgets.css'
-import { FileSource, THREE, Style, proj4, Extent, FeatureGeometryLayer, Coordinates, GlobeView, WMTSSource, WMSSource, ColorLayer, ElevationLayer, Copy, As } from "../../node_modules/itowns/dist/itowns";
-import { Navigation } from '../../node_modules/itowns/dist/itowns_widgets.js';
-import * as GeoTIFF from 'geotiff';
-import {
-  planIGNv2Layer, orthoLayer,
-  demHRLayer
-} from '../services/WMTS_service.js'
+import { FileSource, THREE, Style, proj4, Extent, FeatureGeometryLayer, Coordinates, GlobeView, PlanarView, WMTSSource, WMSSource, ColorLayer, ElevationLayer, Copy, As } from "../../node_modules/itowns/dist/itowns";
 import { ref } from "vue";
+import { getHeightMesh, getImage, getData, averageLists, minLists, maxLists, getHeightFromScenarios } from '../services/Height_service.js'
+import { layerOrtho, layerDEM, layerPLAN } from '../services/WMS_service.js'
+import { basic } from '../services/FileSource_service.js'
+import { image } from "d3-fetch";
 
-import {
-  bati3DLayer
-} from '../services/WFS_service.js'
-import { inheritLeadingComments } from "@babel/types";
-import { getHeightMesh } from '../services/Height_service.js'
 
 let view = ref(false);
 
@@ -47,11 +41,8 @@ export default {
   },
   mounted() {
 
-    const coord = [-3.35291, 47.69651];
-
-
     //defining projection coordinate unit
-    const proj2154 = proj4.defs(
+    proj4.defs(
       "EPSG:2154",
       "+proj=lcc +lat_1=49 +lat_2=44 +lat_0=46.5 +lon_0=3 +x_0=700000 +y_0=6600000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"
     );
@@ -66,64 +57,108 @@ export default {
     );
 
     var placement = {
-      coord: new Coordinates('EPSG:4326', coord[0], coord[1]),
-      range: 2500
-    };
+      coord: viewExtent.center()
+    }
 
-    view = new GlobeView(viewerDiv, placement);
-
-    //viewNew = new GlobeView(viewerDiv, placement);
-    // ADD NAVIGATION TOOLS :
-    new Navigation(view, {
-      position: 'bottom-right',
-      translate: { y: -40 },
+    // Create the planar view
+    view = new PlanarView(viewerDiv, viewExtent, {
+      placement: placement,
     });
 
+    view.addLayer(layerPLAN)
+    view.addLayer(layerDEM);
+    view.addLayer(basic);
+    view.addLayer(layerOrtho);
 
-    view.addLayer(planIGNv2Layer);
-    view.addLayer(demHRLayer);
-    view.addLayer(bati3DLayer);
-    view.addLayer(orthoLayer);
 
-    // // //Adding Geotiff of water heights (the localhost link is due to the use of http-server)
-    // let url = 'http://localhost:8080/gavres_mnt.tif';
-
-    // getHeightMesh(url).then(mesh => {
-
-    //   view.scene.add(mesh);
-    //   view.mesh = mesh;
-    //   view.notifyChange();
-
+    ////------------------------------------------------------
+    //RECUPERER UNE URL 
+    // getImage('http://localhost:8080/output_rasters/S_1040/S_1040_hmax.tif').then(image => {
+    //   getHeightMesh(image).then(mesh => {
+    //     view.scene.add(mesh);
+    //     view.mesh = mesh;
+    //     view.notifyChange();
+    //   })
     // })
+
+
+    //------------------------------------------------------
+    //RECUPERER PLUSIEURS URL
+    // let Scenarios = [
+    //   'http://localhost:8080/output_rasters/S_1040/S_1040_hmax.tif',
+    //   'http://localhost:8080/output_rasters/S_1069/S_1069_hmax.tif',
+    // ]
+
+    // let listImages = [];
+    // Promise.all(Scenarios.map(getImage))
+    //   .then((images) => {
+    //     listImages = images;
+    //     console.log('All images loaded:', listImages);
+
+    //     getData(listImages)
+    //       .then(scenarios => {
+
+    //         let avgOfScenarios = [averageLists(scenarios.datas)];
+    //         let minOfScenarios = [minLists(scenarios.datas)];
+    //         let maxOfScenarios = [maxLists(scenarios.datas)];
+
+    //         let bbox = scenarios.bbox; let width = scenarios.width; let height = scenarios.height;
+    //         let data = maxOfScenarios;
+
+    //         console.log('data', data)
+
+    //         getHeightFromScenarios(bbox, width, height, data).then(mesh => {
+    //           view.scene.add(mesh);
+    //           view.mesh = mesh;
+    //           view.notifyChange();
+    //         })
+
+    //       })
+
+    //   })
+
+    view.controls.enableRotation = false;
+    view.notifyChange();
 
   },
   methods: {
     changeMap() {
       if (this.$refs.childComponent.mapSelected == "plan") {
-        view.tileLayer.attachedLayers[1].visible = true;
-        view.tileLayer.attachedLayers[4].visible = false;
+        view.tileLayer.attachedLayers[1 - 1].visible = true;
+        view.tileLayer.attachedLayers[4 - 1].visible = false;
         view.notifyChange();
       } else {
-        view.tileLayer.attachedLayers[1].visible = false;
-        view.tileLayer.attachedLayers[4].visible = true;
+        view.tileLayer.attachedLayers[1 - 1].visible = false;
+        view.tileLayer.attachedLayers[4 - 1].visible = true;
         view.notifyChange();
       }
     },
     building() {
-      view.tileLayer.attachedLayers[3].visible = this.$refs.childComponent.visibleBuilding;
+      view.tileLayer.attachedLayers[3 - 1].visible = this.$refs.childComponent.visibleBuilding;
       view.notifyChange();
     },
 
     cameraView() {
-      view.camera.camera3D.position.x = 4295077.582429348;
+      view.camera.camera3D.position.x = 223725.82916306859;
       view.notifyChange();
 
-      view.camera.camera3D.position.y = -251632.32006396126;
+      view.camera.camera3D.position.y = 6751329.089913746;
       view.notifyChange();
 
-      view.camera.camera3D.position.z = 4696062.254883134;
+      view.camera.camera3D.position.z = 2500.719216284468985;
       view.notifyChange();
-    }
+    }, showCoords(e) {
+      //console.log('view', view)
+    },
+    vue2d() {
+      view.controls.goToTopView();
+      view.controls.enableRotation = false;
+      view.notifyChange();
+    },
+    vue3d() {
+      view.controls.enableRotation = true;
+      view.notifyChange();
+    },
 
   }
 
