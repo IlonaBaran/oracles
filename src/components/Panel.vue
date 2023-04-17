@@ -12,37 +12,27 @@
                 <ScrollPanel style="width: 100%; height: 75vh " class="custombar1">
 
                     <div v-if="selectedGraph.name == 'Ligne'">
-
-                        <!-- <button @click="lineChartAffichage('Maree(m)')">Elevation - cycle des marées</button> -->
-                        <!-- <button @click="lineChartAffichage('Surcote(m)')">Elevation supplémentaire du niveau de l'eau
-                            (prise
-                            en compte des conditions météorologiques et atmosphériques)</button> -->
-                        <!-- <button @click="lineChartAffichage('Hs(vagues)(m)')">Hauteur significative des vagues</button> -->
-                        <!-- <button @click="lineChartAffichage('U(vent)(m)')">Vitesse du vent</button> -->
-
                         <div v-if="this.affichageLigne == true">
-
                             <apexchart :options="this.chartOptions" :series="this.series" />
                             <apexchart :options="this.chartOptionsSurcote" :series="this.seriesSurcote" />
                             <apexchart :options="this.chartOptionsVagues" :series="this.seriesVagues" />
                             <apexchart :options="this.chartOptionsVent" :series="this.seriesVent" />
-
                         </div>
-
                     </div>
 
                     <div v-else-if="selectedGraph.name == 'Rose des vents'">
                         <button @click="roseVentAffichage">Affichage d'un diagramme rose des vents</button>
-                        <!-- <apexchart  :options="this.chartOptions2" :series="this.series2"/>     -->
-                        <vue-highcharts :options="this.chartOptions2"></vue-highcharts>
+                        <vue-highcharts  :options="this.chartOptions2"></vue-highcharts>
+                    </div>
+
+                    <div v-else-if="selectedGraph.name == 'Histogramme empilé'">
+                        <div v-if="this.affichageHistogramme == true">
+                            <apexchart :options="this.chartOptions5" :series="this.series5" />
+                        </div>
                     </div>
 
                     <div v-else-if="selectedGraph.name == 'Chaleur'">
-
-                        <!-- <button @click="heatMapAffichage">Affichage d'un diagramme de chaleur</button> -->
-
                         <div v-if="this.affichageHeat == true">
-
                             <apexchart :options="this.chartOptions3" :series="this.series3" />
                         </div>
                     </div>
@@ -106,8 +96,9 @@ export default {
             affichageLigne: false,
             affichageHeat: false,
             affichageRose: false,
+            affichageHistogramme: false,
 
-            // LINE CHART - APEXCHARTS
+            // LINE CHART - APEXCHARTS //
             chartOptions: {
                 chart: { id: 'mychart', height: 350, type: 'line', defaultPoint_marker_visible: false, zoom: { nabled: false } },
                 dataLabels: { enabled: false, grid: { row: { colors: ['#f3f3f3', 'transparent'], opacity: 0.5 }, }, xaxis: { tooltip: { enabled: false }, categories: [], } },
@@ -132,7 +123,7 @@ export default {
             },
             seriesVent: [],
 
-            // ROSE WIND - HIGHCHARTJS
+            // ROSE WIND - HIGHCHARTJS //
             chartOptions2: ({
                 chart: {
                     type: 'line',
@@ -153,21 +144,59 @@ export default {
                     data: [],
                 }],
             }),
-            // series2: ref(null),
 
-            // ROSE WIND - D3
-            data: [
-                { category: 'A', values: [10, 20, 30] },
-                { category: 'B', values: [40, 50, 60] },
-                { category: 'C', values: [70, 80, 90] }
-            ],
-            width: 500,
-            height: 500,
+
+            // DIAGRAMME EMPILE - APEXCHARTS
+            chartOptions5: ({
+                chart: {
+                    type: 'bar',
+                    height: 350,
+                    stacked: true,
+                    stackType: '100%'
+                },
+                responsive: [{
+                    breakpoint: 480,
+                    options: {
+                        legend: {
+                            position: 'bottom',
+                            offsetX: -10,
+                            offsetY: 0
+                        }
+                    }
+                }],
+                xaxis: {
+                    categories: ['2011 Q1', '2011 Q2', '2011 Q3', '2011 Q4', '2012 Q1', '2012 Q2',
+                        '2012 Q3', '2012 Q4'
+                    ],
+                },
+                fill: {
+                    opacity: 1
+                },
+                legend: {
+                    position: 'right',
+                    offsetX: 0,
+                    offsetY: 50
+                },
+            }),
+
+            series5: [{
+                name: 'PRODUCT A',
+                data: [44, 55, 41, 67, 22, 43, 21, 49]
+                }, 
+                {
+                name: 'PRODUCT B',
+                data: [13, 23, 20, 8, 13, 27, 33, 12]
+                }, 
+                {
+                name: 'PRODUCT C',
+                data: [11, 17, 15, 15, 21, 14, 15, 13]
+            }],
 
             // HEAT MAP - APEXCHARTS
             chartOptions3: ref(null),
             series3: ref(null),
 
+            
             // HEAT MAP MAIS EN 3D - HIGHTCHARTS
             chartOptions4: ({
                 chart: {
@@ -189,30 +218,27 @@ export default {
                     data: [],
                 }],
             }),
-            // series4: ref(null),
         }
     },
 
 
     methods: {
         afficheGraph() {
-
             this.lineChartAffichage('Surcote(m)')
             this.lineChartAffichage('Maree(m)');
             this.lineChartAffichage('Hs(vagues)(m)');
             this.lineChartAffichage('U(vent)(m)');
-
             this.heatMapAffichage();
-
+            this.histogrammeAffichage();
         },
+
         reiAfficheGraph() {
             this.affichageLigne = false;
             this.affichageHeat = false;
-
-            //this.lineChartAffichage(type);
+            this.affichageHistogramme = false;
         },
-        lineChart(type, abscisses, ordonnees) {
 
+        lineChart(type, abscisses, ordonnees) {
             if (type == "Maree(m)") {
                 this.series = ordonnees;
                 this.chartOptions = reactive({
@@ -265,7 +291,6 @@ export default {
 
 
         lineChartAffichage(type) {
-
             let abscisses = [];
             let ordonnees = [];
             for (const element of this.selectedScenario) {
@@ -273,23 +298,13 @@ export default {
                 fetch(file)
                     .then(response => response.json())
                     .then(data => {
-                        // for (const property in data) {
-                        //     // var dict = {
-                        //     //     x: `${data[property]["heure"]}`,
-                        //     //     y: parseFloat(`${data[property]["Maree(m)"]}`),
-                        //     // };
-                        //     abscisses.push(data[property]["heure"]);
-                        //     ordonnees.push(data[property][type]);
-                        // }
                         // Boucle pour avoir toutes les abscisses possibles
                         for (const property in data) {
-                            // console.log(abscisses.indexOf(`${data[property]["heure"]}`));
                             if (abscisses.indexOf(`${data[property]["heure"]}`) == -1) {
                                 abscisses.push(`${data[property]["heure"]}`);
                             }
                         };
                         abscisses.sort()
-
                         // 1 dictionnaire = 1 scenario, il se remet à 0 à chaque nouveau scénario
                         var dict = {};
                         dict["name"] = `${element["name"]}`;
@@ -303,7 +318,6 @@ export default {
                         dict["data"] = L;
                         ordonnees.push(dict);
                     })
-
                 this.lineChart(type, abscisses, ordonnees);
             }
         },
@@ -410,61 +424,6 @@ export default {
             // });
         },
 
-        roseChartD3() {
-            // //    this.roseChart();
-            const svg = d3.select(this.$refs.chart)
-                .append('svg')
-                .style("width", "100%")
-                .style("height", "auto")
-                .style("font", "10px sans-serif")
-                .append('g');
-
-            const categories = this.data.map(d => d.category);
-            const numCategories = categories.length;
-            const numValues = this.data[0].values.length;
-
-            const stack = d3.stack().keys(d3.range(numValues));
-
-            const dataStack = stack(this.data.map(d => d.values));
-
-            const innerRadius = 50;
-            const outerRadius = Math.min(this.width, this.height) / 2 - 10;
-
-            const x = d3.scaleBand()
-                .domain(categories)
-                .range([0, 2 * Math.PI])
-                .align(0);
-
-            const y = d3.scaleRadial()
-                .range([innerRadius, outerRadius])
-                .domain([0, d3.max(dataStack, d => d3.max(d, d => d[1]))]);
-
-            const z = d3.scaleOrdinal()
-                .range(['#98abc5', '#8a89a6', '#7b6888']);
-
-            svg.selectAll('g')
-
-                .data(dataStack)
-                .enter().append('g')
-                .attr('fill', d => z(d.key))
-                .selectAll('path')
-                .data(d => d)
-                .enter().append('path')
-                .attr('d', d3.arc()
-                    .innerRadius(d => y(d[0]))
-                    .outerRadius(d => y(d[1]))
-                    .startAngle(d => x(d.data.category))
-                    .endAngle(d => x(d.data.category) + x.bandwidth())
-                    .padAngle(0.01)
-                    .padRadius(innerRadius)
-                )
-                .attr('stroke', 'white')
-                .style('stroke-width', '2px')
-                .style('opacity', 0.7);
-        },
-
-
-
         roseVentAffichage() {
             const seriesData = ref([25, 39, 30, 15]);
             const categories = ref(['Jun', 'Jul', 'Aug', 'Sept']);
@@ -491,7 +450,58 @@ export default {
             });
         },
 
+        histogramm(){
+            this.chartOptions5 = ({
+                chart: {
+                    type: 'bar',
+                    height: 350,
+                    stacked: true,
+                    stackType: '100%'
+                },
+                responsive: [{
+                    breakpoint: 480,
+                    options: {
+                        legend: {
+                        position: 'bottom',
+                        offsetX: -10,
+                        offsetY: 0
+                        }
+                    }
+                }],
+                xaxis: {
+                    categories: ['2011 Q1', '2011 Q2', '2011 Q3', '2011 Q4', '2012 Q1', '2012 Q2',
+                        '2012 Q3', '2012 Q4'
+                    ],
+                },
+                fill: {
+                    opacity: 1
+                },
+                legend: {
+                    position: 'right',
+                    offsetX: 0,
+                    offsetY: 50
+                },
+            });
 
+            this.series5 = [{
+                name: 'PRODUCT A',
+                data: [44, 55, 41, 67, 22, 43, 21, 49]
+                }, {
+                name: 'PRODUCT B',
+                data: [13, 23, 20, 8, 13, 27, 33, 12]
+                }, {
+                name: 'PRODUCT C',
+                data: [11, 17, 15, 15, 21, 14, 15, 13]
+            }];
+
+            this.affichageHistogramme = true;
+        },
+
+        histogrammeAffichage(){
+            this.histogramm();
+            console.log(this.chartOptions5);
+            console.log(this.series5);
+        },
 
 
         sendData(data) {
@@ -513,8 +523,6 @@ export default {
         },
 
 
-
-
         heatMapAffichage() {
             // valeurs a afficher --> ordonnées
             var listDataPlot = [];
@@ -525,14 +533,8 @@ export default {
                 fetch('http://localhost:8080/jsonData/' + `${element["name"]}` + '.json')
                     .then(response => response.json())
                     .then(data => {
-                        // console.log(data);
                         // Boucle pour avoir toutes les abscisses possibles
                         for (const property in data) {
-                            // console.log(abscisses.indexOf(`${data[property]["heure"]}`));
-                            console.log(property);
-                            console.log(abscisses.indexOf(`${data[property]["heure"]}`))
-                            console.log("aaaa");
-
                             if (abscisses.indexOf(`${data[property]["heure"]}`) == -1) {
                                 abscisses.push(`${data[property]["heure"]}`);
                             }
@@ -559,9 +561,6 @@ export default {
             }
 
             this.heatMap(listDataPlot, abscisses);
-
-            console.log(abscisses);
-            console.log(listDataPlot);
             this.affichageHeat = true;
 
 

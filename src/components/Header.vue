@@ -87,6 +87,7 @@ export default {
                     states: [
                         { name: 'Ligne' },
                         { name: 'Rose des vents' },
+                        { name: 'Histogramme empilé' },
                         { name: 'Chaleur' }]
                 },
                 {
