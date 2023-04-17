@@ -148,49 +148,21 @@ export default {
 
             // DIAGRAMME EMPILE - APEXCHARTS
             chartOptions5: ({
-                chart: {
-                    type: 'bar',
-                    height: 350,
-                    stacked: true,
-                    stackType: '100%'
-                },
+                chart: {type: 'bar', height: 350, stacked: true, stackType: '100%'},
                 responsive: [{
                     breakpoint: 480,
-                    options: {
-                        legend: {
-                            position: 'bottom',
-                            offsetX: -10,
-                            offsetY: 0
-                        }
-                    }
+                    options: {legend: {position: 'bottom', offsetX: -10, offsetY: 0}}
                 }],
-                xaxis: {
-                    categories: ['2011 Q1', '2011 Q2', '2011 Q3', '2011 Q4', '2012 Q1', '2012 Q2',
-                        '2012 Q3', '2012 Q4'
-                    ],
-                },
-                fill: {
-                    opacity: 1
-                },
-                legend: {
-                    position: 'right',
-                    offsetX: 0,
-                    offsetY: 50
-                },
+                xaxis: {categories: []},
+                fill: {opacity: 1},
+                legend: {position: 'right', offsetX: 0, offsetY: 50},
             }),
 
             series5: [{
-                name: 'PRODUCT A',
-                data: [44, 55, 41, 67, 22, 43, 21, 49]
-                }, 
-                {
-                name: 'PRODUCT B',
-                data: [13, 23, 20, 8, 13, 27, 33, 12]
-                }, 
-                {
-                name: 'PRODUCT C',
-                data: [11, 17, 15, 15, 21, 14, 15, 13]
-            }],
+                name: 'En attente de données',
+                data: []
+                }
+            ],
 
             // HEAT MAP - APEXCHARTS
             chartOptions3: ref(null),
@@ -229,7 +201,7 @@ export default {
             this.lineChartAffichage('Hs(vagues)(m)');
             this.lineChartAffichage('U(vent)(m)');
             this.heatMapAffichage();
-            this.histogrammeAffichage();
+            this.histogrammeAffichage('Maree(m)');
         },
 
         reiAfficheGraph() {
@@ -450,58 +422,152 @@ export default {
             });
         },
 
-        histogramm(){
-            this.chartOptions5 = ({
-                chart: {
-                    type: 'bar',
-                    height: 350,
-                    stacked: true,
-                    stackType: '100%'
-                },
-                responsive: [{
-                    breakpoint: 480,
-                    options: {
-                        legend: {
-                        position: 'bottom',
-                        offsetX: -10,
-                        offsetY: 0
-                        }
-                    }
-                }],
-                xaxis: {
-                    categories: ['2011 Q1', '2011 Q2', '2011 Q3', '2011 Q4', '2012 Q1', '2012 Q2',
-                        '2012 Q3', '2012 Q4'
-                    ],
-                },
-                fill: {
-                    opacity: 1
-                },
-                legend: {
-                    position: 'right',
-                    offsetX: 0,
-                    offsetY: 50
-                },
-            });
 
-            this.series5 = [{
-                name: 'PRODUCT A',
-                data: [44, 55, 41, 67, 22, 43, 21, 49]
-                }, {
-                name: 'PRODUCT B',
-                data: [13, 23, 20, 8, 13, 27, 33, 12]
-                }, {
-                name: 'PRODUCT C',
-                data: [11, 17, 15, 15, 21, 14, 15, 13]
-            }];
+
+
+        histogramm(type, abscisses, ordonnees){
+            if (type == "Maree(m)") {
+                this.series5 = ordonnees;
+                this.chartOptions5 = reactive({
+                    // chart: {type: 'bar', height: 350, stacked: true, stackType: '100%'},
+                    chart: {type: 'bar', height: 350, stacked: true},
+                    responsive: [{
+                        breakpoint: 480,
+                        options: {legend: {position: 'bottom', offsetX: -10, offsetY: 0}}
+                    }],
+                    xaxis: {categories: abscisses},
+                    fill: {opacity: 1},
+                    legend: {position: 'right', offsetX: 0, offsetY: 50},
+                });
+            }
+            // if (type == "Surcote(m)") {
+            //     this.seriesSurcote = ordonnees;
+            //     this.chartOptionsSurcote = reactive({
+            //         chart: { id: 'mychart', height: 350, type: 'line', defaultPoint_marker_visible: false, zoom: { enabled: false } },
+            //         dataLabels: { enabled: false },
+            //         stroke: { curve: 'straight' },
+            //         title: { text: 'Surcote(m) en fonction des heures de la journée', align: 'left' },
+            //         grid: { row: { colors: ['#f3f3f3', 'transparent'], opacity: 0.5 }, },
+            //         xaxis: { tooltip: { enabled: false }, overwriteCategories: abscisses, }
+            //     });
+            // }
+
+            // if (type == "Hs(vagues)(m)") {
+            //     this.seriesVagues = ordonnees;
+            //     this.chartOptionsVagues = reactive({
+            //         chart: { id: 'mychart', height: 350, type: 'line', defaultPoint_marker_visible: false, zoom: { enabled: false } },
+            //         dataLabels: { enabled: false },
+            //         stroke: { curve: 'straight' },
+            //         title: { text: 'Hs(vagues)(m) en fonction des heures de la journée', align: 'left' },
+            //         grid: { row: { colors: ['#f3f3f3', 'transparent'], opacity: 0.5 }, },
+            //         xaxis: { tooltip: { enabled: false }, overwriteCategories: abscisses, }
+            //     });
+            // }
+
+            // if (type == "U(vent)(m)") {
+            //     this.seriesVent = ordonnees;
+            //     this.chartOptionsVent = reactive({
+            //         chart: { id: 'mychart', height: 350, type: 'line', defaultPoint_marker_visible: false, zoom: { enabled: false } },
+            //         dataLabels: { enabled: false },
+            //         stroke: { curve: 'straight' },
+            //         title: { text: 'U(vent)(m) en fonction des heures de la journée', align: 'left' },
+            //         grid: { row: { colors: ['#f3f3f3', 'transparent'], opacity: 0.5 }, },
+            //         xaxis: { tooltip: { enabled: false }, overwriteCategories: abscisses, }
+            //     });
+            // }
+
+
+            // this.series5 = [{
+            //     name: 'PRODUCT A',
+            //     data: [44, 55, 41]
+            //     }, {
+            //     name: 'PRODUCT B',
+            //     data: [13, 23, 20]
+            //     }, {
+            //     name: 'PRODUCT C',
+            //     data: [11, 17, 15, 15, 21, 14, 15, 13]
+            // }];
 
             this.affichageHistogramme = true;
         },
 
-        histogrammeAffichage(){
-            this.histogramm();
-            console.log(this.chartOptions5);
-            console.log(this.series5);
+
+
+
+        histogrammeAffichage(type){
+            // valeurs a afficher --> ordonnées
+            var listDataPlot = [];
+            // valeurs à afficher --> abscisses
+            var abscisses = [];
+
+            for (const element of this.selectedScenario) {
+                fetch('http://localhost:8080/jsonData/' + `${element["name"]}` + '.json')
+                    .then(response => response.json())
+                    .then(data => {
+                        abscisses.push(`${element["name"]}`);
+                        // Boucle pour avoir toutes les abscisses possibles
+                        // for (const property in data) {
+                        //     if (abscisses.indexOf(`${data[property]["heure"]}`) == -1) {
+                        //         abscisses.push(`${data[property]["heure"]}`);
+                        //     }
+                        // };
+
+                        // abscisses.sort()
+
+                        // 1 dictionnaire = 1 scenario, il se remet à 0 à chaque nouveau scénario                        
+
+                        if (type == "Maree(m)") {
+                            var L = [0, 1, 2];
+                            var s1 = new Array(this.selectedScenario.length).fill(0);
+                            var s2 = new Array(this.selectedScenario.length).fill(0);
+                            var s3 = new Array(this.selectedScenario.length).fill(0);
+                            var s4 = new Array(this.selectedScenario.length).fill(0);
+                            var elem = 0;
+
+                            for (const property in data) {
+                                if (`${data[property]["Maree(m)"]}` < L[0]) {
+                                    s1[elem] += 1 ;
+                                }
+                                else if (`${data[property]["Maree(m)"]}` > L[0] && `${data[property]["Maree(m)"]}` < L[1]) {
+                                    s2[elem] += 1 ;
+                                }
+                                else if (`${data[property]["Maree(m)"]}` > L[1] && `${data[property]["Maree(m)"]}` < L[2]) {
+                                    s3[elem] += 1 ;
+                                }
+                                if (`${data[property]["Maree(m)"]}` > L[2]) {
+                                    s4[elem] += 1 ;
+                                } 
+                                elem += 1;
+                            };
+
+                        listDataPlot.push({ name : "inférieur à 0" , data : s1});
+                        listDataPlot.push({ name : "entre 0 et 1" , data : s2});
+                        listDataPlot.push({ name : "entre 1 et 2" , data : s3});
+                        listDataPlot.push({ name : "upérieur à 2" , data : s4});
+                        console.log(listDataPlot);       
+                        }      
+                    })
+            }
+            this.histogramm("Maree(m)", abscisses, listDataPlot);   
+            this.affichageHistogramme = true;
         },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         sendData(data) {
