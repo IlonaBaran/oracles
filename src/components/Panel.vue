@@ -148,7 +148,7 @@ export default {
                 },
 
                 yAxis: {
-                    title: {text: 'En attente de données',},
+                    title: { text: 'En attente de données', },
                 },
                 plotOptions: {
                     series: {
@@ -164,60 +164,60 @@ export default {
 
             // DIAGRAMME EMPILE - APEXCHARTS
             chartOptions5Surcote: ({
-                chart: {type: 'bar', height: 350, stacked: true, stackType: '100%'},
+                chart: { type: 'bar', height: 350, stacked: true, stackType: '100%' },
                 responsive: [{
                     breakpoint: 480,
-                    options: {legend: {position: 'bottom', offsetX: -10, offsetY: 0}}
+                    options: { legend: { position: 'bottom', offsetX: -10, offsetY: 0 } }
                 }],
-                xaxis: {categories: []},
-                fill: {opacity: 1},
-                legend: {position: 'right', offsetX: 0, offsetY: 50},
+                xaxis: { categories: [] },
+                fill: { opacity: 1 },
+                legend: { position: 'right', offsetX: 0, offsetY: 50 },
             }),
 
 
-            series5Surcote: [{name: 'En attente de données', data: []}
+            series5Surcote: [{ name: 'En attente de données', data: [] }
             ],
 
             chartOptions5Maree: ({
-                chart: {type: 'bar', height: 350, stacked: true, stackType: '100%'},
+                chart: { type: 'bar', height: 350, stacked: true, stackType: '100%' },
                 responsive: [{
                     breakpoint: 480,
-                    options: {legend: {position: 'bottom', offsetX: -10, offsetY: 0}}
+                    options: { legend: { position: 'bottom', offsetX: -10, offsetY: 0 } }
                 }],
-                xaxis: {categories: []},
-                fill: {opacity: 1},
-                legend: {position: 'right', offsetX: 0, offsetY: 50},
+                xaxis: { categories: [] },
+                fill: { opacity: 1 },
+                legend: { position: 'right', offsetX: 0, offsetY: 50 },
             }),
 
-            series5Maree: [{name: 'En attente de données', data: []}
+            series5Maree: [{ name: 'En attente de données', data: [] }
             ],
 
             chartOptions5Vagues: ({
-                chart: {type: 'bar', height: 350, stacked: true, stackType: '100%'},
+                chart: { type: 'bar', height: 350, stacked: true, stackType: '100%' },
                 responsive: [{
                     breakpoint: 480,
-                    options: {legend: {position: 'bottom', offsetX: -10, offsetY: 0}}
+                    options: { legend: { position: 'bottom', offsetX: -10, offsetY: 0 } }
                 }],
-                xaxis: {categories: []},
-                fill: {opacity: 1},
-                legend: {position: 'right', offsetX: 0, offsetY: 50},
+                xaxis: { categories: [] },
+                fill: { opacity: 1 },
+                legend: { position: 'right', offsetX: 0, offsetY: 50 },
             }),
 
-            series5Vagues: [{name: 'En attente de données', data: []}
+            series5Vagues: [{ name: 'En attente de données', data: [] }
             ],
 
             chartOptions5Vent: ({
-                chart: {type: 'bar', height: 350, stacked: true, stackType: '100%'},
+                chart: { type: 'bar', height: 350, stacked: true, stackType: '100%' },
                 responsive: [{
                     breakpoint: 480,
-                    options: {legend: {position: 'bottom', offsetX: -10, offsetY: 0}}
+                    options: { legend: { position: 'bottom', offsetX: -10, offsetY: 0 } }
                 }],
-                xaxis: {categories: []},
-                fill: {opacity: 1},
-                legend: {position: 'right', offsetX: 0, offsetY: 50},
+                xaxis: { categories: [] },
+                fill: { opacity: 1 },
+                legend: { position: 'right', offsetX: 0, offsetY: 50 },
             }),
 
-            series5Vent: [{name: 'En attente de données', data: []}
+            series5Vent: [{ name: 'En attente de données', data: [] }
             ],
 
             // HEAT MAP - APEXCHARTS
@@ -445,65 +445,65 @@ export default {
                 },
             });
 
-         
+
 
         },
 
-        histogramm(type, abscisses, ordonnees){
+        histogramm(type, abscisses, ordonnees) {
             if (type == "Maree(m)") {
                 this.series5Maree = ordonnees;
                 this.chartOptions5Maree = reactive({
-                    chart: {type: 'bar', height: 350, stacked: true, stackType: '100%'},
+                    chart: { type: 'bar', height: 350, stacked: true, stackType: '100%' },
                     title: { text: 'Réparition des hauteurs de marée par scénario', align: 'left' },
                     responsive: [{
                         breakpoint: 480,
-                        options: {legend: {position: 'bottom', offsetX: -10, offsetY: 0}}
+                        options: { legend: { position: 'bottom', offsetX: -10, offsetY: 0 } }
                     }],
-                    xaxis: {categories: abscisses},
-                    fill: {opacity: 1},
-                    legend: {position: 'right', offsetX: 0, offsetY: 50},
+                    xaxis: { categories: abscisses },
+                    fill: { opacity: 1 },
+                    legend: { position: 'right', offsetX: 0, offsetY: 50 },
                 });
             }
             else if (type == "Surcote(m)") {
                 this.series5Surcote = ordonnees;
                 this.chartOptions5Surcote = reactive({
-                    chart: {type: 'bar', height: 350, stacked: true, stackType: '100%'},
+                    chart: { type: 'bar', height: 350, stacked: true, stackType: '100%' },
                     title: { text: 'Réparition des hauteurs de surcote par scénario', align: 'left' },
                     responsive: [{
                         breakpoint: 480,
-                        options: {legend: {position: 'bottom', offsetX: -10, offsetY: 0}}
+                        options: { legend: { position: 'bottom', offsetX: -10, offsetY: 0 } }
                     }],
-                    xaxis: {categories: abscisses},
-                    fill: {opacity: 1},
-                    legend: {position: 'right', offsetX: 0, offsetY: 50},
+                    xaxis: { categories: abscisses },
+                    fill: { opacity: 1 },
+                    legend: { position: 'right', offsetX: 0, offsetY: 50 },
                 });
             }
             else if (type == "Hs(vagues)(m)") {
                 this.series5Vagues = ordonnees;
                 this.chartOptions5Vagues = reactive({
-                    chart: {type: 'bar', height: 350, stacked: true, stackType: '100%'},
+                    chart: { type: 'bar', height: 350, stacked: true, stackType: '100%' },
                     title: { text: 'Réparition des hauteurs des vagues par scénario', align: 'left' },
                     responsive: [{
                         breakpoint: 480,
-                        options: {legend: {position: 'bottom', offsetX: -10, offsetY: 0}}
+                        options: { legend: { position: 'bottom', offsetX: -10, offsetY: 0 } }
                     }],
-                    xaxis: {categories: abscisses},
-                    fill: {opacity: 1},
-                    legend: {position: 'right', offsetX: 0, offsetY: 50},
+                    xaxis: { categories: abscisses },
+                    fill: { opacity: 1 },
+                    legend: { position: 'right', offsetX: 0, offsetY: 50 },
                 });
             }
             else if (type == "U(vent)(m)") {
                 this.series5Vent = ordonnees;
                 this.chartOptions5Vent = reactive({
-                    chart: {type: 'bar', height: 350, stacked: true, stackType: '100%'},
+                    chart: { type: 'bar', height: 350, stacked: true, stackType: '100%' },
                     title: { text: 'Réparition des vitesses de vent par scénario', align: 'left' },
                     responsive: [{
                         breakpoint: 480,
-                        options: {legend: {position: 'bottom', offsetX: -10, offsetY: 0}}
+                        options: { legend: { position: 'bottom', offsetX: -10, offsetY: 0 } }
                     }],
-                    xaxis: {categories: abscisses},
-                    fill: {opacity: 1},
-                    legend: {position: 'right', offsetX: 0, offsetY: 50},
+                    xaxis: { categories: abscisses },
+                    fill: { opacity: 1 },
+                    legend: { position: 'right', offsetX: 0, offsetY: 50 },
                 });
             }
             this.affichageHistogramme = true;
@@ -512,7 +512,7 @@ export default {
 
 
 
-        histogrammeAffichage(type){
+        histogrammeAffichage(type) {
             // valeurs a afficher --> ordonnées
             var listDataPlot = [];
             // valeurs à afficher --> abscisses
@@ -529,11 +529,11 @@ export default {
             }
             else if (type == "U(vent)(m)") {
                 var L = [5, 10, 15];
-            }     
-            var s1 = new Array();     
-            var s2 = new Array();    
-            var s3 = new Array();    
-            var s4 = new Array();              
+            }
+            var s1 = new Array();
+            var s2 = new Array();
+            var s3 = new Array();
+            var s4 = new Array();
             // Compteur pour mettre les valeurs dans les listes de decoupage
             var elem = 0;
 
@@ -562,7 +562,7 @@ export default {
                             if (`${data[property][type]}` > L[2]) {
                                 v4 += 1;
                             }
-                        };   
+                        };
                         s1.push(v1);
                         s2.push(v2);
                         s3.push(v3);
@@ -572,11 +572,11 @@ export default {
             }
 
             console.log(listDataPlot);
-            listDataPlot.push({ name : "inférieur à " + L[0] , data : s1});
-            listDataPlot.push({ name : "entre " + L[0] + " et " + L[1], data : s2});
-            listDataPlot.push({ name : "entre " + L[1] + " et " + L[2], data : s3});
-            listDataPlot.push({ name : "supérieur à " + L[2] , data : s4});
-            this.histogramm(type, abscisses, listDataPlot);   
+            listDataPlot.push({ name: "inférieur à " + L[0], data: s1 });
+            listDataPlot.push({ name: "entre " + L[0] + " et " + L[1], data: s2 });
+            listDataPlot.push({ name: "entre " + L[1] + " et " + L[2], data: s3 });
+            listDataPlot.push({ name: "supérieur à " + L[2], data: s4 });
+            this.histogramm(type, abscisses, listDataPlot);
             this.affichageHistogramme = true;
         },
 
@@ -669,6 +669,9 @@ export default {
                     type: 'heatmap',
                     // height: 550,
                 },
+                dataLabels: {
+                    enabled: false
+                },
                 colors: ['#008FFB'],
                 title: {
                     text: 'Heatmap Chart',
@@ -708,6 +711,7 @@ export default {
                 title: {
                     text: 'Number of project stars',
                 },
+
                 accessibility: {
                     description: 'The chart is showing the shapes of three mountain ranges as three area line series laid out in 3D behind each other.',
                     keyboardNavigation: {
