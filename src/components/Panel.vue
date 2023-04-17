@@ -27,7 +27,11 @@
 
                     <div v-else-if="selectedGraph.name == 'Histogramme empilé'">
                         <div v-if="this.affichageHistogramme == true">
-                            <apexchart :options="this.chartOptions5" :series="this.series5" />
+                            <apexchart :options="this.chartOptions5Surcote" :series="this.series5Surcote" />
+                            <apexchart :options="this.chartOptions5Maree" :series="this.series5Maree" />
+                            <apexchart :options="this.chartOptions5Vagues" :series="this.series5Vagues" />
+                            <apexchart :options="this.chartOptions5Vent" :series="this.series5Vent" />
+
                         </div>
                     </div>
 
@@ -125,19 +129,11 @@ export default {
 
             // ROSE WIND - HIGHCHARTJS //
             chartOptions2: ({
-                chart: {
-                    type: 'line',
-                },
-                title: {
-                    text: 'En attente de données',
-                },
-                xAxis: {
-                    categories: [],
-                },
+                chart: {type: 'line',},
+                title: {text: 'En attente de données',},
+                xAxis: {categories: [],},
                 yAxis: {
-                    title: {
-                        text: 'En attente de données',
-                    },
+                    title: {text: 'En attente de données',},
                 },
                 series: [{
                     name: 'En attente de données',
@@ -147,50 +143,61 @@ export default {
 
 
             // DIAGRAMME EMPILE - APEXCHARTS
-            chartOptions5: ({
-                chart: {
-                    type: 'bar',
-                    height: 350,
-                    stacked: true,
-                    stackType: '100%'
-                },
+            chartOptions5Surcote: ({
+                chart: {type: 'bar', height: 350, stacked: true, stackType: '100%'},
                 responsive: [{
                     breakpoint: 480,
-                    options: {
-                        legend: {
-                            position: 'bottom',
-                            offsetX: -10,
-                            offsetY: 0
-                        }
-                    }
+                    options: {legend: {position: 'bottom', offsetX: -10, offsetY: 0}}
                 }],
-                xaxis: {
-                    categories: ['2011 Q1', '2011 Q2', '2011 Q3', '2011 Q4', '2012 Q1', '2012 Q2',
-                        '2012 Q3', '2012 Q4'
-                    ],
-                },
-                fill: {
-                    opacity: 1
-                },
-                legend: {
-                    position: 'right',
-                    offsetX: 0,
-                    offsetY: 50
-                },
+                xaxis: {categories: []},
+                fill: {opacity: 1},
+                legend: {position: 'right', offsetX: 0, offsetY: 50},
             }),
 
-            series5: [{
-                name: 'PRODUCT A',
-                data: [44, 55, 41, 67, 22, 43, 21, 49]
-                }, 
-                {
-                name: 'PRODUCT B',
-                data: [13, 23, 20, 8, 13, 27, 33, 12]
-                }, 
-                {
-                name: 'PRODUCT C',
-                data: [11, 17, 15, 15, 21, 14, 15, 13]
-            }],
+            series5Surcote: [{name: 'En attente de données', data: []}
+            ],
+
+            chartOptions5Maree: ({
+                chart: {type: 'bar', height: 350, stacked: true, stackType: '100%'},
+                responsive: [{
+                    breakpoint: 480,
+                    options: {legend: {position: 'bottom', offsetX: -10, offsetY: 0}}
+                }],
+                xaxis: {categories: []},
+                fill: {opacity: 1},
+                legend: {position: 'right', offsetX: 0, offsetY: 50},
+            }),
+
+            series5Maree: [{name: 'En attente de données', data: []}
+            ],
+
+            chartOptions5Vagues: ({
+                chart: {type: 'bar', height: 350, stacked: true, stackType: '100%'},
+                responsive: [{
+                    breakpoint: 480,
+                    options: {legend: {position: 'bottom', offsetX: -10, offsetY: 0}}
+                }],
+                xaxis: {categories: []},
+                fill: {opacity: 1},
+                legend: {position: 'right', offsetX: 0, offsetY: 50},
+            }),
+
+            series5Vagues: [{name: 'En attente de données', data: []}
+            ],
+
+            chartOptions5Vent: ({
+                chart: {type: 'bar', height: 350, stacked: true, stackType: '100%'},
+                responsive: [{
+                    breakpoint: 480,
+                    options: {legend: {position: 'bottom', offsetX: -10, offsetY: 0}}
+                }],
+                xaxis: {categories: []},
+                fill: {opacity: 1},
+                legend: {position: 'right', offsetX: 0, offsetY: 50},
+            }),
+
+            series5Vent: [{name: 'En attente de données', data: []}
+            ],
 
             // HEAT MAP - APEXCHARTS
             chartOptions3: ref(null),
@@ -229,7 +236,10 @@ export default {
             this.lineChartAffichage('Hs(vagues)(m)');
             this.lineChartAffichage('U(vent)(m)');
             this.heatMapAffichage();
-            this.histogrammeAffichage();
+            this.histogrammeAffichage('Surcote(m)');
+            this.histogrammeAffichage('Maree(m)');
+            this.histogrammeAffichage('Hs(vagues)(m)');
+            this.histogrammeAffichage('U(vent)(m)');
         },
 
         reiAfficheGraph() {
@@ -429,79 +439,163 @@ export default {
             const categories = ref(['Jun', 'Jul', 'Aug', 'Sept']);
 
             this.chartOptions2 = ({
-                chart: {
-                    type: 'line',
-                },
-                title: {
-                    text: 'Number of project stars',
-                },
-                xAxis: {
-                    categories: categories.value,
-                },
+                chart: {type: 'line',},
+                title: {text: 'Number of project stars',},
+                xAxis: {categories: categories.value,},
                 yAxis: {
-                    title: {
-                        text: 'Number of stars',
-                    },
+                    title: {text: 'Number of stars',},
                 },
-                series: [{
-                    name: 'New project stars',
-                    data: seriesData.value,
-                }],
+                series: [{name: 'New project stars', data: seriesData.value,}],
             });
         },
 
-        histogramm(){
-            this.chartOptions5 = ({
-                chart: {
-                    type: 'bar',
-                    height: 350,
-                    stacked: true,
-                    stackType: '100%'
-                },
-                responsive: [{
-                    breakpoint: 480,
-                    options: {
-                        legend: {
-                        position: 'bottom',
-                        offsetX: -10,
-                        offsetY: 0
-                        }
-                    }
-                }],
-                xaxis: {
-                    categories: ['2011 Q1', '2011 Q2', '2011 Q3', '2011 Q4', '2012 Q1', '2012 Q2',
-                        '2012 Q3', '2012 Q4'
-                    ],
-                },
-                fill: {
-                    opacity: 1
-                },
-                legend: {
-                    position: 'right',
-                    offsetX: 0,
-                    offsetY: 50
-                },
-            });
-
-            this.series5 = [{
-                name: 'PRODUCT A',
-                data: [44, 55, 41, 67, 22, 43, 21, 49]
-                }, {
-                name: 'PRODUCT B',
-                data: [13, 23, 20, 8, 13, 27, 33, 12]
-                }, {
-                name: 'PRODUCT C',
-                data: [11, 17, 15, 15, 21, 14, 15, 13]
-            }];
-
+        histogramm(type, abscisses, ordonnees){
+            if (type == "Maree(m)") {
+                this.series5Maree = ordonnees;
+                this.chartOptions5Maree = reactive({
+                    chart: {type: 'bar', height: 350, stacked: true, stackType: '100%'},
+                    title: { text: 'Réparition des hauteurs de marée par scénario', align: 'left' },
+                    responsive: [{
+                        breakpoint: 480,
+                        options: {legend: {position: 'bottom', offsetX: -10, offsetY: 0}}
+                    }],
+                    xaxis: {categories: abscisses},
+                    fill: {opacity: 1},
+                    legend: {position: 'right', offsetX: 0, offsetY: 50},
+                });
+            }
+            else if (type == "Surcote(m)") {
+                this.series5Surcote = ordonnees;
+                this.chartOptions5Surcote = reactive({
+                    chart: {type: 'bar', height: 350, stacked: true, stackType: '100%'},
+                    title: { text: 'Réparition des hauteurs de surcote par scénario', align: 'left' },
+                    responsive: [{
+                        breakpoint: 480,
+                        options: {legend: {position: 'bottom', offsetX: -10, offsetY: 0}}
+                    }],
+                    xaxis: {categories: abscisses},
+                    fill: {opacity: 1},
+                    legend: {position: 'right', offsetX: 0, offsetY: 50},
+                });
+            }
+            else if (type == "Hs(vagues)(m)") {
+                this.series5Vagues = ordonnees;
+                this.chartOptions5Vagues = reactive({
+                    chart: {type: 'bar', height: 350, stacked: true, stackType: '100%'},
+                    title: { text: 'Réparition des hauteurs des vagues par scénario', align: 'left' },
+                    responsive: [{
+                        breakpoint: 480,
+                        options: {legend: {position: 'bottom', offsetX: -10, offsetY: 0}}
+                    }],
+                    xaxis: {categories: abscisses},
+                    fill: {opacity: 1},
+                    legend: {position: 'right', offsetX: 0, offsetY: 50},
+                });
+            }
+            else if (type == "U(vent)(m)") {
+                this.series5Vent = ordonnees;
+                this.chartOptions5Vent = reactive({
+                    chart: {type: 'bar', height: 350, stacked: true, stackType: '100%'},
+                    title: { text: 'Réparition des vitesses de vent par scénario', align: 'left' },
+                    responsive: [{
+                        breakpoint: 480,
+                        options: {legend: {position: 'bottom', offsetX: -10, offsetY: 0}}
+                    }],
+                    xaxis: {categories: abscisses},
+                    fill: {opacity: 1},
+                    legend: {position: 'right', offsetX: 0, offsetY: 50},
+                });
+            }
             this.affichageHistogramme = true;
         },
 
-        histogrammeAffichage(){
-            this.histogramm();
-            console.log(this.chartOptions5);
-            console.log(this.series5);
+
+
+
+        histogrammeAffichage(type){
+            // valeurs a afficher --> ordonnées
+            var listDataPlot = [];
+            // valeurs à afficher --> abscisses
+            var abscisses = [];
+            // Decoupage des ordonnées
+            if (type == "Maree(m)") {
+                var L = [0, 1, 2];
+            }
+            else if (type == "Surcote(m)") {
+                var L = [0, 0.50, 1];
+            }
+            else if (type == "Hs(vagues)(m)") {
+                var L = [2, 4, 6];
+            }
+            else if (type == "U(vent)(m)") {
+                var L = [5, 10, 15];
+            }     
+            var s1 = new Array();     
+            var s2 = new Array();    
+            var s3 = new Array();    
+            var s4 = new Array();              
+            // Compteur pour mettre les valeurs dans les listes de decoupage
+            var elem = 0;
+
+            for (const element of this.selectedScenario) {
+                var v1 = 0;
+                var v2 = 0;
+                var v3 = 0;
+                var v4 = 0;
+                fetch('http://localhost:8080/jsonData/' + `${element["name"]}` + '.json')
+                    .then(response => response.json())
+                    .then(data => {
+                        abscisses.push(`${element["name"]}`);
+
+
+
+                        for (const property in data) {
+                            if (`${data[property][type]}` < L[0]) {
+                                v1 += 1;
+                            }
+                            else if (`${data[property][type]}` > L[0] && `${data[property][type]}` < L[1]) {
+                                v2 += 1;
+                            }
+                            else if (`${data[property][type]}` > L[1] && `${data[property][type]}` < L[2]) {
+                                v3 += 1;
+                            }
+                            if (`${data[property][type]}` > L[2]) {
+                                v4 += 1;
+                            }
+                        };   
+                        s1.push(v1);
+                        s2.push(v2);
+                        s3.push(v3);
+                        s4.push(v4);
+                    })
+                elem += 1;
+            }
+
+            console.log(listDataPlot);
+            listDataPlot.push({ name : "inférieur à " + L[0] , data : s1});
+            listDataPlot.push({ name : "entre " + L[0] + " et " + L[1], data : s2});
+            listDataPlot.push({ name : "entre " + L[1] + " et " + L[2], data : s3});
+            listDataPlot.push({ name : "supérieur à " + L[2] , data : s4});
+            this.histogramm(type, abscisses, listDataPlot);   
+            this.affichageHistogramme = true;
         },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         sendData(data) {
