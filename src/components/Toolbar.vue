@@ -13,8 +13,11 @@
         associée.
       </p>
       <MultiSelect v-model="selectedScenario2" :options="selectedScenario" filter optionLabel="name"
-        placeholder="Sélection Scénarios" :maxSelectedLabels="3" class="w-full md:w-20rem selectScenario"
-        @change="updateScenarios" />
+        placeholder="Sélection Scénarios" :maxSelectedLabels="3" class="w-full md:w-20rem selectScenario"/>
+    </div>
+
+    <div>
+      <Button id="validatehmp" position="center" @click="updateScenarios">Valider</button>
     </div>
   </Sidebar>
 
@@ -212,6 +215,13 @@ export default {
   display: flex;
   align-items: center;
   flex-direction: column;
+}
+
+#validatehmp {
+  position: absolute;
+  top: 40%;
+  right: 30%;
+
 }
 
 img {
