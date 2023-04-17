@@ -22,7 +22,8 @@
 
                     <div v-else-if="selectedGraph.name == 'Rose des vents'">
                         <button @click="roseVentAffichage">Affichage d'un diagramme rose des vents</button>
-                        <vue-highcharts  :options="this.chartOptions2"></vue-highcharts>
+                        <vue-highcharts type="chart" :options="this.chartOptions2" :redrawOnUpdate="true"
+                            :oneToOneUpdate="false" :animateOnUpdate="true" />
                     </div>
 
                     <div v-else-if="selectedGraph.name == 'Histogramme empilé'">
@@ -41,10 +42,11 @@
                         </div>
                     </div>
 
-                    <div v-else-if="selectedGraph.name == 'Graph3D 1'">
+                    <!-- <div v-else-if="selectedGraph.name == 'Graph3D 1'">
                         <button @click="TD1Affichage">jvrbrgunrjenguibgzy</button>
                         <vue-highcharts :options="this.chartOptions4"></vue-highcharts>
-                    </div>
+
+                    </div> -->
                     <div v-else>
                         <p>Veuillez choisir un type de graphique</p>
                     </div>
@@ -62,9 +64,13 @@
 
 <script>
 /* eslint-disable */
-import { ApexChart } from 'vue3-apexcharts';
-import VueHighcharts from 'vue3-highcharts';
+
+
 import * as d3 from 'd3';
+import VueHighcharts from 'vue3-highcharts';
+import HighCharts from 'highcharts';
+import HighchartsMore from 'highcharts/highcharts-more';
+HighchartsMore(HighCharts);
 
 import Card from 'primevue/card';
 import ScrollPanel from 'primevue/scrollpanel';
@@ -78,7 +84,8 @@ export default {
     components: {
         Card,
         ScrollPanel,
-        VueHighcharts,
+        VueHighcharts
+
     },
 
     props: {
@@ -129,16 +136,29 @@ export default {
 
             // ROSE WIND - HIGHCHARTJS //
             chartOptions2: ({
-                chart: {type: 'line',},
-                title: {text: 'En attente de données',},
-                xAxis: {categories: [],},
+                chart: {
+                    polar: true,
+                    type: 'column'
+                },
+                title: {
+                    text: 'En attente de données',
+                },
+                xAxis: {
+                    categories: [],
+                },
+
                 yAxis: {
                     title: {text: 'En attente de données',},
                 },
-                series: [{
-                    name: 'En attente de données',
-                    data: [],
-                }],
+                plotOptions: {
+                    series: {
+                        stacking: 'normal',
+                        shadow: false,
+                        // groupPadding: 0,
+                        pointPlacement: 'on'
+                    }
+                },
+                series: [{}, {}, {}, {}],
             }),
 
 
@@ -153,6 +173,7 @@ export default {
                 fill: {opacity: 1},
                 legend: {position: 'right', offsetX: 0, offsetY: 50},
             }),
+
 
             series5Surcote: [{name: 'En attente de données', data: []}
             ],
@@ -203,7 +224,7 @@ export default {
             chartOptions3: ref(null),
             series3: ref(null),
 
-            
+
             // HEAT MAP MAIS EN 3D - HIGHTCHARTS
             chartOptions4: ({
                 chart: {
@@ -332,121 +353,100 @@ export default {
             }
         },
 
-        roseChartHIGHCHARTS() {
-            // this.chartOptions2 = reactive({
-            //     chart: {
-            //         polar: true,
-            //         type: "column",
-            //     },
-            //     title: {
-            //         text: "Wind Rose",
-            //     },
-            //     xAxis: {
-            //         categories: [
-            //             "N",
-            //             "NNE",
-            //             "NE",
-            //             "ENE",
-            //             "E",
-            //             "ESE",
-            //             "SE",
-            //             "SSE",
-            //             "S",
-            //             "SSW",
-            //             "SW",
-            //             "WSW",
-            //             "W",
-            //             "WNW",
-            //             "NW",
-            //             "NNW",
-            //         ],
-            //         tickmarkPlacement: "on",
-            //         lineWidth: 0,
-            //     },
-            //     yAxis: {
-            //         min: 0,
-            //         endOnTick: false,
-            //         showLastLabel: true,
-            //         title: {
-            //             text: "Frequency (%)",
-            //             align: "high",
-            //         },
-            //     },
-            //     tooltip: {
-            //         shared: true,
-            //         pointFormat: '<span style="color:{point.color}">\u25CF</span> {series.name}: <b>{point.y}%</b><br/>',
-            //     },
-            //     legend: {
-            //         align: "right",
-            //         verticalAlign: "middle",
-            //         layout: "vertical",
-            //     },
-            //     plotOptions: {
-            //         column: {
-            //             pointPadding: 0,
-            //             borderWidth: 0,
-            //             groupPadding: 0,
-            //             shadow: false,
-            //         },
-            //     },
-            //     series: [
-            //         {
-            //             name: "North",
-            //             data: [5, 3, 4, 7, 2, 3, 5, 7, 8, 6, 4, 2, 3, 5, 4, 3],
-            //             pointPlacement: "between",
-            //         },
-            //         {
-            //             name: "North-East",
-            //             data: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 18, 16, 14, 12, 10, 8],
-            //             pointPlacement: "between",
-            //         },
-            //         {
-            //             name: "East",
-            //             data: [10, 12, 14, 16, 18, 20, 18, 16, 14, 12, 10, 8, 6, 4, 2, 1],
-            //             pointPlacement: "between",
-            //         },
-            //         {
-            //             name: "South-East",
-            //             data: [1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 18, 16, 14, 12, 10],
-            //             pointPlacement: "between",
-            //         },
-            //         {
-            //             name: "South",
-            //             data: [2, 3, 5, 7, 8, 6, 4, 2, 3, 5, 7, 4, 3, 2, 1, 1],
-            //             pointPlacement: "between",
-            //         },
-            //         {
-            //             name: "South-West",
-            //             data: [1, 2, 3, 5, 7, 9, 11, 13, 15, 17, 19, 20, 18, 16, 14, 12],
-            //             pointPlacement: "between",
-            //         },
-            //         {
-            //             name: "West",
-            //             data: [5, 6, 8, 10, 12, 14, 16, 18, 20, 18, 16, 14, 12, 10, 8, 6],
-            //             pointPlacement: "between",
-            //         },
-            //         {
-            //             name: "North-West",
-            //             data: [10, 8, 6, 4, 2, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20],
-            //             pointPlacement: "between",
-            //         },
-            //     ]
-            // });
-        },
-
         roseVentAffichage() {
-            const seriesData = ref([25, 39, 30, 15]);
-            const categories = ref(['Jun', 'Jul', 'Aug', 'Sept']);
 
             this.chartOptions2 = ({
-                chart: {type: 'line',},
-                title: {text: 'Number of project stars',},
-                xAxis: {categories: categories.value,},
-                yAxis: {
-                    title: {text: 'Number of stars',},
+                chart: {
+                    polar: true,
+                    type: 'column'
                 },
-                series: [{name: 'New project stars', data: seriesData.value,}],
+                title: {
+                    text: 'Number of project stars',
+                },
+                xAxis: {
+
+                    tickmarkPlacement: 'on',
+                    categories: ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW']
+                },
+                yAxis: {
+                    min: 0,
+                    endOnTick: false,
+                    showLastLabel: true,
+                    reversedStacks: false,
+
+                    title: {
+                        text: 'Number of stars',
+                    },
+                },
+                plotOptions: {
+                    series: {
+                        stacking: 'normal',
+                        shadow: false,
+                        // groupPadding: 0,
+                        pointPlacement: 'on'
+                    }
+                },
+
+                series: [
+                    {
+                        type: undefined,
+                        name: '<1 m/s',
+                        data: [1, 2, 3, 2, 1, 6, 8, 4, 0, 2, 7, 5, 2, 1, 4, 1]
+                    },
+                    {
+                        type: undefined,
+                        name: '1-3 m/s',
+                        data: [1, 2, 3, 0, 1, 0, 1, 0, 0, 2, 0, 1, 2, 4, 3, 1]
+                    },
+                    {
+                        type: undefined,
+                        name: '3-5 m/s',
+                        data: [1, 2, 3, 0, 1, 0, 0, 0, 1, 2, 1, 1, 2, 1, 1, 1]
+                    },
+                    {
+                        type: undefined,
+                        name: '>5 m/s',
+                        data: [1, 2, 3, 0, 1, 1, 0, 0, 0, 2, 3, 1, 2, 1, 1, 1]
+                    }
+                ],
             });
+        },
+
+        histogramm() {
+            this.chartOptions5 = ({
+                chart: {
+                    type: 'bar',
+                    height: 350,
+                    stacked: true,
+                    stackType: '100%'
+                },
+                responsive: [{
+                    breakpoint: 480,
+                    options: {
+                        legend: {
+                            position: 'bottom',
+                            offsetX: -10,
+                            offsetY: 0
+                        }
+                    }
+                }],
+                xaxis: {
+                    categories: ['2011 Q1', '2011 Q2', '2011 Q3', '2011 Q4', '2012 Q1', '2012 Q2',
+                        '2012 Q3', '2012 Q4'
+                    ],
+                },
+                fill: {
+                    opacity: 1
+                },
+                legend: {
+                    position: 'right',
+                    offsetX: 0,
+                    offsetY: 50
+                },
+            });
+
+         
+
         },
 
         histogramm(type, abscisses, ordonnees){
@@ -579,8 +579,6 @@ export default {
             this.histogramm(type, abscisses, listDataPlot);   
             this.affichageHistogramme = true;
         },
-
-
 
         sendData(data) {
             fetch('127.0.0.1:5000/api/data', {
