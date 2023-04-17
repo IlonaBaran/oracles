@@ -48,16 +48,22 @@
       </Button>
     </div>
   </Sidebar>
+  <div class="boutton2d3d" position="right">
+    <SelectButton v-model="selectedOption" :options="options" :optionDisabled="optionDisabled" />
+  </div>
 </template>
   
 
 
 <script>
+import { ref } from "vue";
+
 // Import des éléments des librairies
 import SpeedDial from 'primevue/speeddial';
 import Sidebar from 'primevue/sidebar';
 import Button from 'primevue/button';
 import MultiSelect from 'primevue/multiselect';
+import SelectButton from 'primevue/selectbutton';
 
 
 export default {
@@ -66,11 +72,17 @@ export default {
     SpeedDial,
     Sidebar,
     Button,
-    MultiSelect
+    MultiSelect,
+    SelectButton
 
   },
   data() {
     return {
+
+
+      selectedOption: ref('2D'),
+      options: ref(['2D', '3D']),
+      checked: ref(false),
 
       visibleRight: false, // visibilité du panel de fonds de carte
       visibleBuilding: false, // visibilité des bâtiments
@@ -123,6 +135,15 @@ export default {
       ]
     }
   },
+  watch: {
+    selectedOption(option) {
+      if (option === '2D') {
+        this.switchTo2D();
+      } else if (option === '3D') {
+        this.switchTo3D();
+      }
+    },
+  },
 
   methods: {
     // Les deux fonctions suivantes permettent de changer la valeur de mapSelected en fonction
@@ -133,38 +154,27 @@ export default {
     changeMapToPlan() {
       this.mapSelected = "plan";
     },
+    switchTo2D() {
+      // Code to switch to 2D view
+      this.$emit('vue-2d');
+      console.log("2D")
+    },
+    switchTo3D() {
+      // Code to switch to 3D view
+      this.$emit('vue-3d');
+      console.log("3D")
+    },
   }
 }
 </script>
   
 <style>
-.button {
-  display: inline-block;
-  padding: 10px 15px;
-  font-size: 12px;
-  font-weight: bold;
-  cursor: pointer;
-  text-align: center;
-  text-decoration: none;
-  outline: none;
-  color: #fff;
-  background-color: #6366f1;
-  border: none;
-  border-radius: 2px;
-  box-shadow: 0 9px #999;
-  position: fixed;
-  bottom: 5%;
+.boutton2d3d {
+  position: absolute;
+  bottom: 10%;
   right: 2%;
-}
+  z-index: 2;
 
-.button:hover {
-  background-color: #6366f1
-}
-
-.button:active {
-  background-color: #6366f1;
-  box-shadow: 0 5px #666;
-  transform: translateY(4px);
 }
 
 .toolbar {

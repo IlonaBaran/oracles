@@ -5,7 +5,7 @@
             <!-- Eléments présents sur la gauche de la barre -->
             <template #start>
                 <!-- Affichage du Panel présent dans Panel.vue -->
-                <Button v-styleclass="{ selector: '.card', toggleClass: 'p-hidden' }" type="button" icon="pi pi-bars"
+                <Button v-styleclass="{ selector: '.card', toggleClass: 'p-hidden' }" type="button" icon="pi pi-chart-bar"
                     label="" />
 
                 <!-- Outil de sélection des scénarios -->
@@ -18,10 +18,11 @@
                     :optionGroupChildren="['states']" style="min-width: 14rem " placeholder="Sélection Graphique"
                     class="selectGraph" />
 
+                <Button v-styleclass="{ selector: '.card', toggleClass: 'p-hidden' }" @click="this.validation();"
+                    icon="pi pi-check" aria-label="Valider" style="margin-left: 10px;" class="validation" :class="valide" />
 
-                <!-- Il sert a transmettre les paramètres de l'utilisateur a la vue 'Panel': les scenarios choisis et le graph choisis -->
-                <button @click="emitData">Transmettre des données </button>
-                <!-- <button @click="affichageAllGraph">Transmettre des données </button> -->
+                <Button v-styleclass="{ selector: '.card', toggleClass: 'p-hidden' }" @click="this.reinitialisation()
+                " icon="pi pi-refresh" aria-label="Changer scénarios" style="margin-left: 10px;" :class="disabled" />
 
             </template>
 
@@ -33,7 +34,7 @@
         </Toolbar>
 
         <!-- Ajout du composant présent dans Panel.vue, passage des valeurs des arguments selectedScenario et selectedGraph -->
-        <Panel :selectedScenario="this.selectedScenario" :selectedGraph="this.selectedGraph"></Panel>
+        <Panel ref="panelGraph" :selectedScenario="this.selectedScenario" :selectedGraph="this.selectedGraph"></Panel>
 
     </div>
 </template>
@@ -72,19 +73,21 @@ export default {
             value: ref('Gâvres'),
             options: ref(['Gâvres', 'Arcachon']),
             checked: ref(false),
+            disabled: " p-disabled",
+            valide: "",
 
             scenario: null,
             selectedScenario: [],
             selectedGraph: [],
-
+            refresh: false,
             countries: [
                 {
                     name: '2D',
                     code: '2D',
                     states: [
-                        { name: 'Graph2D 1' },
-                        { name: 'Graph2D 2' },
-                        { name: 'Graph2D 3' }]
+                        { name: 'Ligne' },
+                        { name: 'Rose des vents' },
+                        { name: 'Chaleur' }]
                 },
                 {
                     name: '3D',
@@ -102,6 +105,16 @@ export default {
     // },
 
     methods: {
+        validation() {
+            this.disabled = "";
+            this.valide = " p-disabled";
+            this.$refs.panelGraph.afficheGraph();
+        },
+        reinitialisation() {
+            this.disabled = " p-disabled";
+            this.valide = "";
+            this.$refs.panelGraph.reiAfficheGraph();
+        },
         toggle(event) {
             this.$refs.op.toggle(event);
         },
