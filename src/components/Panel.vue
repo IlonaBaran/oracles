@@ -582,24 +582,7 @@ export default {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         sendData(data) {
-            // const data = { /* Vos données ici */ };
             fetch('127.0.0.1:5000/api/data', {
                 method: 'POST',
                 headers: {
