@@ -26,7 +26,6 @@ export default {
   methods: {
     handleSelectedScenarioChanged(selectedScenario) {
       this.selectedScenario = selectedScenario;
-      console.log("received selected scenarios in app")
       this.$emit('selectedScenarioChanged', this.selectedScenario);
     }
   }

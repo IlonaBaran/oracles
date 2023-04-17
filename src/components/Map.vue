@@ -13,7 +13,7 @@ import App from "../App.vue";
 import '../../node_modules/itowns/examples/css/widgets.css'
 import { FileSource, THREE, Style, proj4, Extent, FeatureGeometryLayer, Coordinates, GlobeView, PlanarView, WMTSSource, WMSSource, ColorLayer, ElevationLayer, Copy, As } from "../../node_modules/itowns/dist/itowns";
 import { ref } from "vue";
-import { getHeightMesh, getImage, getData, averageLists, minLists, maxLists, getHeightFromScenarios } from '../services/Height_service.js'
+import { getHeightMesh, getImage, getData, averageLists, minLists, maxLists, getHeightFromScenarios, concatenateHeightMapList } from '../services/Height_service.js'
 import { layerOrtho, layerDEM, layerPLAN } from '../services/WMS_service.js'
 import { basic } from '../services/FileSource_service.js'
 import { image } from "d3-fetch";
@@ -30,7 +30,8 @@ export default {
   },
   data() {
     return {
-      selecectedScenario2: [],
+      heightmaps: [],
+      urlList: [],
       viewNew: ref(false),
     }
   },
@@ -167,9 +168,11 @@ export default {
       view.controls.enableRotation = true;
       view.notifyChange();
     },
-    updateHeightmap(selectedScenario) {
+    updateHeightmap(selectedScenario2) {
+      this.heightmaps = selectedScenario2;
       console.log("updated scenarios on map.vue")
-      //console.log(selecectedScenario2)
+      this.urlList = concatenateHeightMapList(this.heightmaps);
+      console.log(this.urlList)
     }
 
   }

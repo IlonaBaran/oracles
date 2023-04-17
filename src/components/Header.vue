@@ -125,7 +125,6 @@ export default {
 
         //  Récupérer le nom des dossiers et les transmettre à la variable scenario
         getDossier() {
-            console.log("données à charger")
             fetch('http://127.0.0.1:5000/arboresance')
                 .then(response => response.json())
                 .then(data => {
@@ -148,7 +147,6 @@ export default {
         },
         emitSelectedScenarioChanged() {
             this.$emit('selectedScenarioChanged', this.selectedScenario);
-            console.log("scenario list changed -sent-")
         }
     },
     mounted() { this.getDossier() }
