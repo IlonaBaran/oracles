@@ -147,22 +147,17 @@ export default {
                         text: 'En attente de données',
                     },
                 },
-                series: [{
-                    name: 'En attente de données',
-                    data: [],
-                }],
+                plotOptions: {
+                    series: {
+                        stacking: 'normal',
+                        shadow: false,
+                        // groupPadding: 0,
+                        pointPlacement: 'on'
+                    }
+                },
+                series: [{}, {}, {}, {}],
             }),
 
-            // chartOptions2: {
-            //     chart: {
-            //         polar: true,
-            //     },
-            //     series: [
-            //         {
-            //             data: [1, 2, 3]
-            //         }
-            //     ]
-            // },
 
             // DIAGRAMME EMPILE - APEXCHARTS
             chartOptions5: ({
@@ -340,111 +335,7 @@ export default {
             }
         },
 
-        roseChartHIGHCHARTS() {
-            // this.chartOptions2 = reactive({
-            //     chart: {
-            //         polar: true,
-            //         type: "column",
-            //     },
-            //     title: {
-            //         text: "Wind Rose",
-            //     },
-            //     xAxis: {
-            //         categories: [
-            //             "N",
-            //             "NNE",
-            //             "NE",
-            //             "ENE",
-            //             "E",
-            //             "ESE",
-            //             "SE",
-            //             "SSE",
-            //             "S",
-            //             "SSW",
-            //             "SW",
-            //             "WSW",
-            //             "W",
-            //             "WNW",
-            //             "NW",
-            //             "NNW",
-            //         ],
-            //         tickmarkPlacement: "on",
-            //         lineWidth: 0,
-            //     },
-            //     yAxis: {
-            //         min: 0,
-            //         endOnTick: false,
-            //         showLastLabel: true,
-            //         title: {
-            //             text: "Frequency (%)",
-            //             align: "high",
-            //         },
-            //     },
-            //     tooltip: {
-            //         shared: true,
-            //         pointFormat: '<span style="color:{point.color}">\u25CF</span> {series.name}: <b>{point.y}%</b><br/>',
-            //     },
-            //     legend: {
-            //         align: "right",
-            //         verticalAlign: "middle",
-            //         layout: "vertical",
-            //     },
-            //     plotOptions: {
-            //         column: {
-            //             pointPadding: 0,
-            //             borderWidth: 0,
-            //             groupPadding: 0,
-            //             shadow: false,
-            //         },
-            //     },
-            //     series: [
-            //         {
-            //             name: "North",
-            //             data: [5, 3, 4, 7, 2, 3, 5, 7, 8, 6, 4, 2, 3, 5, 4, 3],
-            //             pointPlacement: "between",
-            //         },
-            //         {
-            //             name: "North-East",
-            //             data: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 18, 16, 14, 12, 10, 8],
-            //             pointPlacement: "between",
-            //         },
-            //         {
-            //             name: "East",
-            //             data: [10, 12, 14, 16, 18, 20, 18, 16, 14, 12, 10, 8, 6, 4, 2, 1],
-            //             pointPlacement: "between",
-            //         },
-            //         {
-            //             name: "South-East",
-            //             data: [1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 18, 16, 14, 12, 10],
-            //             pointPlacement: "between",
-            //         },
-            //         {
-            //             name: "South",
-            //             data: [2, 3, 5, 7, 8, 6, 4, 2, 3, 5, 7, 4, 3, 2, 1, 1],
-            //             pointPlacement: "between",
-            //         },
-            //         {
-            //             name: "South-West",
-            //             data: [1, 2, 3, 5, 7, 9, 11, 13, 15, 17, 19, 20, 18, 16, 14, 12],
-            //             pointPlacement: "between",
-            //         },
-            //         {
-            //             name: "West",
-            //             data: [5, 6, 8, 10, 12, 14, 16, 18, 20, 18, 16, 14, 12, 10, 8, 6],
-            //             pointPlacement: "between",
-            //         },
-            //         {
-            //             name: "North-West",
-            //             data: [10, 8, 6, 4, 2, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20],
-            //             pointPlacement: "between",
-            //         },
-            //     ]
-            // });
-        },
-
         roseVentAffichage() {
-            const seriesData = ref([25, 39, 30, 15]);
-            const categories = ref(['Jun', 'Jul', 'Aug', 'Sept']);
 
             this.chartOptions2 = ({
                 chart: {
@@ -455,17 +346,51 @@ export default {
                     text: 'Number of project stars',
                 },
                 xAxis: {
-                    categories: categories.value,
+
+                    tickmarkPlacement: 'on',
+                    categories: ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW']
                 },
                 yAxis: {
+                    min: 0,
+                    endOnTick: false,
+                    showLastLabel: true,
+                    reversedStacks: false,
+
                     title: {
                         text: 'Number of stars',
                     },
                 },
-                series: [{
-                    name: 'New project stars',
-                    data: seriesData.value,
-                }],
+                plotOptions: {
+                    series: {
+                        stacking: 'normal',
+                        shadow: false,
+                        // groupPadding: 0,
+                        pointPlacement: 'on'
+                    }
+                },
+
+                series: [
+                    {
+                        type: undefined,
+                        name: '<1 m/s',
+                        data: [1, 2, 3, 2, 1, 6, 8, 4, 0, 2, 7, 5, 2, 1, 4, 1]
+                    },
+                    {
+                        type: undefined,
+                        name: '1-3 m/s',
+                        data: [1, 2, 3, 0, 1, 0, 1, 0, 0, 2, 0, 1, 2, 4, 3, 1]
+                    },
+                    {
+                        type: undefined,
+                        name: '3-5 m/s',
+                        data: [1, 2, 3, 0, 1, 0, 0, 0, 1, 2, 1, 1, 2, 1, 1, 1]
+                    },
+                    {
+                        type: undefined,
+                        name: '>5 m/s',
+                        data: [1, 2, 3, 0, 1, 1, 0, 0, 0, 2, 3, 1, 2, 1, 1, 1]
+                    }
+                ],
             });
         },
 
