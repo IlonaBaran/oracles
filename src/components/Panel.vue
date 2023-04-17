@@ -22,7 +22,8 @@
 
                     <div v-else-if="selectedGraph.name == 'Rose des vents'">
                         <button @click="roseVentAffichage">Affichage d'un diagramme rose des vents</button>
-                        <vue-highcharts  :options="this.chartOptions2"></vue-highcharts>
+                        <vue-highcharts type="chart" :options="this.chartOptions2" :redrawOnUpdate="true"
+                            :oneToOneUpdate="false" :animateOnUpdate="true" />
                     </div>
 
                     <div v-else-if="selectedGraph.name == 'Histogramme empilé'">
@@ -37,10 +38,11 @@
                         </div>
                     </div>
 
-                    <div v-else-if="selectedGraph.name == 'Graph3D 1'">
+                    <!-- <div v-else-if="selectedGraph.name == 'Graph3D 1'">
                         <button @click="TD1Affichage">jvrbrgunrjenguibgzy</button>
                         <vue-highcharts :options="this.chartOptions4"></vue-highcharts>
-                    </div>
+
+                    </div> -->
                     <div v-else>
                         <p>Veuillez choisir un type de graphique</p>
                     </div>
@@ -58,9 +60,13 @@
 
 <script>
 /* eslint-disable */
-import { ApexChart } from 'vue3-apexcharts';
-import VueHighcharts from 'vue3-highcharts';
+
+
 import * as d3 from 'd3';
+import VueHighcharts from 'vue3-highcharts';
+import HighCharts from 'highcharts';
+import HighchartsMore from 'highcharts/highcharts-more';
+HighchartsMore(HighCharts);
 
 import Card from 'primevue/card';
 import ScrollPanel from 'primevue/scrollpanel';
@@ -74,7 +80,8 @@ export default {
     components: {
         Card,
         ScrollPanel,
-        VueHighcharts,
+        VueHighcharts
+
     },
 
     props: {
@@ -126,7 +133,8 @@ export default {
             // ROSE WIND - HIGHCHARTJS //
             chartOptions2: ({
                 chart: {
-                    type: 'line',
+                    polar: true,
+                    type: 'column'
                 },
                 title: {
                     text: 'En attente de données',
@@ -145,6 +153,16 @@ export default {
                 }],
             }),
 
+            // chartOptions2: {
+            //     chart: {
+            //         polar: true,
+            //     },
+            //     series: [
+            //         {
+            //             data: [1, 2, 3]
+            //         }
+            //     ]
+            // },
 
             // DIAGRAMME EMPILE - APEXCHARTS
             chartOptions5: ({
@@ -182,12 +200,12 @@ export default {
             series5: [{
                 name: 'PRODUCT A',
                 data: [44, 55, 41, 67, 22, 43, 21, 49]
-                }, 
-                {
+            },
+            {
                 name: 'PRODUCT B',
                 data: [13, 23, 20, 8, 13, 27, 33, 12]
-                }, 
-                {
+            },
+            {
                 name: 'PRODUCT C',
                 data: [11, 17, 15, 15, 21, 14, 15, 13]
             }],
@@ -196,7 +214,7 @@ export default {
             chartOptions3: ref(null),
             series3: ref(null),
 
-            
+
             // HEAT MAP MAIS EN 3D - HIGHTCHARTS
             chartOptions4: ({
                 chart: {
@@ -430,7 +448,8 @@ export default {
 
             this.chartOptions2 = ({
                 chart: {
-                    type: 'line',
+                    polar: true,
+                    type: 'column'
                 },
                 title: {
                     text: 'Number of project stars',
@@ -450,7 +469,7 @@ export default {
             });
         },
 
-        histogramm(){
+        histogramm() {
             this.chartOptions5 = ({
                 chart: {
                     type: 'bar',
@@ -462,9 +481,9 @@ export default {
                     breakpoint: 480,
                     options: {
                         legend: {
-                        position: 'bottom',
-                        offsetX: -10,
-                        offsetY: 0
+                            position: 'bottom',
+                            offsetX: -10,
+                            offsetY: 0
                         }
                     }
                 }],
@@ -486,10 +505,10 @@ export default {
             this.series5 = [{
                 name: 'PRODUCT A',
                 data: [44, 55, 41, 67, 22, 43, 21, 49]
-                }, {
+            }, {
                 name: 'PRODUCT B',
                 data: [13, 23, 20, 8, 13, 27, 33, 12]
-                }, {
+            }, {
                 name: 'PRODUCT C',
                 data: [11, 17, 15, 15, 21, 14, 15, 13]
             }];
@@ -497,7 +516,7 @@ export default {
             this.affichageHistogramme = true;
         },
 
-        histogrammeAffichage(){
+        histogrammeAffichage() {
             this.histogramm();
             console.log(this.chartOptions5);
             console.log(this.series5);
