@@ -580,15 +580,7 @@ export default {
             this.affichageHistogramme = true;
         },
 
-        histogrammeAffichage() {
-            this.histogramm();
-            console.log(this.chartOptions5);
-            console.log(this.series5);
-        },
-
-
         sendData(data) {
-            // const data = { /* Vos données ici */ };
             fetch('127.0.0.1:5000/api/data', {
                 method: 'POST',
                 headers: {
