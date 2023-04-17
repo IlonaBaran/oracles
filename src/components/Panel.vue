@@ -439,24 +439,13 @@ export default {
             const categories = ref(['Jun', 'Jul', 'Aug', 'Sept']);
 
             this.chartOptions2 = ({
-                chart: {
-                    type: 'line',
-                },
-                title: {
-                    text: 'Number of project stars',
-                },
-                xAxis: {
-                    categories: categories.value,
-                },
+                chart: {type: 'line',},
+                title: {text: 'Number of project stars',},
+                xAxis: {categories: categories.value,},
                 yAxis: {
-                    title: {
-                        text: 'Number of stars',
-                    },
+                    title: {text: 'Number of stars',},
                 },
-                series: [{
-                    name: 'New project stars',
-                    data: seriesData.value,
-                }],
+                series: [{name: 'New project stars', data: seriesData.value,}],
             });
         },
 
@@ -465,6 +454,7 @@ export default {
                 this.series5Maree = ordonnees;
                 this.chartOptions5Maree = reactive({
                     chart: {type: 'bar', height: 350, stacked: true, stackType: '100%'},
+                    title: { text: 'Réparition des hauteurs de marée par scénario', align: 'left' },
                     responsive: [{
                         breakpoint: 480,
                         options: {legend: {position: 'bottom', offsetX: -10, offsetY: 0}}
@@ -478,6 +468,7 @@ export default {
                 this.series5Surcote = ordonnees;
                 this.chartOptions5Surcote = reactive({
                     chart: {type: 'bar', height: 350, stacked: true, stackType: '100%'},
+                    title: { text: 'Réparition des hauteurs de surcote par scénario', align: 'left' },
                     responsive: [{
                         breakpoint: 480,
                         options: {legend: {position: 'bottom', offsetX: -10, offsetY: 0}}
@@ -491,6 +482,7 @@ export default {
                 this.series5Vagues = ordonnees;
                 this.chartOptions5Vagues = reactive({
                     chart: {type: 'bar', height: 350, stacked: true, stackType: '100%'},
+                    title: { text: 'Réparition des hauteurs des vagues par scénario', align: 'left' },
                     responsive: [{
                         breakpoint: 480,
                         options: {legend: {position: 'bottom', offsetX: -10, offsetY: 0}}
@@ -504,6 +496,7 @@ export default {
                 this.series5Vent = ordonnees;
                 this.chartOptions5Vent = reactive({
                     chart: {type: 'bar', height: 350, stacked: true, stackType: '100%'},
+                    title: { text: 'Réparition des vitesses de vent par scénario', align: 'left' },
                     responsive: [{
                         breakpoint: 480,
                         options: {legend: {position: 'bottom', offsetX: -10, offsetY: 0}}
@@ -525,7 +518,18 @@ export default {
             // valeurs à afficher --> abscisses
             var abscisses = [];
             // Decoupage des ordonnées
-            var L = [];     
+            if (type == "Maree(m)") {
+                var L = [0, 1, 2];
+            }
+            else if (type == "Surcote(m)") {
+                var L = [0, 0.50, 1];
+            }
+            else if (type == "Hs(vagues)(m)") {
+                var L = [2, 4, 6];
+            }
+            else if (type == "U(vent)(m)") {
+                var L = [5, 10, 15];
+            }     
             var s1 = new Array();     
             var s2 = new Array();    
             var s3 = new Array();    
@@ -543,18 +547,7 @@ export default {
                     .then(data => {
                         abscisses.push(`${element["name"]}`);
 
-                        if (type == "Maree(m)") {
-                            L = [0, 1, 2];
-                        }
-                        else if (type == "Surcote(m)") {
-                            L = [0, 0.50, 1];
-                        }
-                        else if (type == "Hs(vagues)(m)") {
-                            L = [2, 4, 6];
-                        }
-                        else if (type == "U(vent)(m)") {
-                            L = [5, 10, 15];
-                        }
+
 
                         for (const property in data) {
                             if (`${data[property][type]}` < L[0]) {
