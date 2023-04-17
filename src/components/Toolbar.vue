@@ -12,9 +12,9 @@
       <p style="margin-bottom:20px;">Sélectionnez un ou plusieurs scénarios pour afficher leurs hauteur maximale
         associée.
       </p>
-      <MultiSelect v-model="selectedScenario" :options="scenario" filter optionLabel="name"
+      <MultiSelect v-model="selectedScenario2" :options="selectedScenario" filter optionLabel="name"
         placeholder="Sélection Scénarios" :maxSelectedLabels="3" class="w-full md:w-20rem selectScenario"
-        :selectedScenario="this.selectedScenario" />
+        @change="updateScenarios" />
     </div>
   </Sidebar>
 
@@ -56,7 +56,13 @@
 
 
 <script>
+/* eslint-disable */
 import { ref } from "vue";
+
+import Header from './Header.vue';
+import App from '../App.vue';
+
+
 
 // Import des éléments des librairies
 import SpeedDial from 'primevue/speeddial';
@@ -79,6 +85,7 @@ export default {
   data() {
     return {
 
+      selectedScenario2: [],
 
       selectedOption: ref('2D'),
       options: ref(['2D', '3D']),
@@ -144,7 +151,12 @@ export default {
       }
     },
   },
-
+  props: {
+    selectedScenario: {
+      type: Object,
+      required: true
+    }
+  },
   methods: {
     // Les deux fonctions suivantes permettent de changer la valeur de mapSelected en fonction
     // du bouton cliqué
@@ -164,6 +176,12 @@ export default {
       this.$emit('vue-3d');
       console.log("3D")
     },
+    updateScenarios() {
+      console.log("scenario changed received in toolbar")
+      this.$emit('updateScenarios', this.selectedScenario2)
+    }
+  },
+  mounted() {
   }
 }
 </script>

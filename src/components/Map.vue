@@ -2,13 +2,14 @@
   <div id="viewerDiv" class="viewer" @click="showCoords">
   </div>
   <Toolbar @icon-clicked="changeMap" ref="childComponent" @change-building="building" @reinit-view="cameraView"
-    @vue-2d="vue2d" @vue-3d="vue3d">
+    @vue-2d="vue2d" @vue-3d="vue3d" :selectedScenario="this.selectedScenario" @updateScenarios="updateHeightmap">
   </Toolbar>
 </template>
 
 <script>
 /* eslint-disable */
 import Toolbar from "./Toolbar.vue";
+import App from "../App.vue";
 import '../../node_modules/itowns/examples/css/widgets.css'
 import { FileSource, THREE, Style, proj4, Extent, FeatureGeometryLayer, Coordinates, GlobeView, PlanarView, WMTSSource, WMSSource, ColorLayer, ElevationLayer, Copy, As } from "../../node_modules/itowns/dist/itowns";
 import { ref } from "vue";
@@ -29,10 +30,16 @@ export default {
   },
   data() {
     return {
+      selecectedScenario2: [],
       viewNew: ref(false),
     }
   },
-
+  props: {
+    selectedScenario: {
+      type: Object,
+      required: true
+    }
+  },
   components: {
     Toolbar,
   },
@@ -69,6 +76,7 @@ export default {
     view.addLayer(layerDEM);
     view.addLayer(basic);
     view.addLayer(layerOrtho);
+
 
 
     ////------------------------------------------------------
@@ -159,6 +167,10 @@ export default {
       view.controls.enableRotation = true;
       view.notifyChange();
     },
+    updateHeightmap(selectedScenario) {
+      console.log("updated scenarios on map.vue")
+      //console.log(selecectedScenario2)
+    }
 
   }
 

@@ -1,6 +1,6 @@
 <template>
-  <Header></Header>
-  <Map></Map>
+  <Header @selectedScenarioChanged="handleSelectedScenarioChanged"></Header>
+  <Map :selectedScenario="this.selectedScenario"></Map>
   <Footer></Footer>
 </template>
 
@@ -17,6 +17,18 @@ export default {
     Header,
     Map,
     Footer,
+  },
+  data() {
+    return {
+      selectedScenario: []
+    };
+  },
+  methods: {
+    handleSelectedScenarioChanged(selectedScenario) {
+      this.selectedScenario = selectedScenario;
+      console.log("received selected scenarios in app")
+      this.$emit('selectedScenarioChanged', this.selectedScenario);
+    }
   }
 }
 </script>
