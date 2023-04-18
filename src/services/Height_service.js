@@ -49,6 +49,7 @@ export async function getData(listOfImages) {
 }
 
 export function averageLists(lists) {
+
     const numLists = lists.length;
     const listLength = lists[0].length;
 
@@ -125,9 +126,9 @@ export async function getHeightMesh(image) {
 
     function minuszero(value) {
         if (value <= 0) {
-            return -10
+            return -6
         } else if (value > 8848) {
-            return -10
+            return -6
         } else {
             return value
         }
@@ -167,13 +168,11 @@ export async function getHeightMesh(image) {
         };
     };
 
+    console.log(vertices)
+
     //Setting attributes to the geometry
     geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(vertices), 3));
     geometry.setAttribute('normal', new THREE.BufferAttribute(new Float32Array(indices), 3));
-
-
-    console.log(vertices)
-
 
     // create material
     const material = new THREE.MeshBasicMaterial({
@@ -192,6 +191,9 @@ export async function getHeightMesh(image) {
 }
 
 export async function getHeightFromScenarios(bbox, width, height, data) {
+
+    console.log('inside data', data)
+
 
     const Xo = bbox[0];
     const Xf = bbox[2];
@@ -215,9 +217,9 @@ export async function getHeightFromScenarios(bbox, width, height, data) {
 
     function minuszero(value) {
         if (value <= 0) {
-            return -10
+            return 0
         } else if (value > 8848) {
-            return -10
+            return 0
         } else {
             return value
         }
@@ -257,10 +259,11 @@ export async function getHeightFromScenarios(bbox, width, height, data) {
         };
     };
 
+    console.log(vertices)
     //Setting attributes to the geometry
     geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(vertices), 3));
     geometry.setAttribute('normal', new THREE.BufferAttribute(new Float32Array(indices), 3));
-    console.log(vertices)
+
 
     // create material
     const material = new THREE.MeshBasicMaterial({

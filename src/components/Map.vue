@@ -111,10 +111,11 @@ export default {
       view.camera.camera3D.position.z = 2500.719216284468985;
       view.notifyChange();
     }, showCoords(e) {
-      console.log('picking from depth', view.eventToViewCoords(e))
-
-      let vCoords = view.eventToViewCoords(e);
-      console.log(view.getPickingPositionFromDepth(vCoords))
+      let lists = [[1, 6, 3, 6], [4, 5, 6, 1], [6, 1, 1, 4],]
+      console.log('lists', lists)
+      console.log('max', maxLists(lists));
+      console.log('min', minLists(lists));
+      console.log('av', averageLists(lists));
     },
     vue2d() {
       view.controls.goToTopView();
@@ -126,9 +127,10 @@ export default {
       view.notifyChange();
     },
     updateHeightmap(jsonemit) {
+
       this.jsonemit = jsonemit;
 
-      if (view.scene.children.length > 1) {
+      if (view.scene.children.length > 2) {
         view.scene.children[view.scene.children.length - 1].removeFromParent()
       }
 
@@ -137,6 +139,7 @@ export default {
       const Scenarios = toRaw(this.urlList)
 
       if (Scenarios.length == 1) {
+        console.log('single')
         getImage(Scenarios[0]).then(image => {
           getHeightMesh(image).then(mesh => {
             view.scene.add(mesh);
@@ -147,6 +150,8 @@ export default {
 
       } else {
 
+        console.log('multiple')
+
         let listImages = [];
         Promise.all(Scenarios.map(getImage))
           .then((images) => {
@@ -155,20 +160,27 @@ export default {
             getData(listImages)
               .then(scenarios => {
 
+                console.log('scenarios.datas', scenarios.datas)
+
                 let data;
                 switch (this.jsonemit.math) {
                   case 'Moy':
                     data = [averageLists(scenarios.datas)];
+                    console.log('moy data', data)
                     break;
                   case 'Min':
                     data = [minLists(scenarios.datas)];
+                    console.log(' min data', data)
                     break;
                   case 'Max':
                     data = [maxLists(scenarios.datas)];
+                    console.log('max data', data)
                     break;
                 }
 
                 let bbox = scenarios.bbox; let width = scenarios.width; let height = scenarios.height;
+
+                console.log('data', data)
 
                 getHeightFromScenarios(bbox, width, height, data).then(mesh => {
                   view.scene.add(mesh);
