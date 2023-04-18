@@ -2,20 +2,21 @@
   <div id="viewerDiv" class="viewer" @click="showCoords">
   </div>
   <Toolbar @icon-clicked="changeMap" ref="childComponent" @change-building="building" @reinit-view="cameraView"
-    @vue-2d="vue2d" @vue-3d="vue3d">
+    @vue-2d="vue2d" @vue-3d="vue3d" :selectedScenario="this.selectedScenario" @updateScenarios="updateHeightmap">
   </Toolbar>
 </template>
 
 <script>
 /* eslint-disable */
 import Toolbar from "./Toolbar.vue";
+import App from "../App.vue";
 import '../../node_modules/itowns/examples/css/widgets.css'
-import { FileSource, THREE, Style, proj4, Extent, FeatureGeometryLayer, Coordinates, GlobeView, PlanarView, WMTSSource, WMSSource, ColorLayer, ElevationLayer, Copy, As } from "../../node_modules/itowns/dist/itowns";
+import { proj4, Extent, PlanarView } from "../../node_modules/itowns/dist/itowns";
 import { ref } from "vue";
-import { getHeightMesh, getImage, getData, averageLists, minLists, maxLists, getHeightFromScenarios } from '../services/Height_service.js'
+import { getHeightMesh, getImage, getData, averageLists, minLists, maxLists, getHeightFromScenarios, concatenateHeightMapList } from '../services/Height_service.js'
 import { layerOrtho, layerDEM, layerPLAN } from '../services/WMS_service.js'
-import { basic } from '../services/FileSource_service.js'
-import { image } from "d3-fetch";
+import { isProxy, toRaw } from 'vue';
+import { bati } from '../services/FileSource_service.js'
 
 
 let view = ref(false);
@@ -29,10 +30,19 @@ export default {
   },
   data() {
     return {
+      jsonemit: {},
+      math: "",
+      heightmaps: [],
+      urlList: [],
       viewNew: ref(false),
     }
   },
-
+  props: {
+    selectedScenario: {
+      type: Object,
+      required: true
+    }
+  },
   components: {
     Toolbar,
   },
@@ -67,55 +77,8 @@ export default {
 
     view.addLayer(layerPLAN)
     view.addLayer(layerDEM);
-    view.addLayer(basic);
+    view.addLayer(bati);
     view.addLayer(layerOrtho);
-
-
-    ////------------------------------------------------------
-    //RECUPERER UNE URL 
-    // getImage('http://localhost:8080/output_rasters/S_1040/S_1040_hmax.tif').then(image => {
-    //   getHeightMesh(image).then(mesh => {
-    //     view.scene.add(mesh);
-    //     view.mesh = mesh;
-    //     view.notifyChange();
-    //   })
-    // })
-
-
-    //------------------------------------------------------
-    //RECUPERER PLUSIEURS URL
-    // let Scenarios = [
-    //   'http://localhost:8080/output_rasters/S_1040/S_1040_hmax.tif',
-    //   'http://localhost:8080/output_rasters/S_1069/S_1069_hmax.tif',
-    // ]
-
-    // let listImages = [];
-    // Promise.all(Scenarios.map(getImage))
-    //   .then((images) => {
-    //     listImages = images;
-    //     console.log('All images loaded:', listImages);
-
-    //     getData(listImages)
-    //       .then(scenarios => {
-
-    //         let avgOfScenarios = [averageLists(scenarios.datas)];
-    //         let minOfScenarios = [minLists(scenarios.datas)];
-    //         let maxOfScenarios = [maxLists(scenarios.datas)];
-
-    //         let bbox = scenarios.bbox; let width = scenarios.width; let height = scenarios.height;
-    //         let data = maxOfScenarios;
-
-    //         console.log('data', data)
-
-    //         getHeightFromScenarios(bbox, width, height, data).then(mesh => {
-    //           view.scene.add(mesh);
-    //           view.mesh = mesh;
-    //           view.notifyChange();
-    //         })
-
-    //       })
-
-    //   })
 
     view.controls.enableRotation = false;
     view.notifyChange();
@@ -124,17 +87,17 @@ export default {
   methods: {
     changeMap() {
       if (this.$refs.childComponent.mapSelected == "plan") {
-        view.tileLayer.attachedLayers[1 - 1].visible = true;
-        view.tileLayer.attachedLayers[4 - 1].visible = false;
+        view.tileLayer.attachedLayers[0].visible = true;
+        view.tileLayer.attachedLayers[3].visible = false;
         view.notifyChange();
       } else {
-        view.tileLayer.attachedLayers[1 - 1].visible = false;
-        view.tileLayer.attachedLayers[4 - 1].visible = true;
+        view.tileLayer.attachedLayers[0].visible = false;
+        view.tileLayer.attachedLayers[3].visible = true;
         view.notifyChange();
       }
     },
     building() {
-      view.tileLayer.attachedLayers[3 - 1].visible = this.$refs.childComponent.visibleBuilding;
+      view.tileLayer.attachedLayers[2].visible = this.$refs.childComponent.visibleBuilding;
       view.notifyChange();
     },
 
@@ -148,7 +111,10 @@ export default {
       view.camera.camera3D.position.z = 2500.719216284468985;
       view.notifyChange();
     }, showCoords(e) {
-      //console.log('view', view)
+      console.log('picking from depth', view.eventToViewCoords(e))
+
+      let vCoords = view.eventToViewCoords(e);
+      console.log(view.getPickingPositionFromDepth(vCoords))
     },
     vue2d() {
       view.controls.goToTopView();
@@ -159,7 +125,61 @@ export default {
       view.controls.enableRotation = true;
       view.notifyChange();
     },
+    updateHeightmap(jsonemit) {
+      this.jsonemit = jsonemit;
 
+      if (view.scene.children.length > 1) {
+        view.scene.children[view.scene.children.length - 1].removeFromParent()
+      }
+
+      this.heightmaps = this.jsonemit.selectedScenario2;
+      this.urlList = concatenateHeightMapList(this.heightmaps);
+      const Scenarios = toRaw(this.urlList)
+
+      if (Scenarios.length == 1) {
+        getImage(Scenarios[0]).then(image => {
+          getHeightMesh(image).then(mesh => {
+            view.scene.add(mesh);
+            view.mesh = mesh;
+            view.notifyChange();
+          })
+        })
+
+      } else {
+
+        let listImages = [];
+        Promise.all(Scenarios.map(getImage))
+          .then((images) => {
+            listImages = images;
+
+            getData(listImages)
+              .then(scenarios => {
+
+                let data;
+                switch (this.jsonemit.math) {
+                  case 'Moy':
+                    data = [averageLists(scenarios.datas)];
+                    break;
+                  case 'Min':
+                    data = [minLists(scenarios.datas)];
+                    break;
+                  case 'Max':
+                    data = [maxLists(scenarios.datas)];
+                    break;
+                }
+
+                let bbox = scenarios.bbox; let width = scenarios.width; let height = scenarios.height;
+
+                getHeightFromScenarios(bbox, width, height, data).then(mesh => {
+                  view.scene.add(mesh);
+                  view.mesh = mesh;
+                  view.notifyChange();
+                })
+
+              })
+          })
+      }
+    }
   }
 
 };

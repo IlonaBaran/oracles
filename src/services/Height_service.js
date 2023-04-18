@@ -1,6 +1,8 @@
 /* eslint-disable */
 import * as GeoTIFF from 'geotiff';
 import { FileSource, THREE, Style, proj4, Extent, FeatureGeometryLayer, Coordinates, GlobeView, WMTSSource, WMSSource, ColorLayer, ElevationLayer, Copy, As } from "../../node_modules/itowns/dist/itowns";
+import { async } from 'regenerator-runtime';
+
 
 export async function getImage(url) {
     return new Promise((resolve, reject) => {
@@ -170,12 +172,15 @@ export async function getHeightMesh(image) {
     geometry.setAttribute('normal', new THREE.BufferAttribute(new Float32Array(indices), 3));
 
 
+    console.log(vertices)
+
+
     // create material
     const material = new THREE.MeshBasicMaterial({
         wireframe: true,
         transparent: true,
         opacity: 0.8,
-        color: 0xE0FFFF,
+        color: 0x0000FF,
         side: THREE.DoubleSide
     });
 
@@ -188,9 +193,6 @@ export async function getHeightMesh(image) {
 }
 
 export async function getHeightFromScenarios(bbox, width, height, data) {
-
-    console.log('scenarios data', data)
-
 
     const Xo = bbox[0];
     const Xf = bbox[2];
@@ -263,6 +265,9 @@ export async function getHeightFromScenarios(bbox, width, height, data) {
 
     // create material
     const material = new THREE.MeshBasicMaterial({
+        wireframe: true,
+        transparent: true,
+        opacity: 0.8,
         color: 0x0000FF,
         side: THREE.DoubleSide
     });
@@ -271,9 +276,18 @@ export async function getHeightFromScenarios(bbox, width, height, data) {
     mesh.position.copy(coord3.as('EPSG:2154'));
     mesh.updateMatrixWorld();
 
-    console.log('mesh', mesh);
-
     return mesh;
+}
+
+export function concatenateHeightMapList(heightMapList) {
+    let concatenatedList = [];
+
+    for (let i = 0; i < heightMapList.length; i++) {
+        let concatenated = "http://localhost:8080/output_rasters/" + heightMapList[i].name + "/" + heightMapList[i].name + "_hmax.tif";
+        concatenatedList.push(concatenated);
+    }
+
+    return concatenatedList;
 }
 
 

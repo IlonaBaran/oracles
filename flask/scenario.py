@@ -18,14 +18,6 @@ app = Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": "*"}})
 CORS(app, resources={r"C:/ProgIlo/projettsi/oracles/flask/*": {"origins": "*"}})
 
-@app.route('/test')
-def index():
-    data = {'message': 'Hello, World!'}
-    response = jsonify(data)
-    response.headers.add('Access-Control-Allow-Origin', '*')
-    return response
-
-
 @app.route('/arboresance')
 def arboresance():
     cwd = os.getcwd()
