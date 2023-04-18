@@ -111,7 +111,10 @@ export default {
       view.camera.camera3D.position.z = 2500.719216284468985;
       view.notifyChange();
     }, showCoords(e) {
-      // console.log('picking from depth', view.getPickingPositionFromDepth(e))
+      console.log('picking from depth', view.eventToViewCoords(e))
+
+      let vCoords = view.eventToViewCoords(e);
+      console.log(view.getPickingPositionFromDepth(vCoords))
     },
     vue2d() {
       view.controls.goToTopView();

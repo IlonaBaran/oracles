@@ -172,12 +172,15 @@ export async function getHeightMesh(image) {
     geometry.setAttribute('normal', new THREE.BufferAttribute(new Float32Array(indices), 3));
 
 
+    console.log(vertices)
+
+
     // create material
     const material = new THREE.MeshBasicMaterial({
         wireframe: true,
         transparent: true,
         opacity: 0.8,
-        color: 0xE0FFFF,
+        color: 0x0000FF,
         side: THREE.DoubleSide
     });
 
@@ -190,9 +193,6 @@ export async function getHeightMesh(image) {
 }
 
 export async function getHeightFromScenarios(bbox, width, height, data) {
-
-    console.log('scenarios data', data)
-
 
     const Xo = bbox[0];
     const Xf = bbox[2];
@@ -265,6 +265,9 @@ export async function getHeightFromScenarios(bbox, width, height, data) {
 
     // create material
     const material = new THREE.MeshBasicMaterial({
+        wireframe: true,
+        transparent: true,
+        opacity: 0.8,
         color: 0x0000FF,
         side: THREE.DoubleSide
     });
@@ -272,8 +275,6 @@ export async function getHeightFromScenarios(bbox, width, height, data) {
     let mesh = new THREE.Mesh(geometry, material);
     mesh.position.copy(coord3.as('EPSG:2154'));
     mesh.updateMatrixWorld();
-
-    console.log('mesh', mesh);
 
     return mesh;
 }

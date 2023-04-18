@@ -203,13 +203,10 @@ export default {
     },
     updateScenarios() {
       if (this.selectedScenario2.length > 1) {
-        console.log("More than 1 Scenario selected")
-        console.log(`Selected math value is ${this.math}`);
         let jsonemit = { selectedScenario2: this.selectedScenario2, math: this.math }
         this.$emit('updateScenarios', jsonemit);
 
       } else {
-        console.log("One Scenario Selected")
         let jsonemit = { selectedScenario2: this.selectedScenario2 }
         this.$emit('updateScenarios', jsonemit);
       }
