@@ -22,12 +22,17 @@
 
                     <div v-else-if="selectedGraph.name == 'Rose des vents'">
                         <button @click="roseVentAffichage">Affichage d'un diagramme rose des vents</button>
-                        <vue-highcharts  :options="this.chartOptions2"></vue-highcharts>
+                        <vue-highcharts type="chart" :options="this.chartOptions2" :redrawOnUpdate="true"
+                            :oneToOneUpdate="false" :animateOnUpdate="true" />
                     </div>
 
                     <div v-else-if="selectedGraph.name == 'Histogramme empilé'">
                         <div v-if="this.affichageHistogramme == true">
-                            <apexchart :options="this.chartOptions5" :series="this.series5" />
+                            <apexchart :options="this.chartOptions5Surcote" :series="this.series5Surcote" />
+                            <apexchart :options="this.chartOptions5Maree" :series="this.series5Maree" />
+                            <apexchart :options="this.chartOptions5Vagues" :series="this.series5Vagues" />
+                            <apexchart :options="this.chartOptions5Vent" :series="this.series5Vent" />
+
                         </div>
                     </div>
 
@@ -37,10 +42,11 @@
                         </div>
                     </div>
 
-                    <div v-else-if="selectedGraph.name == 'Graph3D 1'">
+                    <!-- <div v-else-if="selectedGraph.name == 'Graph3D 1'">
                         <button @click="TD1Affichage">jvrbrgunrjenguibgzy</button>
                         <vue-highcharts :options="this.chartOptions4"></vue-highcharts>
-                    </div>
+
+                    </div> -->
                     <div v-else>
                         <p>Veuillez choisir un type de graphique</p>
                     </div>
@@ -58,9 +64,13 @@
 
 <script>
 /* eslint-disable */
-import { ApexChart } from 'vue3-apexcharts';
-import VueHighcharts from 'vue3-highcharts';
+
+
 import * as d3 from 'd3';
+import VueHighcharts from 'vue3-highcharts';
+import HighCharts from 'highcharts';
+import HighchartsMore from 'highcharts/highcharts-more';
+HighchartsMore(HighCharts);
 
 import Card from 'primevue/card';
 import ScrollPanel from 'primevue/scrollpanel';
@@ -74,7 +84,8 @@ export default {
     components: {
         Card,
         ScrollPanel,
-        VueHighcharts,
+        VueHighcharts
+
     },
 
     props: {
@@ -126,7 +137,8 @@ export default {
             // ROSE WIND - HIGHCHARTJS //
             chartOptions2: ({
                 chart: {
-                    type: 'line',
+                    polar: true,
+                    type: 'column'
                 },
                 title: {
                     text: 'En attente de données',
@@ -134,69 +146,85 @@ export default {
                 xAxis: {
                     categories: [],
                 },
+
                 yAxis: {
-                    title: {
-                        text: 'En attente de données',
-                    },
+                    title: { text: 'En attente de données', },
                 },
-                series: [{
-                    name: 'En attente de données',
-                    data: [],
-                }],
+                plotOptions: {
+                    series: {
+                        stacking: 'normal',
+                        shadow: false,
+                        // groupPadding: 0,
+                        pointPlacement: 'on'
+                    }
+                },
+                series: [{}, {}, {}, {}],
             }),
 
 
             // DIAGRAMME EMPILE - APEXCHARTS
-            chartOptions5: ({
-                chart: {
-                    type: 'bar',
-                    height: 350,
-                    stacked: true,
-                    stackType: '100%'
-                },
+            chartOptions5Surcote: ({
+                chart: { type: 'bar', height: 350, stacked: true, stackType: '100%' },
                 responsive: [{
                     breakpoint: 480,
-                    options: {
-                        legend: {
-                            position: 'bottom',
-                            offsetX: -10,
-                            offsetY: 0
-                        }
-                    }
+                    options: { legend: { position: 'bottom', offsetX: -10, offsetY: 0 } }
                 }],
-                xaxis: {
-                    categories: ['2011 Q1', '2011 Q2', '2011 Q3', '2011 Q4', '2012 Q1', '2012 Q2',
-                        '2012 Q3', '2012 Q4'
-                    ],
-                },
-                fill: {
-                    opacity: 1
-                },
-                legend: {
-                    position: 'right',
-                    offsetX: 0,
-                    offsetY: 50
-                },
+                xaxis: { categories: [] },
+                fill: { opacity: 1 },
+                legend: { position: 'right', offsetX: 0, offsetY: 50 },
             }),
 
-            series5: [{
-                name: 'PRODUCT A',
-                data: [44, 55, 41, 67, 22, 43, 21, 49]
-                }, 
-                {
-                name: 'PRODUCT B',
-                data: [13, 23, 20, 8, 13, 27, 33, 12]
-                }, 
-                {
-                name: 'PRODUCT C',
-                data: [11, 17, 15, 15, 21, 14, 15, 13]
-            }],
+
+            series5Surcote: [{ name: 'En attente de données', data: [] }
+            ],
+
+            chartOptions5Maree: ({
+                chart: { type: 'bar', height: 350, stacked: true, stackType: '100%' },
+                responsive: [{
+                    breakpoint: 480,
+                    options: { legend: { position: 'bottom', offsetX: -10, offsetY: 0 } }
+                }],
+                xaxis: { categories: [] },
+                fill: { opacity: 1 },
+                legend: { position: 'right', offsetX: 0, offsetY: 50 },
+            }),
+
+            series5Maree: [{ name: 'En attente de données', data: [] }
+            ],
+
+            chartOptions5Vagues: ({
+                chart: { type: 'bar', height: 350, stacked: true, stackType: '100%' },
+                responsive: [{
+                    breakpoint: 480,
+                    options: { legend: { position: 'bottom', offsetX: -10, offsetY: 0 } }
+                }],
+                xaxis: { categories: [] },
+                fill: { opacity: 1 },
+                legend: { position: 'right', offsetX: 0, offsetY: 50 },
+            }),
+
+            series5Vagues: [{ name: 'En attente de données', data: [] }
+            ],
+
+            chartOptions5Vent: ({
+                chart: { type: 'bar', height: 350, stacked: true, stackType: '100%' },
+                responsive: [{
+                    breakpoint: 480,
+                    options: { legend: { position: 'bottom', offsetX: -10, offsetY: 0 } }
+                }],
+                xaxis: { categories: [] },
+                fill: { opacity: 1 },
+                legend: { position: 'right', offsetX: 0, offsetY: 50 },
+            }),
+
+            series5Vent: [{ name: 'En attente de données', data: [] }
+            ],
 
             // HEAT MAP - APEXCHARTS
             chartOptions3: ref(null),
             series3: ref(null),
 
-            
+
             // HEAT MAP MAIS EN 3D - HIGHTCHARTS
             chartOptions4: ({
                 chart: {
@@ -229,7 +257,10 @@ export default {
             this.lineChartAffichage('Hs(vagues)(m)');
             this.lineChartAffichage('U(vent)(m)');
             this.heatMapAffichage();
-            this.histogrammeAffichage();
+            this.histogrammeAffichage('Surcote(m)');
+            this.histogrammeAffichage('Maree(m)');
+            this.histogrammeAffichage('Hs(vagues)(m)');
+            this.histogrammeAffichage('U(vent)(m)');
         },
 
         reiAfficheGraph() {
@@ -322,190 +353,197 @@ export default {
             }
         },
 
-        roseChartHIGHCHARTS() {
-            // this.chartOptions2 = reactive({
-            //     chart: {
-            //         polar: true,
-            //         type: "column",
-            //     },
-            //     title: {
-            //         text: "Wind Rose",
-            //     },
-            //     xAxis: {
-            //         categories: [
-            //             "N",
-            //             "NNE",
-            //             "NE",
-            //             "ENE",
-            //             "E",
-            //             "ESE",
-            //             "SE",
-            //             "SSE",
-            //             "S",
-            //             "SSW",
-            //             "SW",
-            //             "WSW",
-            //             "W",
-            //             "WNW",
-            //             "NW",
-            //             "NNW",
-            //         ],
-            //         tickmarkPlacement: "on",
-            //         lineWidth: 0,
-            //     },
-            //     yAxis: {
-            //         min: 0,
-            //         endOnTick: false,
-            //         showLastLabel: true,
-            //         title: {
-            //             text: "Frequency (%)",
-            //             align: "high",
-            //         },
-            //     },
-            //     tooltip: {
-            //         shared: true,
-            //         pointFormat: '<span style="color:{point.color}">\u25CF</span> {series.name}: <b>{point.y}%</b><br/>',
-            //     },
-            //     legend: {
-            //         align: "right",
-            //         verticalAlign: "middle",
-            //         layout: "vertical",
-            //     },
-            //     plotOptions: {
-            //         column: {
-            //             pointPadding: 0,
-            //             borderWidth: 0,
-            //             groupPadding: 0,
-            //             shadow: false,
-            //         },
-            //     },
-            //     series: [
-            //         {
-            //             name: "North",
-            //             data: [5, 3, 4, 7, 2, 3, 5, 7, 8, 6, 4, 2, 3, 5, 4, 3],
-            //             pointPlacement: "between",
-            //         },
-            //         {
-            //             name: "North-East",
-            //             data: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 18, 16, 14, 12, 10, 8],
-            //             pointPlacement: "between",
-            //         },
-            //         {
-            //             name: "East",
-            //             data: [10, 12, 14, 16, 18, 20, 18, 16, 14, 12, 10, 8, 6, 4, 2, 1],
-            //             pointPlacement: "between",
-            //         },
-            //         {
-            //             name: "South-East",
-            //             data: [1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 18, 16, 14, 12, 10],
-            //             pointPlacement: "between",
-            //         },
-            //         {
-            //             name: "South",
-            //             data: [2, 3, 5, 7, 8, 6, 4, 2, 3, 5, 7, 4, 3, 2, 1, 1],
-            //             pointPlacement: "between",
-            //         },
-            //         {
-            //             name: "South-West",
-            //             data: [1, 2, 3, 5, 7, 9, 11, 13, 15, 17, 19, 20, 18, 16, 14, 12],
-            //             pointPlacement: "between",
-            //         },
-            //         {
-            //             name: "West",
-            //             data: [5, 6, 8, 10, 12, 14, 16, 18, 20, 18, 16, 14, 12, 10, 8, 6],
-            //             pointPlacement: "between",
-            //         },
-            //         {
-            //             name: "North-West",
-            //             data: [10, 8, 6, 4, 2, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20],
-            //             pointPlacement: "between",
-            //         },
-            //     ]
-            // });
-        },
-
         roseVentAffichage() {
-            const seriesData = ref([25, 39, 30, 15]);
-            const categories = ref(['Jun', 'Jul', 'Aug', 'Sept']);
 
             this.chartOptions2 = ({
                 chart: {
-                    type: 'line',
+                    polar: true,
+                    type: 'column'
                 },
                 title: {
                     text: 'Number of project stars',
                 },
                 xAxis: {
-                    categories: categories.value,
+
+                    tickmarkPlacement: 'on',
+                    categories: ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW']
                 },
                 yAxis: {
+                    min: 0,
+                    endOnTick: false,
+                    showLastLabel: true,
+                    reversedStacks: false,
+
                     title: {
                         text: 'Number of stars',
                     },
                 },
-                series: [{
-                    name: 'New project stars',
-                    data: seriesData.value,
-                }],
+                plotOptions: {
+                    series: {
+                        stacking: 'normal',
+                        shadow: false,
+                        // groupPadding: 0,
+                        pointPlacement: 'on'
+                    }
+                },
+
+                series: [
+                    {
+                        type: undefined,
+                        name: '<1 m/s',
+                        data: [1, 2, 3, 2, 1, 6, 8, 4, 0, 2, 7, 5, 2, 1, 4, 1]
+                    },
+                    {
+                        type: undefined,
+                        name: '1-3 m/s',
+                        data: [1, 2, 3, 0, 1, 0, 1, 0, 0, 2, 0, 1, 2, 4, 3, 1]
+                    },
+                    {
+                        type: undefined,
+                        name: '3-5 m/s',
+                        data: [1, 2, 3, 0, 1, 0, 0, 0, 1, 2, 1, 1, 2, 1, 1, 1]
+                    },
+                    {
+                        type: undefined,
+                        name: '>5 m/s',
+                        data: [1, 2, 3, 0, 1, 1, 0, 0, 0, 2, 3, 1, 2, 1, 1, 1]
+                    }
+                ],
             });
         },
 
-        histogramm(){
-            this.chartOptions5 = ({
-                chart: {
-                    type: 'bar',
-                    height: 350,
-                    stacked: true,
-                    stackType: '100%'
-                },
-                responsive: [{
-                    breakpoint: 480,
-                    options: {
-                        legend: {
-                        position: 'bottom',
-                        offsetX: -10,
-                        offsetY: 0
-                        }
-                    }
-                }],
-                xaxis: {
-                    categories: ['2011 Q1', '2011 Q2', '2011 Q3', '2011 Q4', '2012 Q1', '2012 Q2',
-                        '2012 Q3', '2012 Q4'
-                    ],
-                },
-                fill: {
-                    opacity: 1
-                },
-                legend: {
-                    position: 'right',
-                    offsetX: 0,
-                    offsetY: 50
-                },
-            });
-
-            this.series5 = [{
-                name: 'PRODUCT A',
-                data: [44, 55, 41, 67, 22, 43, 21, 49]
-                }, {
-                name: 'PRODUCT B',
-                data: [13, 23, 20, 8, 13, 27, 33, 12]
-                }, {
-                name: 'PRODUCT C',
-                data: [11, 17, 15, 15, 21, 14, 15, 13]
-            }];
-
+        histogramm(type, abscisses, ordonnees) {
+            if (type == "Maree(m)") {
+                this.series5Maree = ordonnees;
+                this.chartOptions5Maree = reactive({
+                    chart: { type: 'bar', height: 350, stacked: true, stackType: '100%' },
+                    title: { text: 'Réparition des hauteurs de marée par scénario', align: 'left' },
+                    responsive: [{
+                        breakpoint: 480,
+                        options: { legend: { position: 'bottom', offsetX: -10, offsetY: 0 } }
+                    }],
+                    xaxis: { categories: abscisses },
+                    fill: { opacity: 1 },
+                    legend: { position: 'right', offsetX: 0, offsetY: 50 },
+                });
+            }
+            else if (type == "Surcote(m)") {
+                this.series5Surcote = ordonnees;
+                this.chartOptions5Surcote = reactive({
+                    chart: { type: 'bar', height: 350, stacked: true, stackType: '100%' },
+                    title: { text: 'Réparition des hauteurs de surcote par scénario', align: 'left' },
+                    responsive: [{
+                        breakpoint: 480,
+                        options: { legend: { position: 'bottom', offsetX: -10, offsetY: 0 } }
+                    }],
+                    xaxis: { categories: abscisses },
+                    fill: { opacity: 1 },
+                    legend: { position: 'right', offsetX: 0, offsetY: 50 },
+                });
+            }
+            else if (type == "Hs(vagues)(m)") {
+                this.series5Vagues = ordonnees;
+                this.chartOptions5Vagues = reactive({
+                    chart: { type: 'bar', height: 350, stacked: true, stackType: '100%' },
+                    title: { text: 'Réparition des hauteurs des vagues par scénario', align: 'left' },
+                    responsive: [{
+                        breakpoint: 480,
+                        options: { legend: { position: 'bottom', offsetX: -10, offsetY: 0 } }
+                    }],
+                    xaxis: { categories: abscisses },
+                    fill: { opacity: 1 },
+                    legend: { position: 'right', offsetX: 0, offsetY: 50 },
+                });
+            }
+            else if (type == "U(vent)(m)") {
+                this.series5Vent = ordonnees;
+                this.chartOptions5Vent = reactive({
+                    chart: { type: 'bar', height: 350, stacked: true, stackType: '100%' },
+                    title: { text: 'Réparition des vitesses de vent par scénario', align: 'left' },
+                    responsive: [{
+                        breakpoint: 480,
+                        options: { legend: { position: 'bottom', offsetX: -10, offsetY: 0 } }
+                    }],
+                    xaxis: { categories: abscisses },
+                    fill: { opacity: 1 },
+                    legend: { position: 'right', offsetX: 0, offsetY: 50 },
+                });
+            }
             this.affichageHistogramme = true;
         },
 
-        histogrammeAffichage(){
-            this.histogramm();
-            console.log(this.chartOptions5);
-            console.log(this.series5);
+
+
+
+        histogrammeAffichage(type) {
+            // valeurs a afficher --> ordonnées
+            var listDataPlot = [];
+            // valeurs à afficher --> abscisses
+            var abscisses = [];
+            // Decoupage des ordonnées
+            if (type == "Maree(m)") {
+                var L = [0, 1, 2];
+            }
+            else if (type == "Surcote(m)") {
+                var L = [0, 0.50, 1];
+            }
+            else if (type == "Hs(vagues)(m)") {
+                var L = [2, 4, 6];
+            }
+            else if (type == "U(vent)(m)") {
+                var L = [5, 10, 15];
+            }
+            var s1 = new Array();
+            var s2 = new Array();
+            var s3 = new Array();
+            var s4 = new Array();
+            // Compteur pour mettre les valeurs dans les listes de decoupage
+            var elem = 0;
+
+            for (const element of this.selectedScenario) {
+                var v1 = 0;
+                var v2 = 0;
+                var v3 = 0;
+                var v4 = 0;
+                fetch('http://localhost:8080/jsonData/' + `${element["name"]}` + '.json')
+                    .then(response => response.json())
+                    .then(data => {
+                        abscisses.push(`${element["name"]}`);
+
+
+
+                        for (const property in data) {
+                            if (`${data[property][type]}` < L[0]) {
+                                v1 += 1;
+                            }
+                            else if (`${data[property][type]}` > L[0] && `${data[property][type]}` < L[1]) {
+                                v2 += 1;
+                            }
+                            else if (`${data[property][type]}` > L[1] && `${data[property][type]}` < L[2]) {
+                                v3 += 1;
+                            }
+                            if (`${data[property][type]}` > L[2]) {
+                                v4 += 1;
+                            }
+                        };
+                        s1.push(v1);
+                        s2.push(v2);
+                        s3.push(v3);
+                        s4.push(v4);
+                    })
+                elem += 1;
+            }
+
+            console.log(listDataPlot);
+            listDataPlot.push({ name: "inférieur à " + L[0], data: s1 });
+            listDataPlot.push({ name: "entre " + L[0] + " et " + L[1], data: s2 });
+            listDataPlot.push({ name: "entre " + L[1] + " et " + L[2], data: s3 });
+            listDataPlot.push({ name: "supérieur à " + L[2], data: s4 });
+            this.histogramm(type, abscisses, listDataPlot);
+            this.affichageHistogramme = true;
         },
 
-
         sendData(data) {
-            // const data = { /* Vos données ici */ };
             fetch('127.0.0.1:5000/api/data', {
                 method: 'POST',
                 headers: {
@@ -594,6 +632,9 @@ export default {
                     type: 'heatmap',
                     // height: 550,
                 },
+                dataLabels: {
+                    enabled: false
+                },
                 colors: ['#008FFB'],
                 title: {
                     text: 'Heatmap Chart',
@@ -633,6 +674,7 @@ export default {
                 title: {
                     text: 'Number of project stars',
                 },
+
                 accessibility: {
                     description: 'The chart is showing the shapes of three mountain ranges as three area line series laid out in 3D behind each other.',
                     keyboardNavigation: {
@@ -801,185 +843,6 @@ export default {
         },
     }
 };
-
-
-
-
-
-
-//         roseVentAffichage() {
-//             var L = [];
-//            this.roseChart();
-
-// for (const element of this.selectedScenario) {
-//     // RECUPERATION DES DONNES AVEC DES FECTH - c
-//     var file = 'http://localhost:0/' + element["name"] + '.json';
-//     fetch(file)
-//         .then(response => response.json())
-//         .then(data => {
-//             console.log(data);
-//             for (const property in data) {
-//                 var dict = {
-//                     angle: parseFloat(`${data[property]["Dir(vent)()"]}`),
-//                     speed: parseFloat(`${data[property]["U(vent)(m)"]}`),
-//                 };
-//                 L.push(dict);
-//             }
-//             // this.lineChart(L);
-//         })
-//         // }
-//     }
-// }
-
-//   const chartOptions2 = reactive({
-//     //  type: 'horizontal column',
-//     //type: 'simpleLine',
-//     legend: {
-//         visible: true,
-//         position: 'bottom right',
-//         // legendEntry_visible: false
-//     },
-// 	title: { label: { text: 'Cost over time' } },
-// 	yAxis: [
-//         /* Main axis is defined first. */
-//         { formatString: 'c' },
-/* Secondary axis will sync with main axis by default. */
-// {
-// 	id: 'secondY',
-// 	orientation: 'opposite',
-// 	line: { color: '#e2e2e2' },
-// 	defaultTick: {
-// 		enabled: false,
-// 		gridLine: { visible: false }
-// 	}
-// }
-// ],
-// xAxis: {
-//     crosshair: { enabled: true },
-//     scale: { type: 'time' }
-// },
-// defaultSeries: {
-//     type: 'line',
-//     defaultPoint: {
-//         marker: { visible: false }
-//     },
-// lastPoint: {
-// 	label: { text: '<b>%seriesName</b>' },
-// 	yAxisTick: {
-// 		axisId: 'secondY',
-// 		label: { text: '%yValue' }
-// 	}
-// }
-// }
-//  series: [
-// 		{
-// 			name: 'Purchases',
-// 			points: [
-// 				['1/1/2020', 29.9],
-// 				['2/1/2020', 97.5],
-// 				['3/1/2020', 110.4],
-// 				['4/1/2020', 129.2],
-// 				['5/1/2020', 144.0],
-// 				['6/1/2020', 176.0],
-// 				['7/1/2020', 182.0],
-// 				['8/1/2020', 186.0],
-// 				['9/1/2020', 181.0],
-// 				['10/1/2020', 178.0],
-// 				['11/1/2020', 184.0],
-// 				['12/1/2020', 176.0]
-// 			]
-// 		},
-// 		{
-// 			name: 'Taxes',
-// 			points: [
-// 				['1/1/2020', 86.9],
-// 				['2/1/2020', 79.5],
-// 				['3/1/2020', 95.4],
-// 				['4/1/2020', 97.2],
-// 				['5/1/2020', 123.0],
-// 				['6/1/2020', 111.0],
-// 				['7/1/2020', 122.0],
-// 				['8/1/2020', 135.0],
-// 				['9/1/2020', 140.0],
-// 				['10/1/2020', 139.0],
-// 				['11/1/2020', 135.0],
-// 				['12/1/2020', 132.0]
-// 			]
-// 		},
-// 		{
-// 			name: 'Supplies',
-// 			points: [
-// 				['1/1/2020', 129.9],
-// 				['2/1/2020', 111.5],
-// 				['3/1/2020', 66.4],
-// 				['4/1/2020', 29.2],
-// 				['5/1/2020', 88.0],
-// 				['6/1/2020', 102.0],
-// 				['7/1/2020', 82.0],
-// 				['8/1/2020', 75.0],
-// 				['9/1/2020', 162.0],
-// 				['10/1/2020', 110.0],
-// 				['11/1/2020', 90.0],
-// 				['12/1/2020', 85.0]
-// 			]
-// 		},
-// 		{
-// 			name: 'Rent',
-// 			points: [
-// 				['1/1/2020', 56.9],
-// 				['2/1/2020', 56.5],
-// 				['3/1/2020', 56.4],
-// 				['4/1/2020', 56.2],
-// 				['5/1/2020', 75.0],
-// 				['6/1/2020', 56.0],
-// 				['7/1/2020', 56.0],
-// 				['8/1/2020', 56.0],
-// 				['9/1/2020', 56.0],
-// 				['10/1/2020', 67.0],
-// 				['11/1/2020', 67.0],
-// 				['12/1/2020', 67.0]
-// 			]
-// 		}
-//  ]
-// });
-
-//     const chartOptions3 = reactive({
-//     debug: true,
-//     type: 'column',
-//     yAxis: {
-//         scale_type: 'stacked',
-//         label_text: 'Units Sold'
-//     },
-//     title_label_text: 'Acme Tool Sales',
-//     xAxis: {
-//         label_text: 'Quarter',
-//         categories: ['Q1', 'Q2', 'Q3', 'Q4']
-//     },
-//     series: [
-//         {
-//         name: 'Saw',
-//         id: 's1',
-//         points: [230, 240, 267, 238]
-//         },
-//         {
-//         name: 'Hammer',
-//         points: [325, 367, 382, 371]
-//         },
-//         {
-//         name: 'Grinder',
-//         points: [285, 292, 267, 218]
-//         },
-//         {
-//         name: 'Drill',
-//         points: [185, 192, 198, 248]
-//         }
-//     ]
-//     });
-
-//   return { chartOptions, chartOptions2, chartOptions3 };
-
-// }
-
 
 </script>
 

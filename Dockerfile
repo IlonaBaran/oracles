@@ -12,8 +12,12 @@ RUN npm install
 # If you are building your code for production
 # RUN npm install --only=production
 
-# Bundle app source
-COPY . .
+# Copy necessary project files
+COPY babel.config.js ./
+COPY jsconfig.json ./
+COPY vue.config.js ./
+COPY public ./public
+COPY src ./src
 
 EXPOSE 8080
 CMD [ "npm", "run", "serve" ]

@@ -109,6 +109,9 @@ export default {
     // },
 
     methods: {
+        ret() {
+            return this.selectedScenario
+        },
         validation() {
             this.disabled = "";
             this.valide = " p-disabled";

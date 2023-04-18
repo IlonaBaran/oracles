@@ -2,6 +2,8 @@
 import * as GeoTIFF from 'geotiff';
 import { FileSource, THREE, Style, proj4, Extent, FeatureGeometryLayer, Coordinates, GlobeView, WMTSSource, WMSSource, ColorLayer, ElevationLayer, Copy, As } from "../../node_modules/itowns/dist/itowns";
 import { async } from 'regenerator-runtime';
+import { THREE, Coordinates } from "../../node_modules/itowns/dist/itowns";
+
 
 export async function getImage(url) {
     return new Promise((resolve, reject) => {

@@ -11,13 +11,12 @@
 import Toolbar from "./Toolbar.vue";
 import App from "../App.vue";
 import '../../node_modules/itowns/examples/css/widgets.css'
-import { FileSource, THREE, Style, proj4, Extent, FeatureGeometryLayer, Coordinates, GlobeView, PlanarView, WMTSSource, WMSSource, ColorLayer, ElevationLayer, Copy, As } from "../../node_modules/itowns/dist/itowns";
+import { proj4, Extent, PlanarView } from "../../node_modules/itowns/dist/itowns";
 import { ref } from "vue";
 import { getHeightMesh, getImage, getData, averageLists, minLists, maxLists, getHeightFromScenarios, concatenateHeightMapList } from '../services/Height_service.js'
 import { layerOrtho, layerDEM, layerPLAN } from '../services/WMS_service.js'
-import { basic } from '../services/FileSource_service.js'
-import { image } from "d3-fetch";
 import { isProxy, toRaw } from 'vue';
+import { bati } from '../services/FileSource_service.js'
 
 
 let view = ref(false);
@@ -78,7 +77,7 @@ export default {
 
     view.addLayer(layerPLAN)
     view.addLayer(layerDEM);
-    view.addLayer(basic);
+    view.addLayer(bati);
     view.addLayer(layerOrtho);
 
     view.controls.enableRotation = false;
@@ -91,17 +90,17 @@ export default {
   methods: {
     changeMap() {
       if (this.$refs.childComponent.mapSelected == "plan") {
-        view.tileLayer.attachedLayers[1 - 1].visible = true;
-        view.tileLayer.attachedLayers[4 - 1].visible = false;
+        view.tileLayer.attachedLayers[0].visible = true;
+        view.tileLayer.attachedLayers[3].visible = false;
         view.notifyChange();
       } else {
-        view.tileLayer.attachedLayers[1 - 1].visible = false;
-        view.tileLayer.attachedLayers[4 - 1].visible = true;
+        view.tileLayer.attachedLayers[0].visible = false;
+        view.tileLayer.attachedLayers[3].visible = true;
         view.notifyChange();
       }
     },
     building() {
-      view.tileLayer.attachedLayers[3 - 1].visible = this.$refs.childComponent.visibleBuilding;
+      view.tileLayer.attachedLayers[2].visible = this.$refs.childComponent.visibleBuilding;
       view.notifyChange();
     },
 
