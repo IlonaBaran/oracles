@@ -10,11 +10,11 @@
 /* eslint-disable */
 import Toolbar from "./Toolbar.vue";
 import '../../node_modules/itowns/examples/css/widgets.css'
-import { FileSource, THREE, Style, proj4, Extent, FeatureGeometryLayer, Coordinates, GlobeView, PlanarView, WMTSSource, WMSSource, ColorLayer, ElevationLayer, Copy, As } from "../../node_modules/itowns/dist/itowns";
+import { proj4, Extent, PlanarView } from "../../node_modules/itowns/dist/itowns";
 import { ref } from "vue";
 import { getHeightMesh, getImage, getData, averageLists, minLists, maxLists, getHeightFromScenarios } from '../services/Height_service.js'
 import { layerOrtho, layerDEM, layerPLAN } from '../services/WMS_service.js'
-import { basic } from '../services/FileSource_service.js'
+import { bati } from '../services/FileSource_service.js'
 import { image } from "d3-fetch";
 
 
@@ -67,55 +67,8 @@ export default {
 
     view.addLayer(layerPLAN)
     view.addLayer(layerDEM);
-    view.addLayer(basic);
+    view.addLayer(bati);
     view.addLayer(layerOrtho);
-
-
-    ////------------------------------------------------------
-    //RECUPERER UNE URL 
-    // getImage('http://localhost:8080/output_rasters/S_1040/S_1040_hmax.tif').then(image => {
-    //   getHeightMesh(image).then(mesh => {
-    //     view.scene.add(mesh);
-    //     view.mesh = mesh;
-    //     view.notifyChange();
-    //   })
-    // })
-
-
-    //------------------------------------------------------
-    //RECUPERER PLUSIEURS URL
-    // let Scenarios = [
-    //   'http://localhost:8080/output_rasters/S_1040/S_1040_hmax.tif',
-    //   'http://localhost:8080/output_rasters/S_1069/S_1069_hmax.tif',
-    // ]
-
-    // let listImages = [];
-    // Promise.all(Scenarios.map(getImage))
-    //   .then((images) => {
-    //     listImages = images;
-    //     console.log('All images loaded:', listImages);
-
-    //     getData(listImages)
-    //       .then(scenarios => {
-
-    //         let avgOfScenarios = [averageLists(scenarios.datas)];
-    //         let minOfScenarios = [minLists(scenarios.datas)];
-    //         let maxOfScenarios = [maxLists(scenarios.datas)];
-
-    //         let bbox = scenarios.bbox; let width = scenarios.width; let height = scenarios.height;
-    //         let data = maxOfScenarios;
-
-    //         console.log('data', data)
-
-    //         getHeightFromScenarios(bbox, width, height, data).then(mesh => {
-    //           view.scene.add(mesh);
-    //           view.mesh = mesh;
-    //           view.notifyChange();
-    //         })
-
-    //       })
-
-    //   })
 
     view.controls.enableRotation = false;
     view.notifyChange();
@@ -124,17 +77,17 @@ export default {
   methods: {
     changeMap() {
       if (this.$refs.childComponent.mapSelected == "plan") {
-        view.tileLayer.attachedLayers[1 - 1].visible = true;
-        view.tileLayer.attachedLayers[4 - 1].visible = false;
+        view.tileLayer.attachedLayers[0].visible = true;
+        view.tileLayer.attachedLayers[3].visible = false;
         view.notifyChange();
       } else {
-        view.tileLayer.attachedLayers[1 - 1].visible = false;
-        view.tileLayer.attachedLayers[4 - 1].visible = true;
+        view.tileLayer.attachedLayers[0].visible = false;
+        view.tileLayer.attachedLayers[3].visible = true;
         view.notifyChange();
       }
     },
     building() {
-      view.tileLayer.attachedLayers[3 - 1].visible = this.$refs.childComponent.visibleBuilding;
+      view.tileLayer.attachedLayers[2].visible = this.$refs.childComponent.visibleBuilding;
       view.notifyChange();
     },
 
