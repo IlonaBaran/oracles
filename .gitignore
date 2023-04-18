@@ -11,6 +11,7 @@ node_modules
 data/Data
 data/jsonData
 data/output_rasters
+data/output_rasters_clipped
 
 # local env files
 .env.local
