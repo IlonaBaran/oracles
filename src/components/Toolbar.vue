@@ -13,7 +13,23 @@
         associée.
       </p>
       <MultiSelect v-model="selectedScenario2" :options="selectedScenario" filter optionLabel="name"
-        placeholder="Sélection Scénarios" :maxSelectedLabels="3" class="w-full md:w-20rem selectScenario"/>
+        placeholder="Sélection Scénarios" :maxSelectedLabels="3" class="w-full md:w-20rem selectScenario" />
+    </div>
+
+    <div class="flex flex-wrap gap-20">
+      <div class="flex align-items-center">
+        <RadioButton v-model="math" inputId="math1" name="math" value="Moy" />
+        <label for="math1" class="ml-2">Moy</label>
+      </div>
+      <div class="flex align-items-center">
+        <RadioButton v-model="math" inputId="math2" name="math" value="Min" />
+        <label for="math2" class="ml-2">Min</label>
+      </div>
+      <div class="flex align-items-center">
+        <RadioButton v-model="math" inputId="math3" name="math" value="Max" />
+        <label for="math3" class="ml-2">Max</label>
+      </div>
+
     </div>
 
     <div>
@@ -62,6 +78,8 @@
 /* eslint-disable */
 import { ref } from "vue";
 
+
+
 import Header from './Header.vue';
 import App from '../App.vue';
 
@@ -73,6 +91,7 @@ import Sidebar from 'primevue/sidebar';
 import Button from 'primevue/button';
 import MultiSelect from 'primevue/multiselect';
 import SelectButton from 'primevue/selectbutton';
+import RadioButton from 'primevue/radiobutton';
 
 
 export default {
@@ -82,7 +101,8 @@ export default {
     Sidebar,
     Button,
     MultiSelect,
-    SelectButton
+    SelectButton,
+    RadioButton
 
   },
   data() {
@@ -93,6 +113,8 @@ export default {
       selectedOption: ref('2D'),
       options: ref(['2D', '3D']),
       checked: ref(false),
+      math: ref(''),
+
 
       visibleRight: false, // visibilité du panel de fonds de carte
       visibleBuilding: false, // visibilité des bâtiments
