@@ -1,6 +1,9 @@
 /* eslint-disable */
 import * as GeoTIFF from 'geotiff';
+import { FileSource, THREE, Style, proj4, Extent, FeatureGeometryLayer, Coordinates, GlobeView, WMTSSource, WMSSource, ColorLayer, ElevationLayer, Copy, As } from "../../node_modules/itowns/dist/itowns";
+import { async } from 'regenerator-runtime';
 import { THREE, Coordinates } from "../../node_modules/itowns/dist/itowns";
+
 
 export async function getImage(url) {
     return new Promise((resolve, reject) => {
@@ -274,6 +277,17 @@ export async function getHeightFromScenarios(bbox, width, height, data) {
     console.log('mesh', mesh);
 
     return mesh;
+}
+
+export function concatenateHeightMapList(heightMapList) {
+    let concatenatedList = [];
+
+    for (let i = 0; i < heightMapList.length; i++) {
+        let concatenated = "http://localhost:8080/output_rasters/" + heightMapList[i].name + "/" + heightMapList[i].name + "_hmax.tif";
+        concatenatedList.push(concatenated);
+    }
+
+    return concatenatedList;
 }
 
 

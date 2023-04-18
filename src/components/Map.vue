@@ -2,18 +2,20 @@
   <div id="viewerDiv" class="viewer" @click="showCoords">
   </div>
   <Toolbar @icon-clicked="changeMap" ref="childComponent" @change-building="building" @reinit-view="cameraView"
-    @vue-2d="vue2d" @vue-3d="vue3d">
+    @vue-2d="vue2d" @vue-3d="vue3d" :selectedScenario="this.selectedScenario" @updateScenarios="updateHeightmap">
   </Toolbar>
 </template>
 
 <script>
 /* eslint-disable */
 import Toolbar from "./Toolbar.vue";
+import App from "../App.vue";
 import '../../node_modules/itowns/examples/css/widgets.css'
 import { proj4, Extent, PlanarView } from "../../node_modules/itowns/dist/itowns";
 import { ref } from "vue";
-import { getHeightMesh, getImage, getData, averageLists, minLists, maxLists, getHeightFromScenarios } from '../services/Height_service.js'
+import { getHeightMesh, getImage, getData, averageLists, minLists, maxLists, getHeightFromScenarios, concatenateHeightMapList } from '../services/Height_service.js'
 import { layerOrtho, layerDEM, layerPLAN } from '../services/WMS_service.js'
+import { isProxy, toRaw } from 'vue';
 import { bati } from '../services/FileSource_service.js'
 
 
@@ -28,10 +30,19 @@ export default {
   },
   data() {
     return {
+      jsonemit: {},
+      math: "",
+      heightmaps: [],
+      urlList: [],
       viewNew: ref(false),
     }
   },
-
+  props: {
+    selectedScenario: {
+      type: Object,
+      required: true
+    }
+  },
   components: {
     Toolbar,
   },
@@ -72,6 +83,9 @@ export default {
     view.controls.enableRotation = false;
     view.notifyChange();
 
+    console.log('3dobjects', view.scene)
+
+
   },
   methods: {
     changeMap() {
@@ -111,6 +125,77 @@ export default {
       view.controls.enableRotation = true;
       view.notifyChange();
     },
+    updateHeightmap(jsonemit) {
+      this.jsonemit = jsonemit;
+      console.log("read from map.vue : ", this.jsonemit.math)
+
+
+      if (view.scene.children.length > 1) {
+        view.scene.children[view.scene.children.length - 1].removeFromParent()
+      }
+
+      this.heightmaps = this.jsonemit.selectedScenario2;
+      this.urlList = concatenateHeightMapList(this.heightmaps);
+      const Scenarios = toRaw(this.urlList)
+
+      if (Scenarios.length == 1) {
+        getImage(Scenarios[0]).then(image => {
+          getHeightMesh(image).then(mesh => {
+            view.scene.add(mesh);
+            view.mesh = mesh;
+            view.notifyChange();
+          })
+        })
+
+      } else {
+
+        let listImages = [];
+        Promise.all(Scenarios.map(getImage))
+          .then((images) => {
+            listImages = images;
+
+            getData(listImages)
+              .then(scenarios => {
+
+                let data;
+                switch (this.jsonemit.math) {
+                  case 'Moy':
+                    data = [averageLists(scenarios.datas)];
+                    console.log('moy')
+                    break;
+                  case 'Min':
+                    data = [minLists(scenarios.datas)];
+                    console.log('min')
+                    break;
+                  case 'Max':
+                    data = [maxLists(scenarios.datas)];
+                    console.log('max')
+                    break;
+                }
+
+                console.log('getting data')
+
+                let bbox = scenarios.bbox; let width = scenarios.width; let height = scenarios.height;
+
+                getHeightFromScenarios(bbox, width, height, data).then(mesh => {
+                  view.scene.add(mesh);
+                  view.mesh = mesh;
+                  view.notifyChange();
+                })
+
+              })
+
+          })
+
+        console.log('added mesh ', view.scene)
+        console.log('done')
+
+      }
+
+      console.log(Scenarios)
+
+
+    }
 
   }
 

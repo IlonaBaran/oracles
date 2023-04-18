@@ -11,7 +11,8 @@
                 <!-- Outil de sélection des scénarios -->
                 <MultiSelect v-model="selectedScenario" :options="scenario" filter optionLabel="name"
                     placeholder="Sélection Scénarios" :maxSelectedLabels="3"
-                    class="w-full md:w-20rem selectScenario margin-right:15px" :selectedScenario="this.selectedScenario" />
+                    class="w-full md:w-20rem selectScenario margin-right:15px" :selectedScenario="this.selectedScenario"
+                    @change="emitSelectedScenarioChanged" />
 
                 <!-- Outil de sélection des graphiques -->
                 <CascadeSelect v-model="selectedGraph" :options="countries" optionLabel="name" optionGroupLabel="name"
@@ -36,17 +37,19 @@
         <!-- Ajout du composant présent dans Panel.vue, passage des valeurs des arguments selectedScenario et selectedGraph -->
         <Panel ref="panelGraph" :selectedScenario="this.selectedScenario" :selectedGraph="this.selectedGraph"></Panel>
 
+
     </div>
 </template>
 
 
 <script>
-
+/* eslint-disable */
 // Import d'une fonction
 import { ref } from "vue";
 
 // Import du composant
 import Panel from './Panel.vue';
+import App from '../App.vue';
 
 // Import des éléments des librairies
 import Toolbar from 'primevue/toolbar';
@@ -125,7 +128,6 @@ export default {
 
         //  Récupérer le nom des dossiers et les transmettre à la variable scenario
         getDossier() {
-            console.log("données à charger")
             fetch('http://127.0.0.1:5000/arboresance')
                 .then(response => response.json())
                 .then(data => {
@@ -145,6 +147,9 @@ export default {
 
         appelMethodeDansPanel() {
             this.$refs.panelRef.nomDeLaMethodeDansPanel();
+        },
+        emitSelectedScenarioChanged() {
+            this.$emit('selectedScenarioChanged', this.selectedScenario);
         }
     },
     mounted() { this.getDossier() }
