@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { FileSource, THREE, Style, proj4, Extent, FeatureGeometryLayer, Coordinates, GlobeView, WMTSSource, WMSSource, ColorLayer, ElevationLayer, Copy, As } from "../../node_modules/itowns/dist/itowns";
+import { FileSource, THREE, Style, FeatureGeometryLayer } from "../../node_modules/itowns/dist/itowns";
 
 function setAltitude(properties) {
     if (properties.altitude_sol != null) {
@@ -25,7 +25,7 @@ const batsource = new FileSource({
 });
 
 
-export let basic = new FeatureGeometryLayer('basic', {
+export let bati = new FeatureGeometryLayer('bati', {
     // Use a FileSource to load a single file once
     source: batsource,
     transparent: true,
