@@ -125,9 +125,9 @@ export async function getHeightMesh(image) {
 
     function minuszero(value) {
         if (value <= 0) {
-            return -2
+            return -10
         } else if (value > 8848) {
-            return -2
+            return -10
         } else {
             return value
         }
@@ -177,7 +177,6 @@ export async function getHeightMesh(image) {
 
     // create material
     const material = new THREE.MeshBasicMaterial({
-        wireframe: true,
         transparent: true,
         opacity: 0.8,
         color: 0x0000FF,
@@ -216,9 +215,9 @@ export async function getHeightFromScenarios(bbox, width, height, data) {
 
     function minuszero(value) {
         if (value <= 0) {
-            return -2
+            return -10
         } else if (value > 8848) {
-            return -2
+            return -10
         } else {
             return value
         }
@@ -261,11 +260,10 @@ export async function getHeightFromScenarios(bbox, width, height, data) {
     //Setting attributes to the geometry
     geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(vertices), 3));
     geometry.setAttribute('normal', new THREE.BufferAttribute(new Float32Array(indices), 3));
-
+    console.log(vertices)
 
     // create material
     const material = new THREE.MeshBasicMaterial({
-        wireframe: true,
         transparent: true,
         opacity: 0.8,
         color: 0x0000FF,
@@ -283,8 +281,9 @@ export function concatenateHeightMapList(heightMapList) {
     let concatenatedList = [];
 
     for (let i = 0; i < heightMapList.length; i++) {
-        let concatenated = "http://localhost:8080/output_rasters/" + heightMapList[i].name + "/" + heightMapList[i].name + "_hmax.tif";
+        let concatenated = "http://localhost:8080/output_rasters_clipped/" /* + heightMapList[i].name + "/" */ + heightMapList[i].name + "_hmax.tif";
         concatenatedList.push(concatenated);
+        console.log(concatenated)
     }
 
     return concatenatedList;
