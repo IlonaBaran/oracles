@@ -15,7 +15,6 @@ import { ref } from "vue";
 import { getHeightMesh, getImage, getData, averageLists, minLists, maxLists, getHeightFromScenarios } from '../services/Height_service.js'
 import { layerOrtho, layerDEM, layerPLAN } from '../services/WMS_service.js'
 import { bati } from '../services/FileSource_service.js'
-import { image } from "d3-fetch";
 
 
 let view = ref(false);
