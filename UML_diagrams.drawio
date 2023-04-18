@@ -1,11 +1,14 @@
-<mxfile host="app.diagrams.net" modified="2023-04-06T08:02:10.253Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36" etag="91onFMGxhW7izzuqwm1v" version="21.1.4" type="github" pages="7">
+<mxfile host="app.diagrams.net" modified="2023-04-18T09:52:38.516Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36 Edg/112.0.1722.48" etag="xEXl8R-PeyXgdUE0oJ4V" version="21.1.8" type="github" pages="7">
   <diagram id="yPDn8Lph00N95JW0atBV" name="user">
-    <mxGraphModel dx="1949" dy="596" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1995" dy="1805" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
+        <mxCell id="HfBj9nuqS3NElBbqQdhw-1" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-720" y="-10" width="490" height="570" as="geometry" />
+        </mxCell>
         <mxCell id="eLYtYys3gFhz9bifagLl-1" value="Actor" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" parent="1" vertex="1">
-          <mxGeometry x="-780" y="210" width="30" height="60" as="geometry" />
+          <mxGeometry x="-800" y="220" width="30" height="60" as="geometry" />
         </mxCell>
         <mxCell id="Nc5_KZlm4uyUPGM0GwBJ-1" value="&lt;b&gt;Visualiser les sites de Gavre et Arcachon&lt;/b&gt;" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="-625" y="30" width="280" height="40" as="geometry" />
@@ -16,16 +19,16 @@
         <mxCell id="z-hk673n-tnqEPXCckuk-2" value="&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;Visualiser les attributs Inputs sous forme de graphique &lt;/b&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Temps, Maree (m), NMR (m), Surcote (m), Hs(vagues) (m), Tp(vagues), Dp(vagues),U(vent) (m/s)&lt;br&gt;Dir(vent)&lt;br&gt;&lt;/div&gt;" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="-667.5" y="190" width="365" height="150" as="geometry" />
         </mxCell>
-        <mxCell id="z-hk673n-tnqEPXCckuk-3" value="&lt;div&gt;&lt;b&gt;Visualiser sur carte la hauteur final de l&#39;eau &lt;/b&gt;&lt;/div&gt;" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+        <mxCell id="z-hk673n-tnqEPXCckuk-3" value="&lt;div&gt;&lt;b&gt;Visualiser sur carte la hauteur minimale de l&#39;eau &lt;/b&gt;&lt;/div&gt;" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="-642.5" y="350" width="315" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="z-hk673n-tnqEPXCckuk-4" value="&lt;div&gt;&lt;b&gt;Visualiser sur carte la hauteur maximal de l&#39;eau &lt;/b&gt;&lt;/div&gt;" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+        <mxCell id="z-hk673n-tnqEPXCckuk-4" value="&lt;div&gt;&lt;b&gt;Visualiser sur carte la hauteur maximale de l&#39;eau &lt;/b&gt;&lt;/div&gt;" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="-642.5" y="420" width="315" height="60" as="geometry" />
         </mxCell>
         <mxCell id="z-hk673n-tnqEPXCckuk-5" value="&lt;div&gt;&lt;b&gt;Pour un Scénario&lt;/b&gt;&lt;/div&gt;" style="text;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="-550" y="160" width="130" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="z-hk673n-tnqEPXCckuk-6" value="&lt;div&gt;&lt;b&gt;Comparer a minima deux scénarios,&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;graphiques + visu cartes&lt;br&gt;&lt;/b&gt;&lt;/div&gt;" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+        <mxCell id="z-hk673n-tnqEPXCckuk-6" value="&lt;div&gt;&lt;b&gt;Comparer à minima deux scénarios,&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;graphiques + visu cartes&lt;br&gt;&lt;/b&gt;&lt;/div&gt;" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="-642.5" y="490" width="315" height="60" as="geometry" />
         </mxCell>
         <mxCell id="FrUJMq4o7T1fBLYbls6T-1" value="" style="endArrow=none;html=1;rounded=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="eLYtYys3gFhz9bifagLl-1" target="Nc5_KZlm4uyUPGM0GwBJ-1" edge="1">
@@ -107,7 +110,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="s5TAlvskmhg0fvF0SpDB" name="diagramme_classe">
-    <mxGraphModel dx="1122" dy="1765" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="993" dy="1710" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -181,7 +184,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="C5RBs43oDa-KdzZeNtuy" name="class">
-    <mxGraphModel dx="1949" dy="596" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1820" dy="541" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="WIyWlLk6GJQsqaUBKTNV-0" />
         <mxCell id="WIyWlLk6GJQsqaUBKTNV-1" parent="WIyWlLk6GJQsqaUBKTNV-0" />
@@ -336,7 +339,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="V0l2gZ4VkTd2G1OGc20p" name="Model site_SPA">
-    <mxGraphModel dx="1122" dy="596" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="993" dy="541" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
