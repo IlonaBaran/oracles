@@ -17,6 +17,7 @@ import { getHeightMesh, getImage, getData, averageLists, minLists, maxLists, get
 import { layerOrtho, layerDEM, layerPLAN } from '../services/WMS_service.js'
 import { basic } from '../services/FileSource_service.js'
 import { image } from "d3-fetch";
+import { isProxy, toRaw } from 'vue';
 
 
 let view = ref(false);
@@ -129,6 +130,9 @@ export default {
     view.controls.enableRotation = false;
     view.notifyChange();
 
+    console.log('3dobjects', view.scene)
+
+
   },
   methods: {
     changeMap() {
@@ -169,10 +173,59 @@ export default {
       view.notifyChange();
     },
     updateHeightmap(selectedScenario2) {
+
+      if (view.scene.children.length > 1) {
+        view.scene.children[view.scene.children.length - 1].removeFromParent()
+      }
+
       this.heightmaps = selectedScenario2;
-      console.log("updated scenarios on map.vue")
       this.urlList = concatenateHeightMapList(this.heightmaps);
-      console.log(this.urlList)
+      const Scenarios = toRaw(this.urlList)
+
+      if (Scenarios.length == 1) {
+        getImage(Scenarios[0]).then(image => {
+          getHeightMesh(image).then(mesh => {
+            view.scene.add(mesh);
+            view.mesh = mesh;
+            view.notifyChange();
+          })
+        })
+
+      } else {
+
+        let listImages = [];
+        Promise.all(Scenarios.map(getImage))
+          .then((images) => {
+            listImages = images;
+
+            getData(listImages)
+              .then(scenarios => {
+
+                let avgOfScenarios = [averageLists(scenarios.datas)];
+                let minOfScenarios = [minLists(scenarios.datas)];
+                let maxOfScenarios = [maxLists(scenarios.datas)];
+
+                let bbox = scenarios.bbox; let width = scenarios.width; let height = scenarios.height;
+                let data = maxOfScenarios;
+
+                getHeightFromScenarios(bbox, width, height, data).then(mesh => {
+                  view.scene.add(mesh);
+                  view.mesh = mesh;
+                  view.notifyChange();
+                })
+
+              })
+
+          })
+
+        console.log('added mesh ', view.scene)
+        console.log('done')
+
+      }
+
+      console.log(Scenarios)
+
+
     }
 
   }

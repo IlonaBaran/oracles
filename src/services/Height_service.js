@@ -277,7 +277,7 @@ export async function getHeightFromScenarios(bbox, width, height, data) {
     return mesh;
 }
 
-export async function concatenateHeightMapList(heightMapList) {
+export function concatenateHeightMapList(heightMapList) {
     let concatenatedList = [];
 
     for (let i = 0; i < heightMapList.length; i++) {
