@@ -210,7 +210,8 @@ export default {
 
       } else {
         console.log("One Scenario Selected")
-        this.$emit('updateScenarios', this.selectedScenario2);
+        let jsonemit = { selectedScenario2: this.selectedScenario2 }
+        this.$emit('updateScenarios', jsonemit);
       }
 
     }
