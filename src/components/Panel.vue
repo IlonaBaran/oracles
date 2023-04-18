@@ -2,15 +2,17 @@
     <!-- Panel de gauche -->
     <div class="card p-hidden">
 
-        <!-- Texte présent dedans -->
+        <!-- Texte présent à l'intérieur du panel  -->
         <Card>
-            <template #title>
-                Options
-            </template>
+            <!-- Titre du panel -->
+            <template #title>Graphiques</template>
 
             <template #content>
+
+                <!-- Ajout d'un scroll -->
                 <ScrollPanel style="width: 100%; height: 75vh " class="custombar1">
 
+                    <!-- Div des graphiques lignes -->
                     <div v-if="selectedGraph.name == 'Ligne'">
                         <div v-if="this.affichageLigne == true">
                             <apexchart :options="this.chartOptions" :series="this.series" />
@@ -20,12 +22,14 @@
                         </div>
                     </div>
 
+                    <!-- Div des graphiques rose des vents -->
                     <div v-else-if="selectedGraph.name == 'Rose des vents'">
                         <button @click="roseVentAffichage">Affichage d'un diagramme rose des vents</button>
                         <vue-highcharts type="chart" :options="this.chartOptions2" :redrawOnUpdate="true"
                             :oneToOneUpdate="false" :animateOnUpdate="true" />
                     </div>
 
+                    <!-- Div des graphiques histogrammes -->
                     <div v-else-if="selectedGraph.name == 'Histogramme empilé'">
                         <div v-if="this.affichageHistogramme == true">
                             <apexchart :options="this.chartOptions5Surcote" :series="this.series5Surcote" />
@@ -36,17 +40,20 @@
                         </div>
                     </div>
 
+                    <!-- Div des graphiques de chaleur -->
                     <div v-else-if="selectedGraph.name == 'Chaleur'">
                         <div v-if="this.affichageHeat == true">
                             <apexchart :options="this.chartOptions3" :series="this.series3" />
                         </div>
                     </div>
 
-                    <!-- <div v-else-if="selectedGraph.name == 'Graph3D 1'">
+                    <div v-else-if="selectedGraph.name == 'Graph3D 1'">
                         <button @click="TD1Affichage">jvrbrgunrjenguibgzy</button>
                         <vue-highcharts :options="this.chartOptions4"></vue-highcharts>
 
-                    </div> -->
+                    </div>
+
+                    <!-- Div d'avertissement si il n'y a pas de graphiques sélectionnés -->
                     <div v-else>
                         <p>Veuillez choisir un type de graphique</p>
                     </div>
@@ -65,18 +72,25 @@
 <script>
 /* eslint-disable */
 
-
+// Import des éléments des librairies
 import * as d3 from 'd3';
 import VueHighcharts from 'vue3-highcharts';
 import HighCharts from 'highcharts';
+import Highcharts3D from 'highcharts/highcharts-3d'
+
 import HighchartsMore from 'highcharts/highcharts-more';
 HighchartsMore(HighCharts);
+Highcharts3D(HighCharts)
 
 import Card from 'primevue/card';
 import ScrollPanel from 'primevue/scrollpanel';
 
+
+
+
 import { ref } from "vue";
 import { reactive } from "vue";
+
 
 export default {
     name: 'panelComponent',
@@ -85,49 +99,55 @@ export default {
         Card,
         ScrollPanel,
         VueHighcharts
-
     },
 
     props: {
-        selectedScenario: {
+        selectedScenario: { /* Liste des scénarios sélectionnés, valeur récupérée du composant Header.vue */
             type: Object,
             required: true
         },
-        selectedGraph: {
+        selectedGraph: { /* Liste des graphiques sélectionnées, valeur récupérée du composant Header.vue */
             type: Object,
             required: true
         },
     },
 
-
     data() {
         return {
+
+            // Booléens d'affichage du panel
             checked: ref(false),
             checkedPanel: ref(false),
+
+            // Booléens d'affichage des types de graphiques 
             affichageLigne: false,
             affichageHeat: false,
             affichageRose: false,
             affichageHistogramme: false,
 
             // LINE CHART - APEXCHARTS //
+            // Graphiques Ligne des marées
             chartOptions: {
                 chart: { id: 'mychart', height: 350, type: 'line', defaultPoint_marker_visible: false, zoom: { nabled: false } },
                 dataLabels: { enabled: false, grid: { row: { colors: ['#f3f3f3', 'transparent'], opacity: 0.5 }, }, xaxis: { tooltip: { enabled: false }, categories: [], } },
             },
             series: [],
 
+            // Graphiques Ligne des surcôtes
             chartOptionsSurcote: {
                 chart: { id: 'mychart', height: 350, type: 'line', defaultPoint_marker_visible: false, zoom: { nabled: false } },
                 dataLabels: { enabled: false, grid: { row: { colors: ['#f3f3f3', 'transparent'], opacity: 0.5 }, }, xaxis: { tooltip: { enabled: false }, categories: [], } },
             },
             seriesSurcote: [],
 
+            // Graphiques Ligne des vagues
             chartOptionsVagues: {
                 chart: { id: 'mychart', height: 350, type: 'line', defaultPoint_marker_visible: false, zoom: { nabled: false } },
                 dataLabels: { enabled: false, grid: { row: { colors: ['#f3f3f3', 'transparent'], opacity: 0.5 }, }, xaxis: { tooltip: { enabled: false }, categories: [], } },
             },
             seriesVagues: [],
 
+            // Graphiques Ligne des vents
             chartOptionsVent: {
                 chart: { id: 'mychart', height: 350, type: 'line', defaultPoint_marker_visible: false, zoom: { nabled: false } },
                 dataLabels: { enabled: false, grid: { row: { colors: ['#f3f3f3', 'transparent'], opacity: 0.5 }, }, xaxis: { tooltip: { enabled: false }, categories: [], } },
@@ -136,68 +156,38 @@ export default {
 
             // ROSE WIND - HIGHCHARTJS //
             chartOptions2: ({
-                chart: {
-                    polar: true,
-                    type: 'column'
-                },
-                title: {
-                    text: 'En attente de données',
-                },
-                xAxis: {
-                    categories: [],
-                },
-
-                yAxis: {
-                    title: { text: 'En attente de données', },
-                },
-                plotOptions: {
-                    series: {
-                        stacking: 'normal',
-                        shadow: false,
-                        // groupPadding: 0,
-                        pointPlacement: 'on'
-                    }
-                },
+                chart: { polar: true, type: 'column' },
+                title: { text: 'En attente de données', },
+                xAxis: { categories: [], },
+                yAxis: { title: { text: 'En attente de données', }, },
+                plotOptions: { series: { stacking: 'normal', shadow: false, pointPlacement: 'on' } },
                 series: [{}, {}, {}, {}],
             }),
-
 
             // DIAGRAMME EMPILE - APEXCHARTS
             chartOptions5Surcote: ({
                 chart: { type: 'bar', height: 350, stacked: true, stackType: '100%' },
-                responsive: [{
-                    breakpoint: 480,
-                    options: { legend: { position: 'bottom', offsetX: -10, offsetY: 0 } }
-                }],
+                responsive: [{ reakpoint: 480, options: { legend: { position: 'bottom', offsetX: -10, offsetY: 0 } } }],
                 xaxis: { categories: [] },
                 fill: { opacity: 1 },
                 legend: { position: 'right', offsetX: 0, offsetY: 50 },
             }),
 
-
-            series5Surcote: [{ name: 'En attente de données', data: [] }
-            ],
+            series5Surcote: [{ name: 'En attente de données', data: [] }],
 
             chartOptions5Maree: ({
                 chart: { type: 'bar', height: 350, stacked: true, stackType: '100%' },
-                responsive: [{
-                    breakpoint: 480,
-                    options: { legend: { position: 'bottom', offsetX: -10, offsetY: 0 } }
-                }],
+                responsive: [{ breakpoint: 480, options: { legend: { position: 'bottom', offsetX: -10, offsetY: 0 } } }],
                 xaxis: { categories: [] },
                 fill: { opacity: 1 },
                 legend: { position: 'right', offsetX: 0, offsetY: 50 },
             }),
 
-            series5Maree: [{ name: 'En attente de données', data: [] }
-            ],
+            series5Maree: [{ name: 'En attente de données', data: [] }],
 
             chartOptions5Vagues: ({
                 chart: { type: 'bar', height: 350, stacked: true, stackType: '100%' },
-                responsive: [{
-                    breakpoint: 480,
-                    options: { legend: { position: 'bottom', offsetX: -10, offsetY: 0 } }
-                }],
+                responsive: [{ breakpoint: 480, options: { legend: { position: 'bottom', offsetX: -10, offsetY: 0 } } }],
                 xaxis: { categories: [] },
                 fill: { opacity: 1 },
                 legend: { position: 'right', offsetX: 0, offsetY: 50 },
@@ -208,10 +198,7 @@ export default {
 
             chartOptions5Vent: ({
                 chart: { type: 'bar', height: 350, stacked: true, stackType: '100%' },
-                responsive: [{
-                    breakpoint: 480,
-                    options: { legend: { position: 'bottom', offsetX: -10, offsetY: 0 } }
-                }],
+                responsive: [{ breakpoint: 480, options: { legend: { position: 'bottom', offsetX: -10, offsetY: 0 } } }],
                 xaxis: { categories: [] },
                 fill: { opacity: 1 },
                 legend: { position: 'right', offsetX: 0, offsetY: 50 },
@@ -228,23 +215,66 @@ export default {
             // HEAT MAP MAIS EN 3D - HIGHTCHARTS
             chartOptions4: ({
                 chart: {
-                    type: 'line',
+                    type: 'area',
+                    options3d: {
+                        enabled: true,
+                        alpha: 15,
+                        beta: 30,
+                        depth: 200
+                    }
                 },
                 title: {
-                    text: 'En attente de données',
+                    text: 'Visual comparison of Mountains Panorama'
                 },
-                xAxis: {
-                    categories: [],
+                accessibility: {
+                    description: 'The chart is showing the shapes of three mountain ranges as three area line series laid out in 3D behind each other.',
+                    keyboardNavigation: {
+                        seriesNavigation: {
+                            mode: 'serialize'
+                        }
+                    }
+                },
+                lang: {
+                    accessibility: {
+                        axis: {
+                            xAxisDescriptionPlural: 'The chart has 3 unlabelled X axes, one for each series.'
+                        }
+                    }
                 },
                 yAxis: {
                     title: {
-                        text: 'En attente de données',
+                        text: 'Height Above Sea Level',
+                        x: 0
                     },
+                    labels: {
+                        format: '{value:,.0f} MAMSL'
+                    },
+                    gridLineDashStyle: 'Dash'
                 },
-                series: [{
-                    name: 'En attente de données',
-                    data: [],
+                xAxis: [{
+                    visible: false
+                }, {
+                    visible: false
+                }, {
+                    visible: false
                 }],
+                plotOptions: {
+                    area: {
+                        depth: 100,
+                        marker: {
+                            enabled: false
+                        },
+                        states: {
+                            inactive: {
+                                enabled: false
+                            }
+                        }
+                    }
+                },
+                tooltip: {
+                    valueSuffix: ' MAMSL'
+                },
+                series: [{}]
             }),
         }
     },
@@ -356,61 +386,37 @@ export default {
         roseVentAffichage() {
 
             this.chartOptions2 = ({
-                chart: {
-                    polar: true,
-                    type: 'column'
-                },
-                title: {
-                    text: 'Number of project stars',
-                },
-                xAxis: {
-
-                    tickmarkPlacement: 'on',
-                    categories: ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW']
-                },
+                chart: { polar: true, type: 'column' },
+                title: { text: 'Number of project stars', },
+                xAxis: { tickmarkPlacement: 'on', categories: ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW'] },
                 yAxis: {
                     min: 0,
                     endOnTick: false,
                     showLastLabel: true,
                     reversedStacks: false,
-
-                    title: {
-                        text: 'Number of stars',
-                    },
+                    title: { text: 'Number of stars', },
                 },
-                plotOptions: {
-                    series: {
-                        stacking: 'normal',
-                        shadow: false,
-                        // groupPadding: 0,
-                        pointPlacement: 'on'
-                    }
-                },
+                plotOptions: { series: { stacking: 'normal', shadow: false, pointPlacement: 'on' } },
 
                 series: [
-                    {
-                        type: undefined,
-                        name: '<1 m/s',
-                        data: [1, 2, 3, 2, 1, 6, 8, 4, 0, 2, 7, 5, 2, 1, 4, 1]
-                    },
-                    {
-                        type: undefined,
-                        name: '1-3 m/s',
-                        data: [1, 2, 3, 0, 1, 0, 1, 0, 0, 2, 0, 1, 2, 4, 3, 1]
-                    },
-                    {
-                        type: undefined,
-                        name: '3-5 m/s',
-                        data: [1, 2, 3, 0, 1, 0, 0, 0, 1, 2, 1, 1, 2, 1, 1, 1]
-                    },
-                    {
-                        type: undefined,
-                        name: '>5 m/s',
-                        data: [1, 2, 3, 0, 1, 1, 0, 0, 0, 2, 3, 1, 2, 1, 1, 1]
-                    }
+                    { type: undefined, name: '<1 m/s', data: [1, 2, 3, 2, 1, 6, 8, 4, 0, 2, 7, 5, 2, 1, 4, 1] },
+                    { type: undefined, name: '1-3 m/s', data: [1, 2, 3, 0, 1, 0, 1, 0, 0, 2, 0, 1, 2, 4, 3, 1] },
+                    { type: undefined, name: '3-5 m/s', data: [1, 2, 3, 0, 1, 0, 0, 0, 1, 2, 1, 1, 2, 1, 1, 1] },
+                    { type: undefined, name: '>5 m/s', data: [1, 2, 3, 0, 1, 1, 0, 0, 0, 2, 3, 1, 2, 1, 1, 1] }
                 ],
             });
         },
+
+        histogramm() {
+            this.chartOptions5 = ({
+                chart: { type: 'bar', height: 350, stacked: true, stackType: '100%' },
+                responsive: [{ breakpoint: 480, options: { legend: { position: 'bottom', offsetX: -10, offsetY: 0 } } }],
+                xaxis: { categories: ['2011 Q1', '2011 Q2', '2011 Q3', '2011 Q4', '2012 Q1', '2012 Q2', '2012 Q3', '2012 Q4'], },
+                fill: { opacity: 1 },
+                legend: { position: 'right', offsetX: 0, offsetY: 50 },
+            });
+        },
+
 
         histogramm(type, abscisses, ordonnees) {
             if (type == "Maree(m)") {
@@ -418,10 +424,7 @@ export default {
                 this.chartOptions5Maree = reactive({
                     chart: { type: 'bar', height: 350, stacked: true, stackType: '100%' },
                     title: { text: 'Réparition des hauteurs de marée par scénario', align: 'left' },
-                    responsive: [{
-                        breakpoint: 480,
-                        options: { legend: { position: 'bottom', offsetX: -10, offsetY: 0 } }
-                    }],
+                    responsive: [{ breakpoint: 480, options: { legend: { position: 'bottom', offsetX: -10, offsetY: 0 } } }],
                     xaxis: { categories: abscisses },
                     fill: { opacity: 1 },
                     legend: { position: 'right', offsetX: 0, offsetY: 50 },
@@ -432,10 +435,7 @@ export default {
                 this.chartOptions5Surcote = reactive({
                     chart: { type: 'bar', height: 350, stacked: true, stackType: '100%' },
                     title: { text: 'Réparition des hauteurs de surcote par scénario', align: 'left' },
-                    responsive: [{
-                        breakpoint: 480,
-                        options: { legend: { position: 'bottom', offsetX: -10, offsetY: 0 } }
-                    }],
+                    responsive: [{ breakpoint: 480, options: { legend: { position: 'bottom', offsetX: -10, offsetY: 0 } } }],
                     xaxis: { categories: abscisses },
                     fill: { opacity: 1 },
                     legend: { position: 'right', offsetX: 0, offsetY: 50 },
@@ -446,10 +446,7 @@ export default {
                 this.chartOptions5Vagues = reactive({
                     chart: { type: 'bar', height: 350, stacked: true, stackType: '100%' },
                     title: { text: 'Réparition des hauteurs des vagues par scénario', align: 'left' },
-                    responsive: [{
-                        breakpoint: 480,
-                        options: { legend: { position: 'bottom', offsetX: -10, offsetY: 0 } }
-                    }],
+                    responsive: [{ breakpoint: 480, options: { legend: { position: 'bottom', offsetX: -10, offsetY: 0 } } }],
                     xaxis: { categories: abscisses },
                     fill: { opacity: 1 },
                     legend: { position: 'right', offsetX: 0, offsetY: 50 },
@@ -460,10 +457,7 @@ export default {
                 this.chartOptions5Vent = reactive({
                     chart: { type: 'bar', height: 350, stacked: true, stackType: '100%' },
                     title: { text: 'Réparition des vitesses de vent par scénario', align: 'left' },
-                    responsive: [{
-                        breakpoint: 480,
-                        options: { legend: { position: 'bottom', offsetX: -10, offsetY: 0 } }
-                    }],
+                    responsive: [{ breakpoint: 480, options: { legend: { position: 'bottom', offsetX: -10, offsetY: 0 } } }],
                     xaxis: { categories: abscisses },
                     fill: { opacity: 1 },
                     legend: { position: 'right', offsetX: 0, offsetY: 50 },
@@ -510,8 +504,6 @@ export default {
                     .then(data => {
                         abscisses.push(`${element["name"]}`);
 
-
-
                         for (const property in data) {
                             if (`${data[property][type]}` < L[0]) {
                                 v1 += 1;
@@ -534,7 +526,6 @@ export default {
                 elem += 1;
             }
 
-            console.log(listDataPlot);
             listDataPlot.push({ name: "inférieur à " + L[0], data: s1 });
             listDataPlot.push({ name: "entre " + L[0] + " et " + L[1], data: s2 });
             listDataPlot.push({ name: "entre " + L[1] + " et " + L[2], data: s3 });
@@ -546,18 +537,12 @@ export default {
         sendData(data) {
             fetch('127.0.0.1:5000/api/data', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
             })
                 .then(response => response.json())
-                .then(data => {
-                    console.log('Données envoyées avec succès !');
-                })
-                .catch(error => {
-                    console.error('Erreur lors de l\'envoi des données :', error);
-                });
+                .then(data => { console.log('Données envoyées avec succès !'); })
+                .catch(error => { console.error('Erreur lors de l\'envoi des données :', error); });
         },
 
 
@@ -628,29 +613,25 @@ export default {
 
         heatMap(donnees, abscisses) {
             this.chartOptions3 = {
-                chart: {
-                    type: 'heatmap',
-                    // height: 550,
+                chart: { type: 'heatmap', },
+                dataLabels: { enabled: false },
+                plotOptions: {
+                    heatmap: {
+                        useFillColorAsStroke: true,
+                        shadeIntensity: 1,
+                        radius: 0,
+                    }
                 },
-                dataLabels: {
-                    enabled: false
-                },
+
                 colors: ['#008FFB'],
-                title: {
-                    text: 'Heatmap Chart',
-                    align: 'left',
-                },
+                title: { text: 'Heatmap Chart', align: 'left' },
                 xaxis: {
-                    tooltip: {
-                        enabled: false
-                    },
+                    tooltip: { enabled: false },
                     type: 'category',
                     categories: abscisses,
                     overwriteCategories: abscisses,
                 },
-                yaxis: {
-                    categories: ['Morning', 'Afternoon', 'Evening'], // ENCORE A MODIFIER CETTE PARTIE ??????
-                },
+                yaxis: { categories: ['Morning', 'Afternoon', 'Evening'] },
 
             },
                 this.series3 = donnees;
@@ -665,57 +646,35 @@ export default {
                     type: 'area',
                     options3d: {
                         enabled: true,
-                        alpha: 20,
-                        beta: 15,
-                        depth: 30,
+                        // alpha: 20,
+                        // beta: 15,
+                        // depth: 30,
+                        alpha: 15,
+                        beta: 30,
+                        depth: 200,
                         viewDistance: 25
                     }
                 },
-                title: {
-                    text: 'Number of project stars',
-                },
+                title: { text: 'Number of project stars', },
 
                 accessibility: {
                     description: 'The chart is showing the shapes of three mountain ranges as three area line series laid out in 3D behind each other.',
-                    keyboardNavigation: {
-                        seriesNavigation: {
-                            mode: 'serialize'
-                        }
-                    }
+                    keyboardNavigation: { seriesNavigation: { mode: 'serialize' } }
                 },
                 yAxis: {
-                    title: {
-                        text: 'Height Above Sea Level',
-                        x: -40
-                    },
-                    labels: {
-                        format: '{value:,.0f} MAMSL'
-                    },
+                    title: { text: 'Height Above Sea Level', x: -40 },
+                    labels: { format: '{value:,.0f} MAMSL' },
                     gridLineDashStyle: 'Dash'
                 },
-                xAxis: [{
-                    visible: false
-                }, {
-                    visible: false
-                }, {
-                    visible: false
-                }],
+                xAxis: [{ visible: false }, { visible: false }, { visible: false }],
                 plotOptions: {
                     area: {
                         depth: 100,
-                        marker: {
-                            enabled: false
-                        },
-                        states: {
-                            inactive: {
-                                enabled: false
-                            }
-                        }
+                        marker: { enabled: false },
+                        states: { inactive: { enabled: false } }
                     }
                 },
-                tooltip: {
-                    valueSuffix: ' MAMSL'
-                },
+                tooltip: { valueSuffix: ' MAMSL' },
                 series: [
                     {
                         xAxis: 0,
