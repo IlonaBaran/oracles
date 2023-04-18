@@ -16,24 +16,24 @@
         placeholder="Sélection Scénarios" :maxSelectedLabels="3" class="w-full md:w-20rem selectScenario" />
     </div>
 
-    <div class="flex flex-wrap gap-20">
+    <div v-if="selectedScenario2.length > 1" class="flex flex-wrap gap-20 justify-content-center" id="radiobuttons">
       <div class="flex align-items-center">
-        <RadioButton v-model="math" inputId="math1" name="math" value="Moy" />
+        <RadioButton v-model="math" inputId="math1" name="math" value="Moy" class="mr-2" />
         <label for="math1" class="ml-2">Moy</label>
       </div>
       <div class="flex align-items-center">
-        <RadioButton v-model="math" inputId="math2" name="math" value="Min" />
+        <RadioButton v-model="math" inputId="math2" name="math" value="Min" class="mr-2" />
         <label for="math2" class="ml-2">Min</label>
       </div>
       <div class="flex align-items-center">
-        <RadioButton v-model="math" inputId="math3" name="math" value="Max" />
+        <RadioButton v-model="math" inputId="math3" name="math" value="Max" class="mr-2" />
         <label for="math3" class="ml-2">Max</label>
       </div>
 
     </div>
 
-    <div>
-      <Button id="validatehmp" position="center" @click="updateScenarios">Valider</button>
+    <div id='validatediv' position="center">
+      <Button @click="updateScenarios">Valider</button>
     </div>
   </Sidebar>
 
@@ -202,8 +202,17 @@ export default {
       console.log("3D")
     },
     updateScenarios() {
-      console.log("scenario changed received in toolbar")
-      this.$emit('updateScenarios', this.selectedScenario2)
+      if (this.selectedScenario2.length > 1) {
+        console.log("More than 1 Scenario selected")
+        console.log(`Selected math value is ${this.math}`);
+        let jsonemit = { selectedScenario2: this.selectedScenario2, math: this.math }
+        this.$emit('updateScenarios', jsonemit);
+
+      } else {
+        console.log("One Scenario Selected")
+        this.$emit('updateScenarios', this.selectedScenario2);
+      }
+
     }
   },
   mounted() {
@@ -212,6 +221,17 @@ export default {
 </script>
   
 <style>
+.ml-2 {
+  padding-right: 10px;
+}
+
+#radiobuttons {
+  display: inline-flex;
+  position: relative;
+  left: 20%;
+  top: 2%;
+}
+
 .boutton2d3d {
   position: absolute;
   bottom: 10%;
@@ -239,10 +259,10 @@ export default {
   flex-direction: column;
 }
 
-#validatehmp {
-  position: absolute;
-  top: 40%;
-  right: 30%;
+#validatediv {
+  position: relative;
+  top: 5%;
+  left: 35%;
 
 }
 

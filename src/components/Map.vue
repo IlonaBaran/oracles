@@ -31,6 +31,8 @@ export default {
   },
   data() {
     return {
+      jsonemit: {},
+      math: "",
       heightmaps: [],
       urlList: [],
       viewNew: ref(false),
@@ -79,54 +81,6 @@ export default {
     view.addLayer(basic);
     view.addLayer(layerOrtho);
 
-
-
-    ////------------------------------------------------------
-    //RECUPERER UNE URL 
-    // getImage('http://localhost:8080/output_rasters/S_1040/S_1040_hmax.tif').then(image => {
-    //   getHeightMesh(image).then(mesh => {
-    //     view.scene.add(mesh);
-    //     view.mesh = mesh;
-    //     view.notifyChange();
-    //   })
-    // })
-
-
-    //------------------------------------------------------
-    //RECUPERER PLUSIEURS URL
-    // let Scenarios = [
-    //   'http://localhost:8080/output_rasters/S_1040/S_1040_hmax.tif',
-    //   'http://localhost:8080/output_rasters/S_1069/S_1069_hmax.tif',
-    // ]
-
-    // let listImages = [];
-    // Promise.all(Scenarios.map(getImage))
-    //   .then((images) => {
-    //     listImages = images;
-    //     console.log('All images loaded:', listImages);
-
-    //     getData(listImages)
-    //       .then(scenarios => {
-
-    //         let avgOfScenarios = [averageLists(scenarios.datas)];
-    //         let minOfScenarios = [minLists(scenarios.datas)];
-    //         let maxOfScenarios = [maxLists(scenarios.datas)];
-
-    //         let bbox = scenarios.bbox; let width = scenarios.width; let height = scenarios.height;
-    //         let data = maxOfScenarios;
-
-    //         console.log('data', data)
-
-    //         getHeightFromScenarios(bbox, width, height, data).then(mesh => {
-    //           view.scene.add(mesh);
-    //           view.mesh = mesh;
-    //           view.notifyChange();
-    //         })
-
-    //       })
-
-    //   })
-
     view.controls.enableRotation = false;
     view.notifyChange();
 
@@ -172,13 +126,16 @@ export default {
       view.controls.enableRotation = true;
       view.notifyChange();
     },
-    updateHeightmap(selectedScenario2) {
+    updateHeightmap(jsonemit) {
+      this.jsonemit = jsonemit;
+      console.log("read from map.vue : ", this.jsonemit.math)
+
 
       if (view.scene.children.length > 1) {
         view.scene.children[view.scene.children.length - 1].removeFromParent()
       }
 
-      this.heightmaps = selectedScenario2;
+      this.heightmaps = this.jsonemit.selectedScenario2;
       this.urlList = concatenateHeightMapList(this.heightmaps);
       const Scenarios = toRaw(this.urlList)
 
@@ -201,12 +158,25 @@ export default {
             getData(listImages)
               .then(scenarios => {
 
-                let avgOfScenarios = [averageLists(scenarios.datas)];
-                let minOfScenarios = [minLists(scenarios.datas)];
-                let maxOfScenarios = [maxLists(scenarios.datas)];
+                let data;
+                switch (this.jsonemit.math) {
+                  case 'Moy':
+                    data = [averageLists(scenarios.datas)];
+                    console.log('moy')
+                    break;
+                  case 'Min':
+                    data = [minLists(scenarios.datas)];
+                    console.log('min')
+                    break;
+                  case 'Max':
+                    data = [maxLists(scenarios.datas)];
+                    console.log('max')
+                    break;
+                }
+
+                console.log('getting data')
 
                 let bbox = scenarios.bbox; let width = scenarios.width; let height = scenarios.height;
-                let data = maxOfScenarios;
 
                 getHeightFromScenarios(bbox, width, height, data).then(mesh => {
                   view.scene.add(mesh);
