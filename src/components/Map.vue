@@ -83,9 +83,6 @@ export default {
     view.controls.enableRotation = false;
     view.notifyChange();
 
-    console.log('3dobjects', view.scene)
-
-
   },
   methods: {
     changeMap() {
@@ -114,7 +111,7 @@ export default {
       view.camera.camera3D.position.z = 2500.719216284468985;
       view.notifyChange();
     }, showCoords(e) {
-      //console.log('view', view)
+      // console.log('picking from depth', view.getPickingPositionFromDepth(e))
     },
     vue2d() {
       view.controls.goToTopView();
@@ -127,8 +124,6 @@ export default {
     },
     updateHeightmap(jsonemit) {
       this.jsonemit = jsonemit;
-      console.log("read from map.vue : ", this.jsonemit.math)
-
 
       if (view.scene.children.length > 1) {
         view.scene.children[view.scene.children.length - 1].removeFromParent()
@@ -161,19 +156,14 @@ export default {
                 switch (this.jsonemit.math) {
                   case 'Moy':
                     data = [averageLists(scenarios.datas)];
-                    console.log('moy')
                     break;
                   case 'Min':
                     data = [minLists(scenarios.datas)];
-                    console.log('min')
                     break;
                   case 'Max':
                     data = [maxLists(scenarios.datas)];
-                    console.log('max')
                     break;
                 }
-
-                console.log('getting data')
 
                 let bbox = scenarios.bbox; let width = scenarios.width; let height = scenarios.height;
 
@@ -184,19 +174,9 @@ export default {
                 })
 
               })
-
           })
-
-        console.log('added mesh ', view.scene)
-        console.log('done')
-
       }
-
-      console.log(Scenarios)
-
-
     }
-
   }
 
 };
