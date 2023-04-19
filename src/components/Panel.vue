@@ -535,6 +535,7 @@ export default {
                     .then(data => {
                         // Boucle pour avoir toutes les abscisses possibles
                         for (const property in data) {
+
                             if (abscisses.indexOf(`${data[property]["heure"]}`) == -1) {
                                 abscisses.push(`${data[property]["heure"]}`);
                             }
@@ -561,6 +562,7 @@ export default {
             }
 
             this.heatMap(listDataPlot, abscisses);
+
             this.affichageHeat = true;
 
 
@@ -792,7 +794,7 @@ export default {
 //     fetch(file)
 //         .then(response => response.json())
 //         .then(data => {
-//             console.log(data);
+//             //console.log(data);
 //             for (const property in data) {
 //                 var dict = {
 //                     angle: parseFloat(`${data[property]["Dir(vent)()"]}`),
