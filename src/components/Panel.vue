@@ -58,7 +58,6 @@
                         <p>Veuillez choisir un type de graphique</p>
                     </div>
 
-
                 </ScrollPanel>
             </template>
         </Card>
@@ -73,20 +72,16 @@
 /* eslint-disable */
 
 // Import des éléments des librairies
-import * as d3 from 'd3';
 import VueHighcharts from 'vue3-highcharts';
 import HighCharts from 'highcharts';
 import Highcharts3D from 'highcharts/highcharts-3d'
-
 import HighchartsMore from 'highcharts/highcharts-more';
-HighchartsMore(HighCharts);
-Highcharts3D(HighCharts)
+
+HighchartsMore(HighCharts); // Pour les graphiques highchart polar
+Highcharts3D(HighCharts); // Pour les graphiques highchart 3d 
 
 import Card from 'primevue/card';
 import ScrollPanel from 'primevue/scrollpanel';
-
-
-
 
 import { ref } from "vue";
 import { reactive } from "vue";
@@ -164,7 +159,8 @@ export default {
                 series: [{}, {}, {}, {}],
             }),
 
-            // DIAGRAMME EMPILE - APEXCHARTS
+            // DIAGRAMME EMPILE - APEXCHARTS //
+            // Graphiques empile des surcotes
             chartOptions5Surcote: ({
                 chart: { type: 'bar', height: 350, stacked: true, stackType: '100%' },
                 responsive: [{ reakpoint: 480, options: { legend: { position: 'bottom', offsetX: -10, offsetY: 0 } } }],
@@ -175,6 +171,7 @@ export default {
 
             series5Surcote: [{ name: 'En attente de données', data: [] }],
 
+            // Graphiques empile des marées
             chartOptions5Maree: ({
                 chart: { type: 'bar', height: 350, stacked: true, stackType: '100%' },
                 responsive: [{ breakpoint: 480, options: { legend: { position: 'bottom', offsetX: -10, offsetY: 0 } } }],
@@ -185,6 +182,7 @@ export default {
 
             series5Maree: [{ name: 'En attente de données', data: [] }],
 
+            // Graphiques empile des vagues
             chartOptions5Vagues: ({
                 chart: { type: 'bar', height: 350, stacked: true, stackType: '100%' },
                 responsive: [{ breakpoint: 480, options: { legend: { position: 'bottom', offsetX: -10, offsetY: 0 } } }],
@@ -193,9 +191,9 @@ export default {
                 legend: { position: 'right', offsetX: 0, offsetY: 50 },
             }),
 
-            series5Vagues: [{ name: 'En attente de données', data: [] }
-            ],
+            series5Vagues: [{ name: 'En attente de données', data: [] }],
 
+            // Graphiques empile des vents
             chartOptions5Vent: ({
                 chart: { type: 'bar', height: 350, stacked: true, stackType: '100%' },
                 responsive: [{ breakpoint: 480, options: { legend: { position: 'bottom', offsetX: -10, offsetY: 0 } } }],
@@ -204,8 +202,7 @@ export default {
                 legend: { position: 'right', offsetX: 0, offsetY: 50 },
             }),
 
-            series5Vent: [{ name: 'En attente de données', data: [] }
-            ],
+            series5Vent: [{ name: 'En attente de données', data: [] }],
 
             // HEAT MAP - APEXCHARTS
             chartOptions3: ref(null),
@@ -223,57 +220,30 @@ export default {
                         depth: 200
                     }
                 },
-                title: {
-                    text: 'Visual comparison of Mountains Panorama'
-                },
+                title: { text: 'Visual comparison of Mountains Panorama' },
                 accessibility: {
                     description: 'The chart is showing the shapes of three mountain ranges as three area line series laid out in 3D behind each other.',
                     keyboardNavigation: {
-                        seriesNavigation: {
-                            mode: 'serialize'
-                        }
+                        seriesNavigation: { mode: 'serialize' }
                     }
                 },
                 lang: {
-                    accessibility: {
-                        axis: {
-                            xAxisDescriptionPlural: 'The chart has 3 unlabelled X axes, one for each series.'
-                        }
-                    }
+                    accessibility: { axis: { xAxisDescriptionPlural: 'The chart has 3 unlabelled X axes, one for each series.' } }
                 },
                 yAxis: {
-                    title: {
-                        text: 'Height Above Sea Level',
-                        x: 0
-                    },
-                    labels: {
-                        format: '{value:,.0f} MAMSL'
-                    },
+                    title: { text: 'Height Above Sea Level', x: 0 },
+                    labels: { format: '{value:,.0f} MAMSL' },
                     gridLineDashStyle: 'Dash'
                 },
-                xAxis: [{
-                    visible: false
-                }, {
-                    visible: false
-                }, {
-                    visible: false
-                }],
+                xAxis: [{ visible: false }, { visible: false }, { visible: false }],
                 plotOptions: {
                     area: {
                         depth: 100,
-                        marker: {
-                            enabled: false
-                        },
-                        states: {
-                            inactive: {
-                                enabled: false
-                            }
-                        }
+                        marker: { enabled: false },
+                        states: { inactive: { enabled: false } }
                     }
                 },
-                tooltip: {
-                    valueSuffix: ' MAMSL'
-                },
+                tooltip: { valueSuffix: ' MAMSL' },
                 series: [{}]
             }),
         }
@@ -281,24 +251,32 @@ export default {
 
 
     methods: {
+        // Fonction qui permet d'afficher tout les types de diagrammes
         afficheGraph() {
+            // Affichage des diagrammes en lignes
             this.lineChartAffichage('Surcote(m)')
             this.lineChartAffichage('Maree(m)');
             this.lineChartAffichage('Hs(vagues)(m)');
             this.lineChartAffichage('U(vent)(m)');
+
+            // Affichage des diagrammes heatmap
             this.heatMapAffichage();
+
+            // Affichage des diagrammes histogrammes
             this.histogrammeAffichage('Surcote(m)');
             this.histogrammeAffichage('Maree(m)');
             this.histogrammeAffichage('Hs(vagues)(m)');
             this.histogrammeAffichage('U(vent)(m)');
         },
 
+        // Masque les diagrammes
         reiAfficheGraph() {
             this.affichageLigne = false;
             this.affichageHeat = false;
             this.affichageHistogramme = false;
         },
 
+        // Création d'un diagramme en ligne en fonction du type données
         lineChart(type, abscisses, ordonnees) {
             if (type == "Maree(m)") {
                 this.series = ordonnees;
@@ -350,7 +328,7 @@ export default {
 
         },
 
-
+        // Récupération des données et création d'un diagramme en ligne en fonction du type données
         lineChartAffichage(type) {
             let abscisses = [];
             let ordonnees = [];
@@ -416,7 +394,6 @@ export default {
                 legend: { position: 'right', offsetX: 0, offsetY: 50 },
             });
         },
-
 
         histogramm(type, abscisses, ordonnees) {
             if (type == "Maree(m)") {
@@ -646,9 +623,6 @@ export default {
                     type: 'area',
                     options3d: {
                         enabled: true,
-                        // alpha: 20,
-                        // beta: 15,
-                        // depth: 30,
                         alpha: 15,
                         beta: 30,
                         depth: 200,
@@ -802,6 +776,185 @@ export default {
         },
     }
 };
+
+
+
+
+
+
+//         roseVentAffichage() {
+//             var L = [];
+//            this.roseChart();
+
+// for (const element of this.selectedScenario) {
+//     // RECUPERATION DES DONNES AVEC DES FECTH - c
+//     var file = 'http://localhost:0/' + element["name"] + '.json';
+//     fetch(file)
+//         .then(response => response.json())
+//         .then(data => {
+//             console.log(data);
+//             for (const property in data) {
+//                 var dict = {
+//                     angle: parseFloat(`${data[property]["Dir(vent)()"]}`),
+//                     speed: parseFloat(`${data[property]["U(vent)(m)"]}`),
+//                 };
+//                 L.push(dict);
+//             }
+//             // this.lineChart(L);
+//         })
+//         // }
+//     }
+// }
+
+//   const chartOptions2 = reactive({
+//     //  type: 'horizontal column',
+//     //type: 'simpleLine',
+//     legend: {
+//         visible: true,
+//         position: 'bottom right',
+//         // legendEntry_visible: false
+//     },
+// 	title: { label: { text: 'Cost over time' } },
+// 	yAxis: [
+//         /* Main axis is defined first. */
+//         { formatString: 'c' },
+/* Secondary axis will sync with main axis by default. */
+// {
+// 	id: 'secondY',
+// 	orientation: 'opposite',
+// 	line: { color: '#e2e2e2' },
+// 	defaultTick: {
+// 		enabled: false,
+// 		gridLine: { visible: false }
+// 	}
+// }
+// ],
+// xAxis: {
+//     crosshair: { enabled: true },
+//     scale: { type: 'time' }
+// },
+// defaultSeries: {
+//     type: 'line',
+//     defaultPoint: {
+//         marker: { visible: false }
+//     },
+// lastPoint: {
+// 	label: { text: '<b>%seriesName</b>' },
+// 	yAxisTick: {
+// 		axisId: 'secondY',
+// 		label: { text: '%yValue' }
+// 	}
+// }
+// }
+//  series: [
+// 		{
+// 			name: 'Purchases',
+// 			points: [
+// 				['1/1/2020', 29.9],
+// 				['2/1/2020', 97.5],
+// 				['3/1/2020', 110.4],
+// 				['4/1/2020', 129.2],
+// 				['5/1/2020', 144.0],
+// 				['6/1/2020', 176.0],
+// 				['7/1/2020', 182.0],
+// 				['8/1/2020', 186.0],
+// 				['9/1/2020', 181.0],
+// 				['10/1/2020', 178.0],
+// 				['11/1/2020', 184.0],
+// 				['12/1/2020', 176.0]
+// 			]
+// 		},
+// 		{
+// 			name: 'Taxes',
+// 			points: [
+// 				['1/1/2020', 86.9],
+// 				['2/1/2020', 79.5],
+// 				['3/1/2020', 95.4],
+// 				['4/1/2020', 97.2],
+// 				['5/1/2020', 123.0],
+// 				['6/1/2020', 111.0],
+// 				['7/1/2020', 122.0],
+// 				['8/1/2020', 135.0],
+// 				['9/1/2020', 140.0],
+// 				['10/1/2020', 139.0],
+// 				['11/1/2020', 135.0],
+// 				['12/1/2020', 132.0]
+// 			]
+// 		},
+// 		{
+// 			name: 'Supplies',
+// 			points: [
+// 				['1/1/2020', 129.9],
+// 				['2/1/2020', 111.5],
+// 				['3/1/2020', 66.4],
+// 				['4/1/2020', 29.2],
+// 				['5/1/2020', 88.0],
+// 				['6/1/2020', 102.0],
+// 				['7/1/2020', 82.0],
+// 				['8/1/2020', 75.0],
+// 				['9/1/2020', 162.0],
+// 				['10/1/2020', 110.0],
+// 				['11/1/2020', 90.0],
+// 				['12/1/2020', 85.0]
+// 			]
+// 		},
+// 		{
+// 			name: 'Rent',
+// 			points: [
+// 				['1/1/2020', 56.9],
+// 				['2/1/2020', 56.5],
+// 				['3/1/2020', 56.4],
+// 				['4/1/2020', 56.2],
+// 				['5/1/2020', 75.0],
+// 				['6/1/2020', 56.0],
+// 				['7/1/2020', 56.0],
+// 				['8/1/2020', 56.0],
+// 				['9/1/2020', 56.0],
+// 				['10/1/2020', 67.0],
+// 				['11/1/2020', 67.0],
+// 				['12/1/2020', 67.0]
+// 			]
+// 		}
+//  ]
+// });
+
+//     const chartOptions3 = reactive({
+//     debug: true,
+//     type: 'column',
+//     yAxis: {
+//         scale_type: 'stacked',
+//         label_text: 'Units Sold'
+//     },
+//     title_label_text: 'Acme Tool Sales',
+//     xAxis: {
+//         label_text: 'Quarter',
+//         categories: ['Q1', 'Q2', 'Q3', 'Q4']
+//     },
+//     series: [
+//         {
+//         name: 'Saw',
+//         id: 's1',
+//         points: [230, 240, 267, 238]
+//         },
+//         {
+//         name: 'Hammer',
+//         points: [325, 367, 382, 371]
+//         },
+//         {
+//         name: 'Grinder',
+//         points: [285, 292, 267, 218]
+//         },
+//         {
+//         name: 'Drill',
+//         points: [185, 192, 198, 248]
+//         }
+//     ]
+//     });
+
+//   return { chartOptions, chartOptions2, chartOptions3 };
+
+// }
+
 
 </script>
 
