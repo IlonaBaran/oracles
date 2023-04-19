@@ -1,8 +1,8 @@
 <template>
-  <div id="viewerDiv" class="viewer" @click="showCoords">
+  <div id="viewerDiv" class="viewer" @click="onClick">
   </div>
   <Toolbar @icon-clicked="changeMap" ref="childComponent" @change-building="building" @reinit-view="cameraView"
-    @vue-2d="vue2d" @vue-3d="vue3d">
+    @vue-2d="vue2d" @vue-3d="vue3d" :selectedScenario="this.selectedScenario" @updateScenarios="updateHeightmap">
   </Toolbar>
 </template>
 
@@ -10,12 +10,12 @@
 /* eslint-disable */
 import Toolbar from "./Toolbar.vue";
 import '../../node_modules/itowns/examples/css/widgets.css'
-import { FileSource, THREE, Style, proj4, Extent, FeatureGeometryLayer, Coordinates, GlobeView, PlanarView, WMTSSource, WMSSource, ColorLayer, ElevationLayer, Copy, As } from "../../node_modules/itowns/dist/itowns";
+import { proj4, Extent, PlanarView } from "../../node_modules/itowns/dist/itowns";
 import { ref } from "vue";
-import { getHeightMesh, getImage, getData, averageLists, minLists, maxLists, getHeightFromScenarios } from '../services/Height_service.js'
+import { getHeightMesh, getImage, getData, averageLists, minLists, maxLists, getHeightFromScenarios, concatenateHeightMapList } from '../services/Height_service.js'
 import { layerOrtho, layerDEM, layerPLAN } from '../services/WMS_service.js'
-import { basic } from '../services/FileSource_service.js'
-import { image } from "d3-fetch";
+import { toRaw } from 'vue';
+import { bati } from '../services/FileSource_service.js'
 
 
 let view = ref(false);
@@ -29,14 +29,24 @@ export default {
   },
   data() {
     return {
+      jsonemit: {},
+      math: "",
+      heightmaps: [],
+      urlList: [],
       viewNew: ref(false),
     }
   },
-
+  props: {
+    selectedScenario: {
+      type: Object,
+      required: true
+    }
+  },
   components: {
     Toolbar,
   },
   created() {
+    //itowns viewerDiv element
     const viewerDiv = document.getElementById("viewerDiv");
   },
   mounted() {
@@ -56,6 +66,7 @@ export default {
       6752639.5
     );
 
+    //defining Planar view's placement
     var placement = {
       coord: viewExtent.center()
     }
@@ -65,101 +76,133 @@ export default {
       placement: placement,
     });
 
+    //Order must be taken into account for changeMap() function
+
+    //adding WMS Plan IGN layer
     view.addLayer(layerPLAN)
+    //adding WMS Elevation layer
     view.addLayer(layerDEM);
-    view.addLayer(basic);
+    //adding File source buildings
+    view.addLayer(bati);
+    //adding WMS satellite image layer
     view.addLayer(layerOrtho);
 
-
-    ////------------------------------------------------------
-    //RECUPERER UNE URL 
-    // getImage('http://localhost:8080/output_rasters/S_1040/S_1040_hmax.tif').then(image => {
-    //   getHeightMesh(image).then(mesh => {
-    //     view.scene.add(mesh);
-    //     view.mesh = mesh;
-    //     view.notifyChange();
-    //   })
-    // })
-
-
-    //------------------------------------------------------
-    //RECUPERER PLUSIEURS URL
-    // let Scenarios = [
-    //   'http://localhost:8080/output_rasters/S_1040/S_1040_hmax.tif',
-    //   'http://localhost:8080/output_rasters/S_1069/S_1069_hmax.tif',
-    // ]
-
-    // let listImages = [];
-    // Promise.all(Scenarios.map(getImage))
-    //   .then((images) => {
-    //     listImages = images;
-    //     console.log('All images loaded:', listImages);
-
-    //     getData(listImages)
-    //       .then(scenarios => {
-
-    //         let avgOfScenarios = [averageLists(scenarios.datas)];
-    //         let minOfScenarios = [minLists(scenarios.datas)];
-    //         let maxOfScenarios = [maxLists(scenarios.datas)];
-
-    //         let bbox = scenarios.bbox; let width = scenarios.width; let height = scenarios.height;
-    //         let data = maxOfScenarios;
-
-    //         console.log('data', data)
-
-    //         getHeightFromScenarios(bbox, width, height, data).then(mesh => {
-    //           view.scene.add(mesh);
-    //           view.mesh = mesh;
-    //           view.notifyChange();
-    //         })
-
-    //       })
-
-    //   })
-
+    //blocking rotation when initializing in 2D view option
     view.controls.enableRotation = false;
     view.notifyChange();
 
   },
   methods: {
     changeMap() {
+      //Show Plan IGN layer and not Satellite layer
       if (this.$refs.childComponent.mapSelected == "plan") {
-        view.tileLayer.attachedLayers[1 - 1].visible = true;
-        view.tileLayer.attachedLayers[4 - 1].visible = false;
+        view.tileLayer.attachedLayers[0].visible = true;
+        view.tileLayer.attachedLayers[3].visible = false;
         view.notifyChange();
       } else {
-        view.tileLayer.attachedLayers[1 - 1].visible = false;
-        view.tileLayer.attachedLayers[4 - 1].visible = true;
+        //Show Satellite layer and not Plan IGN layer
+        view.tileLayer.attachedLayers[0].visible = false;
+        view.tileLayer.attachedLayers[3].visible = true;
         view.notifyChange();
       }
     },
     building() {
-      view.tileLayer.attachedLayers[3 - 1].visible = this.$refs.childComponent.visibleBuilding;
+      //Show or don't show building layer
+      view.tileLayer.attachedLayers[2].visible = this.$refs.childComponent.visibleBuilding;
       view.notifyChange();
     },
 
     cameraView() {
+      //Return to center of map, these are Gavres coords
       view.camera.camera3D.position.x = 223725.82916306859;
-      view.notifyChange();
-
       view.camera.camera3D.position.y = 6751329.089913746;
-      view.notifyChange();
-
       view.camera.camera3D.position.z = 2500.719216284468985;
       view.notifyChange();
-    }, showCoords(e) {
-      //console.log('view', view)
+
+    }, onClick(e) {
+      //add code here for event when clicking on view
     },
     vue2d() {
+      //Go to Aerial view and remove camera rotation option
       view.controls.goToTopView();
       view.controls.enableRotation = false;
       view.notifyChange();
     },
     vue3d() {
+      //enable camera rotation option
       view.controls.enableRotation = true;
       view.notifyChange();
     },
+    updateHeightmap(jsonemit) {
+      //retrieving heightmap toolbar input
+      this.jsonemit = jsonemit;
 
+      //If a mesh has already been loaded remove it
+      if (view.scene.children.length > 2) {
+        view.scene.children[view.scene.children.length - 1].removeFromParent()
+      }
+
+      //Retrieve selected Scenarios from heightmap selection toolbar
+      this.heightmaps = this.jsonemit.selectedScenario2;
+      this.urlList = concatenateHeightMapList(this.heightmaps, this.jsonemit.height);
+      const Scenarios = toRaw(this.urlList)
+
+      //if only one scenario is selected
+      if (Scenarios.length == 1) {
+        //get the image
+        getImage(Scenarios[0]).then(image => {
+          //load the image
+          getHeightMesh(image).then(mesh => {
+            view.scene.add(mesh);
+            view.mesh = mesh;
+            view.notifyChange();
+          })
+        })
+
+      } else {
+        //if multiple scenarios are selected
+        let listImages = [];
+        //Wait for all image to be loaded
+        Promise.all(Scenarios.map(getImage))
+          .then((images) => {
+            listImages = images;
+            //then get all the data from the list of images
+            getData(listImages)
+              .then(scenarios => {
+                let data;
+                //Compute data from chosen method
+                switch (this.jsonemit.math) {
+                  case 'Moy':
+                    //averaging of the scenarios
+                    data = [averageLists(scenarios.datas)];
+                    console.log('moy data', data)
+                    break;
+                  case 'Min':
+                    //minimum of the scenarios
+                    data = [minLists(scenarios.datas)];
+                    console.log(' min data', data)
+                    break;
+                  case 'Max':
+                    //maximum of the scenarios
+                    data = [maxLists(scenarios.datas)];
+                    console.log('max data', data)
+                    break;
+                }
+
+                let bbox = scenarios.bbox; let width = scenarios.width; let height = scenarios.height;
+
+                //sending bbox, width, height and computed data to show one single mesh
+                getHeightFromScenarios(bbox, width, height, data).then(mesh => {
+                  //loading mesh
+                  view.scene.add(mesh);
+                  view.mesh = mesh;
+                  view.notifyChange();
+                })
+
+              })
+          })
+      }
+    }
   }
 
 };
@@ -169,7 +212,6 @@ export default {
 <style>
 .viewer {
   display: flex;
-  background-color: blue;
   height: 96%;
   z-index: 0;
 }

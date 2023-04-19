@@ -12,9 +12,31 @@
       <p style="margin-bottom:20px;">Sélectionnez un ou plusieurs scénarios pour afficher leurs hauteur maximale
         associée.
       </p>
-      <MultiSelect v-model="selectedScenario" :options="scenario" filter optionLabel="name"
-        placeholder="Sélection Scénarios" :maxSelectedLabels="3" class="w-full md:w-20rem selectScenario"
-        :selectedScenario="this.selectedScenario" />
+      <MultiSelect v-model="selectedScenario2" :options="selectedScenario" filter optionLabel="name"
+        placeholder="Sélection Scénarios" :maxSelectedLabels="3" class="w-full md:w-20rem selectScenario" />
+    </div>
+
+    <div v-if="selectedScenario2.length > 1" class="flex flex-wrap gap-20 justify-content-center" id="radiobuttons">
+      <div class="flex align-items-center">
+        <RadioButton v-model="math" inputId="math1" name="math" value="Moy" class="mr-2" />
+        <label for="math1" class="ml-2">Moy</label>
+      </div>
+      <div class="flex align-items-center">
+        <RadioButton v-model="math" inputId="math2" name="math" value="Min" class="mr-2" />
+        <label for="math2" class="ml-2">Min</label>
+      </div>
+      <div class="flex align-items-center">
+        <RadioButton v-model="math" inputId="math3" name="math" value="Max" class="mr-2" />
+        <label for="math3" class="ml-2">Max</label>
+      </div>
+
+    </div>
+    <div class="heightselect">
+      <SelectButton v-model="selectedheight" :options="heights" :optionDisabled="optionDisabled" />
+    </div>
+
+    <div id='validatediv' position="center">
+      <Button @click="updateScenarios">Valider</button>
     </div>
   </Sidebar>
 
@@ -49,14 +71,22 @@
     </div>
   </Sidebar>
   <div class="boutton2d3d" position="right">
-    <SelectButton v-model="selectedOption" :options="options" :optionDisabled="optionDisabled" />
+    <SelectButton v-model="selectedDimension" :options="dimensions" :optionDisabled="optionDisabled" />
   </div>
 </template>
   
 
 
 <script>
+/* eslint-disable */
 import { ref } from "vue";
+
+
+
+import Header from './Header.vue';
+import App from '../App.vue';
+
+
 
 // Import des éléments des librairies
 import SpeedDial from 'primevue/speeddial';
@@ -64,6 +94,7 @@ import Sidebar from 'primevue/sidebar';
 import Button from 'primevue/button';
 import MultiSelect from 'primevue/multiselect';
 import SelectButton from 'primevue/selectbutton';
+import RadioButton from 'primevue/radiobutton';
 
 
 export default {
@@ -73,16 +104,22 @@ export default {
     Sidebar,
     Button,
     MultiSelect,
-    SelectButton
+    SelectButton,
+    RadioButton
 
   },
   data() {
     return {
 
+      selectedScenario2: [],
 
-      selectedOption: ref('2D'),
-      options: ref(['2D', '3D']),
+      selectedDimension: ref('2D'),
+      dimensions: ref(['2D', '3D']),
       checked: ref(false),
+      math: ref(''),
+      selectedheight: ref('hmax'),
+      heights: ref(['hmax', 'hfin']),
+
 
       visibleRight: false, // visibilité du panel de fonds de carte
       visibleBuilding: false, // visibilité des bâtiments
@@ -136,7 +173,7 @@ export default {
     }
   },
   watch: {
-    selectedOption(option) {
+    selectedDimension(option) {
       if (option === '2D') {
         this.switchTo2D();
       } else if (option === '3D') {
@@ -144,7 +181,12 @@ export default {
       }
     },
   },
-
+  props: {
+    selectedScenario: {
+      type: Object,
+      required: true
+    }
+  },
   methods: {
     // Les deux fonctions suivantes permettent de changer la valeur de mapSelected en fonction
     // du bouton cliqué
@@ -164,11 +206,42 @@ export default {
       this.$emit('vue-3d');
       console.log("3D")
     },
+    updateScenarios() {
+      if (this.selectedScenario2.length > 1) {
+        let jsonemit = { selectedScenario2: this.selectedScenario2, math: this.math, height: this.selectedheight  }
+        this.$emit('updateScenarios', jsonemit);
+
+      } else {
+        let jsonemit = { selectedScenario2: this.selectedScenario2, height: this.selectedheight  }
+        this.$emit('updateScenarios', jsonemit);
+      }
+
+    }
+  },
+  mounted() {
   }
 }
 </script>
   
 <style>
+.heightselect {
+  position: relative;
+  left: 20%;
+  top: 5%;
+
+}
+
+.ml-2 {
+  padding-right: 10px;
+}
+
+#radiobuttons {
+  display: inline-flex;
+  position: relative;
+  left: 20%;
+  top: 2%;
+}
+
 .boutton2d3d {
   position: absolute;
   bottom: 10%;
@@ -194,6 +267,13 @@ export default {
   display: flex;
   align-items: center;
   flex-direction: column;
+}
+
+#validatediv {
+  position: relative;
+  top: 10%;
+  left: 35%;
+
 }
 
 img {

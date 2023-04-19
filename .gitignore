@@ -11,6 +11,9 @@ node_modules
 data/Data
 data/jsonData
 data/output_rasters
+data/output_rasters_clipped
+data/MNS_GAVRES.tif
+data/output_rasters_clipped.zip
 
 # local env files
 .env.local
