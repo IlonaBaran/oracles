@@ -19,5 +19,7 @@ COPY vue.config.js ./
 COPY public ./public
 COPY src ./src
 
+#exposing on default container port 8080
 EXPOSE 8080
+#running dev server
 CMD [ "npm", "run", "serve" ]
