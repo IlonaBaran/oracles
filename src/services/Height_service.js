@@ -93,6 +93,13 @@ export function maxLists(lists) {
 
 export async function getHeightMesh(image) {
 
+    let urlmns = 'http://localhost:8080/MNS_GAVRES.tif';
+
+    const imagemns = await getImage(urlmns);
+    const mnsdata = await imagemns.readRasters();
+
+
+
     //Getting metadata and data from the image
     const bbox = await image.getBoundingBox();
     const width = await image.getWidth();
@@ -121,13 +128,14 @@ export async function getHeightMesh(image) {
     const vertices = [];
     const indices = [];
 
-    function minuszero(value) {
-        if (value <= 0) {
+    function minuszero(valuescenario, valuemns) {
+        let valueh = valuescenario + valuemns;
+        if (valuescenario <= 0) {
             return -10
-        } else if (value > 8848) {
+        } else if (valuescenario > 8848) {
             return -10
         } else {
-            return value
+            return valueh
         }
 
     }
@@ -154,13 +162,13 @@ export async function getHeightMesh(image) {
             //Creating the vertices table, pushing the coordinates 
             //and the height data extracted from the image
 
-            vertices.push(i * Xsize, j * Ysize, minuszero(data[0][i + j * width])); // top left
-            vertices.push((i + 1) * Xsize, j * Ysize, minuszero(data[0][(i + 1) + j * width])); // top right
-            vertices.push(i * Xsize, (j + 1) * Ysize, minuszero(data[0][i + (j + 1) * width])); // bottom left
+            vertices.push(i * Xsize, j * Ysize, minuszero(data[0][i + j * width], mnsdata[0][i + j * width])); // top left
+            vertices.push((i + 1) * Xsize, j * Ysize, minuszero(data[0][(i + 1) + j * width], mnsdata[0][(i + 1) + j * width])); // top right
+            vertices.push(i * Xsize, (j + 1) * Ysize, minuszero(data[0][i + (j + 1) * width], mnsdata[0][i + (j + 1) * width])); // bottom left
 
-            vertices.push(i * Xsize, (j + 1) * Ysize, minuszero(data[0][i + (j + 1) * width])); // bottom left
-            vertices.push((i + 1) * Xsize, j * Ysize, minuszero(data[0][(i + 1) + j * width])); // top right
-            vertices.push((i + 1) * Xsize, (j + 1) * Ysize, minuszero(data[0][(i + 1) + (j + 1) * width])); // bottom right
+            vertices.push(i * Xsize, (j + 1) * Ysize, minuszero(data[0][i + (j + 1) * width], mnsdata[0][i + (j + 1) * width])); // bottom left
+            vertices.push((i + 1) * Xsize, j * Ysize, minuszero(data[0][(i + 1) + j * width], mnsdata[0][(i + 1) + j * width])); // top right
+            vertices.push((i + 1) * Xsize, (j + 1) * Ysize, minuszero(data[0][(i + 1) + (j + 1) * width], mnsdata[0][(i + 1) + (j + 1) * width])); // bottom right
 
         };
 
@@ -175,7 +183,6 @@ export async function getHeightMesh(image) {
 
     // create material
     const material = new THREE.MeshBasicMaterial({
-        wireframe: true,
         transparent: true,
         opacity: 0.8,
         color: 0x0000FF,
@@ -183,7 +190,7 @@ export async function getHeightMesh(image) {
     });
 
     let mesh = new THREE.Mesh(geometry, material);
-    coord3.altitude += 3;
+    //coord3.altitude += 3;
     mesh.position.copy(coord3.as('EPSG:2154'));
     mesh.updateMatrixWorld();
 
@@ -191,6 +198,11 @@ export async function getHeightMesh(image) {
 }
 
 export async function getHeightFromScenarios(bbox, width, height, data) {
+
+    let urlmns = 'http://localhost:8080/MNS_GAVRES.tif';
+
+    const imagemns = await getImage(urlmns);
+    const mnsdata = await imagemns.readRasters();
 
     //console.log('scenarios data', data)
 
@@ -215,13 +227,14 @@ export async function getHeightFromScenarios(bbox, width, height, data) {
     const vertices = [];
     const indices = [];
 
-    function minuszero(value) {
-        if (value <= 0) {
+    function minuszero(valuescenario, valuemns) {
+        let valueh = valuescenario + valuemns;
+        if (valuescenario <= 0) {
             return -10
-        } else if (value > 8848) {
+        } else if (valuescenario > 8848) {
             return -10
         } else {
-            return value
+            return valueh
         }
 
     }
@@ -250,13 +263,13 @@ export async function getHeightFromScenarios(bbox, width, height, data) {
             //Creating the vertices table, pushing the coordinates 
             //and the height data extracted from the image
 
-            vertices.push(i * Xsize, j * Ysize, minuszero(data[0][i + j * width])); // top left
-            vertices.push((i + 1) * Xsize, j * Ysize, minuszero(data[0][(i + 1) + j * width])); // top right
-            vertices.push(i * Xsize, (j + 1) * Ysize, minuszero(data[0][i + (j + 1) * width])); // bottom left
+            vertices.push(i * Xsize, j * Ysize, minuszero(data[0][i + j * width], mnsdata[0][i + j * width])); // top left
+            vertices.push((i + 1) * Xsize, j * Ysize, minuszero(data[0][(i + 1) + j * width], mnsdata[0][(i + 1) + j * width])); // top right
+            vertices.push(i * Xsize, (j + 1) * Ysize, minuszero(data[0][i + (j + 1) * width], mnsdata[0][i + (j + 1) * width])); // bottom left
 
-            vertices.push(i * Xsize, (j + 1) * Ysize, minuszero(data[0][i + (j + 1) * width])); // bottom left
-            vertices.push((i + 1) * Xsize, j * Ysize, minuszero(data[0][(i + 1) + j * width])); // top right
-            vertices.push((i + 1) * Xsize, (j + 1) * Ysize, minuszero(data[0][(i + 1) + (j + 1) * width])); // bottom right
+            vertices.push(i * Xsize, (j + 1) * Ysize, minuszero(data[0][i + (j + 1) * width], mnsdata[0][i + (j + 1) * width])); // bottom left
+            vertices.push((i + 1) * Xsize, j * Ysize, minuszero(data[0][(i + 1) + j * width], mnsdata[0][(i + 1) + j * width])); // top right
+            vertices.push((i + 1) * Xsize, (j + 1) * Ysize, minuszero(data[0][(i + 1) + (j + 1) * width], mnsdata[0][(i + 1) + (j + 1) * width])); // bottom right
 
         };
     };
@@ -276,7 +289,7 @@ export async function getHeightFromScenarios(bbox, width, height, data) {
     });
 
     let mesh = new THREE.Mesh(geometry, material);
-    coord3.altitude += 3;
+    //coord3.altitude += 3;
     mesh.position.copy(coord3.as('EPSG:2154'));
     mesh.updateMatrixWorld();
 
