@@ -1,5 +1,5 @@
 <template>
-  <div id="viewerDiv" class="viewer" @click="showCoords">
+  <div id="viewerDiv" class="viewer" @click="onClick">
   </div>
   <Toolbar @icon-clicked="changeMap" ref="childComponent" @change-building="building" @reinit-view="cameraView"
     @vue-2d="vue2d" @vue-3d="vue3d" :selectedScenario="this.selectedScenario" @updateScenarios="updateHeightmap">
@@ -9,13 +9,12 @@
 <script>
 /* eslint-disable */
 import Toolbar from "./Toolbar.vue";
-import App from "../App.vue";
 import '../../node_modules/itowns/examples/css/widgets.css'
 import { proj4, Extent, PlanarView } from "../../node_modules/itowns/dist/itowns";
 import { ref } from "vue";
 import { getHeightMesh, getImage, getData, averageLists, minLists, maxLists, getHeightFromScenarios, concatenateHeightMapList } from '../services/Height_service.js'
 import { layerOrtho, layerDEM, layerPLAN } from '../services/WMS_service.js'
-import { isProxy, toRaw } from 'vue';
+import { toRaw } from 'vue';
 import { bati } from '../services/FileSource_service.js'
 
 
@@ -120,8 +119,8 @@ export default {
       view.camera.camera3D.position.z = 2500.719216284468985;
       view.notifyChange();
 
-    }, showCoords(e) {
-
+    }, onClick(e) {
+      //add code here for event when clicking on view
     },
     vue2d() {
       //Go to Aerial view and remove camera rotation option
@@ -135,7 +134,7 @@ export default {
       view.notifyChange();
     },
     updateHeightmap(jsonemit) {
-
+      //retrieving heightmap toolbar input
       this.jsonemit = jsonemit;
 
       //If a mesh has already been loaded remove it
