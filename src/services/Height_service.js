@@ -99,7 +99,7 @@ export async function getHeightMesh(image) {
     const height = await image.getHeight();
     const data = await image.readRasters();
 
-    console.log('image read Raster', data)
+    //console.log('image read Raster', data)
 
     const Xo = bbox[0];
     const Xf = bbox[2];
@@ -166,7 +166,7 @@ export async function getHeightMesh(image) {
 
     };
 
-    console.log(vertices)
+    //console.log(vertices)
 
     //Setting attributes to the geometry
     geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(vertices), 3));
@@ -192,7 +192,7 @@ export async function getHeightMesh(image) {
 
 export async function getHeightFromScenarios(bbox, width, height, data) {
 
-    console.log('scenarios data', data)
+    //console.log('scenarios data', data)
 
 
     const Xo = bbox[0];
@@ -231,7 +231,7 @@ export async function getHeightFromScenarios(bbox, width, height, data) {
     for (let i = 0; i < width - 1; i++) {
         for (let j = 0; j < height - 1; j++) {
 
-            console.log(height, width)
+            //console.log(height, width)
 
             //Creating the indices table by pushing two triangles for each pixel
             let topL = [(1 / width) * (j), 1 - (1 / height) * (i)];
@@ -261,7 +261,7 @@ export async function getHeightFromScenarios(bbox, width, height, data) {
         };
     };
 
-    console.log(vertices)
+    //console.log(vertices)
     //Setting attributes to the geometry
     geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(vertices), 3));
     geometry.setAttribute('normal', new THREE.BufferAttribute(new Float32Array(indices), 3));
@@ -283,11 +283,11 @@ export async function getHeightFromScenarios(bbox, width, height, data) {
     return mesh;
 }
 
-export function concatenateHeightMapList(heightMapList) {
+export function concatenateHeightMapList(heightMapList, height) {
     let concatenatedList = [];
 
     for (let i = 0; i < heightMapList.length; i++) {
-        let concatenated = "http://localhost:8080/output_rasters_clipped/" /* + heightMapList[i].name + "/" */ + heightMapList[i].name + "_hmax.tif";
+        let concatenated = "http://localhost:8080/output_rasters_clipped/" /* + heightMapList[i].name + "/" */ + heightMapList[i].name + "_" + height + ".tif";
         concatenatedList.push(concatenated);
         console.log(concatenated)
     }
