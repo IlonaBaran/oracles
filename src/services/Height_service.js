@@ -130,12 +130,17 @@ export async function getHeightMesh(image) {
 
     function minuszero(valuescenario, valuemns) {
         let valueh = valuescenario + valuemns;
+        let valuehfixed = valueh - 3;
         if (valuescenario <= 0) {
             return -10
         } else if (valuescenario > 8848) {
             return -10
         } else {
-            return valueh
+            if ((valuemns - valuescenario) > 4) {
+                return valuehfixed
+            } else {
+                return valueh
+            }
         }
 
     }
@@ -229,12 +234,17 @@ export async function getHeightFromScenarios(bbox, width, height, data) {
 
     function minuszero(valuescenario, valuemns) {
         let valueh = valuescenario + valuemns;
+        let valuehfixed = valueh - 3;
         if (valuescenario <= 0) {
             return -10
         } else if (valuescenario > 8848) {
             return -10
         } else {
-            return valueh
+            if ((valuemns - valuescenario) > 4) {
+                return valuehfixed
+            } else {
+                return valueh
+            }
         }
 
     }
