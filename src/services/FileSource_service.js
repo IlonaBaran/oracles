@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { FileSource, THREE, Style, FeatureGeometryLayer } from "../../node_modules/itowns/dist/itowns";
+import { FileSource, THREE, Style, FeatureGeometryLayer, ElevationLayer } from "../../node_modules/itowns/dist/itowns";
 
 function setAltitude(properties) {
     if (properties.altitude_sol != null) {
@@ -39,4 +39,5 @@ export let bati = new FeatureGeometryLayer('bati', {
         }
     })
 });
+
 

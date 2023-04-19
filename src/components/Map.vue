@@ -111,11 +111,11 @@ export default {
       view.camera.camera3D.position.z = 2500.719216284468985;
       view.notifyChange();
     }, showCoords(e) {
-      let lists = [[1, 6, 3, 6], [4, 5, 6, 1], [6, 1, 1, 4],]
-      console.log('lists', lists)
-      console.log('max', maxLists(lists));
-      console.log('min', minLists(lists));
-      console.log('av', averageLists(lists));
+      // let lists = [[1, 6, 3, 6], [4, 5, 6, 1], [6, 1, 1, 4],]
+      // console.log('lists', lists)
+      // console.log('max', maxLists(lists));
+      // console.log('min', minLists(lists));
+      // console.log('av', averageLists(lists));
     },
     vue2d() {
       view.controls.goToTopView();
