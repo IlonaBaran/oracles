@@ -144,7 +144,7 @@ export default {
 
       //Retrieve selected Scenarios from heightmap selection toolbar
       this.heightmaps = this.jsonemit.selectedScenario2;
-      this.urlList = concatenateHeightMapList(this.heightmaps);
+      this.urlList = concatenateHeightMapList(this.heightmaps, this.jsonemit.height);
       const Scenarios = toRaw(this.urlList)
 
       //if only one scenario is selected

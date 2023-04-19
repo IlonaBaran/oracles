@@ -31,6 +31,9 @@
       </div>
 
     </div>
+    <div class="heightselect">
+      <SelectButton v-model="selectedheight" :options="heights" :optionDisabled="optionDisabled" />
+    </div>
 
     <div id='validatediv' position="center">
       <Button @click="updateScenarios">Valider</button>
@@ -68,7 +71,7 @@
     </div>
   </Sidebar>
   <div class="boutton2d3d" position="right">
-    <SelectButton v-model="selectedOption" :options="options" :optionDisabled="optionDisabled" />
+    <SelectButton v-model="selectedDimension" :options="dimensions" :optionDisabled="optionDisabled" />
   </div>
 </template>
   
@@ -110,10 +113,12 @@ export default {
 
       selectedScenario2: [],
 
-      selectedOption: ref('2D'),
-      options: ref(['2D', '3D']),
+      selectedDimension: ref('2D'),
+      dimensions: ref(['2D', '3D']),
       checked: ref(false),
       math: ref(''),
+      selectedheight: ref('hmax'),
+      heights: ref(['hmax', 'hfin']),
 
 
       visibleRight: false, // visibilité du panel de fonds de carte
@@ -168,7 +173,7 @@ export default {
     }
   },
   watch: {
-    selectedOption(option) {
+    selectedDimension(option) {
       if (option === '2D') {
         this.switchTo2D();
       } else if (option === '3D') {
@@ -203,11 +208,11 @@ export default {
     },
     updateScenarios() {
       if (this.selectedScenario2.length > 1) {
-        let jsonemit = { selectedScenario2: this.selectedScenario2, math: this.math }
+        let jsonemit = { selectedScenario2: this.selectedScenario2, math: this.math, height: this.selectedheight  }
         this.$emit('updateScenarios', jsonemit);
 
       } else {
-        let jsonemit = { selectedScenario2: this.selectedScenario2 }
+        let jsonemit = { selectedScenario2: this.selectedScenario2, height: this.selectedheight  }
         this.$emit('updateScenarios', jsonemit);
       }
 
@@ -219,6 +224,13 @@ export default {
 </script>
   
 <style>
+.heightselect {
+  position: relative;
+  left: 20%;
+  top: 5%;
+
+}
+
 .ml-2 {
   padding-right: 10px;
 }
@@ -259,7 +271,7 @@ export default {
 
 #validatediv {
   position: relative;
-  top: 5%;
+  top: 10%;
   left: 35%;
 
 }
