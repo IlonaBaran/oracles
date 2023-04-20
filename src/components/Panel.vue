@@ -26,7 +26,8 @@
                     <div v-else-if="selectedGraph.name == 'Rose des vents'">
                         <!-- <div v-if="this.affichageWindRose == true"> -->
                         <button @click="roseVentAffichage">Affichage d'un diagramme rose des vents</button>
-                            <vue-highcharts type="chart" :options="this.chartOptions2" :redrawOnUpdate="true" :oneToOneUpdate="false" :animateOnUpdate="true" />
+                        <vue-highcharts type="chart" :options="this.chartOptions2" :redrawOnUpdate="true"
+                            :oneToOneUpdate="false" :animateOnUpdate="true" />
                         <!-- </div> -->
                     </div>
 
@@ -381,37 +382,37 @@ export default {
                 },
                 plotOptions: { series: { stacking: 'normal', shadow: false, pointPlacement: 'on' } },
 
-                series: [
+                series:
                     // { type: undefined, name: '<1 m/s', data: [1, 2, 3, 2, 1, 6, 8, 4, 0, 2, 7, 5, 2, 1, 4, 1, 1, 2, 3, 0, 1, 0, 1, 0, 0, 2, 0, 1, 2, 4, 3, 1, 5,3,2,1] },
                     // { type: undefined, name: '1-3 m/s', data: [1, 2, 3, 0, 1, 0, 1, 0, 0, 2, 0, 1, 2, 4, 3, 1, 1, 2, 3, 0, 1, 0, 1, 0, 0, 2, 0, 1, 2, 4, 3, 1, 5,7,2,0] },
-                    ordonnees
-                    // { type: undefined, name: '3-5 m/s', data: [1, 2, 3, 0, 1, 0, 0, 0, 1, 2, 1, 1, 2, 1, 1, 1] },
-                    // { type: undefined, name: '>5 m/s', data: [1, 2, 3, 0, 1, 1, 0, 0, 0, 2, 3, 1, 2, 1, 1, 1] }
-                ],
+                    ordonnees,
+                // { type: undefined, name: '3-5 m/s', data: [1, 2, 3, 0, 1, 0, 0, 0, 1, 2, 1, 1, 2, 1, 1, 1] },
+                // { type: undefined, name: '>5 m/s', data: [1, 2, 3, 0, 1, 1, 0, 0, 0, 2, 3, 1, 2, 1, 1, 1] }
+
                 // series: ordonnees,
             });
             // this.affichageWindRose = true;
         },
 
-        roseVentAffichage(){
+        roseVentAffichage() {
             // valeurs a afficher --> ordonnées
             var listDataPlot = [];
             // valeurs à afficher --> abscisses
             var abscisses = new Array();
-            for (var i=0; i<36; i++){
+            for (var i = 0; i < 36; i++) {
                 abscisses.push(i * 10);
             };
-        
+
             var s1 = new Array(36).fill(0); // inférieur à 6 m/s
             var s2 = new Array(36).fill(0); // entre 6 et 7.5 m/s
             var s3 = new Array(36).fill(0); // entre 7.5 et 9 m/s
             var s4 = new Array(36).fill(0); // supérieur à 9 m/s
 
             var s5 = new Array(36).fill(3); // supérieur à 9 m/s
-
+            let promise = null;
 
             for (const element of this.selectedScenario) {
-                fetch('http://localhost:8080/jsonData/' + `${element["name"]}` + '.json')
+                promise = fetch('http://localhost:8080/jsonData/' + `${element["name"]}` + '.json')
                     .then(response => response.json())
                     .then(data => {
                         for (const property in data) {
@@ -421,31 +422,36 @@ export default {
                             var directionVent = `${data[property]["Dir(vent)()"]}`;
                             var index = parseInt(directionVent / 10);
 
-                            if (`${data[property]["U(vent)(m)"]}` < 10){
+                            if (`${data[property]["U(vent)(m)"]}` < 10) {
                                 s1[index] += 1;
                             }
-                            else if (`${data[property]["U(vent)(m)"]}` > 10 && `${data[property]["U(vent)(m)"]}` < 15){
+                            else if (`${data[property]["U(vent)(m)"]}` > 10 && `${data[property]["U(vent)(m)"]}` < 15) {
                                 s2[index] += 1;
                             }
-                            else if (`${data[property]["U(vent)(m)"]}` > 15 && `${data[property]["U(vent)(m)"]}` < 20){
-                                 s3[index] += 1;                               
+                            else if (`${data[property]["U(vent)(m)"]}` > 15 && `${data[property]["U(vent)(m)"]}` < 20) {
+                                s3[index] += 1;
                             }
-                            if (`${data[property]["U(vent)(m)"]}` > 20){
+                            if (`${data[property]["U(vent)(m)"]}` > 20) {
                                 s4[index] += 1;
-                            }                
+                            }
                         }
-                })
+                    })
 
-            // console.log(s1);
-            // console.log(s2);
-            // console.log(s3);
-            // console.log(s4);      
+                console.log(s1);
+                console.log(s2);
+                console.log(s3);
+                console.log(s4);
+                console.log(s5);
             }
-            listDataPlot.push({ type: undefined, name: "inférieur à 6m/s", data: s1 });
-            listDataPlot.push({ type: undefined, name: "entre 6 et 7.5m/s", data: s2 });
-            listDataPlot.push({ type: undefined, name: "entre 7.5 et 9m/s", data: s3 });
-            listDataPlot.push({ type: undefined, name: "supérieur à 9m/s", data: s4 });
-            this.roseVent(abscisses, listDataPlot);
+            promise.then(date => {
+                listDataPlot.push({ type: undefined, name: "inférieur à 6m/s", data: s1 });
+                listDataPlot.push({ type: undefined, name: "entre 6 et 7.5m/s", data: s2 });
+                listDataPlot.push({ type: undefined, name: "entre 7.5 et 9m/s", data: s3 });
+                listDataPlot.push({ type: undefined, name: "supérieur à 9m/s", data: s4 });
+                this.roseVent(abscisses, listDataPlot);
+
+            })
+
         },
 
         histogramm(type, abscisses, ordonnees) {
