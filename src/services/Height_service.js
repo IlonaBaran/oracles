@@ -106,9 +106,7 @@ export async function getHeightMesh(image) {
     const data = await image.readRasters();
 
     let min = 0.1;
-    let max = 3;
-
-    console.log(min, max)
+    let max = 4;
 
     const Xo = bbox[0];
     const Xf = bbox[2];
@@ -160,11 +158,11 @@ export async function getHeightMesh(image) {
         ];
 
         const lookupTable = [
-            [0.67, 0.84, 0.90],
-            [0.52, 0.80, 0.92],
-            [0.39, 0.58, 0.92],
-            [0.27, 0.50, 0.70],
-            [0, 0, 0.50]
+            [0.81, 0.90, 1],
+            [0.16, 0.61, 0.95],
+            [0.09, 0.48, 0.80],
+            [0.06, 0.40, 0.69],
+            [0.01, 0.14, 0.29]
         ];
 
         const index = breakpoints.findIndex(b => x <= b);
