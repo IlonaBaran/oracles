@@ -47,10 +47,12 @@
                         </div>
                     </div>
 
-                    <div v-else-if="selectedGraph.name == 'Graph3D 1'">
-                        <button @click="TD1Affichage">jvrbrgunrjenguibgzy</button>
-                        <vue-highcharts :options="this.chartOptions4"></vue-highcharts>
+                    <div v-else-if="selectedGraph.name == 'Ligne 3D'">
+                        <div v-if="this.affichageLigne3d == true">
 
+                            <vue-highcharts :options="this.chartOptions4"></vue-highcharts>
+
+                        </div>
                     </div>
 
                     <!-- Div d'avertissement si il n'y a pas de graphiques sélectionnés -->
@@ -119,6 +121,7 @@ export default {
             affichageHeat: false,
             affichageRose: false,
             affichageHistogramme: false,
+            affichageLigne3d: false,
 
             // LINE CHART - APEXCHARTS //
             // Graphiques Ligne des marées
@@ -267,6 +270,9 @@ export default {
             this.histogrammeAffichage('Maree(m)');
             this.histogrammeAffichage('Hs(vagues)(m)');
             this.histogrammeAffichage('U(vent)(m)');
+
+            // Affichage des diagrammes en lignes 3D
+            this.TD1Affichage();
         },
 
         // Masque les diagrammes
@@ -775,6 +781,7 @@ export default {
                     }
                 ],
             });
+            this.affichageLigne3d = true;
         },
     }
 };
