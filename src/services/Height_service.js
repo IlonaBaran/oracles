@@ -99,14 +99,16 @@ export async function getHeightMesh(image) {
     const mnsdata = await imagemns.readRasters();
 
 
-
     //Getting metadata and data from the image
     const bbox = await image.getBoundingBox();
     const width = await image.getWidth();
     const height = await image.getHeight();
     const data = await image.readRasters();
 
-    //console.log('image read Raster', data)
+    let min = 0.1;
+    let max = 3;
+
+    console.log(min, max)
 
     const Xo = bbox[0];
     const Xf = bbox[2];
@@ -127,6 +129,7 @@ export async function getHeightMesh(image) {
 
     const vertices = [];
     const indices = [];
+    const colors = [];
 
     function minuszero(valuescenario, valuemns) {
         let valueh = valuescenario + valuemns;
@@ -144,6 +147,36 @@ export async function getHeightMesh(image) {
         }
 
     }
+
+    function rgbcolors(x, colors) {
+
+        const breakpoints = [
+            0,
+            max * 0.20,
+            max * 0.40,
+            max * 0.60,
+            max * 0.80,
+            max
+        ];
+
+        const lookupTable = [
+            [0.67, 0.84, 0.90],
+            [0.52, 0.80, 0.92],
+            [0.39, 0.58, 0.92],
+            [0.27, 0.50, 0.70],
+            [0, 0, 0.50]
+        ];
+
+        const index = breakpoints.findIndex(b => x <= b);
+
+        if (x < min || x > max) {
+            colors.push(0, 0, 0);
+        } else {
+            colors.push(...lookupTable[index - 1]);
+        }
+    }
+
+
     //Creating the vertices table, pushing the coordinates 
     //and the height data extracted from the image
 
@@ -175,6 +208,13 @@ export async function getHeightMesh(image) {
             vertices.push((i + 1) * Xsize, j * Ysize, minuszero(data[0][(i + 1) + j * width], mnsdata[0][(i + 1) + j * width])); // top right
             vertices.push((i + 1) * Xsize, (j + 1) * Ysize, minuszero(data[0][(i + 1) + (j + 1) * width], mnsdata[0][(i + 1) + (j + 1) * width])); // bottom right
 
+            rgbcolors(data[0][i + j * width], colors); // top left
+            rgbcolors(data[0][(i + 1) + j * width], colors);// top right
+            rgbcolors(data[0][i + (j + 1) * width], colors);// bottom left
+
+            rgbcolors(data[0][i + (j + 1) * width], colors);// bottom left
+            rgbcolors(data[0][(i + 1) + j * width], colors);// top right
+            rgbcolors(data[0][(i + 1) + (j + 1) * width], colors);// bottom right
         };
 
     };
@@ -184,13 +224,14 @@ export async function getHeightMesh(image) {
     //Setting attributes to the geometry
     geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(vertices), 3));
     geometry.setAttribute('normal', new THREE.BufferAttribute(new Float32Array(indices), 3));
+    geometry.setAttribute('color', new THREE.BufferAttribute(new Float32Array(colors), 3));
 
 
     // create material
     const material = new THREE.MeshBasicMaterial({
         transparent: true,
+        vertexColors: true,
         opacity: 0.8,
-        color: 0x0000FF,
         side: THREE.DoubleSide
     });
 
