@@ -91,6 +91,36 @@ export function maxLists(lists) {
     }, maxes);
 }
 
+function rgbcolors(x, colors) {
+    let min = 0.1;
+    let max = 4;
+
+    const breakpoints = [
+        0,
+        max * 0.20,
+        max * 0.40,
+        max * 0.60,
+        max * 0.80,
+        max
+    ];
+
+    const lookupTable = [
+        [0.81, 0.90, 1],
+        [0.16, 0.61, 0.95],
+        [0.09, 0.48, 0.80],
+        [0.06, 0.40, 0.69],
+        [0.01, 0.14, 0.29]
+    ];
+
+    const index = breakpoints.findIndex(b => x <= b);
+
+    if (x < min || x > max) {
+        colors.push(0, 0, 0);
+    } else {
+        colors.push(...lookupTable[index - 1]);
+    }
+}
+
 export async function getHeightMesh(image) {
 
     let urlmns = 'http://localhost:8080/MNS_GAVRES.tif';
@@ -104,9 +134,6 @@ export async function getHeightMesh(image) {
     const width = await image.getWidth();
     const height = await image.getHeight();
     const data = await image.readRasters();
-
-    let min = 0.1;
-    let max = 4;
 
     const Xo = bbox[0];
     const Xf = bbox[2];
@@ -144,34 +171,6 @@ export async function getHeightMesh(image) {
             }
         }
 
-    }
-
-    function rgbcolors(x, colors) {
-
-        const breakpoints = [
-            0,
-            max * 0.20,
-            max * 0.40,
-            max * 0.60,
-            max * 0.80,
-            max
-        ];
-
-        const lookupTable = [
-            [0.81, 0.90, 1],
-            [0.16, 0.61, 0.95],
-            [0.09, 0.48, 0.80],
-            [0.06, 0.40, 0.69],
-            [0.01, 0.14, 0.29]
-        ];
-
-        const index = breakpoints.findIndex(b => x <= b);
-
-        if (x < min || x > max) {
-            colors.push(0, 0, 0);
-        } else {
-            colors.push(...lookupTable[index - 1]);
-        }
     }
 
 
@@ -256,11 +255,6 @@ export async function getHeightFromScenarios(bbox, width, height, data) {
     const Yo = bbox[1];
     const Yf = bbox[3];
 
-
-    let min = 0.1;
-    let max = 4;
-
-
     //Calculating the pixel size
     let Xsize = (Xf - Xo) / width;
     let Ysize = -(Yf - Yo) / height;
@@ -291,34 +285,6 @@ export async function getHeightFromScenarios(bbox, width, height, data) {
             }
         }
 
-    }
-
-    function rgbcolors(x, colors) {
-
-        const breakpoints = [
-            0,
-            max * 0.20,
-            max * 0.40,
-            max * 0.60,
-            max * 0.80,
-            max
-        ];
-
-        const lookupTable = [
-            [0.81, 0.90, 1],
-            [0.16, 0.61, 0.95],
-            [0.09, 0.48, 0.80],
-            [0.06, 0.40, 0.69],
-            [0.01, 0.14, 0.29]
-        ];
-
-        const index = breakpoints.findIndex(b => x <= b);
-
-        if (x < min || x > max) {
-            colors.push(0, 0, 0);
-        } else {
-            colors.push(...lookupTable[index - 1]);
-        }
     }
 
     //Creating the vertices table, pushing the coordinates 
