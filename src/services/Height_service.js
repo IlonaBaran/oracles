@@ -256,6 +256,11 @@ export async function getHeightFromScenarios(bbox, width, height, data) {
     const Yo = bbox[1];
     const Yf = bbox[3];
 
+
+    let min = 0.1;
+    let max = 4;
+
+
     //Calculating the pixel size
     let Xsize = (Xf - Xo) / width;
     let Ysize = -(Yf - Yo) / height;
@@ -287,6 +292,35 @@ export async function getHeightFromScenarios(bbox, width, height, data) {
         }
 
     }
+
+    function rgbcolors(x, colors) {
+
+        const breakpoints = [
+            0,
+            max * 0.20,
+            max * 0.40,
+            max * 0.60,
+            max * 0.80,
+            max
+        ];
+
+        const lookupTable = [
+            [0.81, 0.90, 1],
+            [0.16, 0.61, 0.95],
+            [0.09, 0.48, 0.80],
+            [0.06, 0.40, 0.69],
+            [0.01, 0.14, 0.29]
+        ];
+
+        const index = breakpoints.findIndex(b => x <= b);
+
+        if (x < min || x > max) {
+            colors.push(0, 0, 0);
+        } else {
+            colors.push(...lookupTable[index - 1]);
+        }
+    }
+
     //Creating the vertices table, pushing the coordinates 
     //and the height data extracted from the image
 
@@ -320,6 +354,13 @@ export async function getHeightFromScenarios(bbox, width, height, data) {
             vertices.push((i + 1) * Xsize, j * Ysize, minuszero(data[0][(i + 1) + j * width], mnsdata[0][(i + 1) + j * width])); // top right
             vertices.push((i + 1) * Xsize, (j + 1) * Ysize, minuszero(data[0][(i + 1) + (j + 1) * width], mnsdata[0][(i + 1) + (j + 1) * width])); // bottom right
 
+            rgbcolors(data[0][i + j * width], colors); // top left
+            rgbcolors(data[0][(i + 1) + j * width], colors);// top right
+            rgbcolors(data[0][i + (j + 1) * width], colors);// bottom left
+
+            rgbcolors(data[0][i + (j + 1) * width], colors);// bottom left
+            rgbcolors(data[0][(i + 1) + j * width], colors);// top right
+            rgbcolors(data[0][(i + 1) + (j + 1) * width], colors);// bottom right
         };
     };
 
