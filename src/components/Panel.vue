@@ -419,7 +419,6 @@ export default {
             var s3 = new Array(36).fill(0); // entre 7.5 et 9 m/s
             var s4 = new Array(36).fill(0); // supérieur à 9 m/s
 
-            var s5 = new Array(36).fill(3); // supérieur à 9 m/s
             let promise = null;
 
             for (const element of this.selectedScenario) {
@@ -433,32 +432,26 @@ export default {
                             var directionVent = `${data[property]["Dir(vent)()"]}`;
                             var index = parseInt(directionVent / 10);
 
-                            if (`${data[property]["U(vent)(m)"]}` < 10) {
+                            if (`${data[property]["U(vent)(m)"]}` < 6) {
                                 s1[index] += 1;
                             }
-                            else if (`${data[property]["U(vent)(m)"]}` > 10 && `${data[property]["U(vent)(m)"]}` < 15) {
+                            else if (`${data[property]["U(vent)(m)"]}` > 6 && `${data[property]["U(vent)(m)"]}` < 8) {
                                 s2[index] += 1;
                             }
-                            else if (`${data[property]["U(vent)(m)"]}` > 15 && `${data[property]["U(vent)(m)"]}` < 20) {
+                            else if (`${data[property]["U(vent)(m)"]}` > 8 && `${data[property]["U(vent)(m)"]}` < 10) {
                                 s3[index] += 1;
                             }
-                            if (`${data[property]["U(vent)(m)"]}` > 20) {
+                            if (`${data[property]["U(vent)(m)"]}` > 10) {
                                 s4[index] += 1;
                             }
                         }
                     })
-
-                console.log(s1);
-                console.log(s2);
-                console.log(s3);
-                console.log(s4);
-                console.log(s5);
             }
             promise.then(date => {
                 listDataPlot.push({ type: undefined, name: "inférieur à 6m/s", data: s1 });
-                listDataPlot.push({ type: undefined, name: "entre 6 et 7.5m/s", data: s2 });
-                listDataPlot.push({ type: undefined, name: "entre 7.5 et 9m/s", data: s3 });
-                listDataPlot.push({ type: undefined, name: "supérieur à 9m/s", data: s4 });
+                listDataPlot.push({ type: undefined, name: "entre 6 et 8m/s", data: s2 });
+                listDataPlot.push({ type: undefined, name: "entre 8 et 10m/s", data: s3 });
+                listDataPlot.push({ type: undefined, name: "supérieur à 10m/s", data: s4 });
                 this.roseVent(abscisses, listDataPlot);
 
             })
