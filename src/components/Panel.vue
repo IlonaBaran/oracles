@@ -47,10 +47,12 @@
                         </div>
                     </div>
 
-                    <div v-else-if="selectedGraph.name == 'Graph3D 1'">
-                        <button @click="TD1Affichage">jvrbrgunrjenguibgzy</button>
-                        <vue-highcharts :options="this.chartOptions4"></vue-highcharts>
+                    <div v-else-if="selectedGraph.name == 'Ligne 3D'">
+                        <div v-if="this.affichageLigne3d == true">
 
+                            <vue-highcharts :options="this.chartOptions4"></vue-highcharts>
+
+                        </div>
                     </div>
 
                     <!-- Div d'avertissement si il n'y a pas de graphiques sélectionnés -->
@@ -119,6 +121,7 @@ export default {
             affichageHeat: false,
             affichageRose: false,
             affichageHistogramme: false,
+            affichageLigne3d: false,
 
             // LINE CHART - APEXCHARTS //
             // Graphiques Ligne des marées
@@ -235,7 +238,7 @@ export default {
                     labels: { format: '{value:,.0f} MAMSL' },
                     gridLineDashStyle: 'Dash'
                 },
-                xAxis: [{ visible: false }, { visible: false }, { visible: false }],
+                xAxis: [],
                 plotOptions: {
                     area: {
                         depth: 100,
@@ -267,6 +270,9 @@ export default {
             this.histogrammeAffichage('Maree(m)');
             this.histogrammeAffichage('Hs(vagues)(m)');
             this.histogrammeAffichage('U(vent)(m)');
+
+            // Affichage des diagrammes en lignes 3D
+            this.TD1Affichage('Maree(m)');
         },
 
         // Masque les diagrammes
@@ -274,6 +280,8 @@ export default {
             this.affichageLigne = false;
             this.affichageHeat = false;
             this.affichageHistogramme = false;
+            this.affichageLigne3d = false;
+
         },
 
         // Création d'un diagramme en ligne en fonction du type données
@@ -619,7 +627,8 @@ export default {
 
         // ressource : https://www.highcharts.com/docs/chart-concepts/3d-charts
         // https://www.highcharts.com/demo/3d-area-multiple/brand-light
-        TD1Affichage() {
+        TD1(type, abscisses, ordonnees) {
+            console.log(ordonnees);
             this.chartOptions4 = ({
                 chart: {
                     type: 'area',
@@ -642,7 +651,7 @@ export default {
                     labels: { format: '{value:,.0f} MAMSL' },
                     gridLineDashStyle: 'Dash'
                 },
-                xAxis: [{ visible: false }, { visible: false }, { visible: false }],
+                xAxis: abscisses,
                 plotOptions: {
                     area: {
                         depth: 100,
@@ -651,130 +660,66 @@ export default {
                     }
                 },
                 tooltip: { valueSuffix: ' MAMSL' },
-                series: [
-                    {
-                        xAxis: 0,
-                        name: 'Tatra Mountains visible from Rusinowa polana',
-                        lineColor: 'rgb(180,90,50)',
-                        color: 'rgb(200,110,50)',
-                        fillColor: 'rgb(200,110,50)',
-                        data: [
-                            ['Kufstein', 2049],
-                            ['Hohe Wildstelle', 2746],
-                            ['Kleiner Miesberg', 2173],
-                            ['Großer Miesberg', 2202],
-                            ['Hochstein', 2543],
-                            ['Lackner Miesberg', 2232],
-                            ['Wasenspitze', 2257],
-                            ['Sinabell', 2349],
-                            ['Feister Scharte', 2198],
-                            ['Eselstein', 2556],
-                            ['Landfriedstein', 2536],
-                            ['Scheichenspitz', 2667],
-                            ['Schmiedstock', 2634],
-                            ['Gamsfeldspitze', 2611],
-                            ['Edelgriess', 2305],
-                            ['Koppenkarstein', 2863],
-                            ['Niederer Gjaidstein', 2483],
-                            ['Hoher Gjaidstein', 2794],
-                            ['Hoher Dachstein', 2995],
-                            ['Niederer Dachstein', 2934],
-                            ['Hohes Kreuz', 2837],
-                            ['Hoher Ochsenkogel', 2513]
-                        ]
-                    },
-                    {
-                        xAxis: 1,
-                        lineColor: 'rgb(120,160,180)',
-                        color: 'rgb(140,180,200)',
-                        fillColor: 'rgb(140,180,200)',
-                        name: 'Dachstein panorama seen from Krippenstein',
-                        data: [
-                            ['Combin de la Tsessette', 4141],
-                            ['Grand Combin de Grafeneire', 4314],
-                            ['Combin de Corbassière', 3716],
-                            ['Petit Combin', 3672],
-                            ['Pointe de Boveire', 3212],
-                            ['Grand Aget', 3133],
-                            ['Mont Rogneux', 3084],
-                            ['Dents du Grand Lé', 2884],
-                            ['Monts Telliers', 2951],
-                            ['Grand Golliat', 3238],
-                            ['Mont Grande Rochère', 3326],
-                            ['Mont de la Fouly', 2871],
-                            ['Tête de la Payanne', 2452],
-                            ['Pointe Allobrogia', 3172],
-                            ['Six Blanc', 2334],
-                            ['Mont Dolent', 3820],
-                            ['Aiguille de Triolet', 3870],
-                            ['Le Tour Noir', 3836],
-                            ['Aiguille de l\'A Neuve', 3753],
-                            ['Aiguille d\'Argentière', 3900],
-                            ['Aiguille du Chardonnet', 3824],
-                            ['Aiguille du Tour', 3540],
-                            ['Aiguille du Pissoir', 3440],
-                            ['Le Catogne', 2598],
-                            ['Pointe de Prosom', 2762],
-                            ['Pointe Ronde', 2700],
-                            ['Mont Buet', 3096],
-                            ['Le Cheval Blanc', 2831],
-                            ['Pointe de la Finive', 2838],
-                            ['Pic de Tenneverge', 2985],
-                            ['Pointe d\'Aboillon', 2819],
-                            ['Tour Sallière', 3220],
-                            ['Le Dôme', 3138],
-                            ['Haute Cime', 3257],
-                            ['Pierre Avoi', 2473],
-                            ['Cime de l\'Est', 3178]
-                        ]
-                    },
-                    {
-                        xAxis: 2,
-                        lineColor: 'rgb(200, 190, 140)',
-                        color: 'rgb(200, 190, 140)',
-                        fillColor: 'rgb(230, 220, 180)',
-                        name: 'Panorama from Col Des Mines',
-                        data: [
-                            ['Combin de la Tsessette', 4141],
-                            ['Grand Combin de Grafeneire', 4314],
-                            ['Combin de Corbassière', 3716],
-                            ['Petit Combin', 3672],
-                            ['Pointe de Boveire', 3212],
-                            ['Grand Aget', 3133],
-                            ['Mont Rogneux', 3084],
-                            ['Dents du Grand Lé', 2884],
-                            ['Monts Telliers', 2951],
-                            ['Grand Golliat', 3238],
-                            ['Mont Grande Rochère', 3326],
-                            ['Mont de la Fouly', 2871],
-                            ['Tête de la Payanne', 2452],
-                            ['Pointe Allobrogia', 3172],
-                            ['Six Blanc', 2334],
-                            ['Mont Dolent', 3820],
-                            ['Aiguille de Triolet', 3870],
-                            ['Le Tour Noir', 3836],
-                            ['Aiguille de l\'A Neuve', 3753],
-                            ['Aiguille d\'Argentière', 3900],
-                            ['Aiguille du Chardonnet', 3824],
-                            ['Aiguille du Tour', 3540],
-                            ['Aiguille du Pissoir', 3440],
-                            ['Le Catogne', 2598],
-                            ['Pointe de Prosom', 2762],
-                            ['Pointe Ronde', 2700],
-                            ['Mont Buet', 3096],
-                            ['Le Cheval Blanc', 2831],
-                            ['Pointe de la Finive', 2838],
-                            ['Pic de Tenneverge', 2985],
-                            ['Pointe d\'Aboillon', 2819],
-                            ['Tour Sallière', 3220],
-                            ['Le Dôme', 3138],
-                            ['Haute Cime', 3257],
-                            ['Pierre Avoi', 2473],
-                            ['Cime de l\'Est', 3178]
-                        ]
-                    }
-                ],
+                series: ordonnees,
             });
+            this.affichageLigne3d = true;
+        },
+
+
+        TD1Affichage(type) {
+            let abscisses = [];
+            let ordonnees = [];
+            let index = 0;
+            let promise = null;
+            let axes = [];
+            for (const element of this.selectedScenario) {
+                var file = 'http://localhost:8080/jsonData/' + element["name"] + '.json';
+                promise = fetch(file)
+                    .then(response => response.json())
+                    .then(data => {
+
+                        // Boucle pour avoir toutes les abscisses possibles
+                        for (const property in data) {
+                            if (abscisses.indexOf(`${data[property]["heure"]}`) == -1) {
+                                abscisses.push(`${data[property]["heure"]}`);
+                            }
+                        };
+                        abscisses.sort()
+
+                        // 1 dictionnaire = 1 scenario, il se remet à 0 à chaque nouveau scénario
+                        let dict = {
+                        };
+                        if (ordonnees.length == 0) {
+                            axes.push({ visible: true, categories: abscisses, })
+
+                        }
+
+
+                        else {
+                            dict = {
+                                xAxis: ordonnees.length,
+                            };
+                            axes.push({ visible: false });
+                        }
+
+                        dict["name"] = `${element["name"]}`;
+                        // L : tableau pour mettre les valeurs du scénario dedans. On ajoutera L au tableau à la fin de la boucle for
+                        let L = new Array(abscisses.length).fill(0);
+                        for (const property in data) {
+                            if (abscisses.indexOf(`${data[property]["heure"]}`) != -1) {
+                                L[abscisses.indexOf(`${data[property]["heure"]}`)] = parseFloat(`${data[property][type]}`);
+                            }
+                        };
+                        dict["data"] = L;
+                        ordonnees.push(dict);
+                    })
+
+            }
+            promise.then(response => {
+                console.log(ordonnees);
+                this.TD1(type, axes, ordonnees);
+            })
+
         },
     }
 };

@@ -97,8 +97,7 @@ export default {
                     name: '3D',
                     code: '3D',
                     states: [
-                        { name: 'Graph3D 1' },
-                        { name: 'Graph3D 2' }]
+                        { name: 'Ligne 3D' }]
                 },
             ]
         }
