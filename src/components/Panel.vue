@@ -24,11 +24,10 @@
 
                     <!-- Div des graphiques rose des vents -->
                     <div v-else-if="selectedGraph.name == 'Rose des vents'">
-                        <!-- <div v-if="this.affichageWindRose == true"> -->
-                        <button @click="roseVentAffichage">Affichage d'un diagramme rose des vents</button>
-                        <vue-highcharts type="chart" :options="this.chartOptions2" :redrawOnUpdate="true"
-                            :oneToOneUpdate="false" :animateOnUpdate="true" />
-                        <!-- </div> -->
+                        <div v-if="this.affichageWindRose == true">
+                            <vue-highcharts type="chart" :options="this.chartOptions2" :redrawOnUpdate="true"
+                                :oneToOneUpdate="false" :animateOnUpdate="true" />
+                        </div>
                     </div>
 
                     <!-- Div des graphiques histogrammes -->
@@ -122,9 +121,7 @@ export default {
             affichageHeat: false,
             affichageRose: false,
             affichageHistogramme: false,
-
             affichageWindRose: false,
-
             affichageLigne3d: false,
 
 
@@ -267,7 +264,8 @@ export default {
             this.lineChartAffichage('Hs(vagues)(m)');
             this.lineChartAffichage('U(vent)(m)');
 
-            // this.roseVentAffichage();
+            // Affichage des diagrammes rose des vents
+            this.roseVentAffichage();
 
             // Affichage des diagrammes heatmap
             this.heatMapAffichage();
@@ -453,7 +451,7 @@ export default {
                 listDataPlot.push({ type: undefined, name: "entre 8 et 10m/s", data: s3 });
                 listDataPlot.push({ type: undefined, name: "supérieur à 10m/s", data: s4 });
                 this.roseVent(abscisses, listDataPlot);
-
+                this.affichageWindRose = true;
             })
 
         },
