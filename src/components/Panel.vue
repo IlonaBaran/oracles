@@ -24,9 +24,10 @@
 
                     <!-- Div des graphiques rose des vents -->
                     <div v-else-if="selectedGraph.name == 'Rose des vents'">
+                        <!-- <div v-if="this.affichageWindRose == true"> -->
                         <button @click="roseVentAffichage">Affichage d'un diagramme rose des vents</button>
-                        <vue-highcharts type="chart" :options="this.chartOptions2" :redrawOnUpdate="true"
-                            :oneToOneUpdate="false" :animateOnUpdate="true" />
+                            <vue-highcharts type="chart" :options="this.chartOptions2" :redrawOnUpdate="true" :oneToOneUpdate="false" :animateOnUpdate="true" />
+                        <!-- </div> -->
                     </div>
 
                     <!-- Div des graphiques histogrammes -->
@@ -36,7 +37,6 @@
                             <apexchart :options="this.chartOptions5Maree" :series="this.series5Maree" />
                             <apexchart :options="this.chartOptions5Vagues" :series="this.series5Vagues" />
                             <apexchart :options="this.chartOptions5Vent" :series="this.series5Vent" />
-
                         </div>
                     </div>
 
@@ -119,6 +119,7 @@ export default {
             affichageHeat: false,
             affichageRose: false,
             affichageHistogramme: false,
+            // affichageWindRose: false,
 
             // LINE CHART - APEXCHARTS //
             // Graphiques Ligne des marées
@@ -259,6 +260,8 @@ export default {
             this.lineChartAffichage('Hs(vagues)(m)');
             this.lineChartAffichage('U(vent)(m)');
 
+            // this.roseVentAffichage();
+
             // Affichage des diagrammes heatmap
             this.heatMapAffichage();
 
@@ -274,6 +277,7 @@ export default {
             this.affichageLigne = false;
             this.affichageHeat = false;
             this.affichageHistogramme = false;
+            // this.affichageWindRose = false;
         },
 
         // Création d'un diagramme en ligne en fonction du type données
@@ -361,38 +365,87 @@ export default {
             }
         },
 
-        roseVentAffichage() {
-
+        roseVent(abscisses, ordonnees) {
+            console.log(ordonnees);
             this.chartOptions2 = ({
                 chart: { polar: true, type: 'column' },
-                title: { text: 'Number of project stars', },
-                xAxis: { tickmarkPlacement: 'on', categories: ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW'] },
+                title: { text: 'Distribution de la vitesse du vent', },
+                // xAxis: { tickmarkPlacement: 'on', categories: ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW', 'N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW', '1', '2', '3', '4'] },
+                xAxis: { tickmarkPlacement: 'on', categories: abscisses },
                 yAxis: {
                     min: 0,
                     endOnTick: false,
                     showLastLabel: true,
                     reversedStacks: false,
-                    title: { text: 'Number of stars', },
+                    title: { text: 'Direction du vent', },
                 },
                 plotOptions: { series: { stacking: 'normal', shadow: false, pointPlacement: 'on' } },
 
                 series: [
-                    { type: undefined, name: '<1 m/s', data: [1, 2, 3, 2, 1, 6, 8, 4, 0, 2, 7, 5, 2, 1, 4, 1] },
-                    { type: undefined, name: '1-3 m/s', data: [1, 2, 3, 0, 1, 0, 1, 0, 0, 2, 0, 1, 2, 4, 3, 1] },
-                    { type: undefined, name: '3-5 m/s', data: [1, 2, 3, 0, 1, 0, 0, 0, 1, 2, 1, 1, 2, 1, 1, 1] },
-                    { type: undefined, name: '>5 m/s', data: [1, 2, 3, 0, 1, 1, 0, 0, 0, 2, 3, 1, 2, 1, 1, 1] }
+                    // { type: undefined, name: '<1 m/s', data: [1, 2, 3, 2, 1, 6, 8, 4, 0, 2, 7, 5, 2, 1, 4, 1, 1, 2, 3, 0, 1, 0, 1, 0, 0, 2, 0, 1, 2, 4, 3, 1, 5,3,2,1] },
+                    // { type: undefined, name: '1-3 m/s', data: [1, 2, 3, 0, 1, 0, 1, 0, 0, 2, 0, 1, 2, 4, 3, 1, 1, 2, 3, 0, 1, 0, 1, 0, 0, 2, 0, 1, 2, 4, 3, 1, 5,7,2,0] },
+                    ordonnees
+                    // { type: undefined, name: '3-5 m/s', data: [1, 2, 3, 0, 1, 0, 0, 0, 1, 2, 1, 1, 2, 1, 1, 1] },
+                    // { type: undefined, name: '>5 m/s', data: [1, 2, 3, 0, 1, 1, 0, 0, 0, 2, 3, 1, 2, 1, 1, 1] }
                 ],
+                // series: ordonnees,
             });
+            // this.affichageWindRose = true;
         },
 
-        histogramm() {
-            this.chartOptions5 = ({
-                chart: { type: 'bar', height: 350, stacked: true, stackType: '100%' },
-                responsive: [{ breakpoint: 480, options: { legend: { position: 'bottom', offsetX: -10, offsetY: 0 } } }],
-                xaxis: { categories: ['2011 Q1', '2011 Q2', '2011 Q3', '2011 Q4', '2012 Q1', '2012 Q2', '2012 Q3', '2012 Q4'], },
-                fill: { opacity: 1 },
-                legend: { position: 'right', offsetX: 0, offsetY: 50 },
-            });
+        roseVentAffichage(){
+            // valeurs a afficher --> ordonnées
+            var listDataPlot = [];
+            // valeurs à afficher --> abscisses
+            var abscisses = new Array();
+            for (var i=0; i<36; i++){
+                abscisses.push(i * 10);
+            };
+        
+            var s1 = new Array(36).fill(0); // inférieur à 6 m/s
+            var s2 = new Array(36).fill(0); // entre 6 et 7.5 m/s
+            var s3 = new Array(36).fill(0); // entre 7.5 et 9 m/s
+            var s4 = new Array(36).fill(0); // supérieur à 9 m/s
+
+            var s5 = new Array(36).fill(3); // supérieur à 9 m/s
+
+
+            for (const element of this.selectedScenario) {
+                fetch('http://localhost:8080/jsonData/' + `${element["name"]}` + '.json')
+                    .then(response => response.json())
+                    .then(data => {
+                        for (const property in data) {
+                            // On recupère la vitesse du vent 
+                            var vitesseVent = `${data[property]["U(vent)(m)"]}`;
+                            // On recupère la direction du vent 
+                            var directionVent = `${data[property]["Dir(vent)()"]}`;
+                            var index = parseInt(directionVent / 10);
+
+                            if (`${data[property]["U(vent)(m)"]}` < 10){
+                                s1[index] += 1;
+                            }
+                            else if (`${data[property]["U(vent)(m)"]}` > 10 && `${data[property]["U(vent)(m)"]}` < 15){
+                                s2[index] += 1;
+                            }
+                            else if (`${data[property]["U(vent)(m)"]}` > 15 && `${data[property]["U(vent)(m)"]}` < 20){
+                                 s3[index] += 1;                               
+                            }
+                            if (`${data[property]["U(vent)(m)"]}` > 20){
+                                s4[index] += 1;
+                            }                
+                        }
+                })
+
+            // console.log(s1);
+            // console.log(s2);
+            // console.log(s3);
+            // console.log(s4);      
+            }
+            listDataPlot.push({ type: undefined, name: "inférieur à 6m/s", data: s1 });
+            listDataPlot.push({ type: undefined, name: "entre 6 et 7.5m/s", data: s2 });
+            listDataPlot.push({ type: undefined, name: "entre 7.5 et 9m/s", data: s3 });
+            listDataPlot.push({ type: undefined, name: "supérieur à 9m/s", data: s4 });
+            this.roseVent(abscisses, listDataPlot);
         },
 
         histogramm(type, abscisses, ordonnees) {
@@ -442,8 +495,6 @@ export default {
             }
             this.affichageHistogramme = true;
         },
-
-
 
 
         histogrammeAffichage(type) {
@@ -807,157 +858,6 @@ export default {
 //         // }
 //     }
 // }
-
-//   const chartOptions2 = reactive({
-//     //  type: 'horizontal column',
-//     //type: 'simpleLine',
-//     legend: {
-//         visible: true,
-//         position: 'bottom right',
-//         // legendEntry_visible: false
-//     },
-// 	title: { label: { text: 'Cost over time' } },
-// 	yAxis: [
-//         /* Main axis is defined first. */
-//         { formatString: 'c' },
-/* Secondary axis will sync with main axis by default. */
-// {
-// 	id: 'secondY',
-// 	orientation: 'opposite',
-// 	line: { color: '#e2e2e2' },
-// 	defaultTick: {
-// 		enabled: false,
-// 		gridLine: { visible: false }
-// 	}
-// }
-// ],
-// xAxis: {
-//     crosshair: { enabled: true },
-//     scale: { type: 'time' }
-// },
-// defaultSeries: {
-//     type: 'line',
-//     defaultPoint: {
-//         marker: { visible: false }
-//     },
-// lastPoint: {
-// 	label: { text: '<b>%seriesName</b>' },
-// 	yAxisTick: {
-// 		axisId: 'secondY',
-// 		label: { text: '%yValue' }
-// 	}
-// }
-// }
-//  series: [
-// 		{
-// 			name: 'Purchases',
-// 			points: [
-// 				['1/1/2020', 29.9],
-// 				['2/1/2020', 97.5],
-// 				['3/1/2020', 110.4],
-// 				['4/1/2020', 129.2],
-// 				['5/1/2020', 144.0],
-// 				['6/1/2020', 176.0],
-// 				['7/1/2020', 182.0],
-// 				['8/1/2020', 186.0],
-// 				['9/1/2020', 181.0],
-// 				['10/1/2020', 178.0],
-// 				['11/1/2020', 184.0],
-// 				['12/1/2020', 176.0]
-// 			]
-// 		},
-// 		{
-// 			name: 'Taxes',
-// 			points: [
-// 				['1/1/2020', 86.9],
-// 				['2/1/2020', 79.5],
-// 				['3/1/2020', 95.4],
-// 				['4/1/2020', 97.2],
-// 				['5/1/2020', 123.0],
-// 				['6/1/2020', 111.0],
-// 				['7/1/2020', 122.0],
-// 				['8/1/2020', 135.0],
-// 				['9/1/2020', 140.0],
-// 				['10/1/2020', 139.0],
-// 				['11/1/2020', 135.0],
-// 				['12/1/2020', 132.0]
-// 			]
-// 		},
-// 		{
-// 			name: 'Supplies',
-// 			points: [
-// 				['1/1/2020', 129.9],
-// 				['2/1/2020', 111.5],
-// 				['3/1/2020', 66.4],
-// 				['4/1/2020', 29.2],
-// 				['5/1/2020', 88.0],
-// 				['6/1/2020', 102.0],
-// 				['7/1/2020', 82.0],
-// 				['8/1/2020', 75.0],
-// 				['9/1/2020', 162.0],
-// 				['10/1/2020', 110.0],
-// 				['11/1/2020', 90.0],
-// 				['12/1/2020', 85.0]
-// 			]
-// 		},
-// 		{
-// 			name: 'Rent',
-// 			points: [
-// 				['1/1/2020', 56.9],
-// 				['2/1/2020', 56.5],
-// 				['3/1/2020', 56.4],
-// 				['4/1/2020', 56.2],
-// 				['5/1/2020', 75.0],
-// 				['6/1/2020', 56.0],
-// 				['7/1/2020', 56.0],
-// 				['8/1/2020', 56.0],
-// 				['9/1/2020', 56.0],
-// 				['10/1/2020', 67.0],
-// 				['11/1/2020', 67.0],
-// 				['12/1/2020', 67.0]
-// 			]
-// 		}
-//  ]
-// });
-
-//     const chartOptions3 = reactive({
-//     debug: true,
-//     type: 'column',
-//     yAxis: {
-//         scale_type: 'stacked',
-//         label_text: 'Units Sold'
-//     },
-//     title_label_text: 'Acme Tool Sales',
-//     xAxis: {
-//         label_text: 'Quarter',
-//         categories: ['Q1', 'Q2', 'Q3', 'Q4']
-//     },
-//     series: [
-//         {
-//         name: 'Saw',
-//         id: 's1',
-//         points: [230, 240, 267, 238]
-//         },
-//         {
-//         name: 'Hammer',
-//         points: [325, 367, 382, 371]
-//         },
-//         {
-//         name: 'Grinder',
-//         points: [285, 292, 267, 218]
-//         },
-//         {
-//         name: 'Drill',
-//         points: [185, 192, 198, 248]
-//         }
-//     ]
-//     });
-
-//   return { chartOptions, chartOptions2, chartOptions3 };
-
-// }
-
-
 </script>
 
 
