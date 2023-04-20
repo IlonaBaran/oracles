@@ -238,7 +238,7 @@ export default {
                     labels: { format: '{value:,.0f} MAMSL' },
                     gridLineDashStyle: 'Dash'
                 },
-                xAxis: {},
+                xAxis: [],
                 plotOptions: {
                     area: {
                         depth: 100,
@@ -280,6 +280,8 @@ export default {
             this.affichageLigne = false;
             this.affichageHeat = false;
             this.affichageHistogramme = false;
+            this.affichageLigne3d = false;
+
         },
 
         // Création d'un diagramme en ligne en fonction du type données
@@ -649,7 +651,7 @@ export default {
                     labels: { format: '{value:,.0f} MAMSL' },
                     gridLineDashStyle: 'Dash'
                 },
-                xAxis: [{ visible: true, categories: abscisses, }, { visible: false }, { visible: false }],
+                xAxis: abscisses,
                 plotOptions: {
                     area: {
                         depth: 100,
@@ -663,11 +665,13 @@ export default {
             this.affichageLigne3d = true;
         },
 
+
         TD1Affichage(type) {
             let abscisses = [];
             let ordonnees = [];
             let index = 0;
             let promise = null;
+            let axes = [];
             for (const element of this.selectedScenario) {
                 var file = 'http://localhost:8080/jsonData/' + element["name"] + '.json';
                 promise = fetch(file)
@@ -685,11 +689,17 @@ export default {
                         // 1 dictionnaire = 1 scenario, il se remet à 0 à chaque nouveau scénario
                         let dict = {
                         };
+                        if (ordonnees.length == 0) {
+                            axes.push({ visible: true, categories: abscisses, })
 
-                        if (ordonnees.length != 0) {
+                        }
+
+
+                        else {
                             dict = {
                                 xAxis: ordonnees.length,
                             };
+                            axes.push({ visible: false });
                         }
 
                         dict["name"] = `${element["name"]}`;
@@ -706,124 +716,9 @@ export default {
 
             }
             promise.then(response => {
-                this.TD1(type, abscisses, ordonnees);
-
-
-
+                console.log(ordonnees);
+                this.TD1(type, axes, ordonnees);
             })
-
-            let test = [{
-                name: 'Tatra Mountains visible from Rusinowa polana',
-
-                data: [
-                    ['Murań', 1890],
-                    ['Nowy Wierch', 2009],
-                    ['Hawrań', 2152],
-                    ['Płaczliwa Skała', 2142],
-                    ['Szalony Wierch', 2061],
-                    ['Karczmarski Wierch', 1438],
-                    ['Jagnięcy Szczyt', 2230],
-                    ['Czerwona Turnia', 2284],
-                    ['Kołowy Szczyt', 2418],
-                    ['Czarny Szczyt', 2429],
-                    ['Baranie Rogi', 2526],
-                    ['Śnieżny Szczyt', 2465],
-                    ['Lodowy Szczyt', 2627],
-                    ['Lodowa Kopa', 2602],
-                    ['Szeroka Jaworzyńska', 2210],
-                    ['Horwacki Wierch', 1902],
-                    ['Spismichałowa Czuba', 2012],
-                    ['Zielona Czuba', 2130],
-                    ['Wielicki Szczyt', 2318],
-                    ['Gerlach', 2655],
-                    ['Batyżowiecki Szczyt', 2448],
-                    ['Kaczy Szczyt', 2395],
-                    ['Zmarzły Szczyt', 2390],
-                    ['Kończysta', 2538],
-                    ['Młynarz', 2170],
-                    ['Ganek', 2462],
-                    ['Wysoka', 2547],
-                    ['Ciężki Szczyt', 2520],
-                    ['Rysy', 2503],
-                    ['Żabi Mnich', 2146],
-                    ['Żabi Koń', 2291],
-                    ['Żabia Turnia Mięguszowiecka', 2335],
-                    ['Wołowa Turnia', 2373]
-                ]
-            }, {
-                xAxis: 1,
-
-                name: 'Dachstein panorama seen from Krippenstein',
-                data: [
-                    ['Kufstein', 2049],
-                    ['Hohe Wildstelle', 2746],
-                    ['Kleiner Miesberg', 2173],
-                    ['Großer Miesberg', 2202],
-                    ['Hochstein', 2543],
-                    ['Lackner Miesberg', 2232],
-                    ['Wasenspitze', 2257],
-                    ['Sinabell', 2349],
-                    ['Feister Scharte', 2198],
-                    ['Eselstein', 2556],
-                    ['Landfriedstein', 2536],
-                    ['Scheichenspitz', 2667],
-                    ['Schmiedstock', 2634],
-                    ['Gamsfeldspitze', 2611],
-                    ['Edelgriess', 2305],
-                    ['Koppenkarstein', 2863],
-                    ['Niederer Gjaidstein', 2483],
-                    ['Hoher Gjaidstein', 2794],
-                    ['Hoher Dachstein', 2995],
-                    ['Niederer Dachstein', 2934],
-                    ['Hohes Kreuz', 2837],
-                    ['Hoher Ochsenkogel', 2513]
-                ]
-            }, {
-                xAxis: 2,
-
-                name: 'Panorama from Col Des Mines',
-                data: [
-                    ['Combin de la Tsessette', 4141],
-                    ['Grand Combin de Grafeneire', 4314],
-                    ['Combin de Corbassière', 3716],
-                    ['Petit Combin', 3672],
-                    ['Pointe de Boveire', 3212],
-                    ['Grand Aget', 3133],
-                    ['Mont Rogneux', 3084],
-                    ['Dents du Grand Lé', 2884],
-                    ['Monts Telliers', 2951],
-                    ['Grand Golliat', 3238],
-                    ['Mont Grande Rochère', 3326],
-                    ['Mont de la Fouly', 2871],
-                    ['Tête de la Payanne', 2452],
-                    ['Pointe Allobrogia', 3172],
-                    ['Six Blanc', 2334],
-                    ['Mont Dolent', 3820],
-                    ['Aiguille de Triolet', 3870],
-                    ['Le Tour Noir', 3836],
-                    ['Aiguille de l\'A Neuve', 3753],
-                    ['Aiguille d\'Argentière', 3900],
-                    ['Aiguille du Chardonnet', 3824],
-                    ['Aiguille du Tour', 3540],
-                    ['Aiguille du Pissoir', 3440],
-                    ['Le Catogne', 2598],
-                    ['Pointe de Prosom', 2762],
-                    ['Pointe Ronde', 2700],
-                    ['Mont Buet', 3096],
-                    ['Le Cheval Blanc', 2831],
-                    ['Pointe de la Finive', 2838],
-                    ['Pic de Tenneverge', 2985],
-                    ['Pointe d\'Aboillon', 2819],
-                    ['Tour Sallière', 3220],
-                    ['Le Dôme', 3138],
-                    ['Haute Cime', 3257],
-                    ['Pierre Avoi', 2473],
-                    ['Cime de l\'Est', 3178]
-                ]
-            }]
-
-
-
 
         },
     }
