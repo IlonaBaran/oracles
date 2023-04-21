@@ -49,8 +49,15 @@
 
                     <div v-else-if="selectedGraph.name == 'Ligne 3D'">
                         <div v-if="this.affichageLigne3d == true">
+                            <p>Un bug de la bibliothèque HighCharts ne permet pas la bonne visualisation de plus de 3
+                                scénarios sans créer de mauvaises superpositions</p>
+                            <vue-highcharts :options="this.chartOptions4Maree"></vue-highcharts>
 
-                            <vue-highcharts :options="this.chartOptions4"></vue-highcharts>
+                            <vue-highcharts :options="this.chartOptions4Surcote"></vue-highcharts>
+
+                            <vue-highcharts :options="this.chartOptions4Vagues"></vue-highcharts>
+
+                            <vue-highcharts :options="this.chartOptions4Vent"></vue-highcharts>
 
                         </div>
                     </div>
@@ -210,17 +217,72 @@ export default {
             series3: ref(null),
 
             // HEAT MAP MAIS EN 3D - HIGHTCHARTS
-            chartOptions4: ({
-                chart: {type: 'area', options3d: {enabled: true, alpha: 15, beta: 30, depth: 200}},
-                title: {text: 'En attente de données'},
-                accessibility: {description: 'En attente de données', keyboardNavigation: {seriesNavigation: { mode: 'serialize' }}},
-                lang: {accessibility: { axis: { xAxisDescriptionPlural: 'En attente de données' }}},
-                yAxis: {title: { text: 'En attente de données', x: 0 }, labels: { format: '{value:,.0f} MAMSL' }, gridLineDashStyle: 'Dash'},
+            chartOptions4Maree: ({
+                chart: { type: 'area', options3d: { enabled: true, alpha: 15, beta: 30, depth: 200 } },
+                title: { text: 'Visual comparison of Mountains Panorama' },
+                accessibility: {
+                    description: 'The chart is showing the shapes of three mountain ranges as three area line series laid out in 3D behind each other.',
+                    keyboardNavigation: { seriesNavigation: { mode: 'serialize' } }
+                },
+                lang: { accessibility: { axis: { xAxisDescriptionPlural: 'The chart has 3 unlabelled X axes, one for each series.' } } },
+                yAxis: { title: { text: 'Height Above Sea Level', x: 0 }, labels: { format: '{value:,.0f} MAMSL' }, gridLineDashStyle: 'Dash' },
                 xAxis: [],
-                plotOptions: {area: {depth: 100, marker: { enabled: false }, states: { inactive: { enabled: false }}}},
+                plotOptions: { area: { depth: 100, marker: { enabled: false }, states: { inactive: { enabled: false } } } },
                 tooltip: { valueSuffix: ' MAMSL' },
                 series: [{}]
             }),
+
+            maree3D: [],
+
+            chartOptions4Vent: ({
+                chart: { type: 'area', options3d: { enabled: true, alpha: 15, beta: 30, depth: 200 } },
+                title: { text: 'Visual comparison of Mountains Panorama' },
+                accessibility: {
+                    description: 'The chart is showing the shapes of three mountain ranges as three area line series laid out in 3D behind each other.',
+                    keyboardNavigation: { seriesNavigation: { mode: 'serialize' } }
+                },
+                lang: { accessibility: { axis: { xAxisDescriptionPlural: 'The chart has 3 unlabelled X axes, one for each series.' } } },
+                yAxis: { title: { text: 'Height Above Sea Level', x: 0 }, labels: { format: '{value:,.0f} MAMSL' }, gridLineDashStyle: 'Dash' },
+                xAxis: [],
+                plotOptions: { area: { depth: 100, marker: { enabled: false }, states: { inactive: { enabled: false } } } },
+                tooltip: { valueSuffix: ' MAMSL' },
+                series: [{}]
+            }),
+            vent3D: [],
+
+            chartOptions4Vagues: ({
+                chart: { type: 'area', options3d: { enabled: true, alpha: 15, beta: 30, depth: 200 } },
+                title: { text: 'Visual comparison of Mountains Panorama' },
+                accessibility: {
+                    description: 'The chart is showing the shapes of three mountain ranges as three area line series laid out in 3D behind each other.',
+                    keyboardNavigation: { seriesNavigation: { mode: 'serialize' } }
+                },
+                lang: { accessibility: { axis: { xAxisDescriptionPlural: 'The chart has 3 unlabelled X axes, one for each series.' } } },
+                yAxis: { title: { text: 'Height Above Sea Level', x: 0 }, labels: { format: '{value:,.0f} MAMSL' }, gridLineDashStyle: 'Dash' },
+                xAxis: [],
+                plotOptions: { area: { depth: 100, marker: { enabled: false }, states: { inactive: { enabled: false } } } },
+                tooltip: { valueSuffix: ' MAMSL' },
+                series: [{}]
+            }),
+            vagues3D: [],
+
+            chartOptions4Surcote: ({
+                chart: { type: 'area', options3d: { enabled: true, alpha: 15, beta: 30, depth: 200 } },
+                title: { text: 'Visual comparison of Mountains Panorama' },
+                accessibility: {
+                    description: 'The chart is showing the shapes of three mountain ranges as three area line series laid out in 3D behind each other.',
+                    keyboardNavigation: { seriesNavigation: { mode: 'serialize' } }
+                },
+                lang: { accessibility: { axis: { xAxisDescriptionPlural: 'The chart has 3 unlabelled X axes, one for each series.' } } },
+                yAxis: { title: { text: 'Height Above Sea Level', x: 0 }, labels: { format: '{value:,.0f} MAMSL' }, gridLineDashStyle: 'Dash' },
+                xAxis: [],
+                plotOptions: { area: { depth: 100, marker: { enabled: false }, states: { inactive: { enabled: false } } } },
+
+                tooltip: { valueSuffix: ' MAMSL' },
+                series: [{}]
+            }),
+            surcote3D: [],
+
         }
     },
 
@@ -248,6 +310,9 @@ export default {
 
             // Affichage des diagrammes en lignes 3D
             this.TD1Affichage('Maree(m)');
+            this.TD1Affichage('Surcote(m)');
+            this.TD1Affichage('U(vent)(m)');
+            this.TD1Affichage('Hs(vagues)(m)');
         },
 
         // Masque les diagrammes
@@ -257,7 +322,6 @@ export default {
             this.affichageHistogramme = false;
             this.affichageWindRose = false;
             this.affichageLigne3d = false;
-
         },
 
         // Création d'un diagramme en ligne en fonction du type données
@@ -350,8 +414,8 @@ export default {
         },
 
         roseVent(abscisses, ordonnees) {
-            console.log(ordonnees);
             this.chartOptions2 = ({
+
                 chart: { polar: true, type: 'column'},
                 title: { text: 'Distribution de la vitesse du vent'},
                 xAxis: { tickmarkPlacement: 'on', categories: abscisses},
@@ -607,24 +671,11 @@ export default {
             this.chartOptions3 = {
                 chart: { type: 'heatmap', },
                 dataLabels: { enabled: false },
-                plotOptions: {
-                    heatmap: {
-                        useFillColorAsStroke: true,
-                        shadeIntensity: 1,
-                        radius: 0,
-                    }
-                },
-
+                plotOptions: { heatmap: { useFillColorAsStroke: true, shadeIntensity: 1, radius: 0, } },
                 colors: ['#008FFB'],
                 title: { text: 'Heatmap Chart', align: 'left' },
-                xaxis: {
-                    tooltip: { enabled: false },
-                    type: 'category',
-                    categories: abscisses,
-                    overwriteCategories: abscisses,
-                },
+                xaxis: { tooltip: { enabled: false }, type: 'category', categories: abscisses, overwriteCategories: abscisses, },
                 yaxis: { categories: ['Morning', 'Afternoon', 'Evening'] },
-
             },
                 this.series3 = donnees;
         },
@@ -632,49 +683,58 @@ export default {
 
         // ressource : https://www.highcharts.com/docs/chart-concepts/3d-charts
         // https://www.highcharts.com/demo/3d-area-multiple/brand-light
-        TD1(type, abscisses, ordonnees) {
-            console.log(ordonnees);
-            this.chartOptions4 = ({
-                chart: {
-                    type: 'area',
-                    options3d: {
-                        enabled: true,
-                        alpha: 15,
-                        beta: 30,
-                        depth: 200,
-                        viewDistance: 25
-                    }
-                },
-                title: { text: 'Number of project stars', },
 
-                accessibility: {
-                    description: 'The chart is showing the shapes of three mountain ranges as three area line series laid out in 3D behind each other.',
-                    keyboardNavigation: { seriesNavigation: { mode: 'serialize' } }
-                },
-                yAxis: {
-                    title: { text: 'Height Above Sea Level', x: -40 },
-                    labels: { format: '{value:,.0f} MAMSL' },
-                    gridLineDashStyle: 'Dash'
-                },
-                xAxis: abscisses,
-                plotOptions: {
-                    area: {
-                        depth: 100,
-                        marker: { enabled: false },
-                        states: { inactive: { enabled: false } }
-                    }
-                },
-                tooltip: { valueSuffix: ' MAMSL' },
-                series: ordonnees,
+        TD1(type, abscisses, ordonnees) {
+            this.chartOptions4Maree = ({
+                chart: { type: 'area', options3d: { enabled: true, alpha: 15, beta: 30, depth: 200, viewDistance: 25 } },
+                title: { text: 'Marée (m) en fonction des heures de la journée' },
+                accessibility: { keyboardNavigation: { seriesNavigation: { mode: 'serialize' } } },
+                yAxis: { title: { text: 'Hauteur de la marée', x: -40 }, labels: { format: '{value:,.0f} m' }, gridLineDashStyle: 'Dash' },
+                xAxis: this.maree3D[0],
+                plotOptions: { area: { depth: 100, marker: { enabled: false }, states: { inactive: { enabled: false } } } },
+                tooltip: { valueSuffix: ' m' },
+                series: this.maree3D[1],
             });
-            this.affichageLigne3d = true;
+            this.chartOptions4Surcote = ({
+                chart: { type: 'area', options3d: { enabled: true, alpha: 15, beta: 30, depth: 200, viewDistance: 25 } },
+                title: { text: 'Surcote (m) en fonction des heures de la journée' },
+                accessibility: { keyboardNavigation: { seriesNavigation: { mode: 'serialize' } } },
+                yAxis: { title: { text: 'Hauteur de la surcote', x: -40 }, labels: { format: '{value:,.0f} m' }, gridLineDashStyle: 'Dash' },
+                xAxis: this.surcote3D[0],
+                plotOptions: { area: { depth: 100, marker: { enabled: false }, states: { inactive: { enabled: false } } } },
+                tooltip: { valueSuffix: ' m' },
+                series: this.surcote3D[1],
+            });
+            this.chartOptions4Vent = ({
+                chart: { type: 'area', options3d: { enabled: true, alpha: 15, beta: 30, depth: 200, viewDistance: 25 } },
+                title: { text: 'U(vent)(m)en fonction des heures de la journée' },
+                accessibility: { keyboardNavigation: { seriesNavigation: { mode: 'serialize' } } },
+                yAxis: { title: { text: 'Déplacement du vent', x: -40 }, labels: { format: '{value:,.0f} m' }, gridLineDashStyle: 'Dash' },
+                xAxis: this.vent3D[0],
+                plotOptions: { area: { depth: 100, marker: { enabled: false }, states: { inactive: { enabled: false } } } },
+                tooltip: { valueSuffix: ' m' },
+                series: this.vent3D[1],
+            });
+            this.chartOptions4Vagues = ({
+                chart: { type: 'area', options3d: { enabled: true, alpha: 15, beta: 30, depth: 200, viewDistance: 25 } },
+                title: { text: 'Hs(vagues)(m) en fonction des heures de la journée' },
+                accessibility: { keyboardNavigation: { seriesNavigation: { mode: 'serialize' } } },
+                yAxis: { title: { text: 'Hauteur des vagues', x: -40 }, labels: { format: '{value:,.0f} m' }, gridLineDashStyle: 'Dash' },
+                xAxis: this.vagues3D[0],
+                plotOptions: { area: { depth: 100, marker: { enabled: false }, states: { inactive: { enabled: false } } } },
+                tooltip: { valueSuffix: ' m' },
+                series: this.vagues3D[1],
+            });
+            // Une fois que le dernier graphique est chargé, on affiche le tout
+            if (type == "Hs(vagues)(m)") {
+                this.affichageLigne3d = true;
+            }
         },
 
 
         TD1Affichage(type) {
             let abscisses = [];
             let ordonnees = [];
-            let index = 0;
             let promise = null;
             let axes = [];
             for (const element of this.selectedScenario) {
@@ -693,18 +753,15 @@ export default {
 
                         // 1 dictionnaire = 1 scenario, il se remet à 0 à chaque nouveau scénario
                         let dict = {
+                            xAxis: ordonnees.length,
                         };
                         if (ordonnees.length == 0) {
-                            axes.push({ visible: true, categories: abscisses, })
-
+                            axes.push({ visible: true, categories: abscisses, isX: true, index: 0 })
                         }
 
-
                         else {
-                            dict = {
-                                xAxis: ordonnees.length,
-                            };
-                            axes.push({ visible: false });
+                            dict = { xAxis: ordonnees.length, };
+                            axes.push({ visible: false, index: ordonnees.length, isX: true });
                         }
 
                         dict["name"] = `${element["name"]}`;
@@ -721,42 +778,33 @@ export default {
 
             }
             promise.then(response => {
-                console.log(ordonnees);
-                this.TD1(type, axes, ordonnees);
-            })
 
+                if (type == "Maree(m)") {
+                    this.maree3D[0] = axes;
+                    this.maree3D[1] = ordonnees;
+
+
+                }
+                else if (type == "Surcote(m)") {
+                    this.surcote3D[0] = axes;
+                    this.surcote3D[1] = ordonnees;
+                }
+                else if (type == "U(vent)(m)") {
+                    this.vent3D[0] = axes;
+                    this.vent3D[1] = ordonnees;
+                }
+                else if (type == "Hs(vagues)(m)") {
+                    this.vagues3D[0] = axes;
+                    this.vagues3D[1] = ordonnees;
+                }
+                this.TD1(type, axes, ordonnees);
+
+            })
         },
     }
 };
 
 
-
-
-
-
-//         roseVentAffichage() {
-//             var L = [];
-//            this.roseChart();
-
-// for (const element of this.selectedScenario) {
-//     // RECUPERATION DES DONNES AVEC DES FECTH - c
-//     var file = 'http://localhost:0/' + element["name"] + '.json';
-//     fetch(file)
-//         .then(response => response.json())
-//         .then(data => {
-//             //console.log(data);
-//             for (const property in data) {
-//                 var dict = {
-//                     angle: parseFloat(`${data[property]["Dir(vent)()"]}`),
-//                     speed: parseFloat(`${data[property]["U(vent)(m)"]}`),
-//                 };
-//                 L.push(dict);
-//             }
-//             // this.lineChart(L);
-//         })
-//         // }
-//     }
-// }
 </script>
 
 
