@@ -30,7 +30,8 @@
             <!-- Eléments présents sur la droite de la barre -->
             <template #end>
                 <!-- Sélection de la zone d'étude (Gâvre/Arcachon) -->
-                <SelectButton v-model="value" :options="options" aria-labelledby="basic" />
+                <SelectButton v-model="value" :options="options" aria-labelledby="basic" optionDisabled="constant"
+                    optionLabel="name" />
             </template>
         </Toolbar>
 
@@ -73,8 +74,8 @@ export default {
 
     data() {
         return {
-            value: ref('Gâvres'),
-            options: ref(['Gâvres', 'Arcachon']),
+            value: ref({ name: 'Gâvres' }),
+            options: ref([{ name: 'Gâvres' }, { name: 'Arcachon', constant: true }]),
             checked: ref(false),
             disabled: " p-disabled",
             valide: "",

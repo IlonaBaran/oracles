@@ -91,6 +91,34 @@ export function maxLists(lists) {
     }, maxes);
 }
 
+function rgbcolors(x, colors, min, max) {
+
+    const breakpoints = [
+        0,
+        max * 0.20,
+        max * 0.40,
+        max * 0.60,
+        max * 0.80,
+        max
+    ];
+
+    const lookupTable = [
+        [0.81, 0.90, 1],
+        [0.16, 0.61, 0.95],
+        [0.09, 0.48, 0.80],
+        [0.01, 0.14, 0.29],
+        [0.01, 0.14, 0.29]
+    ];
+
+    const index = breakpoints.findIndex(b => x <= b);
+
+    if (x < min || x > max || x == 0) {
+        colors.push(0, 0, 0);
+    } else {
+        colors.push(...lookupTable[index - 1]);
+    }
+}
+
 export async function getHeightMesh(image) {
 
     let urlmns = 'http://localhost:8080/MNS_GAVRES.tif';
@@ -99,14 +127,19 @@ export async function getHeightMesh(image) {
     const mnsdata = await imagemns.readRasters();
 
 
-
     //Getting metadata and data from the image
     const bbox = await image.getBoundingBox();
     const width = await image.getWidth();
     const height = await image.getHeight();
     const data = await image.readRasters();
 
-    //console.log('image read Raster', data)
+    let dataArray = await Array.from(data[0]); // Convert Float32Array to a regular array
+    dataArray.sort((a, b) => a - b); // Sort the regular array in ascending order
+    let sortedData = await new Float32Array(dataArray); // Convert the sorted regular array back to a Float32Array
+    let lenghtdata = sortedData.length
+
+    let min = Math.round(sortedData[0]);
+    let max = Math.round(sortedData[lenghtdata - 1]);
 
     const Xo = bbox[0];
     const Xf = bbox[2];
@@ -127,6 +160,7 @@ export async function getHeightMesh(image) {
 
     const vertices = [];
     const indices = [];
+    const colors = [];
 
     function minuszero(valuescenario, valuemns) {
         let valueh = valuescenario + valuemns;
@@ -144,6 +178,8 @@ export async function getHeightMesh(image) {
         }
 
     }
+
+
     //Creating the vertices table, pushing the coordinates 
     //and the height data extracted from the image
 
@@ -175,6 +211,13 @@ export async function getHeightMesh(image) {
             vertices.push((i + 1) * Xsize, j * Ysize, minuszero(data[0][(i + 1) + j * width], mnsdata[0][(i + 1) + j * width])); // top right
             vertices.push((i + 1) * Xsize, (j + 1) * Ysize, minuszero(data[0][(i + 1) + (j + 1) * width], mnsdata[0][(i + 1) + (j + 1) * width])); // bottom right
 
+            rgbcolors(data[0][i + j * width], colors, min, max); // top left
+            rgbcolors(data[0][(i + 1) + j * width], colors, min, max);// top right
+            rgbcolors(data[0][i + (j + 1) * width], colors, min, max);// bottom left
+
+            rgbcolors(data[0][i + (j + 1) * width], colors, min, max);// bottom left
+            rgbcolors(data[0][(i + 1) + j * width], colors, min, max);// top right
+            rgbcolors(data[0][(i + 1) + (j + 1) * width], colors, min, max);// bottom right
         };
 
     };
@@ -184,13 +227,14 @@ export async function getHeightMesh(image) {
     //Setting attributes to the geometry
     geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(vertices), 3));
     geometry.setAttribute('normal', new THREE.BufferAttribute(new Float32Array(indices), 3));
+    geometry.setAttribute('color', new THREE.BufferAttribute(new Float32Array(colors), 3));
 
 
     // create material
     const material = new THREE.MeshBasicMaterial({
         transparent: true,
+        vertexColors: true,
         opacity: 0.8,
-        color: 0x0000FF,
         side: THREE.DoubleSide
     });
 
@@ -217,6 +261,14 @@ export async function getHeightFromScenarios(bbox, width, height, data) {
     const Yo = bbox[1];
     const Yf = bbox[3];
 
+    let dataArray = await Array.from(data[0]); // Convert Float32Array to a regular array
+    dataArray.sort((a, b) => a - b); // Sort the regular array in ascending order
+    let sortedData = await new Float32Array(dataArray); // Convert the sorted regular array back to a Float32Array
+    let lenghtdata = sortedData.length
+
+    let min = Math.round(sortedData[0]);
+    let max = Math.round(sortedData[lenghtdata - 1]);
+
     //Calculating the pixel size
     let Xsize = (Xf - Xo) / width;
     let Ysize = -(Yf - Yo) / height;
@@ -231,6 +283,8 @@ export async function getHeightFromScenarios(bbox, width, height, data) {
 
     const vertices = [];
     const indices = [];
+    const colors = [];
+
 
     function minuszero(valuescenario, valuemns) {
         let valueh = valuescenario + valuemns;
@@ -248,6 +302,7 @@ export async function getHeightFromScenarios(bbox, width, height, data) {
         }
 
     }
+
     //Creating the vertices table, pushing the coordinates 
     //and the height data extracted from the image
 
@@ -281,6 +336,13 @@ export async function getHeightFromScenarios(bbox, width, height, data) {
             vertices.push((i + 1) * Xsize, j * Ysize, minuszero(data[0][(i + 1) + j * width], mnsdata[0][(i + 1) + j * width])); // top right
             vertices.push((i + 1) * Xsize, (j + 1) * Ysize, minuszero(data[0][(i + 1) + (j + 1) * width], mnsdata[0][(i + 1) + (j + 1) * width])); // bottom right
 
+            rgbcolors(data[0][i + j * width], colors, min, max); // top left
+            rgbcolors(data[0][(i + 1) + j * width], colors, min, max);// top right
+            rgbcolors(data[0][i + (j + 1) * width], colors, min, max);// bottom left
+
+            rgbcolors(data[0][i + (j + 1) * width], colors, min, max);// bottom left
+            rgbcolors(data[0][(i + 1) + j * width], colors, min, max);// top right
+            rgbcolors(data[0][(i + 1) + (j + 1) * width], colors, min, max);// bottom right
         };
     };
 
@@ -288,13 +350,15 @@ export async function getHeightFromScenarios(bbox, width, height, data) {
     //Setting attributes to the geometry
     geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(vertices), 3));
     geometry.setAttribute('normal', new THREE.BufferAttribute(new Float32Array(indices), 3));
+    geometry.setAttribute('color', new THREE.BufferAttribute(new Float32Array(colors), 3));
+
 
 
     // create material
     const material = new THREE.MeshBasicMaterial({
         transparent: true,
+        vertexColors: true,
         opacity: 0.8,
-        color: 0x0000FF,
         side: THREE.DoubleSide
     });
 
