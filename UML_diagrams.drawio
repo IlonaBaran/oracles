@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-04-21T12:37:43.475Z" agent="5.0 (Windows)" etag="m84fxhqPT1wAWMqcQN0L" version="21.0.10" type="github" pages="7">
+<mxfile host="app.diagrams.net" modified="2023-04-21T12:44:09.738Z" agent="5.0 (Windows)" etag="DQjA0gpWAEWwTsYlUqCO" version="21.0.10" type="github" pages="7">
   <diagram id="E837GoeuXGmQwGHqAzzl" name="architecture">
     <mxGraphModel dx="2309" dy="687" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -7,16 +7,16 @@
         <mxCell id="pmZofTedvfde7MxJ5BN8-1" value="Client" style="verticalAlign=top;align=left;spacingTop=8;spacingLeft=2;spacingRight=12;shape=cube;size=10;direction=south;fontStyle=4;html=1;whiteSpace=wrap;fillColor=#E6FFCC;" parent="1" vertex="1">
           <mxGeometry x="-190" y="210" width="130" height="110" as="geometry" />
         </mxCell>
-        <mxCell id="pmZofTedvfde7MxJ5BN8-3" value="Front-end Application SERVER" style="verticalAlign=top;align=left;spacingTop=8;spacingLeft=2;spacingRight=12;shape=cube;size=10;direction=south;fontStyle=4;html=1;whiteSpace=wrap;fillColor=#E6FFCC;" parent="1" vertex="1">
+        <mxCell id="pmZofTedvfde7MxJ5BN8-3" value="&amp;nbsp;Application Tiers" style="verticalAlign=top;align=left;spacingTop=8;spacingLeft=2;spacingRight=12;shape=cube;size=10;direction=south;fontStyle=4;html=1;whiteSpace=wrap;fillColor=#E6FFCC;" parent="1" vertex="1">
           <mxGeometry x="-20" y="150" width="240" height="225" as="geometry" />
         </mxCell>
-        <mxCell id="pmZofTedvfde7MxJ5BN8-4" value="NodeJS" style="shape=module;align=left;spacingLeft=20;align=center;verticalAlign=top;whiteSpace=wrap;html=1;fillColor=#E6FFCC;" parent="1" vertex="1">
+        <mxCell id="pmZofTedvfde7MxJ5BN8-4" value="NodeJS" style="shape=module;align=left;spacingLeft=20;align=center;verticalAlign=top;whiteSpace=wrap;html=1;fillColor=#FFFFFF;" parent="1" vertex="1">
           <mxGeometry x="10" y="200" width="180" height="160" as="geometry" />
         </mxCell>
-        <mxCell id="nsNcWMzBUlMJ7KdBMZta-1" value="&lt;div&gt;VueJs&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="shape=module;align=left;spacingLeft=20;align=center;verticalAlign=top;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+        <mxCell id="nsNcWMzBUlMJ7KdBMZta-1" value="&lt;div&gt;VueJs&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="shape=module;align=left;spacingLeft=20;align=center;verticalAlign=top;whiteSpace=wrap;html=1;fillColor=#E6FFCC;" parent="1" vertex="1">
           <mxGeometry x="40" y="230" width="130" height="115" as="geometry" />
         </mxCell>
-        <mxCell id="nsNcWMzBUlMJ7KdBMZta-2" value="Application " style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E6FFCC;" parent="1" vertex="1">
+        <mxCell id="nsNcWMzBUlMJ7KdBMZta-2" value="Application " style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;" parent="1" vertex="1">
           <mxGeometry x="60" y="280" width="100" height="40" as="geometry" />
         </mxCell>
         <mxCell id="nsNcWMzBUlMJ7KdBMZta-7" value="" style="endArrow=none;html=1;rounded=0;exitX=0;exitY=0;exitDx=117.5;exitDy=240;exitPerimeter=0;" parent="1" target="pmZofTedvfde7MxJ5BN8-1" edge="1" source="pmZofTedvfde7MxJ5BN8-3">
@@ -28,20 +28,14 @@
         <mxCell id="JoSNRNL9ei6lDI0GYWg1-1" value="Browser" style="shape=module;align=left;spacingLeft=20;align=center;verticalAlign=top;whiteSpace=wrap;html=1;fillColor=#E6FFCC;" parent="1" vertex="1">
           <mxGeometry x="-180" y="260" width="90" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="OCshkxxgdjGBdQebiHbX-1" value="HTTP Server" style="verticalAlign=top;align=left;spacingTop=8;spacingLeft=2;spacingRight=12;shape=cube;size=10;direction=south;fontStyle=4;html=1;whiteSpace=wrap;fillColor=#E6FFCC;" vertex="1" parent="1">
+        <mxCell id="OCshkxxgdjGBdQebiHbX-1" value="Data Tiers" style="verticalAlign=top;align=left;spacingTop=8;spacingLeft=2;spacingRight=12;shape=cube;size=10;direction=south;fontStyle=4;html=1;whiteSpace=wrap;fillColor=#E6FFCC;" vertex="1" parent="1">
           <mxGeometry x="510" y="150" width="150" height="220" as="geometry" />
         </mxCell>
-        <mxCell id="OCshkxxgdjGBdQebiHbX-3" value="Static Data Files" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" vertex="1" parent="1">
-          <mxGeometry x="530" y="202.5" width="110" height="135" as="geometry" />
-        </mxCell>
-        <mxCell id="OCshkxxgdjGBdQebiHbX-4" value="Back-end Python SERVER" style="verticalAlign=top;align=left;spacingTop=8;spacingLeft=2;spacingRight=12;shape=cube;size=10;direction=south;fontStyle=4;html=1;whiteSpace=wrap;fillColor=#E6FFCC;" vertex="1" parent="1">
+        <mxCell id="OCshkxxgdjGBdQebiHbX-4" value="Logical Tiers" style="verticalAlign=top;align=left;spacingTop=8;spacingLeft=2;spacingRight=12;shape=cube;size=10;direction=south;fontStyle=4;html=1;whiteSpace=wrap;fillColor=#E6FFCC;" vertex="1" parent="1">
           <mxGeometry x="250" y="150" width="220" height="220" as="geometry" />
         </mxCell>
-        <mxCell id="OCshkxxgdjGBdQebiHbX-5" value="Flask App" style="shape=module;align=left;spacingLeft=20;align=center;verticalAlign=top;whiteSpace=wrap;html=1;fillColor=#E6FFCC;" vertex="1" parent="1">
-          <mxGeometry x="270" y="200" width="160" height="140" as="geometry" />
-        </mxCell>
-        <mxCell id="OCshkxxgdjGBdQebiHbX-7" value="&lt;div&gt;Data &lt;br&gt;Computations&lt;br&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E6FFCC;" vertex="1" parent="1">
-          <mxGeometry x="310" y="260" width="100" height="40" as="geometry" />
+        <mxCell id="OCshkxxgdjGBdQebiHbX-5" value="Python Server" style="shape=module;align=left;spacingLeft=20;align=center;verticalAlign=top;whiteSpace=wrap;html=1;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry x="260" y="192.5" width="180" height="157.5" as="geometry" />
         </mxCell>
         <mxCell id="OCshkxxgdjGBdQebiHbX-8" value="" style="endArrow=none;html=1;rounded=0;exitX=0;exitY=0;exitDx=115;exitDy=220;exitPerimeter=0;" edge="1" parent="1" source="OCshkxxgdjGBdQebiHbX-4">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
@@ -54,6 +48,18 @@
             <mxPoint x="260" y="275" as="sourcePoint" />
             <mxPoint x="230" y="275" as="targetPoint" />
           </mxGeometry>
+        </mxCell>
+        <mxCell id="OCshkxxgdjGBdQebiHbX-10" value="Flask " style="shape=module;align=left;spacingLeft=20;align=center;verticalAlign=top;whiteSpace=wrap;html=1;fillColor=#E6FFCC;" vertex="1" parent="1">
+          <mxGeometry x="285" y="221.25" width="135" height="108.75" as="geometry" />
+        </mxCell>
+        <mxCell id="OCshkxxgdjGBdQebiHbX-11" value="&lt;div&gt;Data &lt;br&gt;Computations&lt;br&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry x="310" y="267.5" width="100" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="OCshkxxgdjGBdQebiHbX-12" value="HTTP-Server" style="shape=module;align=left;spacingLeft=20;align=center;verticalAlign=top;whiteSpace=wrap;html=1;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry x="520" y="192.5" width="120" height="157.5" as="geometry" />
+        </mxCell>
+        <mxCell id="OCshkxxgdjGBdQebiHbX-13" value="Static Data Files" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#E6FFCC;" vertex="1" parent="1">
+          <mxGeometry x="550" y="240" width="70" height="90" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
