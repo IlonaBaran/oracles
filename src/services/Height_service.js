@@ -4,9 +4,10 @@ import { THREE, Coordinates } from "../../node_modules/itowns/dist/itowns";
 
 export async function getImage(url) {
     return new Promise((resolve, reject) => {
-        // Adding Geotiff of water heights (the localhost link is due to the use of http-server)
+        //Fetching the mage from a url (In this case it will be a localhost url due to the use of http-server)
         var xhr = new XMLHttpRequest();
         xhr.open("GET", url);
+        //Setting the response as an arraybuffer to use it with the GEOTIFF library
         xhr.responseType = 'arraybuffer';
         xhr.onload = async function (e) {
             var buffer = await xhr.response;
@@ -45,7 +46,7 @@ export async function getData(listOfImages) {
 
     return scenarios;
 }
-
+//Function used to calculate the average heights from the different scenarios selected
 export function averageLists(lists) {
     const numLists = lists.length;
     const listLength = lists[0].length;
@@ -68,6 +69,7 @@ export function averageLists(lists) {
 
     return sums.map(sum => sum / numLists);
 }
+//Function used to calculate the minimum heights from the different scenarios selected
 
 export function minLists(lists) {
     const listLength = lists[0].length;
@@ -80,6 +82,8 @@ export function minLists(lists) {
     }, mins);
 }
 
+//Function used to calculate the maximum heights from the different scenarios selected
+
 export function maxLists(lists) {
     const listLength = lists[0].length;
     const maxes = new Float32Array(listLength).fill(Number.MIN_SAFE_INTEGER);
@@ -91,8 +95,10 @@ export function maxLists(lists) {
     }, maxes);
 }
 
+//Function used to calculate the rgb color for each vertex based on the heiht
 function rgbcolors(x, colors, min, max) {
 
+    //Setting the breakpoints, in this case starting at min, 20%, 40%, 60%, 80% and finally max
     const breakpoints = [
         0,
         max * 0.20,
@@ -102,6 +108,8 @@ function rgbcolors(x, colors, min, max) {
         max
     ];
 
+    //The lookup table refers to the corresponding color to each one of the breakpoints defined above, [R,G,B] values
+
     const lookupTable = [
         [0.81, 0.90, 1],
         [0.16, 0.61, 0.95],
@@ -110,8 +118,10 @@ function rgbcolors(x, colors, min, max) {
         [0.01, 0.14, 0.29]
     ];
 
+    //Searching the index that corresponds to the height selected
     const index = breakpoints.findIndex(b => x <= b);
 
+    //Ppushing the corresponding color to the height
     if (x < min || x > max || x == 0) {
         colors.push(0, 0, 0);
     } else {
@@ -119,6 +129,7 @@ function rgbcolors(x, colors, min, max) {
     }
 }
 
+//Function that creates a 3d mesh taking as input a tiff image from a screnario and the digital surface model
 export async function getHeightMesh(image) {
 
     let urlmns = 'http://localhost:8080/MNS_GAVRES.tif';
@@ -162,6 +173,7 @@ export async function getHeightMesh(image) {
     const indices = [];
     const colors = [];
 
+    //Function that sends the value under the surface, thus making it invisible, if its height is equal to 0 or superior to the highest point on earth
     function minuszero(valuescenario, valuemns) {
         let valueh = valuescenario + valuemns;
         let valuehfixed = valueh - 3;
@@ -246,6 +258,7 @@ export async function getHeightMesh(image) {
     return mesh;
 }
 
+//Function that creates a 3d mesh taking as input the data resulting from the statistics functions used when selecting several scenarios
 export async function getHeightFromScenarios(bbox, width, height, data) {
 
     let urlmns = 'http://localhost:8080/MNS_GAVRES.tif';
@@ -370,6 +383,7 @@ export async function getHeightFromScenarios(bbox, width, height, data) {
     return mesh;
 }
 
+//Function used to create a list of files used when selecting more than one scenario, creating either hmax or hfin depending on user's selection
 export function concatenateHeightMapList(heightMapList, height) {
     let concatenatedList = [];
 

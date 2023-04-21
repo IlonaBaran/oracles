@@ -12,6 +12,7 @@
                     <li>Crédits</li>
                     <li>Mentions légales</li>
                     <li>Plan du site</li>
+                    <li>Aide utilisateur</li>
                 </ul>
             </section>
         </Dialog>
@@ -50,6 +51,13 @@
         </Dialog>
 
 
+        <Button label="Aide utilisateur" @click="aide = true" style="color: white" link />
+        <Dialog v-model:visible="aide" modal header="Aide utilisateur" :style="{ width: '50vw' }">
+            <h4>Manuel utilisateur</h4>
+                TODO
+        </Dialog>
+
+
     </div>
 </template>
    
@@ -67,7 +75,8 @@ export default {
         return {
             plan: false,
             mentions: false,
-            credits: false
+            credits: false,
+            aide: false
         };
     }
 }

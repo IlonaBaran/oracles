@@ -180,7 +180,6 @@ export default {
                 fill: { opacity: 1 },
                 legend: { position: 'right', offsetX: 0, offsetY: 50 },
             }),
-
             series5Surcote: [{ name: 'En attente de données', data: [] }],
 
             // Graphiques empile des marées
@@ -191,7 +190,6 @@ export default {
                 fill: { opacity: 1 },
                 legend: { position: 'right', offsetX: 0, offsetY: 50 },
             }),
-
             series5Maree: [{ name: 'En attente de données', data: [] }],
 
             // Graphiques empile des vagues
@@ -202,7 +200,6 @@ export default {
                 fill: { opacity: 1 },
                 legend: { position: 'right', offsetX: 0, offsetY: 50 },
             }),
-
             series5Vagues: [{ name: 'En attente de données', data: [] }],
 
             // Graphiques empile des vents
@@ -213,13 +210,11 @@ export default {
                 fill: { opacity: 1 },
                 legend: { position: 'right', offsetX: 0, offsetY: 50 },
             }),
-
             series5Vent: [{ name: 'En attente de données', data: [] }],
 
             // HEAT MAP - APEXCHARTS
             chartOptions3: ref(null),
             series3: ref(null),
-
 
             // HEAT MAP MAIS EN 3D - HIGHTCHARTS
             chartOptions4Maree: ({
@@ -282,6 +277,7 @@ export default {
                 yAxis: { title: { text: 'Height Above Sea Level', x: 0 }, labels: { format: '{value:,.0f} MAMSL' }, gridLineDashStyle: 'Dash' },
                 xAxis: [],
                 plotOptions: { area: { depth: 100, marker: { enabled: false }, states: { inactive: { enabled: false } } } },
+
                 tooltip: { valueSuffix: ' MAMSL' },
                 series: [{}]
             }),
@@ -336,9 +332,10 @@ export default {
                     chart: { id: 'mychart', height: 350, type: 'line', defaultPoint_marker_visible: false, zoom: { enabled: false } },
                     dataLabels: { enabled: false },
                     stroke: { curve: 'straight' },
-                    title: { text: 'Maree(m) en fonction des heures de la journée', align: 'left' },
+                    title: { text: 'Evolution de la marée en fonction des heures de la journée', align: 'left' },
                     grid: { row: { colors: ['#f3f3f3', 'transparent'], opacity: 0.5 }, },
-                    xaxis: { tooltip: { enabled: false }, overwriteCategories: abscisses, }
+                    xaxis: { tooltip: { enabled: false }, overwriteCategories: abscisses, title: {text: 'Heure'}},
+                    yaxis: {title: {text: 'Marée (m)'}},
                 });
             }
             if (type == "Surcote(m)") {
@@ -347,9 +344,10 @@ export default {
                     chart: { id: 'mychart', height: 350, type: 'line', defaultPoint_marker_visible: false, zoom: { enabled: false } },
                     dataLabels: { enabled: false },
                     stroke: { curve: 'straight' },
-                    title: { text: 'Surcote(m) en fonction des heures de la journée', align: 'left' },
+                    title: { text: 'Evolution de la surcôte en fonction des heures de la journée', align: 'left' },
                     grid: { row: { colors: ['#f3f3f3', 'transparent'], opacity: 0.5 }, },
-                    xaxis: { tooltip: { enabled: false }, overwriteCategories: abscisses, }
+                    xaxis: { tooltip: { enabled: false }, overwriteCategories: abscisses, title: {text: 'Heure'}},
+                    yaxis: {title: {text: 'Surcôte (m)'}},
                 });
             }
 
@@ -359,9 +357,10 @@ export default {
                     chart: { id: 'mychart', height: 350, type: 'line', defaultPoint_marker_visible: false, zoom: { enabled: false } },
                     dataLabels: { enabled: false },
                     stroke: { curve: 'straight' },
-                    title: { text: 'Hs(vagues)(m) en fonction des heures de la journée', align: 'left' },
+                    title: { text: 'Evolution de la hauteur des vagues en fonction des heures de la journée', align: 'left' },
                     grid: { row: { colors: ['#f3f3f3', 'transparent'], opacity: 0.5 }, },
-                    xaxis: { tooltip: { enabled: false }, overwriteCategories: abscisses, }
+                    xaxis: { tooltip: { enabled: false }, overwriteCategories: abscisses, title: {text: 'Heure'}},
+                    yaxis: {title: {text: 'Hauteur des vagues (m)'}},
                 });
             }
 
@@ -371,9 +370,10 @@ export default {
                     chart: { id: 'mychart', height: 350, type: 'line', defaultPoint_marker_visible: false, zoom: { enabled: false } },
                     dataLabels: { enabled: false },
                     stroke: { curve: 'straight' },
-                    title: { text: 'U(vent)(m) en fonction des heures de la journée', align: 'left' },
+                    title: { text: 'Evolution de la vitesse du vent en fonction des heures de la journée', align: 'left' },
                     grid: { row: { colors: ['#f3f3f3', 'transparent'], opacity: 0.5 }, },
-                    xaxis: { tooltip: { enabled: false }, overwriteCategories: abscisses, }
+                    xaxis: { tooltip: { enabled: false }, overwriteCategories: abscisses, title: {text: 'Heure'}},
+                    yaxis: {title: {text: 'Vitesse du vent (m/s)'}},
                 });
             }
             this.affichageLigne = true;
@@ -415,22 +415,13 @@ export default {
 
         roseVent(abscisses, ordonnees) {
             this.chartOptions2 = ({
-                chart: { polar: true, type: 'column' },
-                title: { text: 'Distribution de la vitesse du vent', },
-                // xAxis: { tickmarkPlacement: 'on', categories: ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW', 'N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW', '1', '2', '3', '4'] },
-                xAxis: { tickmarkPlacement: 'on', categories: abscisses },
-                yAxis: {
-                    min: 0,
-                    endOnTick: false,
-                    showLastLabel: true,
-                    reversedStacks: false,
-                    title: { text: 'Direction du vent', },
-                },
-                plotOptions: { series: { stacking: 'normal', shadow: false, pointPlacement: 'on' } },
 
-                series:
-                    ordonnees,
-
+                chart: { polar: true, type: 'column'},
+                title: { text: 'Distribution de la vitesse du vent'},
+                xAxis: { tickmarkPlacement: 'on', categories: abscisses},
+                yAxis: {min: 0, endOnTick: false, showLastLabel: true, reversedStacks: false},
+                plotOptions: { series: { stacking: 'normal', shadow: false, pointPlacement: 'on'}},
+                series: ordonnees,
             });
         },
 
@@ -455,11 +446,7 @@ export default {
                     .then(response => response.json())
                     .then(data => {
                         for (const property in data) {
-                            // On recupère la vitesse du vent 
-                            var vitesseVent = `${data[property]["U(vent)(m)"]}`;
-                            // On recupère la direction du vent 
-                            var directionVent = `${data[property]["Dir(vent)()"]}`;
-                            var index = parseInt(directionVent / 10);
+                            var index = parseInt(`${data[property]["Dir(vent)()"]}` / 10);
 
                             if (`${data[property]["U(vent)(m)"]}` < 6) {
                                 s1[index] += 1;
@@ -503,7 +490,7 @@ export default {
                 this.series5Surcote = ordonnees;
                 this.chartOptions5Surcote = reactive({
                     chart: { type: 'bar', height: 350, stacked: true, stackType: '100%' },
-                    title: { text: 'Réparition des hauteurs de surcote par scénario', align: 'left' },
+                    title: { text: 'Réparition des hauteurs de surcôte par scénario', align: 'left' },
                     responsive: [{ breakpoint: 480, options: { legend: { position: 'bottom', offsetX: -10, offsetY: 0 } } }],
                     xaxis: { categories: abscisses },
                     fill: { opacity: 1 },
@@ -543,16 +530,16 @@ export default {
             var abscisses = [];
             // Decoupage des ordonnées
             if (type == "Maree(m)") {
-                var L = [0, 1, 2];
+                var L = [0, 1, 2, "m"];
             }
             else if (type == "Surcote(m)") {
-                var L = [0, 0.50, 1];
+                var L = [0, 0.50, 1, "m"];
             }
             else if (type == "Hs(vagues)(m)") {
-                var L = [2, 4, 6];
+                var L = [2, 4, 6, "m"];
             }
             else if (type == "U(vent)(m)") {
-                var L = [5, 10, 15];
+                var L = [5, 10, 15, "m/s"];
             }
             var s1 = new Array();
             var s2 = new Array();
@@ -593,10 +580,10 @@ export default {
                 elem += 1;
             }
 
-            listDataPlot.push({ name: "inférieur à " + L[0], data: s1 });
-            listDataPlot.push({ name: "entre " + L[0] + " et " + L[1], data: s2 });
-            listDataPlot.push({ name: "entre " + L[1] + " et " + L[2], data: s3 });
-            listDataPlot.push({ name: "supérieur à " + L[2], data: s4 });
+            listDataPlot.push({ name: "inférieur à " + L[0] + L[3], data: s1 });
+            listDataPlot.push({ name: "entre " + L[0] + " et " + L[1] + L[3], data: s2 });
+            listDataPlot.push({ name: "entre " + L[1] + " et " + L[2] + L[3], data: s3 });
+            listDataPlot.push({ name: "supérieur à " + L[2] + L[3], data: s4 });
             this.histogramm(type, abscisses, listDataPlot);
             this.affichageHistogramme = true;
         },
