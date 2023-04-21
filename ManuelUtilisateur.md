@@ -59,11 +59,12 @@ A droite, dans la partie principale, vous trouverez un bouton vert +. Lorsque vo
 
 **
 ## Visualisation des graphiques
-Pour visualiser un graphique, il vous suffit de choisir un ou plusieurs scénarios dans l'en-tête de la page. Ensuite, vous devez choisir un graphique parmi ceux proposés et valider
-votre séléction. Sur la gauche, un panel s'ouvrira avec le graphique que vous avez choisi.
+Pour visualiser un graphique, il vous suffit de choisir un ou plusieurs scénarios dans l'en-tête de la page. (Numéro 8)
+Ensuite, vous devez choisir un graphique parmi ceux proposés et valider votre séléction. (Numéro 9 - Numéro 10)
+Sur la gauche, un panel s'ouvrira avec le graphique que vous avez choisi. (Numéro 10)
 
 Si vous voulez changer de graphique, vous pouvez le faire en choississant un autre graphique.
-Si vous voulez modifier les graphiques séléctionnés, vous devez cliquer sur le bouton de réinitialisation.
+Si vous voulez modifier les graphiques séléctionnés, vous devez cliquer sur le bouton de réinitialisation. (Numéro 11)
 
 #### Diagramme 1 : Diagramme linéaire
 Quatre graphiques sont affichés : la hauteur des vagues, la surcote, la vitesse du vent en fonction du temps
