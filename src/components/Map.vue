@@ -17,15 +17,31 @@ import { layerOrtho, layerDEM, layerPLAN } from '../services/WMS_service.js'
 import { toRaw } from 'vue';
 import { bati } from '../services/FileSource_service.js'
 
-
 let view = ref(false);
 
-
+/**
+ * TODO
+ *
+ * @component mapComponent
+ */
 export default {
   name: 'mapComponent',
+  components: {
+    Toolbar,
+  },
   props: {
-    mapSelected: String,
-    visibleBuilding: Boolean,
+    /**
+     * TODO
+     */
+    mapSelected: {type: String},
+    /**
+     * TODO
+     */
+    visibleBuilding: {type: Boolean},
+    /**
+     * TODO
+     */
+    selectedScenario: {type: Object, required: true}
   },
   data() {
     return {
@@ -36,21 +52,10 @@ export default {
       viewNew: ref(false),
     }
   },
-  props: {
-    selectedScenario: {
-      type: Object,
-      required: true
-    }
-  },
-  components: {
-    Toolbar,
-  },
   created() {
-    //itowns viewerDiv element
-    const viewerDiv = document.getElementById("viewerDiv");
+    const viewerDiv = document.getElementById("viewerDiv"); //itowns viewerDiv element
   },
   mounted() {
-
     //defining projection coordinate unit
     proj4.defs(
       "EPSG:2154",
@@ -77,7 +82,6 @@ export default {
     });
 
     //Order must be taken into account for changeMap() function
-
     //adding WMS Plan IGN layer
     view.addLayer(layerPLAN)
     //adding WMS Elevation layer
@@ -90,9 +94,13 @@ export default {
     //blocking rotation when initializing in 2D view option
     view.controls.enableRotation = false;
     view.notifyChange();
-
   },
   methods: {
+    /**
+     * TODO
+     *
+     * @public This is a public method
+     */
     changeMap() {
       //Show Plan IGN layer and not Satellite layer
       if (this.$refs.childComponent.mapSelected == "plan") {
@@ -106,12 +114,21 @@ export default {
         view.notifyChange();
       }
     },
+    /**
+     * TODO
+     *
+     * @public This is a public method
+     */
     building() {
       //Show or don't show building layer
       view.tileLayer.attachedLayers[2].visible = this.$refs.childComponent.visibleBuilding;
       view.notifyChange();
     },
-
+    /**
+     * TODO
+     *
+     * @public This is a public method
+     */
     cameraView() {
       //Return to center of map, these are Gavres coords
       view.camera.camera3D.position.x = 223725.82916306859;
@@ -119,23 +136,45 @@ export default {
       view.camera.camera3D.position.z = 2500.719216284468985;
       view.notifyChange();
 
-    }, onClick(e) {
+    }, 
+    /**
+     * TODO
+     *
+     * @param {TODO} e TODO
+     * @public This is a public method
+     */
+    onClick(e) {
       //add code here for event when clicking on view
     },
+    /**
+     * TODO
+     *
+     * @public This is a public method
+     */
     vue2d() {
       //Go to Aerial view and remove camera rotation option
       view.controls.goToTopView();
       view.controls.enableRotation = false;
       view.notifyChange();
     },
+    /**
+     * TODO
+     *
+     * @public This is a public method
+     */
     vue3d() {
       //enable camera rotation option
       view.controls.enableRotation = true;
       view.notifyChange();
     },
+    /**
+     * TODO
+     *
+     * @param {TODO} jsonemit TODO
+     * @public This is a public method
+     */
     updateHeightmap(jsonemit) {
-      //retrieving heightmap toolbar input
-      this.jsonemit = jsonemit;
+      this.jsonemit = jsonemit; //retrieving heightmap toolbar input
 
       //If a mesh has already been loaded remove it
       if (view.scene.children.length > 2) {
@@ -158,7 +197,6 @@ export default {
             view.notifyChange();
           })
         })
-
       } else {
         //if multiple scenarios are selected
         let listImages = [];

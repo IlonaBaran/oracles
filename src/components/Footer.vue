@@ -65,11 +65,44 @@
 import Button from 'primevue/button';
 import Dialog from 'primevue/dialog';
 
+
+/**
+ * Composant 'Pied de page' de l'application 
+ * --> mentions légales, plan du site, crédits, manuel utilisateur
+ *
+ * @component footerComponent
+ */
 export default {
     name: 'footerComponent',
     components: {
         Dialog,
         Button
+    },
+    props: {
+        /**
+         * TODO
+         */
+         plan: {
+            type: Boolean, default: false,
+        },
+        /**
+         * TODO
+         */
+        mentions: {
+            type: Boolean, default: false,
+        },
+        /**
+         * TODO
+         */
+        credits: {
+            type: Boolean, default: false,
+        },
+        /**
+         * TODO
+         */
+        aide: {
+            type: Boolean, default: false,
+        }
     },
     data() {
         return {
