@@ -69,7 +69,7 @@ Si vous voulez modifier les graphiques séléctionnés, vous devez cliquer sur l
 #### Diagramme 1 : Diagramme linéaire
 Quatre graphiques sont affichés : la hauteur des vagues, la surcote, la vitesse du vent en fonction du temps
 Il est possible de séléctionner un ou plusieurs scénarios.
-![PojetWeb](img/imagettes/Diagramme1.png)
+![PojetWeb](img/readme/line.png)
 
 #### Diagramme 2 : Rose des vents
 Ce graphique présente la distribution de la vitesse du vent pour une simulation.
@@ -77,22 +77,22 @@ Les données pour une même simulation sont très proches en terme :
 + de vitesse de vent (écart d’environ 3 m/s entre la valeur minimale et maximale) ;
 + de direction du vent (écart d’environ 10° entre la valeur minimale et maximale). 
 Il peut donc être difficle d'obtenir un résultat exploitable.
-![PojetWeb](img/imagettes/Diagramme2.png)
+![PojetWeb](img/readme/windrose.png)
 
 #### Diagramme 3 : Histogramme empilé
 Quatre graphiques sont affichés : la hauteur des vagues, la surcote, la vitesse du vent en fonction du temps
 Il est possible de séléctionner un ou plusieurs scénarios.
-![PojetWeb](img/imagettes/Diagramme3.png)
+![PojetWeb](img/readme/histogram.png)
 
 #### Diagramme 4 : Carte de chaleur
 La carte de chaleur montre la hauteur de l'eau en fonction du temps. 
 Il est possible de séléctionner un ou plusieurs scénarios.
-![PojetWeb](img/imagettes/Diagramme4.png)
+![PojetWeb](img/readme/heatmap.png)
 
 #### Diagramme 5 : Linéaire 3D
 La carte de chaleur peut être difficilement exploitable car les valeurs au sein d'un même scénario varient peu. Pour avoir une autre représentation, nous avons réalisé ce diagramme 3D. 
 Il est possible de séléctionner un ou plusieurs scénarios.
-![PojetWeb](img/imagettes/Diagramme5.png)
+![PojetWeb](img/readme/3d.png)
 
 **
 ## Affichage des hauteurs d'eau maximale et finale (Numéro 5)
