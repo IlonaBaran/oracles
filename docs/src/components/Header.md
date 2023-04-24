@@ -1,7 +1,42 @@
 # menuComponent
 
-> Composant 'Pied de page' de l'application
-> --> mentions légales, plan du site, crédits, manuel utilisateur
+> TODO
+
+## Methods
+
+### ret
+
+> TODO
+
+### validation
+
+> TODO
+
+### reinitialisation
+
+> TODO
+
+### toggle
+
+> TODO
+
+#### Params
+
+| Param name | Type | Description |
+| ---------- | ---- | ----------- |
+| event      |      |             |
+
+### getDossier
+
+> Récupérer le nom des dossiers et les transmettre à la variable scenario
+
+### appelMethodeDansPanel
+
+> TODO
+
+### emitSelectedScenarioChanged
+
+> TODO
 
 ## Events
 

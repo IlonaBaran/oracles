@@ -7,8 +7,6 @@ module.exports = {
       {
         name: 'Components',
         components: './src/components/*.vue',
-        methods: true,
-        depth: 1,
       },
     ],
     propsParser: require('vue-docgen-api').parseProps,

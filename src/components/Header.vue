@@ -67,6 +67,11 @@ import CascadeSelect from 'primevue/cascadeselect';
 export default {
     name: 'menuComponent',
     components: {
+        /**
+         * TODO
+         *
+         * @public This is a public method
+         */
         Toolbar,
         SelectButton,
         Panel,
