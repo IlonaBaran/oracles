@@ -49,8 +49,7 @@
 
                     <div v-else-if="selectedGraph.name == 'Ligne 3D'">
                         <div v-if="this.affichageLigne3d == true">
-                            <p>Un bug de la bibliothèque HighCharts ne permet pas la bonne visualisation de plus de 3
-                                scénarios sans créer de mauvaises superpositions</p>
+
                             <vue-highcharts :options="this.chartOptions4Maree"></vue-highcharts>
 
                             <vue-highcharts :options="this.chartOptions4Surcote"></vue-highcharts>
@@ -334,8 +333,8 @@ export default {
                     stroke: { curve: 'straight' },
                     title: { text: 'Evolution de la marée en fonction des heures de la journée', align: 'left' },
                     grid: { row: { colors: ['#f3f3f3', 'transparent'], opacity: 0.5 }, },
-                    xaxis: { tooltip: { enabled: false }, overwriteCategories: abscisses, title: {text: 'Heure'}},
-                    yaxis: {title: {text: 'Marée (m)'}},
+                    xaxis: { tooltip: { enabled: false }, overwriteCategories: abscisses, title: { text: 'Heure' } },
+                    yaxis: { title: { text: 'Marée (m)' } },
                 });
             }
             if (type == "Surcote(m)") {
@@ -346,8 +345,8 @@ export default {
                     stroke: { curve: 'straight' },
                     title: { text: 'Evolution de la surcôte en fonction des heures de la journée', align: 'left' },
                     grid: { row: { colors: ['#f3f3f3', 'transparent'], opacity: 0.5 }, },
-                    xaxis: { tooltip: { enabled: false }, overwriteCategories: abscisses, title: {text: 'Heure'}},
-                    yaxis: {title: {text: 'Surcôte (m)'}},
+                    xaxis: { tooltip: { enabled: false }, overwriteCategories: abscisses, title: { text: 'Heure' } },
+                    yaxis: { title: { text: 'Surcôte (m)' } },
                 });
             }
 
@@ -359,8 +358,8 @@ export default {
                     stroke: { curve: 'straight' },
                     title: { text: 'Evolution de la hauteur des vagues en fonction des heures de la journée', align: 'left' },
                     grid: { row: { colors: ['#f3f3f3', 'transparent'], opacity: 0.5 }, },
-                    xaxis: { tooltip: { enabled: false }, overwriteCategories: abscisses, title: {text: 'Heure'}},
-                    yaxis: {title: {text: 'Hauteur des vagues (m)'}},
+                    xaxis: { tooltip: { enabled: false }, overwriteCategories: abscisses, title: { text: 'Heure' } },
+                    yaxis: { title: { text: 'Hauteur des vagues (m)' } },
                 });
             }
 
@@ -372,8 +371,8 @@ export default {
                     stroke: { curve: 'straight' },
                     title: { text: 'Evolution de la vitesse du vent en fonction des heures de la journée', align: 'left' },
                     grid: { row: { colors: ['#f3f3f3', 'transparent'], opacity: 0.5 }, },
-                    xaxis: { tooltip: { enabled: false }, overwriteCategories: abscisses, title: {text: 'Heure'}},
-                    yaxis: {title: {text: 'Vitesse du vent (m/s)'}},
+                    xaxis: { tooltip: { enabled: false }, overwriteCategories: abscisses, title: { text: 'Heure' } },
+                    yaxis: { title: { text: 'Vitesse du vent (m/s)' } },
                 });
             }
             this.affichageLigne = true;
@@ -416,11 +415,11 @@ export default {
         roseVent(abscisses, ordonnees) {
             this.chartOptions2 = ({
 
-                chart: { polar: true, type: 'column'},
-                title: { text: 'Distribution de la vitesse du vent'},
-                xAxis: { tickmarkPlacement: 'on', categories: abscisses},
-                yAxis: {min: 0, endOnTick: false, showLastLabel: true, reversedStacks: false},
-                plotOptions: { series: { stacking: 'normal', shadow: false, pointPlacement: 'on'}},
+                chart: { polar: true, type: 'column' },
+                title: { text: 'Distribution de la vitesse du vent' },
+                xAxis: { tickmarkPlacement: 'on', categories: abscisses },
+                yAxis: { min: 0, endOnTick: false, showLastLabel: true, reversedStacks: false },
+                plotOptions: { series: { stacking: 'normal', shadow: false, pointPlacement: 'on' } },
                 series: ordonnees,
             });
         },
