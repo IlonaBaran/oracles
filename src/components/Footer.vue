@@ -78,32 +78,6 @@ export default {
         Dialog,
         Button
     },
-    props: {
-        /**
-         * TODO
-         */
-         plan: {
-            type: Boolean, default: false,
-        },
-        /**
-         * TODO
-         */
-        mentions: {
-            type: Boolean, default: false,
-        },
-        /**
-         * TODO
-         */
-        credits: {
-            type: Boolean, default: false,
-        },
-        /**
-         * TODO
-         */
-        aide: {
-            type: Boolean, default: false,
-        }
-    },
     data() {
         return {
             plan: false,
