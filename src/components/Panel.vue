@@ -288,6 +288,7 @@ export default {
 
 
     methods: {
+        // @vuese
         // Fonction qui permet d'afficher tout les types de diagrammes
         afficheGraph() {
             // Affichage des diagrammes en lignes
