@@ -63,6 +63,26 @@ import CascadeSelect from 'primevue/cascadeselect';
  * TODO
  *
  * @component menuComponent
+ * 
+ * @author Equipe du projet Oracle - ENSG, TSI 
+ * @version 1.0
+ * @since 25.04.2023
+ * 
+ * Composants enfants : 
+ * -- Librairie PrimeVue --
+ * Toolbar
+ * SelectButton
+ * Panel
+ * CascadeSelect
+ * MultiSelect
+ * Button
+ * 
+ * @requires ../../node_modules/primevue/toolbar/Toolbar.vue
+ * @requires ../../node_modules/primevue/selectbutton/SelectButton.vue
+ * @requires ../../node_modules/primevue/panel/Panel.vue
+ * @requires ../../node_modules/primevue/cascadeselect/CascadeSelect.vue
+ * @requires ../../node_modules/primevue/multiselect/MultiSelect.vue
+ * @requires ../../node_modules/primevue/button/Button.vue
  */
 export default {
     name: 'menuComponent',

@@ -1,8 +1,22 @@
-# mapComponent
+---
+sidebarDepth: 2
+---
+
+## mapComponent
 
 > TODO
 
-## Props
+Author: Equipe du projet Oracle - ENSG, TSI
+
+Since: 25.04.2023
+
+Composants enfants :
+-- Librairie PrimeVue --
+Toolbar
+
+Version: 1.0
+
+### Props
 
 | Prop name        | Description | Type    | Values | Default |
 | ---------------- | ----------- | ------- | ------ | ------- |
@@ -10,46 +24,64 @@
 | visibleBuilding  | TODO        | boolean | -      |         |
 | selectedScenario | TODO        | object  | -      |         |
 
-## Methods
+### Methods
 
-### changeMap
-
-> TODO
-
-### building
+#### changeMap
 
 > TODO
 
-### cameraView
+#### building
 
 > TODO
 
-### onClick
+#### cameraView
 
 > TODO
 
-#### Params
+#### onClick
+
+> TODO
+
+##### Params
 
 | Param name | Type | Description |
 | ---------- | ---- | ----------- |
 | e          | TODO | e TODO      |
 
-### vue2d
+#### vue2d
 
 > TODO
 
-### vue3d
+#### vue3d
 
 > TODO
 
-### updateHeightmap
+#### updateHeightmap
 
 > TODO
 
-#### Params
+##### Params
 
 | Param name | Type | Description |
 | ---------- | ---- | ----------- |
 | jsonemit   | TODO | TODO        |
 
 ---
+
+---
+
+## Toolbar
+
+### Props
+
+| Prop name       | Description | Type   | Values | Default |
+| --------------- | ----------- | ------ | ------ | ------- |
+| aria-labelledby |             | string | -      | null    |
+
+### Slots
+
+| Name   | Description | Bindings |
+| ------ | ----------- | -------- |
+| start  |             |          |
+| center |             |          |
+| end    |             |          |

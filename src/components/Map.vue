@@ -23,6 +23,16 @@ let view = ref(false);
  * TODO
  *
  * @component mapComponent
+ * 
+ * @author Equipe du projet Oracle - ENSG, TSI 
+ * @version 1.0
+ * @since 25.04.2023
+ * 
+ * Composants enfants : 
+ * -- Librairie PrimeVue --
+ * Toolbar
+ * 
+ * @requires ../../node_modules/primevue/toolbar/Toolbar.vue
  */
 export default {
   name: 'mapComponent',

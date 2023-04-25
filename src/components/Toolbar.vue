@@ -95,6 +95,27 @@ import RadioButton from 'primevue/radiobutton';
  * TODO
  *
  * @component Toolbar-box
+ * 
+ * @author Equipe du projet Oracle - ENSG, TSI 
+ * @version 1.0
+ * @since 25.04.2023
+ * 
+ * Composants enfants : 
+ * -- Librairie PrimeVue --
+ * SpeedDial
+ * Sidebar
+ * Button
+ * MultiSelect
+ * SelectButton
+ * RadioButton
+ * 
+ * @requires ../../node_modules/primevue/speeddial/SpeedDial.vue
+ * @requires ../../node_modules/primevue/sidebar/Sidebar.vue
+ * @requires ../../node_modules/primevue/button/Button.vue
+ * @requires ../../node_modules/primevue/multiselect/MultiSelect.vue
+ * @requires ../../node_modules/primevue/selectbutton/SelectButton.vue
+ * @requires ../../node_modules/primevue/radiobutton/RadioButton.vue
+
  */
 export default {
   name: 'Toolbar-box',
@@ -105,7 +126,6 @@ export default {
     MultiSelect,
     SelectButton,
     RadioButton
-
   },
   data() {
     return {

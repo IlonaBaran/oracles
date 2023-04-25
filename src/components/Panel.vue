@@ -99,6 +99,21 @@ import { reactive } from "vue";
  * TODO
  *
  * @component panelComponent
+ * 
+ * @author Equipe du projet Oracle - ENSG, TSI 
+ * @version 1.0
+ * @since 25.04.2023
+ * 
+ * Composants enfants : 
+ * -- Librairie PrimeVue --
+ * Card
+ * ScrollPanel
+ * -- Librairie VueHighcharts --
+ * VueHighcharts - pas de documentation compatible avec vue-docgen
+ * @see https://www.highcharts.com/demo
+ * 
+ * @requires ../../node_modules/primevue/card/Card.vue
+ * @requires ../../node_modules/primevue/scrollpanel/ScrollPanel.vue
  */
 export default {
     name: 'panelComponent',
