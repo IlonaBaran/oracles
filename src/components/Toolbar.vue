@@ -74,7 +74,7 @@
     <SelectButton v-model="selectedDimension" :options="dimensions" :optionDisabled="optionDisabled" />
   </div>
 
-  <div class="color-scale-legend" ref="legend" v-if="selectedScenario2.length > 0" position="center" id="legende">
+  <div class="color-scale-legend" ref="legend" v-if="clicked == true" position="center" id="legende">
     <p>Légende</p>
     <p>(mètres au-dessus du sol)</p>
     <div class="legend-bar" :style="{ background: gradient }"></div>
@@ -139,6 +139,7 @@ export default {
   },
   data() {
     return {
+      clicked: false,
       colors: [
         "rgb(206, 229, 255)",
         "rgb(41, 155, 243)",
@@ -267,10 +268,12 @@ export default {
     updateScenarios() {
       if (this.selectedScenario2.length > 1) {
         let jsonemit = { selectedScenario2: this.selectedScenario2, math: this.math, height: this.selectedheight }
+        this.clicked = true;
         this.$emit('updateScenarios', jsonemit);
 
       } else {
         let jsonemit = { selectedScenario2: this.selectedScenario2, height: this.selectedheight }
+        this.clicked = true;
         this.$emit('updateScenarios', jsonemit);
       }
 
