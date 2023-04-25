@@ -65,6 +65,25 @@
 import Button from 'primevue/button';
 import Dialog from 'primevue/dialog';
 
+
+/**
+ * Composant 'Pied de page' de l'application 
+ * --> mentions légales, plan du site, crédits, manuel utilisateur
+ *
+ * @component footerComponent
+ * 
+ * @author Equipe du projet Oracle - ENSG, TSI 
+ * @version 1.0
+ * @since 25.04.2023
+ * 
+ * Composants enfants : 
+ * -- Librairie PrimeVue --
+ * Dialog
+ * Button
+ * 
+ * @requires ../../node_modules/primevue/dialog/Dialog.vue
+ * @requires ../../node_modules/primevue/button/Button.vue
+ */
 export default {
     name: 'footerComponent',
     components: {

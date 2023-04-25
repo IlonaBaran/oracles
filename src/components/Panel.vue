@@ -94,10 +94,28 @@ import ScrollPanel from 'primevue/scrollpanel';
 import { ref } from "vue";
 import { reactive } from "vue";
 
-
+/**
+ * TODO
+ *
+ * @component panelComponent
+ * 
+ * @author Equipe du projet Oracle - ENSG, TSI 
+ * @version 1.0
+ * @since 25.04.2023
+ * 
+ * Composants enfants : 
+ * -- Librairie PrimeVue --
+ * Card
+ * ScrollPanel
+ * -- Librairie VueHighcharts --
+ * VueHighcharts - pas de documentation compatible avec vue-docgen
+ * @see https://www.highcharts.com/demo
+ * 
+ * @requires ../../node_modules/primevue/card/Card.vue
+ * @requires ../../node_modules/primevue/scrollpanel/ScrollPanel.vue
+ */
 export default {
     name: 'panelComponent',
-
     components: {
         Card,
         ScrollPanel,
@@ -105,19 +123,23 @@ export default {
     },
 
     props: {
-        selectedScenario: { /* Liste des scénarios sélectionnés, valeur récupérée du composant Header.vue */
+        /**
+         * Liste des scénarios sélectionnés, valeur récupérée du composant Header.vue
+         */
+        selectedScenario: { 
             type: Object,
             required: true
         },
-        selectedGraph: { /* Liste des graphiques sélectionnées, valeur récupérée du composant Header.vue */
+        /**
+         * Liste des graphiques sélectionnées, valeur récupérée du composant Header.vue 
+         */
+        selectedGraph: { 
             type: Object,
             required: true
         },
     },
-
     data() {
         return {
-
             // Booléens d'affichage du panel
             checked: ref(false),
             checkedPanel: ref(false),
@@ -129,7 +151,6 @@ export default {
             affichageHistogramme: false,
             affichageWindRose: false,
             affichageLigne3d: false,
-
 
             // LINE CHART - APEXCHARTS //
             // Graphiques Ligne des marées
@@ -287,7 +308,11 @@ export default {
 
 
     methods: {
-        // Fonction qui permet d'afficher tout les types de diagrammes
+        /**
+         * Fonction qui permet d'afficher tout les types de diagrammes
+         *
+         * @public This is a public method
+         */
         afficheGraph() {
             // Affichage des diagrammes en lignes
             this.lineChartAffichage('Surcote(m)')
@@ -314,7 +339,11 @@ export default {
             this.TD1Affichage('Hs(vagues)(m)');
         },
 
-        // Masque les diagrammes
+        /**
+         * Masque les diagrammes
+         *
+         * @public This is a public method
+         */
         reiAfficheGraph() {
             this.affichageLigne = false;
             this.affichageHeat = false;
@@ -323,7 +352,14 @@ export default {
             this.affichageLigne3d = false;
         },
 
-        // Création d'un diagramme en ligne en fonction du type données
+        /**
+         * Création d'un diagramme en ligne en fonction du type données
+         *
+         * @param {String} type Valeurs en ordonnée 
+         * @param {Array} abscisses Valeurs des abscisses
+         * @param {Array} ordonnees Valeurs des ordonnées
+         * @public This is a public method
+         */
         lineChart(type, abscisses, ordonnees) {
             if (type == "Maree(m)") {
                 this.series = ordonnees;
@@ -379,7 +415,12 @@ export default {
 
         },
 
-        // Récupération des données et création d'un diagramme en ligne en fonction du type données
+        /**
+         * Récupération des données et affichage d'un diagramme en ligne en fonction du type choisi par l'utilisateur
+         *
+         * @param {String} type Valeurs en ordonnée 
+         * @public This is a public method
+         */
         lineChartAffichage(type) {
             let abscisses = [];
             let ordonnees = [];
@@ -412,6 +453,13 @@ export default {
             }
         },
 
+        /**
+         * Création d'un diagramme 'Rose des vents'
+         *
+         * @param {Array} abscisses Valeurs des abscisses
+         * @param {Array} ordonnees Valeurs des ordonnées
+         * @public This is a public method
+         */
         roseVent(abscisses, ordonnees) {
             this.chartOptions2 = ({
 
@@ -424,6 +472,11 @@ export default {
             });
         },
 
+        /**
+         * Récupération des données et affichage d'un diagramme 'Rose des vents'
+         *
+         * @public This is a public method
+         */
         roseVentAffichage() {
             // valeurs a afficher --> ordonnées
             var listDataPlot = [];
@@ -446,7 +499,6 @@ export default {
                     .then(data => {
                         for (const property in data) {
                             var index = parseInt(`${data[property]["Dir(vent)()"]}` / 10);
-
                             if (`${data[property]["U(vent)(m)"]}` < 6) {
                                 s1[index] += 1;
                             }
@@ -473,6 +525,14 @@ export default {
 
         },
 
+        /**
+         * Création d'un diagramme histogramme en fonction du type données
+         *
+         * @param {String} type Valeurs en ordonnée 
+         * @param {Array} abscisses Valeurs des abscisses
+         * @param {Array} ordonnees Valeurs des ordonnées
+         * @public This is a public method
+         */
         histogramm(type, abscisses, ordonnees) {
             if (type == "Maree(m)") {
                 this.series5Maree = ordonnees;
@@ -521,13 +581,17 @@ export default {
             this.affichageHistogramme = true;
         },
 
-
+        /**
+         * Récupération des données et affichage d'un histogramme empilé en fonction du type choisi par l'utilisateur
+         *
+         * @param {String} type Valeurs en ordonnée 
+         * @public This is a public method
+         */
         histogrammeAffichage(type) {
-            // valeurs a afficher --> ordonnées
-            var listDataPlot = [];
-            // valeurs à afficher --> abscisses
-            var abscisses = [];
-            // Decoupage des ordonnées
+            var listDataPlot = []; // valeurs a afficher
+            var abscisses = []; // valeurs à afficher
+
+            // Decoupage des ordonnées - CHOIX ARBITRAIRE - 
             if (type == "Maree(m)") {
                 var L = [0, 1, 2, "m"];
             }
@@ -544,8 +608,8 @@ export default {
             var s2 = new Array();
             var s3 = new Array();
             var s4 = new Array();
-            // Compteur pour mettre les valeurs dans les listes de decoupage
-            var elem = 0;
+            
+            var elem = 0; // Compteur pour mettre les valeurs dans les listes de decoupage
 
             for (const element of this.selectedScenario) {
                 var v1 = 0;
@@ -556,7 +620,6 @@ export default {
                     .then(response => response.json())
                     .then(data => {
                         abscisses.push(`${element["name"]}`);
-
                         for (const property in data) {
                             if (`${data[property][type]}` < L[0]) {
                                 v1 += 1;
@@ -587,6 +650,13 @@ export default {
             this.affichageHistogramme = true;
         },
 
+        /**
+         * Fonction non utilisé dans l'application car le diagramme n'a pas été réalisé
+         * Permet d'envoyer des données sur l'url suivante : 127.0.0.1:5000/api/data pour réaliser des traitements sur les données envoyées en Python
+         *
+         * @param {String} data Valeurs à mettre sur l'url 127.0.0.1:5000/api/data
+         * @public This is a public method
+         */
         sendData(data) {
             fetch('127.0.0.1:5000/api/data', {
                 method: 'POST',
@@ -596,14 +666,56 @@ export default {
                 .then(response => response.json())
                 .then(data => { console.log('Données envoyées avec succès !'); })
                 .catch(error => { console.error('Erreur lors de l\'envoi des données :', error); });
+                //  POUR LE DIAGRAMME 3 (Indexation hexagonale des zones de Gâvres)
+                // fetch('http://localhost:5000/api/data', {
+                //     method: 'POST',
+                //     headers: {
+                //         'Content-Type': 'application/json'
+                //     },
+                //     body: JSON.stringify(dict)
+                // })
+                // .then(response => response.json())
+                // .then(data => {
+                //     console.log('Données envoyées avec succès !');        
+                //     fetch('http://localhost:5000/api/data')
+                //     .then(response => response.json())
+                //     .then(data => {
+                //     console.log(data);
+                //     })
+                // })
+                // .catch(error => {
+                //     console.error('Erreur lors de l\'envoi des données :', error);
+                // });
         },
 
+        /**
+         * Création d'une carte de chaleur
+         * 
+         * @param {Array} abscisses Valeurs des abscisses
+         * @param {Array} ordonnees Valeurs des ordonnées
+         * @public This is a public method
+         */
+        heatMap(abscisses, ordonnees) {
+            this.chartOptions3 = {
+                chart: { type: 'heatmap', },
+                dataLabels: { enabled: false },
+                plotOptions: { heatmap: { useFillColorAsStroke: true, shadeIntensity: 1, radius: 0, } },
+                colors: ['#008FFB'],
+                title: { text: 'Heatmap Chart', align: 'left' },
+                xaxis: { tooltip: { enabled: false }, type: 'category', categories: abscisses, overwriteCategories: abscisses, },
+                yaxis: { categories: ['Morning', 'Afternoon', 'Evening'] },
+            },
+            this.series3 = ordonnees;
+        },
 
+        /**
+         * Récupération des données et affichage d'une carte de chaleur
+         *
+         * @public This is a public method
+         */
         heatMapAffichage() {
-            // valeurs a afficher --> ordonnées
-            var listDataPlot = [];
-            // données temporelles --> abscisses
-            var abscisses = new Array();
+            var listDataPlot = []; // valeurs a afficher
+            var abscisses = new Array(); // données temporelles 
 
             for (const element of this.selectedScenario) {
                 fetch('http://localhost:8080/jsonData/' + `${element["name"]}` + '.json')
@@ -611,7 +723,6 @@ export default {
                     .then(data => {
                         // Boucle pour avoir toutes les abscisses possibles
                         for (const property in data) {
-
                             if (abscisses.indexOf(`${data[property]["heure"]}`) == -1) {
                                 abscisses.push(`${data[property]["heure"]}`);
                             }
@@ -636,53 +747,18 @@ export default {
 
                     })
             }
-
-            this.heatMap(listDataPlot, abscisses);
-
+            this.heatMap(abscisses, listDataPlot);
             this.affichageHeat = true;
-
-
-            //  POUR LE DIAGRAMME 3 
-            // fetch('http://localhost:5000/api/data', {
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'application/json'
-            //     },
-            //     body: JSON.stringify(dict)
-            // })
-            // .then(response => response.json())
-            // .then(data => {
-            //     console.log('Données envoyées avec succès !');        
-            //     fetch('http://localhost:5000/api/data')
-            //     .then(response => response.json())
-            //     .then(data => {
-            //     console.log(data);
-            //     })
-            // })
-            // .catch(error => {
-            //     console.error('Erreur lors de l\'envoi des données :', error);
-            // });
         },
 
-
-
-        heatMap(donnees, abscisses) {
-            this.chartOptions3 = {
-                chart: { type: 'heatmap', },
-                dataLabels: { enabled: false },
-                plotOptions: { heatmap: { useFillColorAsStroke: true, shadeIntensity: 1, radius: 0, } },
-                colors: ['#008FFB'],
-                title: { text: 'Heatmap Chart', align: 'left' },
-                xaxis: { tooltip: { enabled: false }, type: 'category', categories: abscisses, overwriteCategories: abscisses, },
-                yaxis: { categories: ['Morning', 'Afternoon', 'Evening'] },
-            },
-                this.series3 = donnees;
-        },
-
-
-        // ressource : https://www.highcharts.com/docs/chart-concepts/3d-charts
-        // https://www.highcharts.com/demo/3d-area-multiple/brand-light
-
+        /**
+         * Création d'un diagramme 3D en fonction du type données
+         *
+         * @param {String} type Valeurs en ordonnée 
+         * @param {Array} abscisses Valeurs des abscisses
+         * @param {Array} ordonnees Valeurs des ordonnées
+         * @public This is a public method
+         */
         TD1(type, abscisses, ordonnees) {
             this.chartOptions4Maree = ({
                 chart: { type: 'area', options3d: { enabled: true, alpha: 15, beta: 30, depth: 200, viewDistance: 25 } },
@@ -730,7 +806,12 @@ export default {
             }
         },
 
-
+        /**
+         * Récupération des données et affichage d'un diagramme 3D en fonction du type choisi par l'utilisateur
+         *
+         * @param {String} type Valeurs en ordonnée 
+         * @public This is a public method
+         */
         TD1Affichage(type) {
             let abscisses = [];
             let ordonnees = [];
@@ -757,7 +838,6 @@ export default {
                         if (ordonnees.length == 0) {
                             axes.push({ visible: true, categories: abscisses, isX: true, index: 0 })
                         }
-
                         else {
                             dict = { xAxis: ordonnees.length, };
                             axes.push({ visible: false, index: ordonnees.length, isX: true });
@@ -777,12 +857,9 @@ export default {
 
             }
             promise.then(response => {
-
                 if (type == "Maree(m)") {
                     this.maree3D[0] = axes;
                     this.maree3D[1] = ordonnees;
-
-
                 }
                 else if (type == "Surcote(m)") {
                     this.surcote3D[0] = axes;
@@ -797,13 +874,10 @@ export default {
                     this.vagues3D[1] = ordonnees;
                 }
                 this.TD1(type, axes, ordonnees);
-
             })
         },
     }
 };
-
-
 </script>
 
 

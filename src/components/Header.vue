@@ -60,11 +60,39 @@ import Button from 'primevue/button';
 import MultiSelect from 'primevue/multiselect';
 import CascadeSelect from 'primevue/cascadeselect';
 
-
+/**
+ * TODO
+ *
+ * @component menuComponent
+ * 
+ * @author Equipe du projet Oracle - ENSG, TSI 
+ * @version 1.0
+ * @since 25.04.2023
+ * 
+ * Composants enfants : 
+ * -- Librairie PrimeVue --
+ * Toolbar
+ * SelectButton
+ * Panel
+ * CascadeSelect
+ * MultiSelect
+ * Button
+ * 
+ * @requires ../../node_modules/primevue/toolbar/Toolbar.vue
+ * @requires ../../node_modules/primevue/selectbutton/SelectButton.vue
+ * @requires ../../node_modules/primevue/panel/Panel.vue
+ * @requires ../../node_modules/primevue/cascadeselect/CascadeSelect.vue
+ * @requires ../../node_modules/primevue/multiselect/MultiSelect.vue
+ * @requires ../../node_modules/primevue/button/Button.vue
+ */
 export default {
     name: 'menuComponent',
-
     components: {
+        /**
+         * TODO
+         *
+         * @public This is a public method
+         */
         Toolbar,
         SelectButton,
         Panel,
@@ -72,7 +100,6 @@ export default {
         MultiSelect,
         Button
     },
-
     data() {
         return {
             value: ref({ name: 'Gâvres' }),
@@ -81,7 +108,7 @@ export default {
             disabled: " p-disabled",
             valide: "",
 
-            scenario: [],
+            scenario: null,
             selectedScenario: [],
             selectedGraph: [],
             refresh: false,
@@ -105,29 +132,48 @@ export default {
         }
     },
 
-    // provide: {
-    //     affichageAllGraph: () => this.$refs.panel.affichageAllGraph(),
-    // },
-
     methods: {
+        /**
+         * TODO
+         *
+         * @public This is a public method
+         */
         ret() {
             return this.selectedScenario
         },
+        /**
+         * TODO
+         *
+         * @public This is a public method
+         */
         validation() {
             this.disabled = "";
             this.valide = " p-disabled";
             this.$refs.panelGraph.afficheGraph();
         },
+        /**
+         * TODO
+         *
+         * @public This is a public method
+         */
         reinitialisation() {
             this.disabled = " p-disabled";
             this.valide = "";
             this.$refs.panelGraph.reiAfficheGraph();
         },
+        /**
+         * TODO
+         *
+         * @public This is a public method
+         */
         toggle(event) {
             this.$refs.op.toggle(event);
         },
-
-        //  Récupérer le nom des dossiers et les transmettre à la variable scenario
+        /**
+         * Récupérer le nom des dossiers et les transmettre à la variable scenario
+         *
+         * @public This is a public method
+         */
         getDossier() {
             fetch('http://127.0.0.1:5000/arboresance')
                 .then(response => response.json())
@@ -145,15 +191,26 @@ export default {
                     this.scenario = L;
                 });
         },
-
+        /**
+         * TODO
+         *
+         * @public This is a public method
+         */
         appelMethodeDansPanel() {
             this.$refs.panelRef.nomDeLaMethodeDansPanel();
         },
+        /**
+         * TODO
+         *
+         * @public This is a public method
+         */
         emitSelectedScenarioChanged() {
             this.$emit('selectedScenarioChanged', this.selectedScenario);
         }
     },
-    mounted() { this.getDossier() }
+    mounted() {
+        this.getDossier()
+    }
 
 }
 </script>
@@ -184,10 +241,8 @@ export default {
     padding: 0px;
 }
 
-
 .p-multiselect {
     margin-right: 10px;
     margin-left: 10px;
-
 }
 </style>

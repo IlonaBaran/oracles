@@ -80,13 +80,8 @@
 <script>
 /* eslint-disable */
 import { ref } from "vue";
-
-
-
 import Header from './Header.vue';
 import App from '../App.vue';
-
-
 
 // Import des éléments des librairies
 import SpeedDial from 'primevue/speeddial';
@@ -96,7 +91,32 @@ import MultiSelect from 'primevue/multiselect';
 import SelectButton from 'primevue/selectbutton';
 import RadioButton from 'primevue/radiobutton';
 
+/**
+ * TODO
+ *
+ * @component Toolbar-box
+ * 
+ * @author Equipe du projet Oracle - ENSG, TSI 
+ * @version 1.0
+ * @since 25.04.2023
+ * 
+ * Composants enfants : 
+ * -- Librairie PrimeVue --
+ * SpeedDial
+ * Sidebar
+ * Button
+ * MultiSelect
+ * SelectButton
+ * RadioButton
+ * 
+ * @requires ../../node_modules/primevue/speeddial/SpeedDial.vue
+ * @requires ../../node_modules/primevue/sidebar/Sidebar.vue
+ * @requires ../../node_modules/primevue/button/Button.vue
+ * @requires ../../node_modules/primevue/multiselect/MultiSelect.vue
+ * @requires ../../node_modules/primevue/selectbutton/SelectButton.vue
+ * @requires ../../node_modules/primevue/radiobutton/RadioButton.vue
 
+ */
 export default {
   name: 'Toolbar-box',
   components: {
@@ -106,43 +126,31 @@ export default {
     MultiSelect,
     SelectButton,
     RadioButton
-
   },
   data() {
     return {
-
       selectedScenario2: [],
-
       selectedDimension: ref('2D'),
       dimensions: ref(['2D', '3D']),
       checked: ref(false),
       math: ref(''),
       selectedheight: ref('hmax'),
       heights: ref(['hmax', 'hfin']),
-
-
       visibleRight: false, // visibilité du panel de fonds de carte
       visibleBuilding: false, // visibilité des bâtiments
       visibleHmax: false, // visibilité du hmax
       mapSelected: "ortho", // fond de carte sélectionné
-
       // Liste des éléments du speedDial
       items: [
         {
           label: 'Changer fond de carte',
           icon: 'pi pi-map',
-          command: () => {
-            // si le bouton est cliqué on affiche le panel
-            this.visibleRight = true;
-          }
+          command: () => {this.visibleRight = true;} // si le bouton est cliqué on affiche le panel
         },
         {
           label: 'Afficher les hauteurs maximales',
           icon: 'pi pi-globe',
-          command: () => {
-            // si le bouton est cliqué on affiche le panel
-            this.visibleHmax = true;
-          }
+          command: () => {this.visibleHmax = true;} // si le bouton est cliqué on affiche le panel
         },
         {
           label: 'Afficher/Masquer les bâtiments',
@@ -182,30 +190,61 @@ export default {
     },
   },
   props: {
+  /**
+   * TODO
+   */
     selectedScenario: {
       type: Object,
       required: true
     }
   },
   methods: {
-    // Les deux fonctions suivantes permettent de changer la valeur de mapSelected en fonction
-    // du bouton cliqué
+    /**
+     * Permet de changer la valeur de mapSelected en fonction du bouton cliqué
+     *
+     * @public This is a public method
+     */
     changeMapToOrtho() {
       this.mapSelected = "ortho";
-    },
+    }, 
+    /**
+     * Permet de changer la valeur de mapSelected en fonction du bouton cliqué
+     *
+     * @public This is a public method
+     */
     changeMapToPlan() {
       this.mapSelected = "plan";
     },
+    /**
+     * TODO
+     *
+     * @public This is a public method
+     */
     switchTo2D() {
       // Code to switch to 2D view
       this.$emit('vue-2d');
       console.log("2D")
     },
+    /**
+     * TODO
+     *
+     * @public This is a public method
+     */
     switchTo3D() {
       // Code to switch to 3D view
       this.$emit('vue-3d');
       console.log("3D")
     },
+  /**
+   * Mise à jour des scénarios
+   * 
+   * @emits updateScenarios
+   * @emitsParam {object} data - Les données mises à jour
+   * @emitsParam {string[]} data.selectedScenario2 - Les scénarios sélectionnés
+   * @emitsParam {number} data.math - Les mathématiques utilisées
+   * @emitsParam {number} data.height - La hauteur sélectionnée
+   * @public This is a public method
+   */
     updateScenarios() {
       if (this.selectedScenario2.length > 1) {
         let jsonemit = { selectedScenario2: this.selectedScenario2, math: this.math, height: this.selectedheight  }
@@ -228,7 +267,6 @@ export default {
   position: relative;
   left: 20%;
   top: 5%;
-
 }
 
 .ml-2 {
@@ -247,7 +285,6 @@ export default {
   bottom: 10%;
   right: 2%;
   z-index: 2;
-
 }
 
 .toolbar {
@@ -256,7 +293,6 @@ export default {
 
 .dial {
   z-index: 2;
-
 }
 
 .sidebar {
@@ -273,12 +309,10 @@ export default {
   position: relative;
   top: 10%;
   left: 35%;
-
 }
 
 img {
   width: 100%;
-
 }
 
 #boutonCarte {

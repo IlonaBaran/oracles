@@ -1,0 +1,19 @@
+{
+    "source": {
+      "include": ["src"]
+    },
+    "plugins": ["plugins/markdown"],
+    "opts": {
+      "recurse": true,
+      "destination": "docs",
+      "readme": "README.md"
+    },
+    "templates": {
+      "cleverLinks": false,
+      "monospaceLinks": false
+    },
+    "markdown": {
+      "idInHeadings": true
+    }
+  }
+  
