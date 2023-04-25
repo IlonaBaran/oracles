@@ -148,7 +148,7 @@ export default {
         "rgb(0, 0, 138)"
       ],
       min: 0,
-      max: 5,
+      max: 4,
       selectedScenario2: [],
       selectedDimension: ref('2D'),
       dimensions: ref(['2D', '3D']),
