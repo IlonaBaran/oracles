@@ -22,21 +22,22 @@
                 <Button v-styleclass="{ selector: '.card', toggleClass: 'p-hidden' }" @click="this.validation();"
                     icon="pi pi-check" aria-label="Valider" style="margin-left: 10px;" class="validation" :class="valide" />
 
-                <Button v-styleclass="{ selector: '.card', toggleClass: 'p-hidden' }" @click="this.reinitialisation()
-                " icon="pi pi-refresh" aria-label="Changer scénarios" style="margin-left: 10px;" :class="disabled" />
+                <Button v-styleclass=" { selector: '.card', toggleClass: 'p-hidden' } " @click="
+                    this.reinitialisation()
+                " icon="pi pi-refresh" aria-label="Changer scénarios" style="margin-left: 10px;" :class=" disabled " />
 
             </template>
 
             <!-- Eléments présents sur la droite de la barre -->
             <template #end>
                 <!-- Sélection de la zone d'étude (Gâvre/Arcachon) -->
-                <SelectButton v-model="value" :options="options" aria-labelledby="basic" optionDisabled="constant"
+                <SelectButton v-model=" value " :options=" options " aria-labelledby="basic" optionDisabled="constant"
                     optionLabel="name" />
             </template>
         </Toolbar>
 
         <!-- Ajout du composant présent dans Panel.vue, passage des valeurs des arguments selectedScenario et selectedGraph -->
-        <Panel ref="panelGraph" :selectedScenario="this.selectedScenario" :selectedGraph="this.selectedGraph"></Panel>
+        <Panel ref="panelGraph" :selectedScenario=" this.selectedScenario " :selectedGraph=" this.selectedGraph "></Panel>
 
 
     </div>
@@ -106,6 +107,7 @@ export default {
             checked: ref(false),
             disabled: " p-disabled",
             valide: "",
+
             scenario: null,
             selectedScenario: [],
             selectedGraph: [],
@@ -206,8 +208,8 @@ export default {
             this.$emit('selectedScenarioChanged', this.selectedScenario);
         }
     },
-    mounted(){ 
-        this.getDossier() 
+    mounted() {
+        this.getDossier()
     }
 
 }
