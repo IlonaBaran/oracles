@@ -18,6 +18,7 @@ COPY jsconfig.json ./
 COPY vue.config.js ./
 COPY public ./public
 COPY src ./src
+COPY img ./img
 
 #exposing on default container port 8080
 EXPOSE 8080
