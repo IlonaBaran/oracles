@@ -22,6 +22,15 @@
                         </div>
                     </div>
 
+                    <div v-if="selectedGraph.name == 'Ligne avec décalage'">
+                        <div v-if="this.affichageLigneSD == true">
+                            <apexchart :options="this.chartOptionsSD" :series="this.seriesSD" />
+                            <apexchart :options="this.chartOptionsSurcoteSD" :series="this.seriesSurcoteSD" />
+                            <apexchart :options="this.chartOptionsVaguesSD" :series="this.seriesVaguesSD" />
+                            <apexchart :options="this.chartOptionsVentSD" :series="this.seriesVentSD" />
+                        </div>
+                    </div>
+
                     <!-- Div des graphiques rose des vents -->
                     <div v-else-if="selectedGraph.name == 'Rose des vents'">
                         <div v-if="this.affichageWindRose == true">
@@ -47,15 +56,17 @@
                         </div>
                     </div>
 
+                    <div v-else-if="selectedGraph.name == 'Chaleur avec décalage'">
+                        <div v-if="this.affichageHeatSD == true">
+                            <apexchart :options="this.chartOptions3SD" :series="this.series3SD" />
+                        </div>
+                    </div>
+
                     <div v-else-if="selectedGraph.name == 'Ligne 3D'">
                         <div v-if="this.affichageLigne3d == true">
-
                             <vue-highcharts :options="this.chartOptions4Maree"></vue-highcharts>
-
                             <vue-highcharts :options="this.chartOptions4Surcote"></vue-highcharts>
-
                             <vue-highcharts :options="this.chartOptions4Vagues"></vue-highcharts>
-
                             <vue-highcharts :options="this.chartOptions4Vent"></vue-highcharts>
 
                         </div>
@@ -146,7 +157,9 @@ export default {
 
             // Booléens d'affichage des types de graphiques 
             affichageLigne: false,
+            affichageLigneSD: false,
             affichageHeat: false,
+            affichageHeatSD: false,
             affichageRose: false,
             affichageHistogramme: false,
             affichageWindRose: false,
@@ -180,6 +193,36 @@ export default {
                 dataLabels: { enabled: false, grid: { row: { colors: ['#f3f3f3', 'transparent'], opacity: 0.5 }, }, xaxis: { tooltip: { enabled: false }, categories: [], } },
             },
             seriesVent: [],
+
+
+
+            chartOptionsSD: {
+                chart: { id: 'mychart', height: 350, type: 'line', defaultPoint_marker_visible: false, zoom: { nabled: false } },
+                dataLabels: { enabled: false, grid: { row: { colors: ['#f3f3f3', 'transparent'], opacity: 0.5 }, }, xaxis: { tooltip: { enabled: false }, categories: [], } },
+            },
+            seriesSD: [],
+
+            // Graphiques Ligne des surcôtes
+            chartOptionsSurcoteSD: {
+                chart: { id: 'mychart', height: 350, type: 'line', defaultPoint_marker_visible: false, zoom: { nabled: false } },
+                dataLabels: { enabled: false, grid: { row: { colors: ['#f3f3f3', 'transparent'], opacity: 0.5 }, }, xaxis: { tooltip: { enabled: false }, categories: [], } },
+            },
+            seriesSurcoteSD: [],
+
+            // Graphiques Ligne des vagues
+            chartOptionsVaguesSD: {
+                chart: { id: 'mychart', height: 350, type: 'line', defaultPoint_marker_visible: false, zoom: { nabled: false } },
+                dataLabels: { enabled: false, grid: { row: { colors: ['#f3f3f3', 'transparent'], opacity: 0.5 }, }, xaxis: { tooltip: { enabled: false }, categories: [], } },
+            },
+            seriesVaguesSD: [],
+
+            // Graphiques Ligne des vents
+            chartOptionsVentSD: {
+                chart: { id: 'mychart', height: 350, type: 'line', defaultPoint_marker_visible: false, zoom: { nabled: false } },
+                dataLabels: { enabled: false, grid: { row: { colors: ['#f3f3f3', 'transparent'], opacity: 0.5 }, }, xaxis: { tooltip: { enabled: false }, categories: [], } },
+            },
+            seriesVentSD: [],
+
 
             // ROSE WIND - HIGHCHARTJS //
             chartOptions2: ({
@@ -235,6 +278,9 @@ export default {
             // HEAT MAP - APEXCHARTS
             chartOptions3: ref(null),
             series3: ref(null),
+
+            chartOptions3SD: ref(null),
+            series3SD: ref(null),
 
             // HEAT MAP MAIS EN 3D - HIGHTCHARTS
             chartOptions4Maree: ({
@@ -309,22 +355,29 @@ export default {
 
     methods: {
         /**
-         * Fonction qui permet d'afficher tout les types de diagrammes
+         * Fonction qui permet d'afficher tous les types de diagrammes
          *
          * @public
          */
         afficheGraph() {
-            // Affichage des diagrammes en lignes
+            // Affichage des diagrammes en lignes commencant a des horaires differentes
             this.lineChartAffichage('Surcote(m)')
             this.lineChartAffichage('Maree(m)');
             this.lineChartAffichage('Hs(vagues)(m)');
             this.lineChartAffichage('U(vent)(m)');
+
+            // Affichage des diagrammes en lignes commencant tous à H = 0
+            this.lineChartAffichageSansDecalage('Surcote(m)')
+            this.lineChartAffichageSansDecalage('Maree(m)');
+            this.lineChartAffichageSansDecalage('Hs(vagues)(m)');
+            this.lineChartAffichageSansDecalage('U(vent)(m)');
 
             // Affichage des diagrammes rose des vents
             this.roseVentAffichage();
 
             // Affichage des diagrammes heatmap
             this.heatMapAffichage();
+            this.heatMapAffichageSansDecalage();
 
             // Affichage des diagrammes histogrammes
             this.histogrammeAffichage('Surcote(m)');
@@ -346,7 +399,9 @@ export default {
          */
         reiAfficheGraph() {
             this.affichageLigne = false;
+            this.affichageLigneSD = false;
             this.affichageHeat = false;
+            this.affichageHeatSD = false;
             this.affichageHistogramme = false;
             this.affichageWindRose = false;
             this.affichageLigne3d = false;
@@ -412,7 +467,68 @@ export default {
                 });
             }
             this.affichageLigne = true;
+        },
 
+        /**
+         * Création d'un diagramme en ligne en fonction du type données
+         *
+         * @param {String} type Valeurs en ordonnée 
+         * @param {Array} abscisses Valeurs des abscisses
+         * @param {Array} ordonnees Valeurs des ordonnées
+         * @public
+         */
+        lineChartSansDecalage(type, abscisses, ordonnees) {
+            if (type == "Maree(m)") {
+                this.seriesSD = ordonnees;
+                this.chartOptionsSD = reactive({
+                    chart: { id: 'mychart', height: 350, type: 'line', defaultPoint_marker_visible: false, zoom: { enabled: false } },
+                    dataLabels: { enabled: false },
+                    stroke: { curve: 'straight' },
+                    title: { text: 'Evolution de la marée en fonction des heures de la journée', align: 'left' },
+                    grid: { row: { colors: ['#f3f3f3', 'transparent'], opacity: 0.5 }, },
+                    xaxis: { tooltip: { enabled: false }, overwriteCategories: abscisses, title: { text: 'Heure' } },
+                    yaxis: { title: { text: 'Marée (m)' } },
+                });
+            }
+            if (type == "Surcote(m)") {
+                this.seriesSurcoteSD = ordonnees;
+                this.chartOptionsSurcoteSD = reactive({
+                    chart: { id: 'mychart', height: 350, type: 'line', defaultPoint_marker_visible: false, zoom: { enabled: false } },
+                    dataLabels: { enabled: false },
+                    stroke: { curve: 'straight' },
+                    title: { text: 'Evolution de la surcôte en fonction des heures de la journée', align: 'left' },
+                    grid: { row: { colors: ['#f3f3f3', 'transparent'], opacity: 0.5 }, },
+                    xaxis: { tooltip: { enabled: false }, overwriteCategories: abscisses, title: { text: 'Heure' } },
+                    yaxis: { title: { text: 'Surcôte (m)' } },
+                });
+            }
+
+            if (type == "Hs(vagues)(m)") {
+                this.seriesVaguesSD = ordonnees;
+                this.chartOptionsVaguesSD = reactive({
+                    chart: { id: 'mychart', height: 350, type: 'line', defaultPoint_marker_visible: false, zoom: { enabled: false } },
+                    dataLabels: { enabled: false },
+                    stroke: { curve: 'straight' },
+                    title: { text: 'Evolution de la hauteur des vagues en fonction des heures de la journée', align: 'left' },
+                    grid: { row: { colors: ['#f3f3f3', 'transparent'], opacity: 0.5 }, },
+                    xaxis: { tooltip: { enabled: false }, overwriteCategories: abscisses, title: { text: 'Heure' } },
+                    yaxis: { title: { text: 'Hauteur des vagues (m)' } },
+                });
+            }
+
+            if (type == "U(vent)(m)") {
+                this.seriesVentSD = ordonnees;
+                this.chartOptionsVentSD = reactive({
+                    chart: { id: 'mychart', height: 350, type: 'line', defaultPoint_marker_visible: false, zoom: { enabled: false } },
+                    dataLabels: { enabled: false },
+                    stroke: { curve: 'straight' },
+                    title: { text: 'Evolution de la vitesse du vent en fonction des heures de la journée', align: 'left' },
+                    grid: { row: { colors: ['#f3f3f3', 'transparent'], opacity: 0.5 }, },
+                    xaxis: { tooltip: { enabled: false }, overwriteCategories: abscisses, title: { text: 'Heure' } },
+                    yaxis: { title: { text: 'Vitesse du vent (m/s)' } },
+                });
+            }
+            this.affichageLigneSD = true;
         },
 
         /**
@@ -450,6 +566,29 @@ export default {
                         ordonnees.push(dict);
                     })
                 this.lineChart(type, abscisses, ordonnees);
+            }
+        },
+
+        lineChartAffichageSansDecalage(type) {
+            let abscisses = [];
+            let ordonnees = [];
+            for (const element of this.selectedScenario) {
+                var file = 'http://localhost:8080/jsonData/' + element["name"] + '.json';
+                fetch(file)
+                    .then(response => response.json())
+                    .then(data => {
+                        // 1 dictionnaire = 1 scenario, il se remet à 0 à chaque nouveau scénario
+                        var dict = {};
+                        var L = [];
+                        dict["name"] = `${element["name"]}`;
+                        // L : tableau pour mettre les valeurs du scénario dedans. On ajoutera L au tableau à la fin de la boucle for
+                        for (const property in data) {
+                            L.push(`${data[property][type]}`);
+                        };
+                        dict["data"] = L;
+                        ordonnees.push(dict);
+                    })
+                this.lineChartSansDecalage(type, ["0'", "10'", "20'", "30'", "40'", "50'", "1h", "1h10'", "1h20'", "1h30'", "1h40'", "1h50'", "2h", "2h10'", "2h20'", "2h30'", "2h40'", "2h50'", "3h", "3h10'", "3h20'", "3h30'", "3h40'", "3h50'", "4h", "4h10'", "4h20'", "4h30'", "4h40'", "4h50'", "5h", "5h10'", "5h20'", "5h30'", "5h40'", "5h50'", "6h"], ordonnees);
             }
         },
 
@@ -709,6 +848,26 @@ export default {
         },
 
         /**
+         * Création d'une carte de chaleur
+         * 
+         * @param {Array} abscisses Valeurs des abscisses
+         * @param {Array} ordonnees Valeurs des ordonnées
+         * @public 
+         */
+        heatMapSansDecalage(abscisses, ordonnees) {
+            this.chartOptions3SD = {
+                chart: { type: 'heatmap', },
+                dataLabels: { enabled: false },
+                plotOptions: { heatmap: { useFillColorAsStroke: true, shadeIntensity: 1, radius: 0, } },
+                colors: ['#008FFB'],
+                title: { text: 'Heatmap Chart', align: 'left' },
+                xaxis: { tooltip: { enabled: false }, type: 'category', categories: abscisses, overwriteCategories: abscisses, },
+                yaxis: { categories: ['Morning', 'Afternoon', 'Evening'] },
+            },
+            this.series3SD = ordonnees;
+        },
+
+        /**
          * Récupération des données et affichage d'une carte de chaleur
          *
          * @public 
@@ -749,6 +908,36 @@ export default {
             }
             this.heatMap(abscisses, listDataPlot);
             this.affichageHeat = true;
+        },
+
+
+        /**
+         * Récupération des données et affichage d'une carte de chaleur
+         *
+         * @public 
+         */
+        heatMapAffichageSansDecalage() {
+            var ordonnees = []; // valeurs a afficher
+            var abscisses = new Array(); // données temporelles 
+
+            for (const element of this.selectedScenario) {
+                fetch('http://localhost:8080/jsonData/' + `${element["name"]}` + '.json')
+                    .then(response => response.json())
+                    .then(data => {
+                        // 1 dictionnaire = 1 scenario, il se remet à 0 à chaque nouveau scénario
+                        var dict = {};
+                        var L = [];
+                        dict["name"] = `${element["name"]}`;
+                        // L : tableau pour mettre les valeurs du scénario dedans. On ajoutera L au tableau à la fin de la boucle for
+                        for (const property in data) {
+                            L.push(`${data[property]["Hs(vagues)(m)"]}`);
+                        };
+                        dict["data"] = L;
+                        ordonnees.push(dict);
+                    })
+            }
+            this.heatMapSansDecalage(["0'", "10'", "20'", "30'", "40'", "50'", "1h", "1h10'", "1h20'", "1h30'", "1h40'", "1h50'", "2h", "2h10'", "2h20'", "2h30'", "2h40'", "2h50'", "3h", "3h10'", "3h20'", "3h30'", "3h40'", "3h50'", "4h", "4h10'", "4h20'", "4h30'", "4h40'", "4h50'", "5h", "5h10'", "5h20'", "5h30'", "5h40'", "5h50'", "6h"], ordonnees);
+            this.affichageHeatSD = true;
         },
 
         /**
@@ -822,7 +1011,6 @@ export default {
                 promise = fetch(file)
                     .then(response => response.json())
                     .then(data => {
-
                         // Boucle pour avoir toutes les abscisses possibles
                         for (const property in data) {
                             if (abscisses.indexOf(`${data[property]["heure"]}`) == -1) {
@@ -873,6 +1061,7 @@ export default {
                     this.vagues3D[0] = axes;
                     this.vagues3D[1] = ordonnees;
                 }
+                console.log(axes);
                 this.TD1(type, axes, ordonnees);
             })
         },

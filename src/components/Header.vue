@@ -109,13 +109,21 @@ export default {
             refresh: false,
             countries: [
                 {
-                    name: '2D',
-                    code: '2D',
+                    name: '2D - avec décalage',
+                    code: '2DS',
                     states: [
-                        { name: 'Ligne' },
+                        { name: 'Ligne'},
                         { name: 'Rose des vents' },
                         { name: 'Histogramme empilé' },
                         { name: 'Chaleur' }]
+                },
+                {
+                    name: '2D - sans décalage',
+                    code: '2DA',
+                    states: [
+                        { name: 'Ligne sans décalage'},
+                        { name: 'Chaleur sans décalage' },
+                    ]
                 },
                 {
                     name: '3D',
