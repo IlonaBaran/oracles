@@ -1,6 +1,10 @@
 /* eslint-disable */
 import { FileSource, THREE, Style, FeatureGeometryLayer } from "../../node_modules/itowns/dist/itowns";
 
+/**
+ * TODO
+ * @param {TODO} properties TODO
+ */
 function setAltitude(properties) {
     //if there is altitude_sol property in layer && it's not null use it
     if (properties.altitude_sol != null) {
@@ -11,23 +15,37 @@ function setAltitude(properties) {
     }
 }
 
+/**
+ * TODO
+ * @param {TODO} properties TODO
+ */
 function setExtrusion(properties) {
     //return the building height
     return properties.hauteur;
 }
 
+/**
+ * TODO
+ * @param {TODO} properties TODO
+ */
 function setColor(properties) {
     //set the color to gray
     return new THREE.Color(0xaaaaaa);
 }
 
-//retrieve building source from geojson file
+/**
+ * TODO
+ */
 const batsource = new FileSource({
+    //retrieve building source from geojson file
     url: 'http://localhost:8080/gavres_bati.geojson',
     crs: 'EPSG:2154',
     format: 'application/json',
 });
 
+/**
+ * TODO
+ */
 //create new FeatureGeometryLayer from building source
 export let bati = new FeatureGeometryLayer('bati', {
     // Use a FileSource to load a single file once

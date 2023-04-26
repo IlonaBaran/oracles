@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/Footer.vue</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/Footer.vue</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>&lt;template>
+    &lt;div id="footer" class="footer">
+
+        &lt;Button label="Plan du site" @click="plan = true" style="color: white" link />
+        &lt;Dialog v-model:visible="plan" modal header="Plan du site" :style="{ width: '50vw' }">
+            &lt;section>
+                &lt;h4>Nom du site -TO DO&lt;/h4>
+                &lt;ul>
+                    &lt;li>Accueil&lt;/li>
+                &lt;/ul>
+                &lt;ul>
+                    &lt;li>Crédits&lt;/li>
+                    &lt;li>Mentions légales&lt;/li>
+                    &lt;li>Plan du site&lt;/li>
+                    &lt;li>Aide utilisateur&lt;/li>
+                &lt;/ul>
+            &lt;/section>
+        &lt;/Dialog>
+
+
+        &lt;Button label="Mentions légales" @click="mentions = true" style="color: white" link />
+        &lt;Dialog v-model:visible="mentions" modal header="Mentions légales" :style="{ width: '50vw' }">
+            &lt;h4>AUTEUR:&lt;/h4>
+            Ce site a été réalisé par Ilona BARAN, Léa FREDOC, Fernando RICO-QUINTERO et Jacqueline WILLIAMS, étudiants en
+            cycle ingénieur ou Master
+            'Technologies des Systèmes d'Information' à l'Ecole Nationale des Sciences Géographiques - Géomatique (ENSG -
+            Géomatique) à Marne-la-Vallée.
+            &lt;h4>EDITEUR:&lt;/h4>
+            Ce site est la propriété de l'ENSG - Géomatique. Ce site est édité par l'ENSG - Géomatique, au 6 et 8 Avenue
+            Blaise Pascal, Cité Descartes à Champs-sur-Marne (77455 Marne la Vallée Cedex 2). Cette structure est une
+            composante de l’Institut Géographique National (IGN) qui est un organisme public au statut juridique
+            d’Etablissement Public à caractère Administratif (EPA).
+            &lt;h4>FORME JURIDIQUE:&lt;/h4>
+            Etablissement public à caractère scientifique, culturel et professionnel.
+            &lt;h4>DONNEES PERSONNELLES:&lt;/h4>
+            L’ENSG - Géomatique ne collecte et stocke sur les visiteurs du site aucune autre information nominative ou
+            personnelle que celles qui lui sont ouvertement et volontairement fournies en particulier par l’utilisation des
+            formulaires d’envoi de courriels.
+        &lt;/Dialog>
+
+
+        &lt;Button label="Crédits" @click="credits = true" style="color: white" link />
+        &lt;Dialog v-model:visible="credits" modal header="Crédits" :style="{ width: '50vw' }">
+            &lt;h4>CREDITS DEVELOPPEMENT:&lt;/h4>
+            Le développement de &lt;a href="TO DO" target="_blank"> ce site &lt;/a> a été réalisé par Ilona BARAN, Léa FREDOC,
+            Fernando RICO-QUINTERO et Jacqueline WILLIAMS, étudiants en cycle ingénieur ou Master 'Technologies des Systèmes
+            d'Information' à l'Ecole Nationale des Sciences Géographiques - Géomatique à Marne-la-Vallée. &lt;h4>CREDITS CARTE:
+            &lt;/h4>
+            Leaflet
+            Site: &lt;a href="https://leafletjs.com/" target="_blank"> https://leafletjs.com/ &lt;/a>
+        &lt;/Dialog>
+
+
+        &lt;Button label="Aide utilisateur" @click="aide = true" style="color: white" link />
+        &lt;Dialog v-model:visible="aide" modal header="Aide utilisateur" :style="{ width: '50vw' }">
+            &lt;h1>PFA TSI 2022-2023 : ANR Oracles - VTTHREE : "Visualisation de scénarios de submersion côtière"&lt;/h1>
+            &lt;h1>_______&lt;/h1>
+
+            &lt;h2>Table des matières&lt;/h2>
+            &lt;h3>Informations&lt;/h3>
+            &lt;h3>Accès à l'application&lt;/h3>
+            &lt;h3>Fonctionnalités de l'application&lt;/h3>
+
+            &lt;h1>_______&lt;/h1>
+            &lt;h2>Informations&lt;/h2>
+            &lt;h4>Authors and acknowledgment&lt;/h4>
+            &lt;p>Ilona Baran, Léa Fredoc, Jacqueline Williams &amp; Fernando Rico Quintero&lt;/p>
+
+            &lt;h4>Commanditaires&lt;/h4>
+            &lt;p>Sidonie Christophe et Jacques Gautier&lt;/p>
+
+            &lt;h4>Project status&lt;/h4>
+            &lt;p>Development &amp; Maintenance will cease on 28/04/2023&lt;/p>
+
+            &lt;h4>URL du site&lt;/h4>
+            &lt;p>localhost:8082&lt;/p>
+
+            &lt;h4>Pré-requis&lt;/h4>
+            &lt;p>+ Connection internet pour l'affichage de la carte&lt;/p>
+            &lt;p>+ Utilisation d'un navigateur&lt;/p>
+            &lt;p>+ Accès à la page web&lt;/p>
+            &lt;p>Pour accéder à la page web, il vous suffit de rentrer l’URL du site dans n’importe quel navigateur web, de préférence Mozilla Firefox car c’est le navigateur utilisé pour son développement.&lt;/p>
+
+            &lt;h1>_______&lt;/h1>
+            &lt;h2>Fonctionnalités&lt;/h2>
+            &lt;p>L'application est composée : &lt;/p>
+                    &lt;p>+ d'un pied de page (espace des options de la page (aide, crédits, plan du site, etc)) ;&lt;/p>
+                    &lt;p>+ d'une en-tête permettant le choix de la zone d'étude ainsi que les scénarios et graphiques à visualiser&lt;/p>
+                    &lt;p>+ d'un fond de carte au milieu et d'un bouton permettant de visualiser la scène et 2D ou 3D&lt;/p>
+                    &lt;p>+ d'un widget sur la droite proposant plusieurs options pour l'utilisateur (changement du fond de carte, visualisation des bâtiments...)&lt;/p>
+            &lt;p>L'image ci-dessous montre la page de l'application. Les numéros sur cette capture sont détaillés dans les points suivants.&lt;/p>
+            &lt;img src="../../img/readme/app.png">
+
+            &lt;h1>**&lt;/h1>
+
+            &lt;h4>Changement de la zone d'étude (Numéro 1)&lt;/h4>
+            &lt;p>Dans l'en-tête de la page à droite, vous toruverez deux boutons 'Gâvres' et 'Arcachon'. Pour changer de zone d'étude, vous devez cliquer sur la zone que vous souhaitez. Dans ce prototype, nous n'avons pas de données pour Arcachon, ce bouton est donc désactivé.&lt;/p>
+
+            &lt;h1>**&lt;/h1>
+
+            &lt;h4>Visualisation en 2D et 3D (Numéro 2)&lt;/h4>
+            &lt;p>Dans la partie principale de l'applicaiton, vous trouverez en bas à droite deux boutons '2D' et '3D'. La vue sur laquelle vous êtes en en vert. Pour changer de dimension, vous devez simplement cliquer sur la dimension voulue. --> rajouter comment naviguer en 2D ET 3D&lt;/p>
+
+            &lt;h1>**&lt;/h1>
+
+            &lt;h4>Autres options (Numéro 3)&lt;/h4>
+            &lt;p>A droite, dans la partie principale, vous trouverez un bouton vert +. Lorsque vous cliquez dessus, plusieurs icônes apparaissent :&lt;/p>
+                &lt;p>+ Changement de fond de carte (Numéro 4)&lt;/p>
+                &lt;p>+ Affichage des hauteurs d'eau maximale et finale (Numéro 5) (cette partie est détaillée dans une prochaine section)&lt;/p>
+                &lt;p>+ Affichage ou supression des bâtiments (Numéro 6)&lt;/p>
+                &lt;p>+ Recentrer la vue (Numéro 7)&lt;/p>
+
+            &lt;h1>**&lt;/h1>
+
+            &lt;h2>Visualisation des graphiques&lt;/h2>
+            &lt;p>Pour visualiser un graphique, il vous suffit de choisir un ou plusieurs scénarios dans l'en-tête de la page. (Numéro 8) Ensuite, vous devez choisir un graphique parmi ceux proposés et valider votre séléction. (Numéro 9 - Numéro 10) Sur la gauche, un panel s'ouvrira avec le graphique que vous avez choisi. (Numéro 11)&lt;/p>
+
+            &lt;p>Si vous voulez changer de graphique, vous pouvez le faire en choississant un autre graphique. Si vous voulez modifier les graphiques séléctionnés, vous devez cliquer sur le bouton de réinitialisation. (Numéro 12)&lt;/p>
+
+            &lt;h3>Diagramme 1 : Diagramme linéaire&lt;/h3>
+            &lt;p>Quatre graphiques sont affichés : la hauteur des vagues, la surcote, la vitesse du vent en fonction du temps Il est possible de séléctionner un ou plusieurs scénarios.&lt;/p>
+            &lt;img src="../../img/readme/line.png">
+
+            &lt;h3>Diagramme 2 : Rose des vents&lt;/h3>
+            &lt;p>Ce graphique présente la distribution de la vitesse du vent pour une simulation. Les données pour une même simulation sont très proches en terme :&lt;/p>
+                &lt;p>de vitesse de vent (écart d’environ 3 m/s entre la valeur minimale et maximale) ;&lt;/p>
+                &lt;p>de direction du vent (écart d’environ 10° entre la valeur minimale et maximale). Il peut donc être difficle d'obtenir un résultat exploitable.&lt;/p>
+            &lt;img src="../../img/readme/windrose.png">
+
+            &lt;h3>Diagramme 3 : Histogramme empilé&lt;/h3>
+            &lt;p>Quatre graphiques sont affichés : la hauteur des vagues, la surcote, la vitesse du vent en fonction du temps Il est possible de séléctionner un ou plusieurs scénarios.&lt;/p>
+            &lt;img src="../../img/readme/histogram.png">
+
+            &lt;h3>Diagramme 4 : Carte de chaleur&lt;/h3>
+            &lt;p>La carte de chaleur montre la hauteur de l'eau en fonction du temps. Il est possible de séléctionner un ou plusieurs scénarios.&lt;/p>
+            &lt;img src="../../img/readme/heatmap.png">
+
+            &lt;h3>Diagramme 5 : Linéaire 3D&lt;/h3>
+            &lt;p>La carte de chaleur peut être difficilement exploitable car les valeurs au sein d'un même scénario varient peu. Pour avoir une autre représentation, nous avons réalisé ce diagramme 3D. Il est possible de séléctionner un ou plusieurs scénarios.&lt;/p>
+            &lt;img src="../../img/readme/3d.png">
+
+            &lt;h1>**&lt;/h1>
+
+            &lt;h2>Affichage des hauteurs d'eau maximale et finale (Numéro 5)&lt;/h2>
+            &lt;p>Pour pouvoir visualiser ces hauteurs d'eau, vous devez au préalable séléctionner des scénarios dans l'en-tête de la page, à l'endroit où vous les séléctionnez pour les graphiques. Vous aurez comme possibilité de séléctionner les hauteurs d'eau maximale et finale des graphiques séléctionnées uniquement.&lt;/p>
+
+            &lt;h3>Pour un scénario&lt;/h3>
+            &lt;p>Vous séléctionnez le scénario voulu et le type de hauteur d'eau que vous voulez visualiser : hmax pour la hauteur d'eau finale et hfin pour la hauteur d'eau finale. Après validation, vous verrez cette hauteur d'eau apparaître sur la carte. Le chargement peut prendre quelques instants.&lt;/p>
+
+            &lt;h3>Pour plusieurs scénarios&lt;/h3>
+            &lt;p>Vous séléctionnez les scénarios voulus. Vous devez ensuite choisir parmi trois options :&lt;/p>
+                &lt;p>+ moy : vous choisissez de visualiser la moyenne des hauteurs d'eau des scénarios ;&lt;/p>
+                &lt;p>+ min : vous choisissez de visualiser la hauteur minimale d'eau des scénarios ;&lt;/p>
+                &lt;p>+ max : vous choisissez de visualiser la hauteur maximale d'eau des scénarios.&lt;/p>
+            &lt;p>Ensuite, vous choisissez le type de hauteur d'eau que vous voulez visualiser : hmax pour la hauteur d'eau finale et hfin pour la hauteur d'eau finale. Après validation, vous verrez cette hauteur d'eau apparaître sur la carte. Le chargement peut prendre quelques instants.&lt;/p>
+            &lt;img src="../../img/readme/eau.png">
+        &lt;/Dialog>
+    &lt;/div>
+&lt;/template>
+   
+&lt;script>
+import Button from 'primevue/button';
+import Dialog from 'primevue/dialog';
+
+/**
+ * Composant 'Pied de page' de l'application 
+ * --> mentions légales, plan du site, crédits, manuel utilisateur
+ *
+ * @component footerComponent
+ * 
+ * @author Equipe du projet Oracle - ENSG, TSI 
+ * @version 1.0
+ * @since 25.04.2023
+ * 
+ * Composants enfants : 
+ * -- Librairie PrimeVue --
+ * Dialog
+ * Button
+ * 
+ * @requires ../../node_modules/primevue/dialog/Dialog.vue
+ * @requires ../../node_modules/primevue/button/Button.vue
+ */
+export default {
+    name: 'footerComponent',
+    components: {
+        Dialog,
+        Button,
+    },
+    data() {
+        return {
+            plan: false,
+            mentions: false,
+            credits: false,
+            aide: false,
+            markdown: false
+        };
+    }
+}
+&lt;/script>
+   
+   
+&lt;style>
+.footer {
+    position: absolute;
+    width: 100%;
+    height: 4%;
+    bottom: 0%;
+
+    background-color: #14B8A6;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    color: #14B8A6;
+    z-index: 2;
+}
+&lt;/style></code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-Footer.html">Footer</a></li><li><a href="module-Header.html">Header</a></li><li><a href="module-Map.html">Map</a></li><li><a href="module-Panel.html">Panel</a></li><li><a href="module-Toolbar.html">Toolbar</a></li></ul><h3>Global</h3><ul><li><a href="global.html#averageLists">averageLists</a></li><li><a href="global.html#bati">bati</a></li><li><a href="global.html#batsource">batsource</a></li><li><a href="global.html#concatenateHeightMapList">concatenateHeightMapList</a></li><li><a href="global.html#getData">getData</a></li><li><a href="global.html#getHeightFromScenarios">getHeightFromScenarios</a></li><li><a href="global.html#getHeightMesh">getHeightMesh</a></li><li><a href="global.html#getImage">getImage</a></li><li><a href="global.html#layerBATI">layerBATI</a></li><li><a href="global.html#layerDEM">layerDEM</a></li><li><a href="global.html#layerOrtho">layerOrtho</a></li><li><a href="global.html#layerPLAN">layerPLAN</a></li><li><a href="global.html#maxLists">maxLists</a></li><li><a href="global.html#minLists">minLists</a></li><li><a href="global.html#rgbcolors">rgbcolors</a></li><li><a href="global.html#setAltitude">setAltitude</a></li><li><a href="global.html#setColor">setColor</a></li><li><a href="global.html#setExtrusion">setExtrusion</a></li><li><a href="global.html#sourceBATI">sourceBATI</a></li><li><a href="global.html#sourceDEM">sourceDEM</a></li><li><a href="global.html#sourceOrtho">sourceOrtho</a></li><li><a href="global.html#sourcePLAN">sourcePLAN</a></li><li><a href="global.html#viewExtent">viewExtent</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Wed Apr 26 2023 10:23:51 GMT+0200 (heure d’été d’Europe centrale)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

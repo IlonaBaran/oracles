@@ -1,6 +1,9 @@
 {
     "source": {
-      "include": ["src"]
+      "include": [
+        "src"
+      ],
+      "includePattern": ".+\\.(vue|js)$"
     },
     "plugins": ["plugins/markdown"],
     "opts": {

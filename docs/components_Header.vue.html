@@ -1,50 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/Header.vue</title>
 
-<template>
-    <div class="toolBar">
-        <Toolbar>
-            <!-- Eléments présents sur la gauche de la barre -->
-            <template #start>
-                <!-- Affichage du Panel présent dans Panel.vue -->
-                <Button v-styleclass="{ selector: '.card', toggleClass: 'p-hidden' }" type="button" icon="pi pi-chart-bar"
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/Header.vue</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>
+&lt;template>
+    &lt;div class="toolBar">
+        &lt;Toolbar>
+            &lt;!-- Eléments présents sur la gauche de la barre -->
+            &lt;template #start>
+                &lt;!-- Affichage du Panel présent dans Panel.vue -->
+                &lt;Button v-styleclass="{ selector: '.card', toggleClass: 'p-hidden' }" type="button" icon="pi pi-chart-bar"
                     label="" />
 
-                <!-- Outil de sélection des scénarios -->
-                <MultiSelect v-model="selectedScenario" :options="scenario" filter optionLabel="name"
+                &lt;!-- Outil de sélection des scénarios -->
+                &lt;MultiSelect v-model="selectedScenario" :options="scenario" filter optionLabel="name"
                     placeholder="Sélection Scénarios" :maxSelectedLabels="3"
                     class="w-full md:w-20rem selectScenario margin-right:15px" :selectedScenario="this.selectedScenario"
                     @change="emitSelectedScenarioChanged" />
 
-                <!-- Outil de sélection des graphiques -->
-                <CascadeSelect v-model="selectedGraph" :options="countries" optionLabel="name" optionGroupLabel="name"
+                &lt;!-- Outil de sélection des graphiques -->
+                &lt;CascadeSelect v-model="selectedGraph" :options="countries" optionLabel="name" optionGroupLabel="name"
                     :optionGroupChildren="['states']" style="min-width: 14rem " placeholder="Sélection Graphique"
                     class="selectGraph" />
 
-                <Button v-styleclass="{ selector: '.card', toggleClass: 'p-hidden' }" @click="this.validation();"
+                &lt;Button v-styleclass="{ selector: '.card', toggleClass: 'p-hidden' }" @click="this.validation();"
                     icon="pi pi-check" aria-label="Valider" style="margin-left: 10px;" class="validation" :class="valide" />
 
-                <Button v-styleclass=" { selector: '.card', toggleClass: 'p-hidden' } " @click="
+                &lt;Button v-styleclass=" { selector: '.card', toggleClass: 'p-hidden' } " @click="
                     this.reinitialisation()
                 " icon="pi pi-refresh" aria-label="Changer scénarios" style="margin-left: 10px;" :class=" disabled " />
 
-            </template>
+            &lt;/template>
 
-            <!-- Eléments présents sur la droite de la barre -->
-            <template #end>
-                <!-- Sélection de la zone d'étude (Gâvre/Arcachon) -->
-                <SelectButton v-model=" value " :options=" options " aria-labelledby="basic" optionDisabled="constant"
+            &lt;!-- Eléments présents sur la droite de la barre -->
+            &lt;template #end>
+                &lt;!-- Sélection de la zone d'étude (Gâvre/Arcachon) -->
+                &lt;SelectButton v-model=" value " :options=" options " aria-labelledby="basic" optionDisabled="constant"
                     optionLabel="name" />
-            </template>
-        </Toolbar>
+            &lt;/template>
+        &lt;/Toolbar>
 
-        <!-- Ajout du composant présent dans Panel.vue, passage des valeurs des arguments selectedScenario et selectedGraph -->
-        <Panel ref="panelGraph" :selectedScenario=" this.selectedScenario " :selectedGraph=" this.selectedGraph "></Panel>
-
-
-    </div>
-</template>
+        &lt;!-- Ajout du composant présent dans Panel.vue, passage des valeurs des arguments selectedScenario et selectedGraph -->
+        &lt;Panel ref="panelGraph" :selectedScenario=" this.selectedScenario " :selectedGraph=" this.selectedGraph ">&lt;/Panel>
 
 
-<script>
+    &lt;/div>
+&lt;/template>
+
+
+&lt;script>
 /* eslint-disable */
 // Import d'une fonction
 import { ref } from "vue";
@@ -208,10 +236,10 @@ export default {
     }
 
 }
-</script>
+&lt;/script>
 
 
-<style>
+&lt;style>
 .toolBar {
     z-index: 2;
     position: absolute;
@@ -240,4 +268,27 @@ export default {
     margin-right: 10px;
     margin-left: 10px;
 }
-</style>
+&lt;/style>
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-Footer.html">Footer</a></li><li><a href="module-Header.html">Header</a></li><li><a href="module-Map.html">Map</a></li><li><a href="module-Panel.html">Panel</a></li><li><a href="module-Toolbar.html">Toolbar</a></li></ul><h3>Global</h3><ul><li><a href="global.html#averageLists">averageLists</a></li><li><a href="global.html#bati">bati</a></li><li><a href="global.html#batsource">batsource</a></li><li><a href="global.html#concatenateHeightMapList">concatenateHeightMapList</a></li><li><a href="global.html#getData">getData</a></li><li><a href="global.html#getHeightFromScenarios">getHeightFromScenarios</a></li><li><a href="global.html#getHeightMesh">getHeightMesh</a></li><li><a href="global.html#getImage">getImage</a></li><li><a href="global.html#layerBATI">layerBATI</a></li><li><a href="global.html#layerDEM">layerDEM</a></li><li><a href="global.html#layerOrtho">layerOrtho</a></li><li><a href="global.html#layerPLAN">layerPLAN</a></li><li><a href="global.html#maxLists">maxLists</a></li><li><a href="global.html#minLists">minLists</a></li><li><a href="global.html#rgbcolors">rgbcolors</a></li><li><a href="global.html#setAltitude">setAltitude</a></li><li><a href="global.html#setColor">setColor</a></li><li><a href="global.html#setExtrusion">setExtrusion</a></li><li><a href="global.html#sourceBATI">sourceBATI</a></li><li><a href="global.html#sourceDEM">sourceDEM</a></li><li><a href="global.html#sourceOrtho">sourceOrtho</a></li><li><a href="global.html#sourcePLAN">sourcePLAN</a></li><li><a href="global.html#viewExtent">viewExtent</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Wed Apr 26 2023 10:23:51 GMT+0200 (heure d’été d’Europe centrale)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

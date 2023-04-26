@@ -44,7 +44,7 @@ export default {
      * TODO
      *
      * @param {Array} selectedScenario TODO
-     * @public This is a public method
+     * @public
      */
     handleSelectedScenarioChanged(selectedScenario) {
       this.selectedScenario = selectedScenario;
