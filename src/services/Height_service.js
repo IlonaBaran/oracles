@@ -54,7 +54,7 @@ export async function getData(listOfImages) {
 /**
  * TODO
  * //Function used to calculate the average heights from the different scenarios selected
- * @param {TODO} listOfImages TODO
+ * @param {Array} lists Array of data from all selected scenarios
  */
 export function averageLists(lists) {
     const numLists = lists.length;
@@ -81,7 +81,7 @@ export function averageLists(lists) {
 /**
  * TODO
  * //Function used to calculate the minimum heights from the different scenarios selected
- * @param {TODO} lists TODO
+ * @param {Array} lists Array of data from all selected scenarios
  */
 export function minLists(lists) {
     const listLength = lists[0].length;
@@ -97,7 +97,7 @@ export function minLists(lists) {
 /**
  * TODO
  * //Function used to calculate the maximum heights from the different scenarios selected
- * @param {TODO} lists TODO
+ * @param {Array} lists Array of data from all selected scenarios
  */
 export function maxLists(lists) {
     const listLength = lists[0].length;
@@ -149,7 +149,7 @@ function rgbcolors(x, colors, min, max) {
 /**
  * TODO
  * //Function that creates a 3d mesh taking as input a tiff image from a screnario and the digital surface model
- * @param {TODO} image TODO
+ * @param {Image} image geotiff Image format retrieve from the getData() function
  */
 export async function getHeightMesh(image) {
     let urlmns = 'http://localhost:8080/MNS_GAVRES.tif';
