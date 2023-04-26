@@ -73,6 +73,16 @@
   <div class="boutton2d3d" position="right">
     <SelectButton v-model="selectedDimension" :options="dimensions" :optionDisabled="optionDisabled" />
   </div>
+
+  <div class="color-scale-legend" ref="legend" v-if="clicked == true" position="center" id="legende">
+    <p>Légende</p>
+    <p>(mètres au-dessus du sol)</p>
+    <div class="legend-bar" :style="{ background: gradient }"></div>
+    <div class="legend-labels">
+      <div>{{ min }}</div>
+      <div>{{ max }}</div>
+    </div>
+  </div>
 </template>
   
 
@@ -129,6 +139,16 @@ export default {
   },
   data() {
     return {
+      clicked: false,
+      colors: [
+        "rgb(206, 229, 255)",
+        "rgb(41, 155, 243)",
+        "rgb(23, 123, 204)",
+        "rgb(3, 36, 74)",
+        "rgb(0, 0, 138)"
+      ],
+      min: 0,
+      max: 4,
       selectedScenario2: [],
       selectedDimension: ref('2D'),
       dimensions: ref(['2D', '3D']),
@@ -145,12 +165,12 @@ export default {
         {
           label: 'Changer fond de carte',
           icon: 'pi pi-map',
-          command: () => {this.visibleRight = true;} // si le bouton est cliqué on affiche le panel
+          command: () => { this.visibleRight = true; } // si le bouton est cliqué on affiche le panel
         },
         {
           label: 'Afficher les hauteurs maximales',
           icon: 'pi pi-globe',
-          command: () => {this.visibleHmax = true;} // si le bouton est cliqué on affiche le panel
+          command: () => { this.visibleHmax = true; } // si le bouton est cliqué on affiche le panel
         },
         {
           label: 'Afficher/Masquer les bâtiments',
@@ -190,9 +210,9 @@ export default {
     },
   },
   props: {
-  /**
-   * TODO
-   */
+    /**
+     * TODO
+     */
     selectedScenario: {
       type: Object,
       required: true
@@ -206,7 +226,7 @@ export default {
      */
     changeMapToOrtho() {
       this.mapSelected = "ortho";
-    }, 
+    },
     /**
      * Permet de changer la valeur de mapSelected en fonction du bouton cliqué
      *
@@ -235,6 +255,7 @@ export default {
       this.$emit('vue-3d');
       console.log("3D")
     },
+    
   /**
    * Mise à jour des scénarios
    * 
@@ -245,21 +266,35 @@ export default {
    * @emitsParam {number} data.height - La hauteur sélectionnée
    * @public
    */
+
     updateScenarios() {
       if (this.selectedScenario2.length > 1) {
-        let jsonemit = { selectedScenario2: this.selectedScenario2, math: this.math, height: this.selectedheight  }
+        let jsonemit = { selectedScenario2: this.selectedScenario2, math: this.math, height: this.selectedheight }
+        this.clicked = true;
         this.$emit('updateScenarios', jsonemit);
 
       } else {
-        let jsonemit = { selectedScenario2: this.selectedScenario2, height: this.selectedheight  }
+        let jsonemit = { selectedScenario2: this.selectedScenario2, height: this.selectedheight }
+        this.clicked = true;
         this.$emit('updateScenarios', jsonemit);
       }
 
     }
   },
   mounted() {
-  }
-}
+
+  },
+  computed: {
+    gradient() {
+      const colorStops = this.colors.map((color, index) => {
+        const position = (index / (this.colors.length - 1)) * 100;
+        return `${color} ${position}%`;
+      });
+      return `linear-gradient(to right, ${colorStops.join(", ")})`;
+    },
+  },
+
+};
 </script>
   
 <style>
@@ -318,6 +353,35 @@ img {
 #boutonCarte {
   margin: 5%;
   padding: 0%;
+}
+
+.color-scale-legend {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  bottom: 8%;
+  z-index: 2;
+  left: 5%;
+  background-color: rgba(255, 255, 255, 0.5);
+  width: 250px;
+  height: 70px;
+  font-weight: bold;
+
+}
+
+.legend-bar {
+  width: 200px;
+  height: 10px;
+}
+
+.legend-labels {
+  display: flex;
+  justify-content: space-between;
+  width: 200px;
+  margin-top: 5px;
+  font-weight: bold;
 }
 </style>
 

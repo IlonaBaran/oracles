@@ -134,7 +134,7 @@ function rgbcolors(x, colors, min, max) {
         [0.16, 0.61, 0.95],
         [0.09, 0.48, 0.80],
         [0.01, 0.14, 0.29],
-        [0.01, 0.14, 0.29]
+        [0.00, 0.00, 0.54]
     ];
     //Searching the index that corresponds to the height selected
     const index = breakpoints.findIndex(b => x <= b);
