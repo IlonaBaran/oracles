@@ -3,8 +3,8 @@ import * as GeoTIFF from 'geotiff';
 import { THREE, Coordinates } from "../../node_modules/itowns/dist/itowns";
 
 /**
- * TODO
- * @param {TODO} url TODO
+ * Function used to get tiff image from a tif url
+ * @param {string} url string of url
  */
 export async function getImage(url) {
     return new Promise((resolve, reject) => {
@@ -28,8 +28,8 @@ export async function getImage(url) {
 }
 
 /**
- * TODO
- * @param {TODO} listOfImages TODO
+ * Function to extract Float32Array of data from a geotiff image
+ * @param {list} listOfImages list of image objets
  */
 export async function getData(listOfImages) {
     let datas = []
@@ -52,7 +52,6 @@ export async function getData(listOfImages) {
 }
 
 /**
- * TODO
  * //Function used to calculate the average heights from the different scenarios selected
  * @param {Array} lists Array of data from all selected scenarios
  */
@@ -95,7 +94,6 @@ export function minLists(lists) {
 }
 
 /**
- * TODO
  * //Function used to calculate the maximum heights from the different scenarios selected
  * @param {Array} lists Array of data from all selected scenarios
  */
@@ -147,7 +145,6 @@ function rgbcolors(x, colors, min, max) {
 }
 
 /**
- * TODO
  * //Function that creates a 3d mesh taking as input a tiff image from a screnario and the digital surface model
  * @param {Image} image geotiff Image format retrieve from the getData() function
  */
@@ -190,27 +187,6 @@ export async function getHeightMesh(image) {
     const indices = [];
     const colors = [];
 
-    /**
-     * TODO
-     * Function that sends the value under the surface, thus making it invisible, if its height is equal to 0 or superior to the highest point on earth
-     * @param {TODO} valuescenario TODO
-     * @param {TODO} valuemns TODO
-     */
-    function minuszero(valuescenario, valuemns) {
-        let valueh = valuescenario + valuemns;
-        let valuehfixed = valueh - 3;
-        if (valuescenario <= 0) {
-            return -10
-        } else if (valuescenario > 8848) {
-            return -10
-        } else {
-            if ((valuemns - valuescenario) > 4) {
-                return valuehfixed
-            } else {
-                return valueh
-            }
-        }
-    }
 
     //Creating the vertices table, pushing the coordinates and the height data extracted from the image
     for (let i = 0; i < width - 1; i++) {
@@ -272,10 +248,11 @@ export async function getHeightMesh(image) {
 }
 
 /**
- * TODO
  * //Function that creates a 3d mesh taking as input the data resulting from the statistics functions used when selecting several scenarios
- * @param {TODO} valuescenario TODO
- * @param {TODO} valuemns TODO
+ * @param {Array} bbox xmin, ymin, xmax and ymax coordinates
+ * @param {int} width width of image data
+ * @param {int} height height of image data
+ * @param {Array} data data values from image, or computed from several scenarios
  */
 export async function getHeightFromScenarios(bbox, width, height, data) {
     let urlmns = 'http://localhost:8080/MNS_GAVRES.tif';
@@ -309,23 +286,6 @@ export async function getHeightFromScenarios(bbox, width, height, data) {
     const vertices = [];
     const indices = [];
     const colors = [];
-
-    function minuszero(valuescenario, valuemns) {
-        let valueh = valuescenario + valuemns;
-        let valuehfixed = valueh - 3;
-        if (valuescenario <= 0) {
-            return -10
-        } else if (valuescenario > 8848) {
-            return -10
-        } else {
-            if ((valuemns - valuescenario) > 4) {
-                return valuehfixed
-            } else {
-                return valueh
-            }
-        }
-
-    }
 
     //Creating the vertices table, pushing the coordinates and the height data extracted from the image
     for (let i = 0; i < width - 1; i++) {
@@ -389,8 +349,8 @@ export async function getHeightFromScenarios(bbox, width, height, data) {
 /**
  * TODO
  * //Function used to create a list of files used when selecting more than one scenario, creating either hmax or hfin depending on user's selection
- * @param {TODO} valuescenario TODO
- * @param {TODO} valuemns TODO
+ * @param {Array} heightMapList list des scenarios selectionnés
+ * @param {TODO} height TODO
  */
 export function concatenateHeightMapList(heightMapList, height) {
     let concatenatedList = [];
@@ -402,3 +362,24 @@ export function concatenateHeightMapList(heightMapList, height) {
     return concatenatedList;
 }
 
+
+/**
+ * Function that sends the value under the surface, thus making it invisible, if its height is equal to 0 or superior to the highest point on earth
+ * @param {float} valuescenario data value
+ * @param {float} valuemns mns value
+ */
+function minuszero(valuescenario, valuemns) {
+    let valueh = valuescenario + valuemns;
+    let valuehfixed = valueh - 3;
+    if (valuescenario <= 0) {
+        return -10
+    } else if (valuescenario > 8848) {
+        return -10
+    } else {
+        if ((valuemns - valuescenario) > 4) {
+            return valuehfixed
+        } else {
+            return valueh
+        }
+    }
+}
