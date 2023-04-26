@@ -255,17 +255,17 @@ export default {
       this.$emit('vue-3d');
       console.log("3D")
     },
-    
-  /**
-   * Mise à jour des scénarios
-   * 
-   * @emits updateScenarios
-   * @emitsParam {object} data - Les données mises à jour
-   * @emitsParam {string[]} data.selectedScenario2 - Les scénarios sélectionnés
-   * @emitsParam {number} data.math - Les mathématiques utilisées
-   * @emitsParam {number} data.height - La hauteur sélectionnée
-   * @public
-   */
+
+    /**
+     * Mise à jour des scénarios
+     * 
+     * @emits updateScenarios
+     * @emitsParam {object} data - Les données mises à jour
+     * @emitsParam {string[]} data.selectedScenario2 - Les scénarios sélectionnés
+     * @emitsParam {number} data.math - Les mathématiques utilisées
+     * @emitsParam {number} data.height - La hauteur sélectionnée
+     * @public
+     */
 
     updateScenarios() {
       if (this.selectedScenario2.length > 1) {
@@ -362,7 +362,7 @@ img {
   align-items: center;
   position: absolute;
   bottom: 8%;
-  z-index: 2;
+  z-index: 1;
   left: 5%;
   background-color: rgba(255, 255, 255, 0.5);
   width: 250px;
