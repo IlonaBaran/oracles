@@ -2,8 +2,8 @@
 import { FileSource, THREE, Style, FeatureGeometryLayer } from "../../node_modules/itowns/dist/itowns";
 
 /**
- * TODO
- * @param {TODO} properties TODO
+ * Function that extrudes buildings from building height data
+ * @param {Object} properties properties object from building layer
  */
 function setAltitude(properties) {
     //if there is altitude_sol property in layer && it's not null use it
@@ -16,8 +16,8 @@ function setAltitude(properties) {
 }
 
 /**
- * TODO
- * @param {TODO} properties TODO
+ * Function that sets building ground elevation from building height data
+ * @param {Object} properties properties object from building layer
  */
 function setExtrusion(properties) {
     //return the building height
@@ -25,8 +25,8 @@ function setExtrusion(properties) {
 }
 
 /**
- * TODO
- * @param {TODO} properties TODO
+ * //Function that set color of buildings to grey
+ * @param {Object} properties properties object from building layer
  */
 function setColor(properties) {
     //set the color to gray
@@ -34,9 +34,9 @@ function setColor(properties) {
 }
 
 /**
- * TODO
+ * Building FileSource
  */
-const batsource = new FileSource({
+const batSource = new FileSource({
     //retrieve building source from geojson file
     url: 'http://localhost:8080/gavres_bati.geojson',
     crs: 'EPSG:2154',
@@ -44,12 +44,12 @@ const batsource = new FileSource({
 });
 
 /**
- * TODO
+ * Building FeatureGeometryLayer
  */
 //create new FeatureGeometryLayer from building source
 export let bati = new FeatureGeometryLayer('bati', {
     // Use a FileSource to load a single file once
-    source: batsource,
+    source: batSource,
     //set style
     transparent: true,
     opacity: 0.7,

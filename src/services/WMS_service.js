@@ -3,8 +3,7 @@
 import { FileSource, THREE, Style, Extent, FeatureGeometryLayer, WMSSource, ColorLayer, ElevationLayer } from "../../node_modules/itowns/dist/itowns";
 
 /**
- * TODO
- * //defining the views geographic extent, how far does it go
+ * //Geographic view extent of Planar view
  */
 const viewExtent = new Extent(
     "EPSG:2154",
@@ -15,8 +14,7 @@ const viewExtent = new Extent(
 );
 
 /**
- * TODO
- * // Define the source of the ortho-images
+ * //Satellite Image basemap WMSSource
  */
 const sourceOrtho = new WMSSource({
     url: "https://wxs.ign.fr/3ht7xcw6f7nciopo16etuqp2/geoportail/r/wms",
@@ -27,14 +25,12 @@ const sourceOrtho = new WMSSource({
 });
 
 /**
- * TODO
- * // Create the ortho-images ColorLayer and add it to the view
+ * //Satellite Image ColorLayer
  */
 export const layerOrtho = new ColorLayer('Ortho', { source: sourceOrtho });
 
 /**
- * TODO
- * // Define the source of the dem data
+ * //Elevation data WMSSource
  */
 const sourceDEM = new WMSSource({
     url: "https://wxs.ign.fr/3ht7xcw6f7nciopo16etuqp2/geoportail/r/wms",
@@ -45,14 +41,12 @@ const sourceDEM = new WMSSource({
 });
 
 /**
- * TODO
- * // Create the dem ElevationLayer and add it to the view
+ * //Elevation data ElevationLayer
  */
 export const layerDEM = new ElevationLayer('DEM', { source: sourceDEM });
 
 /**
- * TODO
- * // Define the source of the dem data
+ * //Topographic map WMSSource
  */
 const sourcePLAN = new WMSSource({
     url: "https://wxs.ign.fr/cartes/geoportail/r/wms",
@@ -63,63 +57,6 @@ const sourcePLAN = new WMSSource({
 });
 
 /**
- * TODO
- * // Create the dem ElevationLayer and add it to the view
- * @param {TODO} url TODO
+ * //Topographic map layer
  */
 export const layerPLAN = new ColorLayer('PLAN', { source: sourcePLAN });
-
-/**
- * TODO
- * @param {TODO} properties TODO
- */
-function setAltitude(properties) {
-    return properties.altitude_sol - properties.hauteur;
-}
-
-/**
- * TODO
- * @param {TODO} properties TODO
- */
-function setExtrusion(properties) {
-    return properties.hauteur;
-}
-
-/**
- * TODO
- */
-function setColor() {
-    return new THREE.Color(0xffaaaa);
-}
-
-/**
- * TODO
- * // Define the source of the dem data
- */
-const sourceBATI = new FileSource({
-    url: "http://localhost:8080/gavres_bati.geojson",
-    format: "application/json",
-    crs: 'EPSG:2154',
-});
-
-/**
- * TODO
- * // Create the dem ElevationLayer and add it to the view
- */
-export const layerBATI = new FeatureGeometryLayer('BATI', {
-    source: sourceBATI,
-    transparent: true,
-    opacity: 0.7,
-    zoom: { min: 14 },
-    style: new Style({
-        fill: {
-            color: new THREE.Color(0xffaaaa),
-            base_altitude: 10,
-            extrusion_height: 40,
-        },
-    }),
-});
-
-
-
-
