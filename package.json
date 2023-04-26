@@ -7,7 +7,6 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "docs": "vue-docgen"
   },
   "author": "",
   "license": "ISC",
@@ -27,7 +26,6 @@
     "regenerator-runtime": "^0.13.7",
     "three": "^0.146.0",
     "vue": "^3.2.13",
-    "vue-docgen-api": "^4.69.0",
     "vue3-apexcharts": "^1.4.1",
     "vue3-highcharts": "^0.1.3"
   },
@@ -41,9 +39,7 @@
     "eslint": "^7.32.0",
     "eslint-plugin-vue": "^8.0.3",
     "jscharting-vue": "^2.4.0",
-    "jsdoc": "^4.0.2",
-    "jsdoc-vuejs": "^4.0.0",
-    "vue-docgen-cli": "^4.67.0"
+    "jsdoc": "^4.0.2"
   },
   "description": "",
   "eslintConfig": {
