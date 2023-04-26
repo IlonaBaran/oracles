@@ -6,11 +6,19 @@
       "includePattern": ".+\\.(vue|js)$"
     },
     "opts": {
-      "destination": "docs/",
-      "recurse": true
-    },
+        "recurse": true,
+        "destination": "docs",
+        "readme": "README.md"
+      },
     "plugins": [
       "jsdoc-vuejs"
-    ]
+    ],
+    "templates": {
+        "cleverLinks": false,
+        "monospaceLinks": false
+      },
+    "markdown": {
+    "idInHeadings": true
+    }
   }
   
