@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: services/WMS_service.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: services/WMS_service.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>
+/* eslint-disable */
+import { FileSource, THREE, Style, Extent, FeatureGeometryLayer, WMSSource, ColorLayer, ElevationLayer } from "../../node_modules/itowns/dist/itowns";
+
+/**
+ * TODO
+ * //defining the views geographic extent, how far does it go
+ */
+const viewExtent = new Extent(
+    "EPSG:2154",
+    222955.5,
+    224545.5,
+    6750269.5,
+    6752639.5
+);
+
+/**
+ * TODO
+ * // Define the source of the ortho-images
+ */
+const sourceOrtho = new WMSSource({
+    url: "https://wxs.ign.fr/3ht7xcw6f7nciopo16etuqp2/geoportail/r/wms",
+    name: "HR.ORTHOIMAGERY.ORTHOPHOTOS",
+    format: "image/png",
+    crs: 'EPSG:2154',
+    extent: viewExtent,
+});
+
+/**
+ * TODO
+ * // Create the ortho-images ColorLayer and add it to the view
+ */
+export const layerOrtho = new ColorLayer('Ortho', { source: sourceOrtho });
+
+/**
+ * TODO
+ * // Define the source of the dem data
+ */
+const sourceDEM = new WMSSource({
+    url: "https://wxs.ign.fr/3ht7xcw6f7nciopo16etuqp2/geoportail/r/wms",
+    name: "ELEVATION.ELEVATIONGRIDCOVERAGE.HIGHRES",
+    format: "image/x-bil;bits=32",
+    crs: 'EPSG:2154',
+    extent: viewExtent,
+});
+
+/**
+ * TODO
+ * // Create the dem ElevationLayer and add it to the view
+ */
+export const layerDEM = new ElevationLayer('DEM', { source: sourceDEM });
+
+/**
+ * TODO
+ * // Define the source of the dem data
+ */
+const sourcePLAN = new WMSSource({
+    url: "https://wxs.ign.fr/cartes/geoportail/r/wms",
+    name: "GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2",
+    format: "image/png",
+    crs: 'EPSG:2154',
+    extent: viewExtent,
+});
+
+/**
+ * TODO
+ * // Create the dem ElevationLayer and add it to the view
+ * @param {TODO} url TODO
+ */
+export const layerPLAN = new ColorLayer('PLAN', { source: sourcePLAN });
+
+/**
+ * TODO
+ * @param {TODO} properties TODO
+ */
+function setAltitude(properties) {
+    return properties.altitude_sol - properties.hauteur;
+}
+
+/**
+ * TODO
+ * @param {TODO} properties TODO
+ */
+function setExtrusion(properties) {
+    return properties.hauteur;
+}
+
+/**
+ * TODO
+ */
+function setColor() {
+    return new THREE.Color(0xffaaaa);
+}
+
+/**
+ * TODO
+ * // Define the source of the dem data
+ */
+const sourceBATI = new FileSource({
+    url: "http://localhost:8080/gavres_bati.geojson",
+    format: "application/json",
+    crs: 'EPSG:2154',
+});
+
+/**
+ * TODO
+ * // Create the dem ElevationLayer and add it to the view
+ */
+export const layerBATI = new FeatureGeometryLayer('BATI', {
+    source: sourceBATI,
+    transparent: true,
+    opacity: 0.7,
+    zoom: { min: 14 },
+    style: new Style({
+        fill: {
+            color: new THREE.Color(0xffaaaa),
+            base_altitude: 10,
+            extrusion_height: 40,
+        },
+    }),
+});
+
+
+
+
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-Footer.html">Footer</a></li><li><a href="module-Header.html">Header</a></li><li><a href="module-Map.html">Map</a></li><li><a href="module-Panel.html">Panel</a></li><li><a href="module-Toolbar.html">Toolbar</a></li></ul><h3>Global</h3><ul><li><a href="global.html#averageLists">averageLists</a></li><li><a href="global.html#bati">bati</a></li><li><a href="global.html#batsource">batsource</a></li><li><a href="global.html#concatenateHeightMapList">concatenateHeightMapList</a></li><li><a href="global.html#getData">getData</a></li><li><a href="global.html#getHeightFromScenarios">getHeightFromScenarios</a></li><li><a href="global.html#getHeightMesh">getHeightMesh</a></li><li><a href="global.html#getImage">getImage</a></li><li><a href="global.html#layerBATI">layerBATI</a></li><li><a href="global.html#layerDEM">layerDEM</a></li><li><a href="global.html#layerOrtho">layerOrtho</a></li><li><a href="global.html#layerPLAN">layerPLAN</a></li><li><a href="global.html#maxLists">maxLists</a></li><li><a href="global.html#minLists">minLists</a></li><li><a href="global.html#rgbcolors">rgbcolors</a></li><li><a href="global.html#setAltitude">setAltitude</a></li><li><a href="global.html#setColor">setColor</a></li><li><a href="global.html#setExtrusion">setExtrusion</a></li><li><a href="global.html#sourceBATI">sourceBATI</a></li><li><a href="global.html#sourceDEM">sourceDEM</a></li><li><a href="global.html#sourceOrtho">sourceOrtho</a></li><li><a href="global.html#sourcePLAN">sourcePLAN</a></li><li><a href="global.html#viewExtent">viewExtent</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Wed Apr 26 2023 10:06:48 GMT+0200 (heure d’été d’Europe centrale)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

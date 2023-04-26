@@ -202,7 +202,7 @@ export default {
     /**
      * Permet de changer la valeur de mapSelected en fonction du bouton cliqué
      *
-     * @public This is a public method
+     * @public
      */
     changeMapToOrtho() {
       this.mapSelected = "ortho";
@@ -210,7 +210,7 @@ export default {
     /**
      * Permet de changer la valeur de mapSelected en fonction du bouton cliqué
      *
-     * @public This is a public method
+     * @public
      */
     changeMapToPlan() {
       this.mapSelected = "plan";
@@ -218,7 +218,7 @@ export default {
     /**
      * TODO
      *
-     * @public This is a public method
+     * @public
      */
     switchTo2D() {
       // Code to switch to 2D view
@@ -228,7 +228,7 @@ export default {
     /**
      * TODO
      *
-     * @public This is a public method
+     * @public
      */
     switchTo3D() {
       // Code to switch to 3D view
@@ -243,7 +243,7 @@ export default {
    * @emitsParam {string[]} data.selectedScenario2 - Les scénarios sélectionnés
    * @emitsParam {number} data.math - Les mathématiques utilisées
    * @emitsParam {number} data.height - La hauteur sélectionnée
-   * @public This is a public method
+   * @public
    */
     updateScenarios() {
       if (this.selectedScenario2.length > 1) {

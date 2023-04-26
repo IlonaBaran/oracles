@@ -108,3 +108,5 @@ Vous séléctionnez les scénarios voulus. Vous devez ensuite choisir parmi troi
 + max : vous choisissez de visualiser la hauteur maximale d'eau des scénarios
 
 Ensuite, vous choisissez le type de hauteur d'eau que vous voulez visualiser : hmax pour la hauteur d'eau finale et hfin pour la hauteur d'eau finale. Après validation, vous verrez cette hauteur d'eau apparaître sur la carte. Le chargement peut prendre quelques instants.
+
+![PojetWeb](img/readme/eau.png)

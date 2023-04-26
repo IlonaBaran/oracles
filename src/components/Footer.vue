@@ -194,18 +194,6 @@ export default {
             aide: false,
             markdown: false
         };
-    },
-    mounted() {
-        this.fetchMarkdown();
-    },
-    methods: {
-        fetchMarkdown() {
-            fetch('http://localhost:8080/docs/src/components/Footer.md')
-            .then(response => response.text())
-            .then(markdown => {
-                this.markdown = markdown;
-            });
-        }
     }
 }
 </script>
