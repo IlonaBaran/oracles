@@ -52,7 +52,7 @@ export async function getData(listOfImages) {
 }
 
 /**
- * //Function used to calculate the average heights from the different scenarios selected
+ * Function used to calculate the average heights from the different scenarios selected
  * @param {Array} lists Array of data from all selected scenarios
  */
 export function averageLists(lists) {
@@ -78,8 +78,7 @@ export function averageLists(lists) {
 }
 
 /**
- * TODO
- * //Function used to calculate the minimum heights from the different scenarios selected
+ * Function used to calculate the minimum heights from the different scenarios selected
  * @param {Array} lists Array of data from all selected scenarios
  */
 export function minLists(lists) {
@@ -94,7 +93,7 @@ export function minLists(lists) {
 }
 
 /**
- * //Function used to calculate the maximum heights from the different scenarios selected
+ * Function used to calculate the maximum heights from the different scenarios selected
  * @param {Array} lists Array of data from all selected scenarios
  */
 export function maxLists(lists) {
@@ -145,7 +144,7 @@ function rgbcolors(x, colors, min, max) {
 }
 
 /**
- * //Function that creates a 3d mesh taking as input a tiff image from a screnario and the digital surface model
+ * Function that creates a 3d mesh taking as input a tiff image from a screnario and the digital surface model
  * @param {Image} image geotiff Image format retrieve from the getData() function
  */
 export async function getHeightMesh(image) {
@@ -248,7 +247,7 @@ export async function getHeightMesh(image) {
 }
 
 /**
- * //Function that creates a 3d mesh taking as input the data resulting from the statistics functions used when selecting several scenarios
+ * Function that creates a 3d mesh taking as input the data resulting from the statistics functions used when selecting several scenarios
  * @param {Array} bbox xmin, ymin, xmax and ymax coordinates
  * @param {int} width width of image data
  * @param {int} height height of image data
