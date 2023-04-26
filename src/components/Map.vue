@@ -43,15 +43,15 @@ export default {
     /**
      * TODO
      */
-    mapSelected: {type: String},
+    mapSelected: { type: String },
     /**
-     * TODO
+     * Boolean representing building layer visibility
      */
-    visibleBuilding: {type: Boolean},
+    visibleBuilding: { type: Boolean },
     /**
-     * TODO
+     * Object containing list of selected scenarios
      */
-    selectedScenario: {type: Object, required: true}
+    selectedScenario: { type: Object, required: true }
   },
   data() {
     return {
@@ -107,8 +107,7 @@ export default {
   },
   methods: {
     /**
-     * TODO
-     *
+     * //Function that handles basemap layer change
      * @public
      */
     changeMap() {
@@ -125,8 +124,7 @@ export default {
       }
     },
     /**
-     * TODO
-     *
+     * //Function that handles building layer visibility
      * @public
      */
     building() {
@@ -135,8 +133,7 @@ export default {
       view.notifyChange();
     },
     /**
-     * TODO
-     *
+     * //Function that recenters the view to Gavres
      * @public
      */
     cameraView() {
@@ -146,19 +143,17 @@ export default {
       view.camera.camera3D.position.z = 2500.719216284468985;
       view.notifyChange();
 
-    }, 
+    },
     /**
-     * TODO
-     *
-     * @param {TODO} e TODO
+     * Function that can handle onClick event on map
+     * @param {event} e click event
      * @public
      */
     onClick(e) {
       //add code here for event when clicking on view
     },
     /**
-     * TODO
-     *
+     * //Function to return to 2D Aerial view
      * @public
      */
     vue2d() {
@@ -168,8 +163,7 @@ export default {
       view.notifyChange();
     },
     /**
-     * TODO
-     *
+     * //Function to go into 3D mode, enables rotation
      * @public
      */
     vue3d() {
@@ -178,9 +172,8 @@ export default {
       view.notifyChange();
     },
     /**
-     * TODO
-     *
-     * @param {TODO} jsonemit TODO
+     * function to update water heights when selected scenarios change
+     * @param {Object} jsonemit contains selected scenario or if multiple are selected : scenarios and computation method
      * @public
      */
     updateHeightmap(jsonemit) {
