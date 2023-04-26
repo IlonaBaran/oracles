@@ -25,7 +25,7 @@ function setExtrusion(properties) {
 }
 
 /**
- * //Function that set color of buildings to grey
+ * Function that set color of buildings to grey
  * @param {Object} properties properties object from building layer
  */
 function setColor(properties) {

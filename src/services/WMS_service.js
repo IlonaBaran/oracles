@@ -3,7 +3,7 @@
 import { FileSource, THREE, Style, Extent, FeatureGeometryLayer, WMSSource, ColorLayer, ElevationLayer } from "../../node_modules/itowns/dist/itowns";
 
 /**
- * //Geographic view extent of Planar view
+ * Geographic view extent of Planar view
  */
 const viewExtent = new Extent(
     "EPSG:2154",
@@ -14,7 +14,7 @@ const viewExtent = new Extent(
 );
 
 /**
- * //Satellite Image basemap WMSSource
+ * Satellite Image basemap WMSSource
  */
 const sourceOrtho = new WMSSource({
     url: "https://wxs.ign.fr/3ht7xcw6f7nciopo16etuqp2/geoportail/r/wms",
@@ -25,12 +25,12 @@ const sourceOrtho = new WMSSource({
 });
 
 /**
- * //Satellite Image ColorLayer
+ * Satellite Image ColorLayer
  */
 export const layerOrtho = new ColorLayer('Ortho', { source: sourceOrtho });
 
 /**
- * //Elevation data WMSSource
+ * Elevation data WMSSource
  */
 const sourceDEM = new WMSSource({
     url: "https://wxs.ign.fr/3ht7xcw6f7nciopo16etuqp2/geoportail/r/wms",
@@ -41,12 +41,12 @@ const sourceDEM = new WMSSource({
 });
 
 /**
- * //Elevation data ElevationLayer
+ * Elevation data ElevationLayer
  */
 export const layerDEM = new ElevationLayer('DEM', { source: sourceDEM });
 
 /**
- * //Topographic map WMSSource
+ * Topographic map WMSSource
  */
 const sourcePLAN = new WMSSource({
     url: "https://wxs.ign.fr/cartes/geoportail/r/wms",
@@ -57,6 +57,6 @@ const sourcePLAN = new WMSSource({
 });
 
 /**
- * //Topographic map layer
+ * Topographic map layer
  */
 export const layerPLAN = new ColorLayer('PLAN', { source: sourcePLAN });
