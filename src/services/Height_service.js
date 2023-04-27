@@ -108,12 +108,11 @@ export function maxLists(lists) {
 }
 
 /**
- * TODO
  * //Function used to calculate the rgb color for each vertex based on the heiht
- * @param {TODO} x TODO
- * @param {TODO} colors TODO
- * @param {TODO} min TODO
- * @param {TODO} max TODO
+ * @param {float} x Height at a certain point of the array
+ * @param {Array} colors Array with rgb colors represented as percentage
+ * @param {float} min Minimum height of the scenario
+ * @param {float} max Maximum height of the scenario
  */
 function rgbcolors(x, colors, min, max) {
     //Setting the breakpoints, in this case starting at min, 20%, 40%, 60%, 80% and finally max
@@ -346,10 +345,9 @@ export async function getHeightFromScenarios(bbox, width, height, data) {
 }
 
 /**
- * TODO
  * //Function used to create a list of files used when selecting more than one scenario, creating either hmax or hfin depending on user's selection
  * @param {Array} heightMapList list des scenarios selectionnés
- * @param {TODO} height TODO
+ * @param {string} height The type of height chosen to represent ( hmax or hfin )
  */
 export function concatenateHeightMapList(heightMapList, height) {
     let concatenatedList = [];
