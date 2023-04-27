@@ -41,7 +41,7 @@ export default {
   },
   props: {
     /**
-     * TODO
+     * String contenant le type de carte sélectionnée
      */
     mapSelected: { type: String },
     /**
