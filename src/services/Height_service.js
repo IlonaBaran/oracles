@@ -3,22 +3,22 @@ import * as GeoTIFF from 'geotiff';
 import { THREE, Coordinates } from "../../node_modules/itowns/dist/itowns";
 
 /**
- * Function used to get tiff image from a tif url
- * @param {string} url string of url
+ * Fonction utilisée pour obtenir une image tiff à partir d'une url
+ * @param {string} url string de l'url
  */
 export async function getImage(url) {
     return new Promise((resolve, reject) => {
-        //Fetching the mage from a url (In this case it will be a localhost url due to the use of http-server)
+        //Récupération de l'image à partir d'une url (dans ce cas, il s'agira d'une url localhost en raison de l'utilisation d'un serveur http).
         var xhr = new XMLHttpRequest();
         xhr.open("GET", url);
-        //Setting the response as an arraybuffer to use it with the GEOTIFF library
+        //Définition de la réponse comme un tableau (arraybuffer) pour l'utiliser avec la bibliothèque GEOTIFF
         xhr.responseType = 'arraybuffer';
         xhr.onload = async function (e) {
             var buffer = await xhr.response;
-            //Creating an image from the http response
+            //Création d'une image à partir de la réponse http
             const tiff = await GeoTIFF.fromArrayBuffer(buffer);
             const image = await tiff.getImage();
-            // Return the image
+            // Renvoi de l'image
             resolve(image);
         }
         xhr.onerror = reject;
@@ -28,8 +28,8 @@ export async function getImage(url) {
 }
 
 /**
- * Function to extract Float32Array of data from a geotiff image
- * @param {list} listOfImages list of image objets
+ * Fonction permettant d'extraire des données Float32Array d'une image geotiff
+ * @param {list} listOfImages listes des images objets
  */
 export async function getData(listOfImages) {
     let datas = []
@@ -38,7 +38,7 @@ export async function getData(listOfImages) {
     const height = await listOfImages[0].getHeight();
 
     for (let i = 0; i < listOfImages.length; i++) {
-        //Getting metadata and data from the image
+        //Obtenir des métadonnées et des données à partir de l'image
         const data = await listOfImages[i].readRasters();
         datas.push(data[0]);
     }
@@ -52,14 +52,14 @@ export async function getData(listOfImages) {
 }
 
 /**
- * Function used to calculate the average heights from the different scenarios selected
- * @param {Array} lists Array of data from all selected scenarios
+ * Fonction utilisée pour calculer les hauteurs moyennes des différents scénarios sélectionnés
+ * @param {Array} lists Tableau de données de tous les scénarios sélectionnés
  */
 export function averageLists(lists) {
     const numLists = lists.length;
     const listLength = lists[0].length;
 
-    // Check that all lists have the sa>me length
+    // Vérification que toutes les listes ont la même longueur
     if (!lists.every(list => list.length === listLength)) {
         throw new Error('averageLists: all lists must have the same length');
     }
@@ -78,8 +78,8 @@ export function averageLists(lists) {
 }
 
 /**
- * Function used to calculate the minimum heights from the different scenarios selected
- * @param {Array} lists Array of data from all selected scenarios
+ * Fonction utilisée pour calculer les hauteurs minimales à partir des différents scénarios sélectionnés
+ * @param {Array} lists Array de données de tous les scénarios sélectionnés
  */
 export function minLists(lists) {
     const listLength = lists[0].length;
@@ -93,8 +93,8 @@ export function minLists(lists) {
 }
 
 /**
- * Function used to calculate the maximum heights from the different scenarios selected
- * @param {Array} lists Array of data from all selected scenarios
+ * Fonction utilisée pour calculer les hauteurs maximales à partir des différents scénarios sélectionnés
+ * @param {Array} lists Array de données de tous les scénarios sélectionnés
  */
 export function maxLists(lists) {
     const listLength = lists[0].length;
@@ -108,14 +108,14 @@ export function maxLists(lists) {
 }
 
 /**
- * //Function used to calculate the rgb color for each vertex based on the heiht
- * @param {float} x Height at a certain point of the array
- * @param {Array} colors Array with rgb colors represented as percentage
- * @param {float} min Minimum height of the scenario
- * @param {float} max Maximum height of the scenario
+ * //Fonction utilisée pour calculer la couleur rgb de chaque sommet en fonction de la hauteur.
+ * @param {float} x Hauteur à un certain point du tableau
+ * @param {Array} colors Tableau avec les couleurs rgb représentées en pourcentage
+ * @param {float} min Hauteur minimale du scénario
+ * @param {float} max Hauteur maximale du scénario
  */
 function rgbcolors(x, colors, min, max) {
-    //Setting the breakpoints, in this case starting at min, 20%, 40%, 60%, 80% and finally max
+    //Définition des points d'arrêt, dans ce cas en commençant par min, 20%, 40%, 60%, 80% et enfin max.
     const breakpoints = [
         0,
         max * 0.20,
@@ -124,7 +124,7 @@ function rgbcolors(x, colors, min, max) {
         max * 0.80,
         max
     ];
-    //The lookup table refers to the corresponding color to each one of the breakpoints defined above, [R,G,B] values
+    //La table de recherche renvoie à la couleur correspondant à chacun des points d'arrêt définis ci-dessus, les valeurs [R,G,B].
     const lookupTable = [
         [0.81, 0.90, 1],
         [0.16, 0.61, 0.95],
@@ -132,9 +132,9 @@ function rgbcolors(x, colors, min, max) {
         [0.01, 0.14, 0.29],
         [0.00, 0.00, 0.54]
     ];
-    //Searching the index that corresponds to the height selected
+    //Recherche de l'index correspondant à la hauteur sélectionnée
     const index = breakpoints.findIndex(b => x <= b);
-    //Ppushing the corresponding color to the height
+    //Ajout de la couleur correspondante à la hauteur
     if (x < min || x > max || x == 0) {
         colors.push(0, 0, 0);
     } else {
@@ -143,23 +143,23 @@ function rgbcolors(x, colors, min, max) {
 }
 
 /**
- * Function that creates a 3d mesh taking as input a tiff image from a screnario and the digital surface model
- * @param {Image} image geotiff Image format retrieve from the getData() function
+ * Fonction qui crée un maillage 3D en prenant comme entrée une image tiff d'un scénario et le modèle numérique de surface.
+ * @param {Image} image geotiff Format d'image récupéré par la fonction getData()
  */
 export async function getHeightMesh(image) {
     let urlmns = 'http://localhost:8080/MNS_GAVRES.tif';
     const imagemns = await getImage(urlmns);
     const mnsdata = await imagemns.readRasters();
 
-    //Getting metadata and data from the image
+    //Obtenir des métadonnées et des données à partir de l'image
     const bbox = await image.getBoundingBox();
     const width = await image.getWidth();
     const height = await image.getHeight();
     const data = await image.readRasters();
 
-    let dataArray = await Array.from(data[0]); // Convert Float32Array to a regular array
-    dataArray.sort((a, b) => a - b); // Sort the regular array in ascending order
-    let sortedData = await new Float32Array(dataArray); // Convert the sorted regular array back to a Float32Array
+    let dataArray = await Array.from(data[0]); // Convertir un tableau Float32Array en un array normal
+    dataArray.sort((a, b) => a - b); // Trie de l'array par ordre croissant
+    let sortedData = await new Float32Array(dataArray); // Convertir l'array trié en tableau Float32Array
     let lenghtdata = sortedData.length
 
     let min = Math.round(sortedData[0]);
@@ -170,15 +170,15 @@ export async function getHeightMesh(image) {
     const Yo = bbox[1];
     const Yf = bbox[3];
 
-    //Calculating the pixel size
+    //Calcul de la taille des pixels
     let Xsize = (Xf - Xo) / width;
     let Ysize = -(Yf - Yo) / height;
 
-    //Specifying the origin of the image
+    //Spécification l'origine de l'image
     const origin = [Xo, Yf];
     let coord3 = new Coordinates('EPSG:2154', origin[0], origin[1]);
 
-    //Creating the THREEJs Geometry
+    //Création de la géométrie THREEJs
     let geometry = new THREE.BufferGeometry();
 
     const vertices = [];
@@ -186,11 +186,11 @@ export async function getHeightMesh(image) {
     const colors = [];
 
 
-    //Creating the vertices table, pushing the coordinates and the height data extracted from the image
+    //Création de la table des vertices, en ajoutant les coordonnées et les données de hauteur extraites de l'image
     for (let i = 0; i < width - 1; i++) {
         for (let j = 0; j < height - 1; j++) {
 
-            //Creating the indices table by pushing two triangles for each pixel
+            //Création du tableau d'indices en ajoutant deux triangles pour chaque pixel
             let topL = [(1 / width) * (j), 1 - (1 / height) * (i)];
             let topR = [(1 / width) * (j), 1 - (1 / height) * (i + 1)];
             let botL = [(1 / width) * (j + 1), 1 - (1 / height) * (i)];
@@ -213,23 +213,23 @@ export async function getHeightMesh(image) {
             vertices.push((i + 1) * Xsize, j * Ysize, minuszero(data[0][(i + 1) + j * width], mnsdata[0][(i + 1) + j * width])); // top right
             vertices.push((i + 1) * Xsize, (j + 1) * Ysize, minuszero(data[0][(i + 1) + (j + 1) * width], mnsdata[0][(i + 1) + (j + 1) * width])); // bottom right
 
-            rgbcolors(data[0][i + j * width], colors, min, max); // top left
-            rgbcolors(data[0][(i + 1) + j * width], colors, min, max);// top right
-            rgbcolors(data[0][i + (j + 1) * width], colors, min, max);// bottom left
+            rgbcolors(data[0][i + j * width], colors, min, max); // haut gauche
+            rgbcolors(data[0][(i + 1) + j * width], colors, min, max);// haut droit
+            rgbcolors(data[0][i + (j + 1) * width], colors, min, max);// bas gauche
 
-            rgbcolors(data[0][i + (j + 1) * width], colors, min, max);// bottom left
-            rgbcolors(data[0][(i + 1) + j * width], colors, min, max);// top right
-            rgbcolors(data[0][(i + 1) + (j + 1) * width], colors, min, max);// bottom right
+            rgbcolors(data[0][i + (j + 1) * width], colors, min, max);// bas gauche
+            rgbcolors(data[0][(i + 1) + j * width], colors, min, max);// haut right
+            rgbcolors(data[0][(i + 1) + (j + 1) * width], colors, min, max);// bas right
         };
 
     };
 
-    //Setting attributes to the geometry
+    //Définition des attributs de la géométrie
     geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(vertices), 3));
     geometry.setAttribute('normal', new THREE.BufferAttribute(new Float32Array(indices), 3));
     geometry.setAttribute('color', new THREE.BufferAttribute(new Float32Array(colors), 3));
 
-    // create material
+    // creation du material
     const material = new THREE.MeshBasicMaterial({
         transparent: true,
         vertexColors: true,
@@ -246,11 +246,11 @@ export async function getHeightMesh(image) {
 }
 
 /**
- * Function that creates a 3d mesh taking as input the data resulting from the statistics functions used when selecting several scenarios
- * @param {Array} bbox xmin, ymin, xmax and ymax coordinates
- * @param {int} width width of image data
- * @param {int} height height of image data
- * @param {Array} data data values from image, or computed from several scenarios
+ * Fonction qui crée un mesh 3D en prenant comme entrée les données résultant des fonctions statistiques utilisées lors de la sélection de plusieurs scénarios.
+ * @param {Array} bbox coordonnées xmin, ymin, xmax et ymax 
+ * @param {int} width largeur de l'image data
+ * @param {int} height hauteur de l'image data
+ * @param {Array} data dValeurs des données de l'image ou calculées à partir de plusieurs scénarios
  */
 export async function getHeightFromScenarios(bbox, width, height, data) {
     let urlmns = 'http://localhost:8080/MNS_GAVRES.tif';
@@ -262,34 +262,34 @@ export async function getHeightFromScenarios(bbox, width, height, data) {
     const Yo = bbox[1];
     const Yf = bbox[3];
 
-    let dataArray = await Array.from(data[0]); // Convert Float32Array to a regular array
-    dataArray.sort((a, b) => a - b); // Sort the regular array in ascending order
-    let sortedData = await new Float32Array(dataArray); // Convert the sorted regular array back to a Float32Array
+    let dataArray = await Array.from(data[0]); //Conversion un tableau Float32Array en array
+    dataArray.sort((a, b) => a - b); // Tri de l'array par ordre croissant
+    let sortedData = await new Float32Array(dataArray); //Conversion d'un array en Float32Array 
     let lenghtdata = sortedData.length
 
     let min = Math.round(sortedData[0]);
     let max = Math.round(sortedData[lenghtdata - 1]);
 
-    //Calculating the pixel size
+    //Calcul de la taille des pixels
     let Xsize = (Xf - Xo) / width;
     let Ysize = -(Yf - Yo) / height;
 
-    //Specifying the origin of the image
+    //Spécification de l'origine de l'image
     const origin = [Xo, Yf];
     let coord3 = new Coordinates('EPSG:2154', origin[0], origin[1]);
 
-    //Creating the THREEJs Geometry
+    //Création de la géométrie THREEJs
     let geometry = new THREE.BufferGeometry();
 
     const vertices = [];
     const indices = [];
     const colors = [];
 
-    //Creating the vertices table, pushing the coordinates and the height data extracted from the image
+    //Création de la table des vertices, en ajoutant les coordonnées et les données de hauteur extraites de l'image
     for (let i = 0; i < width - 1; i++) {
         for (let j = 0; j < height - 1; j++) {
 
-            //Creating the indices table by pushing two triangles for each pixel
+            //Création du tableau d'indices en ajoutant deux triangles pour chaque pixel
             let topL = [(1 / width) * (j), 1 - (1 / height) * (i)];
             let topR = [(1 / width) * (j), 1 - (1 / height) * (i + 1)];
             let botL = [(1 / width) * (j + 1), 1 - (1 / height) * (i)];
@@ -303,7 +303,7 @@ export async function getHeightFromScenarios(bbox, width, height, data) {
             indices.push(topR);
             indices.push(botR);
 
-            //Creating the vertices table, pushing the coordinates and the height data extracted from the image
+            //Création de la table des vertices, en ajoutant les coordonnées et les données de hauteur extraites de l'image
 
             vertices.push(i * Xsize, j * Ysize, minuszero(data[0][i + j * width], mnsdata[0][i + j * width])); // top left
             vertices.push((i + 1) * Xsize, j * Ysize, minuszero(data[0][(i + 1) + j * width], mnsdata[0][(i + 1) + j * width])); // top right
@@ -313,22 +313,22 @@ export async function getHeightFromScenarios(bbox, width, height, data) {
             vertices.push((i + 1) * Xsize, j * Ysize, minuszero(data[0][(i + 1) + j * width], mnsdata[0][(i + 1) + j * width])); // top right
             vertices.push((i + 1) * Xsize, (j + 1) * Ysize, minuszero(data[0][(i + 1) + (j + 1) * width], mnsdata[0][(i + 1) + (j + 1) * width])); // bottom right
 
-            rgbcolors(data[0][i + j * width], colors, min, max); // top left
-            rgbcolors(data[0][(i + 1) + j * width], colors, min, max);// top right
-            rgbcolors(data[0][i + (j + 1) * width], colors, min, max);// bottom left
+            rgbcolors(data[0][i + j * width], colors, min, max); // haut gauche
+            rgbcolors(data[0][(i + 1) + j * width], colors, min, max);// haut droit
+            rgbcolors(data[0][i + (j + 1) * width], colors, min, max);// bas gauche
 
-            rgbcolors(data[0][i + (j + 1) * width], colors, min, max);// bottom left
-            rgbcolors(data[0][(i + 1) + j * width], colors, min, max);// top right
-            rgbcolors(data[0][(i + 1) + (j + 1) * width], colors, min, max);// bottom right
+            rgbcolors(data[0][i + (j + 1) * width], colors, min, max);// bas gauche
+            rgbcolors(data[0][(i + 1) + j * width], colors, min, max);// haut droit
+            rgbcolors(data[0][(i + 1) + (j + 1) * width], colors, min, max);// bas droit
         };
     };
 
-    //Setting attributes to the geometry
+    //Définition des attributs de la géométrie
     geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(vertices), 3));
     geometry.setAttribute('normal', new THREE.BufferAttribute(new Float32Array(indices), 3));
     geometry.setAttribute('color', new THREE.BufferAttribute(new Float32Array(colors), 3));
 
-    // create material
+    // Création du material
     const material = new THREE.MeshBasicMaterial({
         transparent: true,
         vertexColors: true,
@@ -345,9 +345,9 @@ export async function getHeightFromScenarios(bbox, width, height, data) {
 }
 
 /**
- * //Function used to create a list of files used when selecting more than one scenario, creating either hmax or hfin depending on user's selection
+ * //Fonction utilisée pour créer une liste de fichiers utilisés lors de la sélection de plusieurs scénarios, créant soit hmax soit hfin en fonction de la sélection de l'utilisateur.
  * @param {Array} heightMapList list des scenarios selectionnés
- * @param {string} height The type of height chosen to represent ( hmax or hfin )
+ * @param {string} height Le type de hauteur choisi pour représenter ( hmax ou hfin )
  */
 export function concatenateHeightMapList(heightMapList, height) {
     let concatenatedList = [];
@@ -361,9 +361,9 @@ export function concatenateHeightMapList(heightMapList, height) {
 
 
 /**
- * Function that sends the value under the surface, thus making it invisible, if its height is equal to 0 or superior to the highest point on earth
- * @param {float} valuescenario data value
- * @param {float} valuemns mns value
+ * Fonction qui envoie la valeur sous la surface, la rendant ainsi invisible, si sa hauteur est égale à 0 ou supérieure au point le plus haut de la terre.
+ * @param {float} valuescenario valeur des données
+ * @param {float} valuemns valeur du mns
  */
 function minuszero(valuescenario, valuemns) {
     let valueh = valuescenario + valuemns;
