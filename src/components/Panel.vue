@@ -95,7 +95,7 @@ import { ref } from "vue";
 import { reactive } from "vue";
 
 /**
- * TODO
+ * Panel de gauche affichant les graphiques
  *
  * @component panelComponent
  * 
@@ -126,14 +126,14 @@ export default {
         /**
          * Liste des scénarios sélectionnés, valeur récupérée du composant Header.vue
          */
-        selectedScenario: { 
+        selectedScenario: {
             type: Object,
             required: true
         },
         /**
          * Liste des graphiques sélectionnées, valeur récupérée du composant Header.vue 
          */
-        selectedGraph: { 
+        selectedGraph: {
             type: Object,
             required: true
         },
@@ -608,7 +608,7 @@ export default {
             var s2 = new Array();
             var s3 = new Array();
             var s4 = new Array();
-            
+
             var elem = 0; // Compteur pour mettre les valeurs dans les listes de decoupage
 
             for (const element of this.selectedScenario) {
@@ -666,26 +666,26 @@ export default {
                 .then(response => response.json())
                 .then(data => { console.log('Données envoyées avec succès !'); })
                 .catch(error => { console.error('Erreur lors de l\'envoi des données :', error); });
-                //  POUR LE DIAGRAMME 3 (Indexation hexagonale des zones de Gâvres)
-                // fetch('http://localhost:5000/api/data', {
-                //     method: 'POST',
-                //     headers: {
-                //         'Content-Type': 'application/json'
-                //     },
-                //     body: JSON.stringify(dict)
-                // })
-                // .then(response => response.json())
-                // .then(data => {
-                //     console.log('Données envoyées avec succès !');        
-                //     fetch('http://localhost:5000/api/data')
-                //     .then(response => response.json())
-                //     .then(data => {
-                //     console.log(data);
-                //     })
-                // })
-                // .catch(error => {
-                //     console.error('Erreur lors de l\'envoi des données :', error);
-                // });
+            //  POUR LE DIAGRAMME 3 (Indexation hexagonale des zones de Gâvres)
+            // fetch('http://localhost:5000/api/data', {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json'
+            //     },
+            //     body: JSON.stringify(dict)
+            // })
+            // .then(response => response.json())
+            // .then(data => {
+            //     console.log('Données envoyées avec succès !');        
+            //     fetch('http://localhost:5000/api/data')
+            //     .then(response => response.json())
+            //     .then(data => {
+            //     console.log(data);
+            //     })
+            // })
+            // .catch(error => {
+            //     console.error('Erreur lors de l\'envoi des données :', error);
+            // });
         },
 
         /**
@@ -705,7 +705,7 @@ export default {
                 xaxis: { tooltip: { enabled: false }, type: 'category', categories: abscisses, overwriteCategories: abscisses, },
                 yaxis: { categories: ['Morning', 'Afternoon', 'Evening'] },
             },
-            this.series3 = ordonnees;
+                this.series3 = ordonnees;
         },
 
         /**

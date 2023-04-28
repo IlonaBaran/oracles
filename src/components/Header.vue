@@ -61,7 +61,7 @@ import MultiSelect from 'primevue/multiselect';
 import CascadeSelect from 'primevue/cascadeselect';
 
 /**
- * TODO
+ * Header, composant contenant la selection de scénarios et de graphiques
  *
  * @component menuComponent
  * 
@@ -129,7 +129,7 @@ export default {
 
     methods: {
         /**
-         * TODO
+         * Fonction renvoyant les scenarios selectionné.
          *
          * @public
          */
@@ -137,7 +137,7 @@ export default {
             return this.selectedScenario
         },
         /**
-         * TODO
+         * Fonction de validation de sélection de graphiques.
          *
          * @public
          */
@@ -147,7 +147,7 @@ export default {
             this.$refs.panelGraph.afficheGraph();
         },
         /**
-         * TODO
+         * Fonction de validation de réinitialisation de graphiques.
          *
          * @public 
          */
@@ -157,7 +157,7 @@ export default {
             this.$refs.panelGraph.reiAfficheGraph();
         },
         /**
-         * TODO
+         * Fonction d'affichage de composant
          *
          * @public
          */
@@ -186,16 +186,9 @@ export default {
                     this.scenario = L;
                 });
         },
+
         /**
-         * TODO
-         *
-         * @public
-         */
-        appelMethodeDansPanel() {
-            this.$refs.panelRef.nomDeLaMethodeDansPanel();
-        },
-        /**
-         * TODO
+         * Fonction qui émet les scénarios sélectionnés
          *
          * @public
          */

@@ -102,7 +102,7 @@ import SelectButton from 'primevue/selectbutton';
 import RadioButton from 'primevue/radiobutton';
 
 /**
- * TODO
+ * Toolbar qui contient le dial et les panels de droite
  *
  * @component Toolbar-box
  * 
@@ -211,7 +211,7 @@ export default {
   },
   props: {
     /**
-     * TODO
+     * Variable qui permet de transmètre les scénarios sélectionnés à map.vue
      */
     selectedScenario: {
       type: Object,
@@ -236,22 +236,20 @@ export default {
       this.mapSelected = "plan";
     },
     /**
-     * TODO
+     * Change la vue en vue 2D
      *
      * @public
      */
     switchTo2D() {
-      // Code to switch to 2D view
       this.$emit('vue-2d');
       console.log("2D")
     },
     /**
-     * TODO
+     * Change la vue en vue 3D
      *
      * @public
      */
     switchTo3D() {
-      // Code to switch to 3D view
       this.$emit('vue-3d');
       console.log("3D")
     },
