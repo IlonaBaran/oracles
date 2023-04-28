@@ -123,7 +123,7 @@ import { ref } from "vue";
 import { reactive } from "vue";
 
 /**
- * TODO
+ * Panel de gauche affichant les graphiques
  *
  * @component panelComponent
  * 
@@ -154,14 +154,14 @@ export default {
         /**
          * Liste des scénarios sélectionnés, valeur récupérée du composant Header.vue
          */
-        selectedScenario: { 
+        selectedScenario: {
             type: Object,
             required: true
         },
         /**
          * Liste des graphiques sélectionnées, valeur récupérée du composant Header.vue 
          */
-        selectedGraph: { 
+        selectedGraph: {
             type: Object,
             required: true
         },
@@ -636,7 +636,7 @@ export default {
             var s2 = new Array();
             var s3 = new Array();
             var s4 = new Array();
-            
+
             var elem = 0; // Compteur pour mettre les valeurs dans les listes de decoupage
 
             for (const element of this.selectedScenario) {
@@ -694,26 +694,26 @@ export default {
                 .then(response => response.json())
                 .then(data => { console.log('Données envoyées avec succès !'); })
                 .catch(error => { console.error('Erreur lors de l\'envoi des données :', error); });
-                //  POUR LE DIAGRAMME 3 (Indexation hexagonale des zones de Gâvres)
-                // fetch('http://localhost:5000/api/data', {
-                //     method: 'POST',
-                //     headers: {
-                //         'Content-Type': 'application/json'
-                //     },
-                //     body: JSON.stringify(dict)
-                // })
-                // .then(response => response.json())
-                // .then(data => {
-                //     console.log('Données envoyées avec succès !');        
-                //     fetch('http://localhost:5000/api/data')
-                //     .then(response => response.json())
-                //     .then(data => {
-                //     console.log(data);
-                //     })
-                // })
-                // .catch(error => {
-                //     console.error('Erreur lors de l\'envoi des données :', error);
-                // });
+            //  POUR LE DIAGRAMME 3 (Indexation hexagonale des zones de Gâvres)
+            // fetch('http://localhost:5000/api/data', {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json'
+            //     },
+            //     body: JSON.stringify(dict)
+            // })
+            // .then(response => response.json())
+            // .then(data => {
+            //     console.log('Données envoyées avec succès !');        
+            //     fetch('http://localhost:5000/api/data')
+            //     .then(response => response.json())
+            //     .then(data => {
+            //     console.log(data);
+            //     })
+            // })
+            // .catch(error => {
+            //     console.error('Erreur lors de l\'envoi des données :', error);
+            // });
         },
 
         /**
@@ -733,7 +733,7 @@ export default {
                 xaxis: { tooltip: { enabled: false }, type: 'category', categories: abscisses, overwriteCategories: abscisses, },
                 yaxis: { categories: ['Morning', 'Afternoon', 'Evening'] },
             },
-            this.series3 = ordonnees;
+                this.series3 = ordonnees;
         },
 
         /**
@@ -963,13 +963,13 @@ p {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-Footer.html">Footer</a></li><li><a href="module-Header.html">Header</a></li><li><a href="module-Map.html">Map</a></li><li><a href="module-Panel.html">Panel</a></li><li><a href="module-Toolbar.html">Toolbar</a></li></ul><h3>Global</h3><ul><li><a href="global.html#averageLists">averageLists</a></li><li><a href="global.html#bati">bati</a></li><li><a href="global.html#batsource">batsource</a></li><li><a href="global.html#concatenateHeightMapList">concatenateHeightMapList</a></li><li><a href="global.html#getData">getData</a></li><li><a href="global.html#getHeightFromScenarios">getHeightFromScenarios</a></li><li><a href="global.html#getHeightMesh">getHeightMesh</a></li><li><a href="global.html#getImage">getImage</a></li><li><a href="global.html#layerBATI">layerBATI</a></li><li><a href="global.html#layerDEM">layerDEM</a></li><li><a href="global.html#layerOrtho">layerOrtho</a></li><li><a href="global.html#layerPLAN">layerPLAN</a></li><li><a href="global.html#maxLists">maxLists</a></li><li><a href="global.html#minLists">minLists</a></li><li><a href="global.html#rgbcolors">rgbcolors</a></li><li><a href="global.html#setAltitude">setAltitude</a></li><li><a href="global.html#setColor">setColor</a></li><li><a href="global.html#setExtrusion">setExtrusion</a></li><li><a href="global.html#sourceBATI">sourceBATI</a></li><li><a href="global.html#sourceDEM">sourceDEM</a></li><li><a href="global.html#sourceOrtho">sourceOrtho</a></li><li><a href="global.html#sourcePLAN">sourcePLAN</a></li><li><a href="global.html#viewExtent">viewExtent</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-Footer.html">Footer</a></li><li><a href="module-Header.html">Header</a></li><li><a href="module-Map.html">Map</a></li><li><a href="module-Panel.html">Panel</a></li><li><a href="module-Toolbar.html">Toolbar</a></li></ul><h3>Global</h3><ul><li><a href="global.html#averageLists">averageLists</a></li><li><a href="global.html#batSource">batSource</a></li><li><a href="global.html#bati">bati</a></li><li><a href="global.html#concatenateHeightMapList">concatenateHeightMapList</a></li><li><a href="global.html#getData">getData</a></li><li><a href="global.html#getHeightFromScenarios">getHeightFromScenarios</a></li><li><a href="global.html#getHeightMesh">getHeightMesh</a></li><li><a href="global.html#getImage">getImage</a></li><li><a href="global.html#layerDEM">layerDEM</a></li><li><a href="global.html#layerOrtho">layerOrtho</a></li><li><a href="global.html#layerPLAN">layerPLAN</a></li><li><a href="global.html#maxLists">maxLists</a></li><li><a href="global.html#minLists">minLists</a></li><li><a href="global.html#minuszero">minuszero</a></li><li><a href="global.html#rgbcolors">rgbcolors</a></li><li><a href="global.html#setAltitude">setAltitude</a></li><li><a href="global.html#setColor">setColor</a></li><li><a href="global.html#setExtrusion">setExtrusion</a></li><li><a href="global.html#sourceDEM">sourceDEM</a></li><li><a href="global.html#sourceOrtho">sourceOrtho</a></li><li><a href="global.html#sourcePLAN">sourcePLAN</a></li><li><a href="global.html#viewExtent">viewExtent</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Wed Apr 26 2023 10:40:03 GMT+0200 (heure d’été d’Europe centrale)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Fri Apr 28 2023 22:30:54 GMT+0200 (heure d’été d’Europe centrale)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -47,8 +47,6 @@
 <h2 id="context">Context</h2>
 <p>This project is based on previous works realized by LASTIG research lab: https://github.com/umrlastig/vtthree</p>
 <p>The goal of Oracles, project by the French National Research Agency is to address the challenges related to probabilistic forecasting of coastal flooding and their consequences on the territory, by focusing on data visualization.</p>
-<h2 id="description">Description</h2>
-<p>TODO</p>
 <h2 id="installation">Installation</h2>
 <ul>
 <li>Install Docker</li>
@@ -81,17 +79,24 @@
 </ul>
 <p><code> docker-compose down</code></p>
 <h2 id="software-analysis-report">Software Analysis Report</h2>
-<p>https://fr.overleaf.com/3487886835rmvtkbmjgcfw</p>
-<p>https://drive.google.com/drive/folders/10uMZQdlAdXJLhPNlowMI52zLH416x9x6</p>
+<p>https://fr.overleaf.com/3487886835rmvtkbmjgcfw
+https://drive.google.com/drive/folders/10uMZQdlAdXJLhPNlowMI52zLH416x9x6</p>
 <h2 id="authors-and-acknowledgment">Authors and acknowledgment</h2>
 <p>Ilona Baran, Léa Fredoc, Jacqueline Williams &amp; Fernando Rico Quintero</p>
 <h2 id="project-status">Project status</h2>
 <p>Development &amp; Maintenance will cease on 28/04/2023</p>
+<h2 id="user-manual">User manual</h2>
+<p>[User manual]ManuelUtilisateur.md</p>
+<h2 id="programmer-manual">Programmer manual</h2>
+<p><a href="doc/index.html">Programmer manual</a></p>
 <h2 id="librairies">Librairies</h2>
 <p>List of the different libraries used:</p>
 <ul>
 <li><a href="https://primevue.org/">primeVue</a> used for the interface;</li>
 <li><a href="https://apexcharts.com/">ApexCharts.js</a> used for charts;</li>
+<li><a href="https://www.highcharts.com/">HighCharts.js</a> used for charts;</li>
+<li><a href="https://jsdoc.app/">JSDoc</a> used for the documentation;</li>
+<li><a href="https://www.itowns-project.org/">iTowns</a> used for visualizing 3D geographic information;</li>
 </ul></article>
     </section>
 
@@ -103,13 +108,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-Footer.html">Footer</a></li><li><a href="module-Header.html">Header</a></li><li><a href="module-Map.html">Map</a></li><li><a href="module-Panel.html">Panel</a></li><li><a href="module-Toolbar.html">Toolbar</a></li></ul><h3>Global</h3><ul><li><a href="global.html#averageLists">averageLists</a></li><li><a href="global.html#bati">bati</a></li><li><a href="global.html#batsource">batsource</a></li><li><a href="global.html#concatenateHeightMapList">concatenateHeightMapList</a></li><li><a href="global.html#getData">getData</a></li><li><a href="global.html#getHeightFromScenarios">getHeightFromScenarios</a></li><li><a href="global.html#getHeightMesh">getHeightMesh</a></li><li><a href="global.html#getImage">getImage</a></li><li><a href="global.html#layerBATI">layerBATI</a></li><li><a href="global.html#layerDEM">layerDEM</a></li><li><a href="global.html#layerOrtho">layerOrtho</a></li><li><a href="global.html#layerPLAN">layerPLAN</a></li><li><a href="global.html#maxLists">maxLists</a></li><li><a href="global.html#minLists">minLists</a></li><li><a href="global.html#rgbcolors">rgbcolors</a></li><li><a href="global.html#setAltitude">setAltitude</a></li><li><a href="global.html#setColor">setColor</a></li><li><a href="global.html#setExtrusion">setExtrusion</a></li><li><a href="global.html#sourceBATI">sourceBATI</a></li><li><a href="global.html#sourceDEM">sourceDEM</a></li><li><a href="global.html#sourceOrtho">sourceOrtho</a></li><li><a href="global.html#sourcePLAN">sourcePLAN</a></li><li><a href="global.html#viewExtent">viewExtent</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-Footer.html">Footer</a></li><li><a href="module-Header.html">Header</a></li><li><a href="module-Map.html">Map</a></li><li><a href="module-Panel.html">Panel</a></li><li><a href="module-Toolbar.html">Toolbar</a></li></ul><h3>Global</h3><ul><li><a href="global.html#averageLists">averageLists</a></li><li><a href="global.html#batSource">batSource</a></li><li><a href="global.html#bati">bati</a></li><li><a href="global.html#concatenateHeightMapList">concatenateHeightMapList</a></li><li><a href="global.html#getData">getData</a></li><li><a href="global.html#getHeightFromScenarios">getHeightFromScenarios</a></li><li><a href="global.html#getHeightMesh">getHeightMesh</a></li><li><a href="global.html#getImage">getImage</a></li><li><a href="global.html#layerDEM">layerDEM</a></li><li><a href="global.html#layerOrtho">layerOrtho</a></li><li><a href="global.html#layerPLAN">layerPLAN</a></li><li><a href="global.html#maxLists">maxLists</a></li><li><a href="global.html#minLists">minLists</a></li><li><a href="global.html#minuszero">minuszero</a></li><li><a href="global.html#rgbcolors">rgbcolors</a></li><li><a href="global.html#setAltitude">setAltitude</a></li><li><a href="global.html#setColor">setColor</a></li><li><a href="global.html#setExtrusion">setExtrusion</a></li><li><a href="global.html#sourceDEM">sourceDEM</a></li><li><a href="global.html#sourceOrtho">sourceOrtho</a></li><li><a href="global.html#sourcePLAN">sourcePLAN</a></li><li><a href="global.html#viewExtent">viewExtent</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Wed Apr 26 2023 10:40:03 GMT+0200 (heure d’été d’Europe centrale)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Fri Apr 28 2023 22:30:54 GMT+0200 (heure d’été d’Europe centrale)
 </footer>
 
 <script> prettyPrint(); </script>
