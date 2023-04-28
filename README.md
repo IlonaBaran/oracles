@@ -55,10 +55,10 @@ Ilona Baran, Léa Fredoc, Jacqueline Williams & Fernando Rico Quintero
 Development & Maintenance will cease on 28/04/2023
 
 ## User manual
-[User manual]ManuelUtilisateur.md 
+[User manual](ManuelUtilisateur.md)
 
 ## Programmer manual
-[Programmer manual](doc/index.html) 
+[Programmer manual](docs/index.html) 
 
 ## Librairies
 List of the different libraries used:
