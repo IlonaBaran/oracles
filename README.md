@@ -59,7 +59,8 @@ Development & Maintenance will cease on 28/04/2023
 
 ## Programmer manual
 Path : Docs > index.html   
-Documentation made with JSDoc. You can add JSDoc annotations and generate the new documentation using : jsdoc -c jsdoc.json
+Documentation made with JSDoc. You can add JSDoc annotations and generate the new documentation using   
+``` jsdoc -c jsdoc.json ```
 
 ## Librairies
 List of the different libraries used:
