@@ -55,10 +55,11 @@ Ilona Baran, Léa Fredoc, Jacqueline Williams & Fernando Rico Quintero
 Development & Maintenance will cease on 28/04/2023
 
 ## User manual
-[User manual](ManuelUtilisateur.md)
+[Manuel utilisateur](ManuelUtilisateur.md)
 
 ## Programmer manual
-[Programmer manual](docs/index.html) 
+Docs > index.html
+Documentation made with JSDoc. You can add JSDoc annotations and generate the new documentation using : jsdoc -c jsdoc.json
 
 ## Librairies
 List of the different libraries used:
