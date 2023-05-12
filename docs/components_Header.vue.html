@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/Header.vue</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/Header.vue</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>
+&lt;template>
+    &lt;div class="toolBar">
+        &lt;Toolbar>
+            &lt;!-- Eléments présents sur la gauche de la barre -->
+            &lt;template #start>
+                &lt;!-- Affichage du Panel présent dans Panel.vue -->
+                &lt;Button v-styleclass="{ selector: '.card', toggleClass: 'p-hidden' }" type="button" icon="pi pi-chart-bar"
+                    label="" />
+
+                &lt;!-- Outil de sélection des scénarios -->
+                &lt;MultiSelect v-model="selectedScenario" :options="scenario" filter optionLabel="name"
+                    placeholder="Sélection Scénarios" :maxSelectedLabels="3"
+                    class="w-full md:w-20rem selectScenario margin-right:15px" :selectedScenario="this.selectedScenario"
+                    @change="emitSelectedScenarioChanged" />
+
+                &lt;!-- Outil de sélection des graphiques -->
+                &lt;CascadeSelect v-model="selectedGraph" :options="countries" optionLabel="name" optionGroupLabel="name"
+                    :optionGroupChildren="['states']" style="min-width: 14rem " placeholder="Sélection Graphique"
+                    class="selectGraph" />
+
+                &lt;Button v-styleclass="{ selector: '.card', toggleClass: 'p-hidden' }" @click="this.validation();"
+                    icon="pi pi-check" aria-label="Valider" style="margin-left: 10px;" class="validation" :class="valide" />
+
+                &lt;Button v-styleclass=" { selector: '.card', toggleClass: 'p-hidden' } " @click="
+                    this.reinitialisation()
+                " icon="pi pi-refresh" aria-label="Changer scénarios" style="margin-left: 10px;" :class=" disabled " />
+
+            &lt;/template>
+
+            &lt;!-- Eléments présents sur la droite de la barre -->
+            &lt;template #end>
+                &lt;!-- Sélection de la zone d'étude (Gâvre/Arcachon) -->
+                &lt;SelectButton v-model=" value " :options=" options " aria-labelledby="basic" optionDisabled="constant"
+                    optionLabel="name" />
+            &lt;/template>
+        &lt;/Toolbar>
+
+        &lt;!-- Ajout du composant présent dans Panel.vue, passage des valeurs des arguments selectedScenario et selectedGraph -->
+        &lt;Panel ref="panelGraph" :selectedScenario=" this.selectedScenario " :selectedGraph=" this.selectedGraph ">&lt;/Panel>
+
+
+    &lt;/div>
+&lt;/template>
+
+
+&lt;script>
+/* eslint-disable */
+// Import d'une fonction
+import { ref } from "vue";
+
+// Import du composant
+import Panel from './Panel.vue';
+import App from '../App.vue';
+
+// Import des éléments des librairies
+import Toolbar from 'primevue/toolbar';
+import SelectButton from 'primevue/selectbutton';
+import Button from 'primevue/button';
+import MultiSelect from 'primevue/multiselect';
+import CascadeSelect from 'primevue/cascadeselect';
+
+/**
+ * Header, composant contenant la selection de scénarios et de graphiques
+ *
+ * @component menuComponent
+ * 
+ * @author Equipe du projet Oracle - ENSG, TSI 
+ * @version 1.0
+ * @since 25.04.2023
+ * 
+ * Composants enfants : 
+ * -- Librairie PrimeVue --
+ * Toolbar
+ * SelectButton
+ * Panel
+ * CascadeSelect
+ * MultiSelect
+ * Button
+ * 
+ * @requires ../../node_modules/primevue/toolbar/Toolbar.vue
+ * @requires ../../node_modules/primevue/selectbutton/SelectButton.vue
+ * @requires ../../node_modules/primevue/panel/Panel.vue
+ * @requires ../../node_modules/primevue/cascadeselect/CascadeSelect.vue
+ * @requires ../../node_modules/primevue/multiselect/MultiSelect.vue
+ * @requires ../../node_modules/primevue/button/Button.vue
+ */
+export default {
+    name: 'menuComponent',
+    components: {
+        Toolbar,
+        SelectButton,
+        Panel,
+        CascadeSelect,
+        MultiSelect,
+        Button
+    },
+    data() {
+        return {
+            value: ref({ name: 'Gâvres' }),
+            options: ref([{ name: 'Gâvres' }, { name: 'Arcachon', constant: true }]),
+            checked: ref(false),
+            disabled: " p-disabled",
+            valide: "",
+
+            scenario: null,
+            selectedScenario: [],
+            selectedGraph: [],
+            refresh: false,
+            countries: [
+                {
+                    name: '2D',
+                    code: '2D',
+                    states: [
+                        { name: 'Ligne' },
+                        { name: 'Rose des vents' },
+                        { name: 'Histogramme empilé' },
+                        { name: 'Chaleur' }]
+                },
+                {
+                    name: '3D',
+                    code: '3D',
+                    states: [
+                        { name: 'Ligne 3D' }]
+                },
+            ]
+        }
+    },
+
+    methods: {
+        /**
+         * Fonction renvoyant les scenarios selectionné.
+         *
+         * @public
+         */
+        ret() {
+            return this.selectedScenario
+        },
+        /**
+         * Fonction de validation de sélection de graphiques.
+         *
+         * @public
+         */
+        validation() {
+            this.disabled = "";
+            this.valide = " p-disabled";
+            this.$refs.panelGraph.afficheGraph();
+        },
+        /**
+         * Fonction de validation de réinitialisation de graphiques.
+         *
+         * @public 
+         */
+        reinitialisation() {
+            this.disabled = " p-disabled";
+            this.valide = "";
+            this.$refs.panelGraph.reiAfficheGraph();
+        },
+        /**
+         * Fonction d'affichage de composant
+         *
+         * @public
+         */
+        toggle(event) {
+            this.$refs.op.toggle(event);
+        },
+        /**
+         * Récupérer le nom des dossiers et les transmettre à la variable scenario
+         *
+         * @public
+         */
+        getDossier() {
+            fetch('http://127.0.0.1:5000/arboresance')
+                .then(response => response.json())
+                .then(data => {
+                    var L = [];
+
+                    for (const property in data) {
+                        var dict = {
+                            name: `${data[property]}`,
+                            code: `${data[property]}`
+                        };
+                        L.push(dict);
+                    }
+
+                    this.scenario = L;
+                });
+        },
+
+        /**
+         * Fonction qui émet les scénarios sélectionnés
+         *
+         * @public
+         */
+        emitSelectedScenarioChanged() {
+            this.$emit('selectedScenarioChanged', this.selectedScenario);
+        }
+    },
+    mounted() {
+        this.getDossier()
+    }
+
+}
+&lt;/script>
+
+
+&lt;style>
+.toolBar {
+    z-index: 2;
+    position: absolute;
+    width: 100%;
+    height: 5%;
+    top: 0%;
+}
+
+#app .p-toolbar {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    padding: 0.5rem;
+    border-radius: 6px;
+    gap: 0.5rem;
+}
+
+.p-toolbar-group-center {
+    padding: 0px;
+}
+
+.p-component {
+    padding: 0px;
+}
+
+.p-multiselect {
+    margin-right: 10px;
+    margin-left: 10px;
+}
+&lt;/style>
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-Footer.html">Footer</a></li><li><a href="module-Header.html">Header</a></li><li><a href="module-Map.html">Map</a></li><li><a href="module-Panel.html">Panel</a></li><li><a href="module-Toolbar.html">Toolbar</a></li></ul><h3>Global</h3><ul><li><a href="global.html#averageLists">averageLists</a></li><li><a href="global.html#batSource">batSource</a></li><li><a href="global.html#bati">bati</a></li><li><a href="global.html#concatenateHeightMapList">concatenateHeightMapList</a></li><li><a href="global.html#getData">getData</a></li><li><a href="global.html#getHeightFromScenarios">getHeightFromScenarios</a></li><li><a href="global.html#getHeightMesh">getHeightMesh</a></li><li><a href="global.html#getImage">getImage</a></li><li><a href="global.html#layerDEM">layerDEM</a></li><li><a href="global.html#layerOrtho">layerOrtho</a></li><li><a href="global.html#layerPLAN">layerPLAN</a></li><li><a href="global.html#maxLists">maxLists</a></li><li><a href="global.html#minLists">minLists</a></li><li><a href="global.html#minuszero">minuszero</a></li><li><a href="global.html#rgbcolors">rgbcolors</a></li><li><a href="global.html#setAltitude">setAltitude</a></li><li><a href="global.html#setColor">setColor</a></li><li><a href="global.html#setExtrusion">setExtrusion</a></li><li><a href="global.html#sourceDEM">sourceDEM</a></li><li><a href="global.html#sourceOrtho">sourceOrtho</a></li><li><a href="global.html#sourcePLAN">sourcePLAN</a></li><li><a href="global.html#viewExtent">viewExtent</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Fri Apr 28 2023 22:30:54 GMT+0200 (heure d’été d’Europe centrale)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

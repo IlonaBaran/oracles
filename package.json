@@ -1,5 +1,5 @@
 {
-  "name": "vtthree",
+  "name": "oracles",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -35,9 +35,11 @@
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-plugin-eslint": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
+    "@vue/compiler-sfc": "^3.2.47",
     "eslint": "^7.32.0",
     "eslint-plugin-vue": "^8.0.3",
-    "jscharting-vue": "^2.4.0"
+    "jscharting-vue": "^2.4.0",
+    "jsdoc": "^4.0.2"
   },
   "description": "",
   "eslintConfig": {

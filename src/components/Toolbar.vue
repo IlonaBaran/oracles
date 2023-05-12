@@ -73,6 +73,16 @@
   <div class="boutton2d3d" position="right">
     <SelectButton v-model="selectedDimension" :options="dimensions" :optionDisabled="optionDisabled" />
   </div>
+
+  <div class="color-scale-legend" ref="legend" v-if="clicked == true" position="center" id="legende">
+    <p>Légende</p>
+    <p>(mètres au-dessus du sol)</p>
+    <div class="legend-bar" :style="{ background: gradient }"></div>
+    <div class="legend-labels">
+      <div>{{ min }}</div>
+      <div>{{ max }}</div>
+    </div>
+  </div>
 </template>
   
 
@@ -80,13 +90,8 @@
 <script>
 /* eslint-disable */
 import { ref } from "vue";
-
-
-
 import Header from './Header.vue';
 import App from '../App.vue';
-
-
 
 // Import des éléments des librairies
 import SpeedDial from 'primevue/speeddial';
@@ -96,7 +101,32 @@ import MultiSelect from 'primevue/multiselect';
 import SelectButton from 'primevue/selectbutton';
 import RadioButton from 'primevue/radiobutton';
 
+/**
+ * Toolbar qui contient le dial et les panels de droite
+ *
+ * @component Toolbar-box
+ * 
+ * @author Equipe du projet Oracle - ENSG, TSI 
+ * @version 1.0
+ * @since 25.04.2023
+ * 
+ * Composants enfants : 
+ * -- Librairie PrimeVue --
+ * SpeedDial
+ * Sidebar
+ * Button
+ * MultiSelect
+ * SelectButton
+ * RadioButton
+ * 
+ * @requires ../../node_modules/primevue/speeddial/SpeedDial.vue
+ * @requires ../../node_modules/primevue/sidebar/Sidebar.vue
+ * @requires ../../node_modules/primevue/button/Button.vue
+ * @requires ../../node_modules/primevue/multiselect/MultiSelect.vue
+ * @requires ../../node_modules/primevue/selectbutton/SelectButton.vue
+ * @requires ../../node_modules/primevue/radiobutton/RadioButton.vue
 
+ */
 export default {
   name: 'Toolbar-box',
   components: {
@@ -106,43 +136,41 @@ export default {
     MultiSelect,
     SelectButton,
     RadioButton
-
   },
   data() {
     return {
-
+      clicked: false,
+      colors: [
+        "rgb(206, 229, 255)",
+        "rgb(41, 155, 243)",
+        "rgb(23, 123, 204)",
+        "rgb(3, 36, 74)",
+        "rgb(0, 0, 138)"
+      ],
+      min: 0,
+      max: 4,
       selectedScenario2: [],
-
       selectedDimension: ref('2D'),
       dimensions: ref(['2D', '3D']),
       checked: ref(false),
       math: ref(''),
       selectedheight: ref('hmax'),
       heights: ref(['hmax', 'hfin']),
-
-
       visibleRight: false, // visibilité du panel de fonds de carte
       visibleBuilding: false, // visibilité des bâtiments
       visibleHmax: false, // visibilité du hmax
       mapSelected: "ortho", // fond de carte sélectionné
-
       // Liste des éléments du speedDial
       items: [
         {
           label: 'Changer fond de carte',
           icon: 'pi pi-map',
-          command: () => {
-            // si le bouton est cliqué on affiche le panel
-            this.visibleRight = true;
-          }
+          command: () => { this.visibleRight = true; } // si le bouton est cliqué on affiche le panel
         },
         {
           label: 'Afficher les hauteurs maximales',
           icon: 'pi pi-globe',
-          command: () => {
-            // si le bouton est cliqué on affiche le panel
-            this.visibleHmax = true;
-          }
+          command: () => { this.visibleHmax = true; } // si le bouton est cliqué on affiche le panel
         },
         {
           label: 'Afficher/Masquer les bâtiments',
@@ -182,45 +210,89 @@ export default {
     },
   },
   props: {
+    /**
+     * Variable qui permet de transmètre les scénarios sélectionnés à map.vue
+     */
     selectedScenario: {
       type: Object,
       required: true
     }
   },
   methods: {
-    // Les deux fonctions suivantes permettent de changer la valeur de mapSelected en fonction
-    // du bouton cliqué
+    /**
+     * Permet de changer la valeur de mapSelected en fonction du bouton cliqué
+     *
+     * @public
+     */
     changeMapToOrtho() {
       this.mapSelected = "ortho";
     },
+    /**
+     * Permet de changer la valeur de mapSelected en fonction du bouton cliqué
+     *
+     * @public
+     */
     changeMapToPlan() {
       this.mapSelected = "plan";
     },
+    /**
+     * Change la vue en vue 2D
+     *
+     * @public
+     */
     switchTo2D() {
-      // Code to switch to 2D view
       this.$emit('vue-2d');
       console.log("2D")
     },
+    /**
+     * Change la vue en vue 3D
+     *
+     * @public
+     */
     switchTo3D() {
-      // Code to switch to 3D view
       this.$emit('vue-3d');
       console.log("3D")
     },
+
+    /**
+     * Mise à jour des scénarios
+     * 
+     * @emits updateScenarios
+     * @emitsParam {object} data - Les données mises à jour
+     * @emitsParam {string[]} data.selectedScenario2 - Les scénarios sélectionnés
+     * @emitsParam {number} data.math - Les mathématiques utilisées
+     * @emitsParam {number} data.height - La hauteur sélectionnée
+     * @public
+     */
+
     updateScenarios() {
       if (this.selectedScenario2.length > 1) {
-        let jsonemit = { selectedScenario2: this.selectedScenario2, math: this.math, height: this.selectedheight  }
+        let jsonemit = { selectedScenario2: this.selectedScenario2, math: this.math, height: this.selectedheight }
+        this.clicked = true;
         this.$emit('updateScenarios', jsonemit);
 
       } else {
-        let jsonemit = { selectedScenario2: this.selectedScenario2, height: this.selectedheight  }
+        let jsonemit = { selectedScenario2: this.selectedScenario2, height: this.selectedheight }
+        this.clicked = true;
         this.$emit('updateScenarios', jsonemit);
       }
 
     }
   },
   mounted() {
-  }
-}
+
+  },
+  computed: {
+    gradient() {
+      const colorStops = this.colors.map((color, index) => {
+        const position = (index / (this.colors.length - 1)) * 100;
+        return `${color} ${position}%`;
+      });
+      return `linear-gradient(to right, ${colorStops.join(", ")})`;
+    },
+  },
+
+};
 </script>
   
 <style>
@@ -228,7 +300,6 @@ export default {
   position: relative;
   left: 20%;
   top: 5%;
-
 }
 
 .ml-2 {
@@ -247,7 +318,6 @@ export default {
   bottom: 10%;
   right: 2%;
   z-index: 2;
-
 }
 
 .toolbar {
@@ -256,7 +326,6 @@ export default {
 
 .dial {
   z-index: 2;
-
 }
 
 .sidebar {
@@ -273,17 +342,44 @@ export default {
   position: relative;
   top: 10%;
   left: 35%;
-
 }
 
 img {
   width: 100%;
-
 }
 
 #boutonCarte {
   margin: 5%;
   padding: 0%;
+}
+
+.color-scale-legend {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  bottom: 8%;
+  z-index: 1;
+  left: 5%;
+  background-color: rgba(255, 255, 255, 0.5);
+  width: 250px;
+  height: 70px;
+  font-weight: bold;
+
+}
+
+.legend-bar {
+  width: 200px;
+  height: 10px;
+}
+
+.legend-labels {
+  display: flex;
+  justify-content: space-between;
+  width: 200px;
+  margin-top: 5px;
+  font-weight: bold;
 }
 </style>
 

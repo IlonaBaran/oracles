@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Home</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Home</h1>
+
+    
+
+
+
+    
+
+
+    <h3> </h3>
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    <section>
+        <article><h1 id="pfa-tsi-2022-2023-%3A-anr-oracles---vtthree">PFA TSI 2022-2023 : ANR Oracles - VTTHREE</h1>
+<h2 id="context">Context</h2>
+<p>This project is based on previous works realized by LASTIG research lab: https://github.com/umrlastig/vtthree</p>
+<p>The goal of Oracles, project by the French National Research Agency is to address the challenges related to probabilistic forecasting of coastal flooding and their consequences on the territory, by focusing on data visualization.</p>
+<h2 id="installation">Installation</h2>
+<ul>
+<li>Install Docker</li>
+</ul>
+<p>https://docs.docker.com/desktop/install/windows-install/</p>
+<ul>
+<li>clone repo</li>
+</ul>
+<p><code>git clone https://github.com/IlonaBaran/oracles.git</code></p>
+<h2 id="retrieve-data-and-launch-project">Retrieve data and launch project</h2>
+<p>If you have access to this project you will be provided with a data.zip folder that you should unzip at root of project</p>
+<p>inside /data should be :
+* /Data
+* /jsonData
+* /output_rasters</p>
+<ul>
+<li>launch project</li>
+</ul>
+<p><code> docker-compose up --build</code></p>
+<pre><code>* flask server : http://localhost:5000/arboresance
+* http server : http://localhost:8080
+* app : http://localhost:8081
+</code></pre>
+<ul>
+<li>launch another application server for development</li>
+</ul>
+<p><code>npm run serve</code></p>
+<ul>
+<li>stop docker</li>
+</ul>
+<p><code> docker-compose down</code></p>
+<h2 id="software-analysis-report">Software Analysis Report</h2>
+<p>https://fr.overleaf.com/3487886835rmvtkbmjgcfw
+https://drive.google.com/drive/folders/10uMZQdlAdXJLhPNlowMI52zLH416x9x6</p>
+<h2 id="authors-and-acknowledgment">Authors and acknowledgment</h2>
+<p>Ilona Baran, Léa Fredoc, Jacqueline Williams &amp; Fernando Rico Quintero</p>
+<h2 id="project-status">Project status</h2>
+<p>Development &amp; Maintenance will cease on 28/04/2023</p>
+<h2 id="user-manual">User manual</h2>
+<p>[User manual]ManuelUtilisateur.md</p>
+<h2 id="programmer-manual">Programmer manual</h2>
+<p><a href="doc/index.html">Programmer manual</a></p>
+<h2 id="librairies">Librairies</h2>
+<p>List of the different libraries used:</p>
+<ul>
+<li><a href="https://primevue.org/">primeVue</a> used for the interface;</li>
+<li><a href="https://apexcharts.com/">ApexCharts.js</a> used for charts;</li>
+<li><a href="https://www.highcharts.com/">HighCharts.js</a> used for charts;</li>
+<li><a href="https://jsdoc.app/">JSDoc</a> used for the documentation;</li>
+<li><a href="https://www.itowns-project.org/">iTowns</a> used for visualizing 3D geographic information;</li>
+</ul></article>
+    </section>
+
+
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-Footer.html">Footer</a></li><li><a href="module-Header.html">Header</a></li><li><a href="module-Map.html">Map</a></li><li><a href="module-Panel.html">Panel</a></li><li><a href="module-Toolbar.html">Toolbar</a></li></ul><h3>Global</h3><ul><li><a href="global.html#averageLists">averageLists</a></li><li><a href="global.html#batSource">batSource</a></li><li><a href="global.html#bati">bati</a></li><li><a href="global.html#concatenateHeightMapList">concatenateHeightMapList</a></li><li><a href="global.html#getData">getData</a></li><li><a href="global.html#getHeightFromScenarios">getHeightFromScenarios</a></li><li><a href="global.html#getHeightMesh">getHeightMesh</a></li><li><a href="global.html#getImage">getImage</a></li><li><a href="global.html#layerDEM">layerDEM</a></li><li><a href="global.html#layerOrtho">layerOrtho</a></li><li><a href="global.html#layerPLAN">layerPLAN</a></li><li><a href="global.html#maxLists">maxLists</a></li><li><a href="global.html#minLists">minLists</a></li><li><a href="global.html#minuszero">minuszero</a></li><li><a href="global.html#rgbcolors">rgbcolors</a></li><li><a href="global.html#setAltitude">setAltitude</a></li><li><a href="global.html#setColor">setColor</a></li><li><a href="global.html#setExtrusion">setExtrusion</a></li><li><a href="global.html#sourceDEM">sourceDEM</a></li><li><a href="global.html#sourceOrtho">sourceOrtho</a></li><li><a href="global.html#sourcePLAN">sourcePLAN</a></li><li><a href="global.html#viewExtent">viewExtent</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Fri Apr 28 2023 22:30:54 GMT+0200 (heure d’été d’Europe centrale)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

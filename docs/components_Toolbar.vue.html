@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/Toolbar.vue</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/Toolbar.vue</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>&lt;template>
+  &lt;!-- Dial permettant l'affichage des différents outils et paramètres de la carte  -->
+  &lt;div class="dial">
+    &lt;SpeedDial :model="items" direction="down" :style="{ top: 'calc(5% + 36px)', right: 'calc(5px)' }"
+      class="right-0 top-0" :tooltipOptions="{ position: 'right' }" />
+  &lt;/div>
+
+  &lt;!-- Sidebar de la sélection des hmax à afficher -->
+  &lt;Sidebar class='sidebar' v-model:visible="visibleHmax" position="right">
+    &lt;h2 style="text-align:center;">Sélection des hMax à afficher&lt;/h2>
+    &lt;div class="centerDiv">
+      &lt;p style="margin-bottom:20px;">Sélectionnez un ou plusieurs scénarios pour afficher leurs hauteur maximale
+        associée.
+      &lt;/p>
+      &lt;MultiSelect v-model="selectedScenario2" :options="selectedScenario" filter optionLabel="name"
+        placeholder="Sélection Scénarios" :maxSelectedLabels="3" class="w-full md:w-20rem selectScenario" />
+    &lt;/div>
+
+    &lt;div v-if="selectedScenario2.length > 1" class="flex flex-wrap gap-20 justify-content-center" id="radiobuttons">
+      &lt;div class="flex align-items-center">
+        &lt;RadioButton v-model="math" inputId="math1" name="math" value="Moy" class="mr-2" />
+        &lt;label for="math1" class="ml-2">Moy&lt;/label>
+      &lt;/div>
+      &lt;div class="flex align-items-center">
+        &lt;RadioButton v-model="math" inputId="math2" name="math" value="Min" class="mr-2" />
+        &lt;label for="math2" class="ml-2">Min&lt;/label>
+      &lt;/div>
+      &lt;div class="flex align-items-center">
+        &lt;RadioButton v-model="math" inputId="math3" name="math" value="Max" class="mr-2" />
+        &lt;label for="math3" class="ml-2">Max&lt;/label>
+      &lt;/div>
+
+    &lt;/div>
+    &lt;div class="heightselect">
+      &lt;SelectButton v-model="selectedheight" :options="heights" :optionDisabled="optionDisabled" />
+    &lt;/div>
+
+    &lt;div id='validatediv' position="center">
+      &lt;Button @click="updateScenarios">Valider&lt;/button>
+    &lt;/div>
+  &lt;/Sidebar>
+
+  &lt;!-- Sidebar de la sélection du fond de carte -->
+  &lt;Sidebar class='sidebar' v-model:visible="visibleRight" position="right">
+    &lt;h2>Fonds de carte&lt;/h2>
+    &lt;!-- Désactivation du bouton ortho si le fond de carte actuel est déjà l'ortho -->
+    &lt;div class="centerDiv" v-if="this.mapSelected == 'ortho'">
+      &lt;Button id="boutonCarte" value='ortho' @click="$emit('icon-clicked', changeMapToOrtho())"
+        class="bg-bluegray-600 hover:bg-bluegray-400 border-bluegray-700 " disabled>
+        &lt;img alt="logo" src="../../public/img/ortho.png" class="h-2rem" />
+      &lt;/Button>
+
+      &lt;Button id="boutonCarte" value='plan' @click="$emit('icon-clicked', changeMapToPlan(), this.mapSelected)"
+        class="bg-bluegray-600 hover:bg-bluegray-400 border-bluegray-700">
+        &lt;img alt="logo" src="../../public/img/plan.png" class="h-2rem" value='plan' />
+      &lt;/Button>
+    &lt;/div>
+
+    &lt;!-- Désactivation du bouton plan si le fond de carte actuel est déjà le plan -->
+    &lt;div class="centerDiv" v-else-if="this.mapSelected == 'plan'">
+
+      &lt;Button id="boutonCarte" value='ortho' @click="$emit('icon-clicked', changeMapToOrtho())"
+        class="bg-bluegray-600 hover:bg-bluegray-400 border-bluegray-700 ">
+        &lt;img alt="logo" src="../../public/img/ortho.png" class="h-2rem" />
+      &lt;/Button>
+
+      &lt;Button id="boutonCarte" value='plan' @click="$emit('icon-clicked', changeMapToPlan(), this.mapSelected)"
+        class="bg-bluegray-600 hover:bg-bluegray-400 border-bluegray-700" disabled>
+        &lt;img alt="logo" src="../../public/img/plan.png" class="h-2rem" value='plan' />
+      &lt;/Button>
+    &lt;/div>
+  &lt;/Sidebar>
+  &lt;div class="boutton2d3d" position="right">
+    &lt;SelectButton v-model="selectedDimension" :options="dimensions" :optionDisabled="optionDisabled" />
+  &lt;/div>
+
+  &lt;div class="color-scale-legend" ref="legend" v-if="clicked == true" position="center" id="legende">
+    &lt;p>Légende&lt;/p>
+    &lt;p>(mètres au-dessus du sol)&lt;/p>
+    &lt;div class="legend-bar" :style="{ background: gradient }">&lt;/div>
+    &lt;div class="legend-labels">
+      &lt;div>{{ min }}&lt;/div>
+      &lt;div>{{ max }}&lt;/div>
+    &lt;/div>
+  &lt;/div>
+&lt;/template>
+  
+
+
+&lt;script>
+/* eslint-disable */
+import { ref } from "vue";
+import Header from './Header.vue';
+import App from '../App.vue';
+
+// Import des éléments des librairies
+import SpeedDial from 'primevue/speeddial';
+import Sidebar from 'primevue/sidebar';
+import Button from 'primevue/button';
+import MultiSelect from 'primevue/multiselect';
+import SelectButton from 'primevue/selectbutton';
+import RadioButton from 'primevue/radiobutton';
+
+/**
+ * Toolbar qui contient le dial et les panels de droite
+ *
+ * @component Toolbar-box
+ * 
+ * @author Equipe du projet Oracle - ENSG, TSI 
+ * @version 1.0
+ * @since 25.04.2023
+ * 
+ * Composants enfants : 
+ * -- Librairie PrimeVue --
+ * SpeedDial
+ * Sidebar
+ * Button
+ * MultiSelect
+ * SelectButton
+ * RadioButton
+ * 
+ * @requires ../../node_modules/primevue/speeddial/SpeedDial.vue
+ * @requires ../../node_modules/primevue/sidebar/Sidebar.vue
+ * @requires ../../node_modules/primevue/button/Button.vue
+ * @requires ../../node_modules/primevue/multiselect/MultiSelect.vue
+ * @requires ../../node_modules/primevue/selectbutton/SelectButton.vue
+ * @requires ../../node_modules/primevue/radiobutton/RadioButton.vue
+
+ */
+export default {
+  name: 'Toolbar-box',
+  components: {
+    SpeedDial,
+    Sidebar,
+    Button,
+    MultiSelect,
+    SelectButton,
+    RadioButton
+  },
+  data() {
+    return {
+      clicked: false,
+      colors: [
+        "rgb(206, 229, 255)",
+        "rgb(41, 155, 243)",
+        "rgb(23, 123, 204)",
+        "rgb(3, 36, 74)",
+        "rgb(0, 0, 138)"
+      ],
+      min: 0,
+      max: 4,
+      selectedScenario2: [],
+      selectedDimension: ref('2D'),
+      dimensions: ref(['2D', '3D']),
+      checked: ref(false),
+      math: ref(''),
+      selectedheight: ref('hmax'),
+      heights: ref(['hmax', 'hfin']),
+      visibleRight: false, // visibilité du panel de fonds de carte
+      visibleBuilding: false, // visibilité des bâtiments
+      visibleHmax: false, // visibilité du hmax
+      mapSelected: "ortho", // fond de carte sélectionné
+      // Liste des éléments du speedDial
+      items: [
+        {
+          label: 'Changer fond de carte',
+          icon: 'pi pi-map',
+          command: () => { this.visibleRight = true; } // si le bouton est cliqué on affiche le panel
+        },
+        {
+          label: 'Afficher les hauteurs maximales',
+          icon: 'pi pi-globe',
+          command: () => { this.visibleHmax = true; } // si le bouton est cliqué on affiche le panel
+        },
+        {
+          label: 'Afficher/Masquer les bâtiments',
+          icon: 'pi pi-building',
+          command: () => {
+            // Si le bouton est cliqué on emet "change-building" au composant parent Map.vue
+            // La fonction alors appelé affichera ou non la couche de bâtiments en fonction
+            // de la valeur de this.visibleBuilding
+            this.$emit('change-building');
+            if (this.visibleBuilding) {
+              this.visibleBuilding = false;
+            }
+            else {
+              this.visibleBuilding = true;
+            }
+          }
+        },
+        {
+          label: 'Recentrer la vue',
+          icon: 'pi pi-undo',
+          command: () => {
+            // Si le bouton est cliqué on emet "reinit-view" au composant parent Map.vue
+            // On replace la caméra aux coordonnées d'origines
+            this.$emit('reinit-view');
+          }
+        },
+      ]
+    }
+  },
+  watch: {
+    selectedDimension(option) {
+      if (option === '2D') {
+        this.switchTo2D();
+      } else if (option === '3D') {
+        this.switchTo3D();
+      }
+    },
+  },
+  props: {
+    /**
+     * Variable qui permet de transmètre les scénarios sélectionnés à map.vue
+     */
+    selectedScenario: {
+      type: Object,
+      required: true
+    }
+  },
+  methods: {
+    /**
+     * Permet de changer la valeur de mapSelected en fonction du bouton cliqué
+     *
+     * @public
+     */
+    changeMapToOrtho() {
+      this.mapSelected = "ortho";
+    },
+    /**
+     * Permet de changer la valeur de mapSelected en fonction du bouton cliqué
+     *
+     * @public
+     */
+    changeMapToPlan() {
+      this.mapSelected = "plan";
+    },
+    /**
+     * Change la vue en vue 2D
+     *
+     * @public
+     */
+    switchTo2D() {
+      this.$emit('vue-2d');
+      console.log("2D")
+    },
+    /**
+     * Change la vue en vue 3D
+     *
+     * @public
+     */
+    switchTo3D() {
+      this.$emit('vue-3d');
+      console.log("3D")
+    },
+
+    /**
+     * Mise à jour des scénarios
+     * 
+     * @emits updateScenarios
+     * @emitsParam {object} data - Les données mises à jour
+     * @emitsParam {string[]} data.selectedScenario2 - Les scénarios sélectionnés
+     * @emitsParam {number} data.math - Les mathématiques utilisées
+     * @emitsParam {number} data.height - La hauteur sélectionnée
+     * @public
+     */
+
+    updateScenarios() {
+      if (this.selectedScenario2.length > 1) {
+        let jsonemit = { selectedScenario2: this.selectedScenario2, math: this.math, height: this.selectedheight }
+        this.clicked = true;
+        this.$emit('updateScenarios', jsonemit);
+
+      } else {
+        let jsonemit = { selectedScenario2: this.selectedScenario2, height: this.selectedheight }
+        this.clicked = true;
+        this.$emit('updateScenarios', jsonemit);
+      }
+
+    }
+  },
+  mounted() {
+
+  },
+  computed: {
+    gradient() {
+      const colorStops = this.colors.map((color, index) => {
+        const position = (index / (this.colors.length - 1)) * 100;
+        return `${color} ${position}%`;
+      });
+      return `linear-gradient(to right, ${colorStops.join(", ")})`;
+    },
+  },
+
+};
+&lt;/script>
+  
+&lt;style>
+.heightselect {
+  position: relative;
+  left: 20%;
+  top: 5%;
+}
+
+.ml-2 {
+  padding-right: 10px;
+}
+
+#radiobuttons {
+  display: inline-flex;
+  position: relative;
+  left: 20%;
+  top: 2%;
+}
+
+.boutton2d3d {
+  position: absolute;
+  bottom: 10%;
+  right: 2%;
+  z-index: 2;
+}
+
+.toolbar {
+  z-index: 2;
+}
+
+.dial {
+  z-index: 2;
+}
+
+.sidebar {
+  z-index: 2;
+}
+
+.centerDiv {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+#validatediv {
+  position: relative;
+  top: 10%;
+  left: 35%;
+}
+
+img {
+  width: 100%;
+}
+
+#boutonCarte {
+  margin: 5%;
+  padding: 0%;
+}
+
+.color-scale-legend {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  bottom: 8%;
+  z-index: 1;
+  left: 5%;
+  background-color: rgba(255, 255, 255, 0.5);
+  width: 250px;
+  height: 70px;
+  font-weight: bold;
+
+}
+
+.legend-bar {
+  width: 200px;
+  height: 10px;
+}
+
+.legend-labels {
+  display: flex;
+  justify-content: space-between;
+  width: 200px;
+  margin-top: 5px;
+  font-weight: bold;
+}
+&lt;/style>
+
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-Footer.html">Footer</a></li><li><a href="module-Header.html">Header</a></li><li><a href="module-Map.html">Map</a></li><li><a href="module-Panel.html">Panel</a></li><li><a href="module-Toolbar.html">Toolbar</a></li></ul><h3>Global</h3><ul><li><a href="global.html#averageLists">averageLists</a></li><li><a href="global.html#batSource">batSource</a></li><li><a href="global.html#bati">bati</a></li><li><a href="global.html#concatenateHeightMapList">concatenateHeightMapList</a></li><li><a href="global.html#getData">getData</a></li><li><a href="global.html#getHeightFromScenarios">getHeightFromScenarios</a></li><li><a href="global.html#getHeightMesh">getHeightMesh</a></li><li><a href="global.html#getImage">getImage</a></li><li><a href="global.html#layerDEM">layerDEM</a></li><li><a href="global.html#layerOrtho">layerOrtho</a></li><li><a href="global.html#layerPLAN">layerPLAN</a></li><li><a href="global.html#maxLists">maxLists</a></li><li><a href="global.html#minLists">minLists</a></li><li><a href="global.html#minuszero">minuszero</a></li><li><a href="global.html#rgbcolors">rgbcolors</a></li><li><a href="global.html#setAltitude">setAltitude</a></li><li><a href="global.html#setColor">setColor</a></li><li><a href="global.html#setExtrusion">setExtrusion</a></li><li><a href="global.html#sourceDEM">sourceDEM</a></li><li><a href="global.html#sourceOrtho">sourceOrtho</a></li><li><a href="global.html#sourcePLAN">sourcePLAN</a></li><li><a href="global.html#viewExtent">viewExtent</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Fri Apr 28 2023 22:30:54 GMT+0200 (heure d’été d’Europe centrale)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

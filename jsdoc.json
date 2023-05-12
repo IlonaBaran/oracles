@@ -1,0 +1,24 @@
+{
+    "source": {
+      "include": [
+        "src"
+      ],
+      "includePattern": ".+\\.(vue|js)$"
+    },
+    "opts": {
+        "recurse": true,
+        "destination": "docs",
+        "readme": "README.md"
+      },
+    "plugins": [
+      "jsdoc-vuejs"
+    ],
+    "templates": {
+        "cleverLinks": false,
+        "monospaceLinks": false
+      },
+    "markdown": {
+    "idInHeadings": true
+    }
+  }
+  
